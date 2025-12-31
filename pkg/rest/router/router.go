@@ -2,30 +2,35 @@ package router
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/your-org/jvairv2/pkg/rest/handler"
+	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
+	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // New crea un nuevo router HTTP con las rutas configuradas
-func New(healthHandler *handler.HealthHandler) *chi.Mux {
+func New(healthHandler *handler.HealthHandler, authHandler *authHandler.Handler, authMiddleware *middleware.AuthMiddleware) *chi.Mux {
 	r := chi.NewRouter()
 
 	// Middlewares globales
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
+	r.Use(chiMiddleware.Logger)
+	r.Use(chiMiddleware.Recoverer)
+	r.Use(chiMiddleware.RequestID)
+	r.Use(chiMiddleware.RealIP)
 
 	// Rutas públicas
 	r.Group(func(r chi.Router) {
 		// Health check
 		r.Get("/health", healthHandler.Check)
+
+		// Rutas de autenticación
+		RegisterAuthRoutes(r, authHandler)
 	})
 
-	// Rutas protegidas (para implementar más adelante)
+	// Rutas protegidas que requieren autenticación
 	r.Group(func(r chi.Router) {
-		// Aquí se agregarán middlewares de autenticación
-		// r.Use(authMiddleware)
+		// Middleware de autenticación
+		r.Use(authMiddleware.Authenticate)
 
 		// API v1
 		r.Route("/api/v1", func(r chi.Router) {

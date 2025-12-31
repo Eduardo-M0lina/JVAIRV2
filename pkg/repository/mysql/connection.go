@@ -64,3 +64,8 @@ func (c *Connection) Close() error {
 func (c *Connection) Ping() error {
 	return c.DB.Ping()
 }
+
+// GetDB devuelve la conexión a la base de datos
+func (c *Connection) GetDB() *sql.DB {
+	return c.DB
+}

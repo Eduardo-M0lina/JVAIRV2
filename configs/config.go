@@ -11,6 +11,7 @@ import (
 type Config struct {
 	Server ServerConfig
 	DB     DBConfig
+	JWT    JWTConfig
 }
 
 // ServerConfig almacena la configuración del servidor HTTP
@@ -32,6 +33,14 @@ type DBConfig struct {
 	MaxOpenConns    int
 	MaxIdleConns    int
 	ConnMaxLifetime time.Duration
+}
+
+// JWTConfig almacena la configuración de JWT
+type JWTConfig struct {
+	AccessSecret      string
+	RefreshSecret     string
+	AccessExpiration  time.Duration
+	RefreshExpiration time.Duration
 }
 
 // LoadConfig carga la configuración desde el archivo app.env
@@ -65,6 +74,12 @@ func LoadConfig(path string) (*Config, error) {
 	config.DB.MaxOpenConns = viper.GetInt("DB_MAX_OPEN_CONNS")
 	config.DB.MaxIdleConns = viper.GetInt("DB_MAX_IDLE_CONNS")
 	config.DB.ConnMaxLifetime = viper.GetDuration("DB_CONN_MAX_LIFETIME")
+
+	// Configuración de JWT
+	config.JWT.AccessSecret = viper.GetString("JWT_ACCESS_SECRET")
+	config.JWT.RefreshSecret = viper.GetString("JWT_REFRESH_SECRET")
+	config.JWT.AccessExpiration = viper.GetDuration("JWT_ACCESS_EXPIRATION")
+	config.JWT.RefreshExpiration = viper.GetDuration("JWT_REFRESH_EXPIRATION")
 
 	return &config, nil
 }

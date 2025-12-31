@@ -16,9 +16,7 @@ JVAIRV2/
 │   └── config.go                  # Cargador de configuración
 ├── pkg/                           # Núcleo del proyecto (código reutilizable)
 │   ├── domain/                    # Capa de dominio (entidades e interfaces)
-│   │   └── ...                    # Subdirectorios por contexto de negocio
-│   ├── usecase/                   # Casos de uso (lógica de aplicación)
-│   │   └── ...                    # Implementaciones de casos de uso
+│   │   └── ...                    # Subdirectorios por contexto de negocio y Implementaciones de casos de uso
 │   ├── repository/                # Implementaciones de repositorios
 │   │   └── mysql/                 # Implementación MySQL
 │   │       └── connection.go      # Conexión a la base de datos
