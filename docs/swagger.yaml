@@ -1,0 +1,179 @@
+definitions:
+  auth.LoginRequest:
+    properties:
+      email:
+        example: admin@example.com
+        type: string
+      password:
+        example: admin123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.LoginResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expires_at:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/user.User'
+    type: object
+  auth.RefreshResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expires_at:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    type: object
+  user.User:
+    properties:
+      createdAt:
+        description: timestamp
+        type: string
+      deletedAt:
+        description: timestamp
+        type: string
+      email:
+        description: varchar
+        type: string
+      emailVerifiedAt:
+        description: timestamp
+        type: string
+      id:
+        description: bigint
+        format: int64
+        type: integer
+      isActive:
+        description: Campos virtuales (no existen en la base de datos)
+        type: boolean
+      name:
+        description: varchar
+        type: string
+      password:
+        description: varchar
+        type: string
+      rememberToken:
+        description: varchar
+        type: string
+      roleID:
+        description: varchar
+        type: string
+      updatedAt:
+        description: timestamp
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Inicia sesión con email y contraseña
+      parameters:
+      - description: Credenciales de usuario
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "401":
+          description: Credenciales inválidas
+          schema:
+            type: string
+        "403":
+          description: Usuario inactivo
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Iniciar sesión
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Cierra la sesión del usuario actual
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Token de acceso no proporcionado
+          schema:
+            type: string
+        "401":
+          description: No autorizado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Cerrar sesión
+      tags:
+      - Auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresca el token de acceso usando el token de refresco
+      parameters:
+      - description: Token de refresco
+        in: body
+        name: refresh_token
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.RefreshResponse'
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "401":
+          description: Token inválido
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Refrescar token
+      tags:
+      - Auth
+swagger: "2.0"

@@ -3,6 +3,8 @@ package router
 import (
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
+	_ "github.com/your-org/jvairv2/docs" // Importación de documentación Swagger
 	"github.com/your-org/jvairv2/pkg/rest/handler"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
@@ -25,6 +27,11 @@ func New(healthHandler *handler.HealthHandler, authHandler *authHandler.Handler,
 
 		// Rutas de autenticación
 		RegisterAuthRoutes(r, authHandler)
+
+		// Swagger UI
+		r.Get("/swagger/*", httpSwagger.Handler(
+			httpSwagger.URL("/swagger/doc.json"), // URL para acceder a la documentación JSON
+		))
 	})
 
 	// Rutas protegidas que requieren autenticación
