@@ -65,7 +65,7 @@ type UserResponse struct {
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
 // @Failure 409 {string} string "Email ya está en uso"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users [post]
+// @Router /api/v1/users [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -135,7 +135,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de usuario inválido"
 // @Failure 404 {string} string "Usuario no encontrado"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users/{id} [get]
+// @Router /api/v1/users/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -195,7 +195,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {string} string "Usuario no encontrado"
 // @Failure 409 {string} string "Email ya está en uso"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users/{id} [put]
+// @Router /api/v1/users/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -285,7 +285,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de usuario inválido"
 // @Failure 404 {string} string "Usuario no encontrado"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users/{id} [delete]
+// @Router /api/v1/users/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -329,7 +329,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users [get]
+// @Router /api/v1/users [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -417,7 +417,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de usuario inválido"
 // @Failure 404 {string} string "Usuario no encontrado"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users/{id}/roles [get]
+// @Router /api/v1/users/{id}/roles [get]
 // @Security BearerAuth
 func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -458,7 +458,7 @@ func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de usuario inválido"
 // @Failure 404 {string} string "Usuario no encontrado"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /users/{id}/abilities [get]
+// @Router /api/v1/users/{id}/abilities [get]
 // @Security BearerAuth
 func (h *Handler) GetAbilities(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos

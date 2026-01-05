@@ -73,7 +73,7 @@ type AbilityResponse struct {
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
 // @Failure 409 {string} string "Nombre de ability ya está en uso"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /abilities [post]
+// @Router /api/v1/abilities [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -150,7 +150,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de ability inválido"
 // @Failure 404 {string} string "Ability no encontrada"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /abilities/{id} [get]
+// @Router /api/v1/abilities/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -215,7 +215,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {string} string "Ability no encontrada"
 // @Failure 409 {string} string "Nombre de ability ya está en uso"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /abilities/{id} [put]
+// @Router /api/v1/abilities/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -306,7 +306,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de ability inválido"
 // @Failure 404 {string} string "Ability no encontrada"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /abilities/{id} [delete]
+// @Router /api/v1/abilities/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -351,7 +351,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /abilities [get]
+// @Router /api/v1/abilities [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos

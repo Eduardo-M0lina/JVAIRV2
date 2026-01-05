@@ -67,7 +67,7 @@ type PermissionResponse struct {
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
 // @Failure 409 {string} string "El permiso ya existe para esta entidad y ability"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions [post]
+// @Router /api/v1/permissions [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -140,7 +140,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de permiso inválido"
 // @Failure 404 {string} string "Permiso no encontrado"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions/{id} [get]
+// @Router /api/v1/permissions/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -201,7 +201,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {array} PermissionResponse
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions/entity/{entity_type}/{entity_id} [get]
+// @Router /api/v1/permissions/entity/{entity_type}/{entity_id} [get]
 // @Security BearerAuth
 func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -262,7 +262,7 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {array} PermissionResponse
 // @Failure 400 {string} string "ID de ability inválido"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions/ability/{ability_id} [get]
+// @Router /api/v1/permissions/ability/{ability_id} [get]
 // @Security BearerAuth
 func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -325,7 +325,7 @@ func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 // @Failure 404 {string} string "Permiso no encontrado"
 // @Failure 409 {string} string "El permiso ya existe para esta entidad y ability"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions/{id} [put]
+// @Router /api/v1/permissions/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -412,7 +412,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de permiso inválido"
 // @Failure 404 {string} string "Permiso no encontrado"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions/{id} [delete]
+// @Router /api/v1/permissions/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -455,7 +455,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} map[string]bool
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions/check/{ability_id}/{entity_type}/{entity_id} [get]
+// @Router /api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id} [get]
 // @Security BearerAuth
 func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -505,7 +505,7 @@ func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /permissions [get]
+// @Router /api/v1/permissions [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos

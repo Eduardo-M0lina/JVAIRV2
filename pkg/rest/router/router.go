@@ -6,12 +6,26 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 	_ "github.com/your-org/jvairv2/docs" // Importación de documentación Swagger
 	"github.com/your-org/jvairv2/pkg/rest/handler"
+	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
+	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
+	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
+	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // New crea un nuevo router HTTP con las rutas configuradas
-func New(healthHandler *handler.HealthHandler, authHandler *authHandler.Handler, authMiddleware *middleware.AuthMiddleware) *chi.Mux {
+func New(
+	healthHandler *handler.HealthHandler,
+	authHandler *authHandler.Handler,
+	userHandler *userHandler.Handler,
+	roleHandler *roleHandler.Handler,
+	abilityHandler *abilityHandler.Handler,
+	assignedRoleHandler *assignedRoleHandler.Handler,
+	permissionHandler *permissionHandler.Handler,
+	authMiddleware *middleware.AuthMiddleware,
+) *chi.Mux {
 	r := chi.NewRouter()
 
 	// Middlewares globales
@@ -41,10 +55,20 @@ func New(healthHandler *handler.HealthHandler, authHandler *authHandler.Handler,
 
 		// API v1
 		r.Route("/api/v1", func(r chi.Router) {
-			// Aquí se agregarán las rutas de la API
-			// r.Mount("/customers", customerHandler.Routes())
-			// r.Mount("/jobs", jobHandler.Routes())
-			// r.Mount("/properties", propertyHandler.Routes())
+			// Rutas de usuarios
+			RegisterUserRoutes(r, userHandler)
+
+			// Rutas de roles
+			RegisterRoleRoutes(r, roleHandler)
+
+			// Rutas de abilities
+			RegisterAbilityRoutes(r, abilityHandler)
+
+			// Rutas de assigned-roles
+			RegisterAssignedRoleRoutes(r, assignedRoleHandler)
+
+			// Rutas de permisos
+			RegisterPermissionRoutes(r, permissionHandler)
 		})
 	})
 

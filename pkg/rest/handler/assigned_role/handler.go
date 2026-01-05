@@ -58,7 +58,7 @@ type AssignedRoleResponse struct {
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
 // @Failure 409 {string} string "El rol ya está asignado a esta entidad"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /assigned-roles [post]
+// @Router /api/v1/assigned-roles [post]
 // @Security BearerAuth
 func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -131,7 +131,7 @@ func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "ID de asignación de rol inválido"
 // @Failure 404 {string} string "Asignación de rol no encontrada"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /assigned-roles/{id} [get]
+// @Router /api/v1/assigned-roles/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -192,7 +192,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {array} AssignedRoleResponse
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /assigned-roles/entity/{entity_type}/{entity_id} [get]
+// @Router /api/v1/assigned-roles/entity/{entity_type}/{entity_id} [get]
 // @Security BearerAuth
 func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -256,7 +256,7 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 404 {string} string "Asignación de rol no encontrada"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /assigned-roles/revoke/{role_id}/{entity_type}/{entity_id} [delete]
+// @Router /api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id} [delete]
 // @Security BearerAuth
 func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -307,7 +307,7 @@ func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} map[string]bool
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /assigned-roles/check/{role_id}/{entity_type}/{entity_id} [get]
+// @Router /api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id} [get]
 // @Security BearerAuth
 func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -357,7 +357,7 @@ func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /assigned-roles [get]
+// @Router /api/v1/assigned-roles [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
