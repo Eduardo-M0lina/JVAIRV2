@@ -31,6 +31,20 @@ type RefreshResponse struct {
 	ExpiresAt    time.Time `json:"expires_at" example:"2023-01-01T00:00:00Z"`
 }
 
+// LoginRequest representa la solicitud de inicio de sesión
+type LoginRequest struct {
+	Email    string `json:"email" validate:"required,email" example:"admin@example.com"`
+	Password string `json:"password" validate:"required" example:"admin123"`
+}
+
+// LoginResponse representa la respuesta de inicio de sesión
+type LoginResponse struct {
+	AccessToken  string     `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	RefreshToken string     `json:"refresh_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	ExpiresAt    time.Time  `json:"expires_at" example:"2023-01-01T00:00:00Z"`
+	User         *user.User `json:"user"`
+}
+
 // Service define las operaciones relacionadas con la autenticación
 type Service interface {
 	// Generar tokens JWT para un usuario
@@ -50,18 +64,4 @@ type Service interface {
 
 	// Refrescar token
 	RefreshToken(ctx context.Context, refreshToken string) (*TokenDetails, error)
-}
-
-// LoginRequest representa la solicitud de inicio de sesión
-type LoginRequest struct {
-	Email    string `json:"email" validate:"required,email" example:"admin@example.com"`
-	Password string `json:"password" validate:"required" example:"admin123"`
-}
-
-// LoginResponse representa la respuesta de inicio de sesión
-type LoginResponse struct {
-	AccessToken  string     `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	RefreshToken string     `json:"refresh_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	ExpiresAt    time.Time  `json:"expires_at" example:"2023-01-01T00:00:00Z"`
-	User         *user.User `json:"user"`
 }

@@ -12,7 +12,7 @@ var (
 	ErrDuplicateEmail     = errors.New("email ya está en uso")
 )
 
-// Repository implementa la interfaz user.Repository para MySQL
+// Repository implementa la interfaz domainUser.Repository para MySQL
 type Repository struct {
 	db *sql.DB
 }

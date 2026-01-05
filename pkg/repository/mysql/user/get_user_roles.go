@@ -6,11 +6,11 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/your-org/jvairv2/pkg/domain/role"
 )
 
 // GetUserRoles obtiene los roles de un usuario
-func (r *Repository) GetUserRoles(ctx context.Context, userID string) ([]*user.Role, error) {
+func (r *Repository) GetUserRoles(ctx context.Context, userID string) ([]*role.Role, error) {
 	// Convertir ID de string a int64
 	idInt, err := strconv.ParseInt(userID, 10, 64)
 	if err != nil {
@@ -18,7 +18,7 @@ func (r *Repository) GetUserRoles(ctx context.Context, userID string) ([]*user.R
 	}
 
 	query := `
-		SELECT r.id, r.label, r.created_at, r.updated_at
+		SELECT r.id, r.name, r.title, r.scope, r.created_at, r.updated_at
 		FROM roles r
 		INNER JOIN assigned_roles ar ON r.id = ar.role_id
 		WHERE ar.entity_id = ? AND ar.entity_type = 'App\\Models\\User'
@@ -30,14 +30,26 @@ func (r *Repository) GetUserRoles(ctx context.Context, userID string) ([]*user.R
 	}
 	defer func() { _ = rows.Close() }()
 
-	roles := []*user.Role{}
+	roles := []*role.Role{}
 	for rows.Next() {
-		var r user.Role
+		var r role.Role
 		var createdAt, updatedAt sql.NullTime
 
+		var title sql.NullString
+		var scope sql.NullInt32
+
 		err := rows.Scan(
-			&r.ID, &r.Label, &createdAt, &updatedAt,
+			&r.ID, &r.Name, &title, &scope, &createdAt, &updatedAt,
 		)
+
+		if title.Valid {
+			r.Title = &title.String
+		}
+
+		if scope.Valid {
+			scopeInt := int(scope.Int32)
+			r.Scope = &scopeInt
+		}
 
 		if err != nil {
 			return nil, err

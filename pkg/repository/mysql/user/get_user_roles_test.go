@@ -19,16 +19,22 @@ func TestGetUserRoles_Success(t *testing.T) {
 	userID := "123"
 	now := time.Now()
 
+	// Valores para campos opcionales
+	title1 := "Administrator"
+	title2 := "Regular User"
+	scope1 := 1
+	scope2 := 2
+
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "label", "created_at", "updated_at",
+		"id", "name", "title", "scope", "created_at", "updated_at",
 	}).AddRow(
-		1, "Admin", now, now,
+		1, "Admin", title1, scope1, now, now,
 	).AddRow(
-		2, "User", now, now,
+		2, "User", title2, scope2, now, now,
 	)
 
-	mock.ExpectQuery(`SELECT r.id, r.label, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT r.id, r.name, r.title, r.scope, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnRows(rows)
 
 	// Ejecutar la función que estamos probando
 	roles, err := repo.GetUserRoles(context.Background(), userID)
@@ -36,12 +42,16 @@ func TestGetUserRoles_Success(t *testing.T) {
 	// Verificar que no haya errores
 	assert.NoError(t, err)
 	assert.Len(t, roles, 2)
-	assert.Equal(t, "1", roles[0].ID)
-	assert.Equal(t, "Admin", roles[0].Label)
+	assert.Equal(t, int64(1), roles[0].ID)
+	assert.Equal(t, "Admin", roles[0].Name)
+	assert.Equal(t, title1, *roles[0].Title)
+	assert.Equal(t, &scope1, roles[0].Scope)
 	assert.NotNil(t, roles[0].CreatedAt)
 	assert.NotNil(t, roles[0].UpdatedAt)
-	assert.Equal(t, "2", roles[1].ID)
-	assert.Equal(t, "User", roles[1].Label)
+	assert.Equal(t, int64(2), roles[1].ID)
+	assert.Equal(t, "User", roles[1].Name)
+	assert.Equal(t, title2, *roles[1].Title)
+	assert.Equal(t, &scope2, roles[1].Scope)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -73,7 +83,7 @@ func TestGetUserRoles_QueryError(t *testing.T) {
 	userID := "123"
 
 	// Configurar la expectativa para la consulta que falla
-	mock.ExpectQuery(`SELECT r.id, r.label, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnError(sql.ErrConnDone)
+	mock.ExpectQuery(`SELECT r.id, r.name, r.title, r.scope, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnError(sql.ErrConnDone)
 
 	// Ejecutar la función que estamos probando
 	roles, err := repo.GetUserRoles(context.Background(), userID)
@@ -98,12 +108,12 @@ func TestGetUserRoles_ScanError(t *testing.T) {
 	// Configurar la expectativa para la consulta con un error de escaneo
 	// (devolvemos menos columnas de las esperadas)
 	rows := sqlmock.NewRows([]string{
-		"id", "label", // Faltan columnas
+		"id", "name", // Faltan columnas
 	}).AddRow(
 		1, "Admin",
 	)
 
-	mock.ExpectQuery(`SELECT r.id, r.label, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT r.id, r.name, r.title, r.scope, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnRows(rows)
 
 	// Ejecutar la función que estamos probando
 	roles, err := repo.GetUserRoles(context.Background(), userID)
@@ -126,10 +136,10 @@ func TestGetUserRoles_EmptyResult(t *testing.T) {
 
 	// Configurar la expectativa para la consulta que devuelve un conjunto vacío
 	rows := sqlmock.NewRows([]string{
-		"id", "label", "created_at", "updated_at",
+		"id", "name", "title", "scope", "created_at", "updated_at",
 	})
 
-	mock.ExpectQuery(`SELECT r.id, r.label, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnRows(rows)
+	mock.ExpectQuery(`SELECT r.id, r.name, r.title, r.scope, r.created_at, r.updated_at FROM roles r INNER JOIN assigned_roles ar ON r.id = ar.role_id WHERE ar.entity_id = \? AND ar.entity_type = 'App\\\\Models\\\\User'`).WithArgs(123).WillReturnRows(rows)
 
 	// Ejecutar la función que estamos probando
 	roles, err := repo.GetUserRoles(context.Background(), userID)

@@ -59,12 +59,13 @@ func (s *JWTService) CreateToken(ctx context.Context, u *user.User) (*auth.Token
 		"access_uuid": td.AccessUUID,
 		"exp":         td.AtExpires,
 	}
+
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
-	accessToken, err := at.SignedString([]byte(s.accessSecret))
+	var err error
+	td.AccessToken, err = at.SignedString([]byte(s.accessSecret))
 	if err != nil {
 		return nil, err
 	}
-	td.AccessToken = accessToken
 
 	// Crear token de refresco
 	rtClaims := jwt.MapClaims{
@@ -72,15 +73,20 @@ func (s *JWTService) CreateToken(ctx context.Context, u *user.User) (*auth.Token
 		"refresh_uuid": td.RefreshUUID,
 		"exp":          td.RtExpires,
 	}
+
 	rt := jwt.NewWithClaims(jwt.SigningMethodHS256, rtClaims)
-	refreshToken, err := rt.SignedString([]byte(s.refreshSecret))
+	td.RefreshToken, err = rt.SignedString([]byte(s.refreshSecret))
 	if err != nil {
 		return nil, err
 	}
-	td.RefreshToken = refreshToken
 
 	// Almacenar tokens en caché/redis
-	err = s.StoreTokenDetails(ctx, u.ID, td)
+	err = s.tokenStore.StoreToken(ctx, u.ID, td.AccessUUID, s.accessExp)
+	if err != nil {
+		return nil, err
+	}
+
+	err = s.tokenStore.StoreToken(ctx, u.ID, td.RefreshUUID, s.refreshExp)
 	if err != nil {
 		return nil, err
 	}
@@ -88,8 +94,9 @@ func (s *JWTService) CreateToken(ctx context.Context, u *user.User) (*auth.Token
 	return td, nil
 }
 
-// ExtractTokenMetadata extrae información del token JWT
+// ExtractTokenMetadata extrae información de un token JWT
 func (s *JWTService) ExtractTokenMetadata(ctx context.Context, tokenString string) (*auth.AccessDetails, error) {
+	// Verificar si el token es válido
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("método de firma inesperado: %v", token.Header["alg"])
@@ -98,7 +105,7 @@ func (s *JWTService) ExtractTokenMetadata(ctx context.Context, tokenString strin
 	})
 
 	if err != nil {
-		if errors.Is(err, jwt.ErrTokenExpired) {
+		if err.Error() == "Token is expired" {
 			return nil, ErrExpiredToken
 		}
 		return nil, ErrInvalidToken
@@ -124,9 +131,10 @@ func (s *JWTService) ExtractTokenMetadata(ctx context.Context, tokenString strin
 	}
 	userID := int64(userIDFloat)
 
-	roleID, ok := claims["role_id"].(string)
-	if !ok {
-		return nil, ErrInvalidToken
+	roleIDValue, ok := claims["role_id"]
+	var roleID string
+	if ok && roleIDValue != nil {
+		roleID = fmt.Sprintf("%v", roleIDValue)
 	}
 
 	// Verificar si el token existe en la caché/redis
@@ -148,25 +156,24 @@ func (s *JWTService) ExtractTokenMetadata(ctx context.Context, tokenString strin
 
 // ValidateToken verifica si un token JWT es válido
 func (s *JWTService) ValidateToken(ctx context.Context, tokenString string) (bool, error) {
+	// Extraer metadata del token
 	_, err := s.ExtractTokenMetadata(ctx, tokenString)
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
 }
 
 // StoreTokenDetails almacena información del token en caché/redis
 func (s *JWTService) StoreTokenDetails(ctx context.Context, userID int64, td *auth.TokenDetails) error {
-	// Almacenar token de acceso
-	atExpiration := time.Until(time.Unix(td.AtExpires, 0))
-	err := s.tokenStore.StoreToken(ctx, userID, td.AccessUUID, atExpiration)
+	// Almacenar tokens en caché/redis
+	err := s.tokenStore.StoreToken(ctx, userID, td.AccessUUID, s.accessExp)
 	if err != nil {
 		return err
 	}
 
-	// Almacenar token de refresco
-	rtExpiration := time.Until(time.Unix(td.RtExpires, 0))
-	err = s.tokenStore.StoreToken(ctx, userID, td.RefreshUUID, rtExpiration)
+	err = s.tokenStore.StoreToken(ctx, userID, td.RefreshUUID, s.refreshExp)
 	if err != nil {
 		return err
 	}
@@ -176,12 +183,18 @@ func (s *JWTService) StoreTokenDetails(ctx context.Context, userID int64, td *au
 
 // DeleteTokenDetails elimina información del token de caché/redis
 func (s *JWTService) DeleteTokenDetails(ctx context.Context, accessUUID string) error {
-	return s.tokenStore.DeleteToken(ctx, accessUUID)
+	// Eliminar token de caché/redis
+	err := s.tokenStore.DeleteToken(ctx, accessUUID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // RefreshToken refresca un token JWT
 func (s *JWTService) RefreshToken(ctx context.Context, refreshToken string) (*auth.TokenDetails, error) {
-	// Validar token de refresco
+	// Verificar si el token es válido
 	token, err := jwt.Parse(refreshToken, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("método de firma inesperado: %v", token.Header["alg"])
@@ -190,7 +203,7 @@ func (s *JWTService) RefreshToken(ctx context.Context, refreshToken string) (*au
 	})
 
 	if err != nil {
-		if errors.Is(err, jwt.ErrTokenExpired) {
+		if err.Error() == "Token is expired" {
 			return nil, ErrExpiredToken
 		}
 		return nil, ErrInvalidToken

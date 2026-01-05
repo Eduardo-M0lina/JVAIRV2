@@ -9,7 +9,7 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
 )
 
 func TestUpdate_Success(t *testing.T) {
@@ -18,19 +18,21 @@ func TestUpdate_Success(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
-	testUser := &user.User{
+	roleID := "2"
+	testUser := &domainUser.User{
 		ID:     123,
 		Name:   "Updated User",
 		Email:  "updated@example.com",
-		RoleID: "2",
+		RoleID: &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
+	originalRoleID := "1"
 	rows := sqlmock.NewRows([]string{
 		"id", "name", "email", "password", "role_id",
 		"email_verified_at", "remember_token", "created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		123, "Original User", "original@example.com", "hashed_password", "1",
+		123, "Original User", "original@example.com", "hashed_password", originalRoleID,
 		time.Now(), "token123", time.Now(), time.Now(), nil,
 	)
 
@@ -48,7 +50,7 @@ func TestUpdate_Success(t *testing.T) {
 		    email_verified_at = ?, updated_at = ?
 		WHERE id = ? AND deleted_at IS NULL
 	`)).WithArgs(
-		testUser.Name, testUser.Email, testUser.RoleID,
+		testUser.Name, testUser.Email, roleID,
 		nil, sqlmock.AnyArg(), testUser.ID,
 	).WillReturnResult(sqlmock.NewResult(0, 1))
 
@@ -69,11 +71,12 @@ func TestUpdate_UserNotFound(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
-	testUser := &user.User{
+	roleID := "1"
+	testUser := &domainUser.User{
 		ID:     999,
 		Name:   "Non-existent User",
 		Email:  "nonexistent@example.com",
-		RoleID: "1",
+		RoleID: &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByID que no encuentra al usuario
@@ -101,19 +104,21 @@ func TestUpdate_DatabaseError(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
-	testUser := &user.User{
+	roleID := "1"
+	testUser := &domainUser.User{
 		ID:     123,
 		Name:   "Error User",
 		Email:  "error@example.com",
-		RoleID: "1",
+		RoleID: &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
+	originalRoleID := "1"
 	rows := sqlmock.NewRows([]string{
 		"id", "name", "email", "password", "role_id",
 		"email_verified_at", "remember_token", "created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		123, "Original User", "original@example.com", "hashed_password", "1",
+		123, "Original User", "original@example.com", "hashed_password", originalRoleID,
 		time.Now(), "token123", time.Now(), time.Now(), nil,
 	)
 
@@ -131,7 +136,7 @@ func TestUpdate_DatabaseError(t *testing.T) {
 		    email_verified_at = ?, updated_at = ?
 		WHERE id = ? AND deleted_at IS NULL
 	`)).WithArgs(
-		testUser.Name, testUser.Email, testUser.RoleID,
+		testUser.Name, testUser.Email, roleID,
 		nil, sqlmock.AnyArg(), testUser.ID,
 	).WillReturnError(sql.ErrConnDone)
 

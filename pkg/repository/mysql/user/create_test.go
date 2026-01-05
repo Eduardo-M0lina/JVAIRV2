@@ -18,11 +18,12 @@ func TestCreate_Success(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
+	roleID := "1"
 	testUser := &user.User{
 		Name:     "New Test User",
 		Email:    "newuser@example.com",
 		Password: "password123",
-		RoleID:   "1",
+		RoleID:   &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByEmail (que debe devolver ErrUserNotFound)
@@ -39,7 +40,7 @@ func TestCreate_Success(t *testing.T) {
 		                  email_verified_at, created_at, updated_at)
 		VALUES (?, ?, ?, ?, ?, ?, ?)
 	`)).WithArgs(
-		testUser.Name, testUser.Email, sqlmock.AnyArg(), testUser.RoleID,
+		testUser.Name, testUser.Email, sqlmock.AnyArg(), roleID,
 		nil, sqlmock.AnyArg(), sqlmock.AnyArg(),
 	).WillReturnResult(sqlmock.NewResult(123, 1))
 
@@ -62,11 +63,12 @@ func TestCreate_DuplicateEmail(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
+	roleID := "1"
 	testUser := &user.User{
 		Name:     "Duplicate User",
 		Email:    "existing@example.com",
 		Password: "password123",
-		RoleID:   "1",
+		RoleID:   &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByEmail (que debe devolver un usuario existente)
@@ -74,7 +76,7 @@ func TestCreate_DuplicateEmail(t *testing.T) {
 		"id", "name", "email", "password", "role_id",
 		"email_verified_at", "remember_token", "created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		456, "Existing User", "existing@example.com", "hashed_password", 1,
+		456, "Existing User", "existing@example.com", "hashed_password", roleID,
 		nil, nil, time.Now(), time.Now(), nil,
 	)
 
@@ -102,11 +104,12 @@ func TestCreate_GetByEmailError(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
+	roleID := "1"
 	testUser := &user.User{
 		Name:     "Error User",
 		Email:    "error@example.com",
 		Password: "password123",
-		RoleID:   "1",
+		RoleID:   &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByEmail (que debe devolver un error de base de datos)
@@ -134,11 +137,12 @@ func TestCreate_InsertError(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
+	roleID := "1"
 	testUser := &user.User{
 		Name:     "Insert Error User",
 		Email:    "inserterror@example.com",
 		Password: "password123",
-		RoleID:   "1",
+		RoleID:   &roleID,
 	}
 
 	// Configurar la expectativa para la consulta GetByEmail (que debe devolver ErrUserNotFound)
@@ -155,7 +159,7 @@ func TestCreate_InsertError(t *testing.T) {
 		                  email_verified_at, created_at, updated_at)
 		VALUES (?, ?, ?, ?, ?, ?, ?)
 	`)).WithArgs(
-		testUser.Name, testUser.Email, sqlmock.AnyArg(), testUser.RoleID,
+		testUser.Name, testUser.Email, sqlmock.AnyArg(), roleID,
 		nil, sqlmock.AnyArg(), sqlmock.AnyArg(),
 	).WillReturnError(sql.ErrConnDone)
 

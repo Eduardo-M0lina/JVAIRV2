@@ -19,12 +19,13 @@ func TestGetByID_Success(t *testing.T) {
 
 	// Datos de prueba
 	userID := "123"
+	roleID := "1"
 	expectedUser := &user.User{
 		ID:       123,
 		Name:     "Test User",
 		Email:    "test@example.com",
 		Password: "hashed_password",
-		RoleID:   "1",
+		RoleID:   &roleID,
 		IsActive: true,
 	}
 
@@ -33,7 +34,7 @@ func TestGetByID_Success(t *testing.T) {
 		"id", "name", "email", "password", "role_id",
 		"email_verified_at", "remember_token", "created_at", "updated_at", "deleted_at",
 	}).AddRow(
-		123, "Test User", "test@example.com", "hashed_password", "1",
+		123, "Test User", "test@example.com", "hashed_password", roleID,
 		time.Now(), "token123", time.Now(), time.Now(), nil,
 	)
 

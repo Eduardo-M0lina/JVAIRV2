@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+
+	"github.com/your-org/jvairv2/pkg/domain/ability"
+	"github.com/your-org/jvairv2/pkg/domain/role"
 )
 
 // Repository define las operaciones de persistencia para usuarios
@@ -28,8 +31,8 @@ type Repository interface {
 	VerifyCredentials(ctx context.Context, email, password string) (*User, error)
 
 	// Obtener roles de un usuario
-	GetUserRoles(ctx context.Context, userID string) ([]*Role, error)
+	GetUserRoles(ctx context.Context, userID string) ([]*role.Role, error)
 
 	// Obtener habilidades de un usuario
-	GetUserAbilities(ctx context.Context, userID string) ([]*Ability, error)
+	GetUserAbilities(ctx context.Context, userID string) ([]*ability.Ability, error)
 }
