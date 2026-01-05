@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/abilities": {
+        "/api/v1/abilities": {
             "get": {
                 "security": [
                     {
@@ -142,7 +142,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/abilities/{id}": {
+        "/api/v1/abilities/{id}": {
             "get": {
                 "security": [
                     {
@@ -315,7 +315,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/assigned-roles": {
+        "/api/v1/assigned-roles": {
             "get": {
                 "security": [
                     {
@@ -448,7 +448,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/assigned-roles/check/{role_id}/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}": {
             "get": {
                 "security": [
                     {
@@ -514,7 +514,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/assigned-roles/entity/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/entity/{entity_type}/{entity_id}": {
             "get": {
                 "security": [
                     {
@@ -573,7 +573,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}": {
             "delete": {
                 "security": [
                     {
@@ -639,7 +639,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/assigned-roles/{id}": {
+        "/api/v1/assigned-roles/{id}": {
             "get": {
                 "security": [
                     {
@@ -694,160 +694,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/login": {
-            "post": {
-                "description": "Inicia sesión con email y contraseña",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Iniciar sesión",
-                "parameters": [
-                    {
-                        "description": "Credenciales de usuario",
-                        "name": "credentials",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/auth.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/auth.LoginResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Error al decodificar la solicitud",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Credenciales inválidas",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "403": {
-                        "description": "Usuario inactivo",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/logout": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Cierra la sesión del usuario actual",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Cerrar sesión",
-                "responses": {
-                    "204": {
-                        "description": "No Content"
-                    },
-                    "400": {
-                        "description": "Token de acceso no proporcionado",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "No autorizado",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/refresh": {
-            "post": {
-                "description": "Refresca el token de acceso usando el token de refresco",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Refrescar token",
-                "parameters": [
-                    {
-                        "description": "Token de refresco",
-                        "name": "refresh_token",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/auth.RefreshResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Error al decodificar la solicitud",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "401": {
-                        "description": "Token inválido",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Error interno del servidor",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/permissions": {
+        "/api/v1/permissions": {
             "get": {
                 "security": [
                     {
@@ -980,7 +827,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/permissions/ability/{ability_id}": {
+        "/api/v1/permissions/ability/{ability_id}": {
             "get": {
                 "security": [
                     {
@@ -1032,7 +879,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/permissions/check/{ability_id}/{entity_type}/{entity_id}": {
+        "/api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}": {
             "get": {
                 "security": [
                     {
@@ -1098,7 +945,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/permissions/entity/{entity_type}/{entity_id}": {
+        "/api/v1/permissions/entity/{entity_type}/{entity_id}": {
             "get": {
                 "security": [
                     {
@@ -1157,7 +1004,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/permissions/{id}": {
+        "/api/v1/permissions/{id}": {
             "get": {
                 "security": [
                     {
@@ -1330,7 +1177,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/roles": {
+        "/api/v1/roles": {
             "get": {
                 "security": [
                     {
@@ -1451,7 +1298,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/roles/{id}": {
+        "/api/v1/roles/{id}": {
             "get": {
                 "security": [
                     {
@@ -1624,7 +1471,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
+        "/api/v1/users": {
             "get": {
                 "security": [
                     {
@@ -1757,7 +1604,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}": {
+        "/api/v1/users/{id}": {
             "get": {
                 "security": [
                     {
@@ -1930,7 +1777,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}/abilities": {
+        "/api/v1/users/{id}/abilities": {
             "get": {
                 "security": [
                     {
@@ -1988,7 +1835,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}/roles": {
+        "/api/v1/users/{id}/roles": {
             "get": {
                 "security": [
                     {
@@ -2033,6 +1880,159 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Usuario no encontrado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Inicia sesión con email y contraseña",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Iniciar sesión",
+                "parameters": [
+                    {
+                        "description": "Credenciales de usuario",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/auth.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/auth.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error al decodificar la solicitud",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciales inválidas",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Usuario inactivo",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Cierra la sesión del usuario actual",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cerrar sesión",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Token de acceso no proporcionado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "No autorizado",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "description": "Refresca el token de acceso usando el token de refresco",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refrescar token",
+                "parameters": [
+                    {
+                        "description": "Token de refresco",
+                        "name": "refresh_token",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/auth.RefreshResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error al decodificar la solicitud",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Token inválido",
                         "schema": {
                             "type": "string"
                         }

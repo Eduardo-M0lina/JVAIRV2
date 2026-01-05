@@ -386,7 +386,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /abilities:
+  /api/v1/abilities:
     get:
       consumes:
       - application/json
@@ -467,7 +467,7 @@ paths:
       summary: Crear ability
       tags:
       - Abilities
-  /abilities/{id}:
+  /api/v1/abilities/{id}:
     delete:
       consumes:
       - application/json
@@ -578,7 +578,7 @@ paths:
       summary: Actualizar ability
       tags:
       - Abilities
-  /assigned-roles:
+  /api/v1/assigned-roles:
     get:
       consumes:
       - application/json
@@ -663,7 +663,7 @@ paths:
       summary: Asignar rol
       tags:
       - AssignedRoles
-  /assigned-roles/{id}:
+  /api/v1/assigned-roles/{id}:
     get:
       consumes:
       - application/json
@@ -698,7 +698,7 @@ paths:
       summary: Obtener asignación de rol
       tags:
       - AssignedRoles
-  /assigned-roles/check/{role_id}/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}:
     get:
       consumes:
       - application/json
@@ -741,7 +741,7 @@ paths:
       summary: Verificar rol
       tags:
       - AssignedRoles
-  /assigned-roles/entity/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/entity/{entity_type}/{entity_id}:
     get:
       consumes:
       - application/json
@@ -779,7 +779,7 @@ paths:
       summary: Obtener asignaciones de roles por entidad
       tags:
       - AssignedRoles
-  /assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}:
     delete:
       consumes:
       - application/json
@@ -822,106 +822,7 @@ paths:
       summary: Revocar rol
       tags:
       - AssignedRoles
-  /auth/login:
-    post:
-      consumes:
-      - application/json
-      description: Inicia sesión con email y contraseña
-      parameters:
-      - description: Credenciales de usuario
-        in: body
-        name: credentials
-        required: true
-        schema:
-          $ref: '#/definitions/auth.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/auth.LoginResponse'
-        "400":
-          description: Error al decodificar la solicitud
-          schema:
-            type: string
-        "401":
-          description: Credenciales inválidas
-          schema:
-            type: string
-        "403":
-          description: Usuario inactivo
-          schema:
-            type: string
-        "500":
-          description: Error interno del servidor
-          schema:
-            type: string
-      summary: Iniciar sesión
-      tags:
-      - Auth
-  /auth/logout:
-    post:
-      consumes:
-      - application/json
-      description: Cierra la sesión del usuario actual
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Token de acceso no proporcionado
-          schema:
-            type: string
-        "401":
-          description: No autorizado
-          schema:
-            type: string
-        "500":
-          description: Error interno del servidor
-          schema:
-            type: string
-      security:
-      - BearerAuth: []
-      summary: Cerrar sesión
-      tags:
-      - Auth
-  /auth/refresh:
-    post:
-      consumes:
-      - application/json
-      description: Refresca el token de acceso usando el token de refresco
-      parameters:
-      - description: Token de refresco
-        in: body
-        name: refresh_token
-        required: true
-        schema:
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/auth.RefreshResponse'
-        "400":
-          description: Error al decodificar la solicitud
-          schema:
-            type: string
-        "401":
-          description: Token inválido
-          schema:
-            type: string
-        "500":
-          description: Error interno del servidor
-          schema:
-            type: string
-      summary: Refrescar token
-      tags:
-      - Auth
-  /permissions:
+  /api/v1/permissions:
     get:
       consumes:
       - application/json
@@ -1006,7 +907,7 @@ paths:
       summary: Crear permiso
       tags:
       - Permissions
-  /permissions/{id}:
+  /api/v1/permissions/{id}:
     delete:
       consumes:
       - application/json
@@ -1117,7 +1018,7 @@ paths:
       summary: Actualizar permiso
       tags:
       - Permissions
-  /permissions/ability/{ability_id}:
+  /api/v1/permissions/ability/{ability_id}:
     get:
       consumes:
       - application/json
@@ -1150,7 +1051,7 @@ paths:
       summary: Obtener permisos por ability
       tags:
       - Permissions
-  /permissions/check/{ability_id}/{entity_type}/{entity_id}:
+  /api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}:
     get:
       consumes:
       - application/json
@@ -1193,7 +1094,7 @@ paths:
       summary: Verificar permiso
       tags:
       - Permissions
-  /permissions/entity/{entity_type}/{entity_id}:
+  /api/v1/permissions/entity/{entity_type}/{entity_id}:
     get:
       consumes:
       - application/json
@@ -1231,7 +1132,7 @@ paths:
       summary: Obtener permisos por entidad
       tags:
       - Permissions
-  /roles:
+  /api/v1/roles:
     get:
       consumes:
       - application/json
@@ -1308,7 +1209,7 @@ paths:
       summary: Crear rol
       tags:
       - Roles
-  /roles/{id}:
+  /api/v1/roles/{id}:
     delete:
       consumes:
       - application/json
@@ -1419,7 +1320,7 @@ paths:
       summary: Actualizar rol
       tags:
       - Roles
-  /users:
+  /api/v1/users:
     get:
       consumes:
       - application/json
@@ -1504,7 +1405,7 @@ paths:
       summary: Crear usuario
       tags:
       - Users
-  /users/{id}:
+  /api/v1/users/{id}:
     delete:
       consumes:
       - application/json
@@ -1615,7 +1516,7 @@ paths:
       summary: Actualizar usuario
       tags:
       - Users
-  /users/{id}/abilities:
+  /api/v1/users/{id}/abilities:
     get:
       consumes:
       - application/json
@@ -1652,7 +1553,7 @@ paths:
       summary: Obtener habilidades de usuario
       tags:
       - Users
-  /users/{id}/roles:
+  /api/v1/users/{id}/roles:
     get:
       consumes:
       - application/json
@@ -1689,4 +1590,103 @@ paths:
       summary: Obtener roles de usuario
       tags:
       - Users
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Inicia sesión con email y contraseña
+      parameters:
+      - description: Credenciales de usuario
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "401":
+          description: Credenciales inválidas
+          schema:
+            type: string
+        "403":
+          description: Usuario inactivo
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Iniciar sesión
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Cierra la sesión del usuario actual
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Token de acceso no proporcionado
+          schema:
+            type: string
+        "401":
+          description: No autorizado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Cerrar sesión
+      tags:
+      - Auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresca el token de acceso usando el token de refresco
+      parameters:
+      - description: Token de refresco
+        in: body
+        name: refresh_token
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.RefreshResponse'
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "401":
+          description: Token inválido
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Refrescar token
+      tags:
+      - Auth
 swagger: "2.0"
