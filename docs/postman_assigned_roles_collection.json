@@ -1,0 +1,221 @@
+{
+  "info": {
+    "_postman_id": "assigned-roles-collection-id",
+    "name": "JVAIR AssignedRoles",
+    "description": "Endpoints de asignación de roles para JVAIR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar asignaciones de roles",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles?page=1&page_size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Número de página (por defecto: 1)"
+            },
+            {
+              "key": "page_size",
+              "value": "10",
+              "description": "Tamaño de página (por defecto: 10)"
+            },
+            {
+              "key": "role_id",
+              "value": "",
+              "description": "Filtrar por ID de rol",
+              "disabled": true
+            },
+            {
+              "key": "entity_type",
+              "value": "",
+              "description": "Filtrar por tipo de entidad",
+              "disabled": true
+            },
+            {
+              "key": "entity_id",
+              "value": "",
+              "description": "Filtrar por ID de entidad",
+              "disabled": true
+            },
+            {
+              "key": "restricted",
+              "value": "",
+              "description": "Filtrar por restricción",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Obtiene una lista paginada de asignaciones de roles"
+      },
+      "response": []
+    },
+    {
+      "name": "Asignar rol",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role_id\": 1,\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"restricted\": false,\n    \"scope\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles"]
+        },
+        "description": "Asigna un rol a una entidad"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener asignación de rol",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID de la asignación de rol"
+            }
+          ]
+        },
+        "description": "Obtiene una asignación de rol por su ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Verificar rol",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles/check/:role_id/:entity_type/:entity_id",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles", "check", ":role_id", ":entity_type", ":entity_id"],
+          "variable": [
+            {
+              "key": "role_id",
+              "value": "1",
+              "description": "ID del rol"
+            },
+            {
+              "key": "entity_type",
+              "value": "user",
+              "description": "Tipo de entidad"
+            },
+            {
+              "key": "entity_id",
+              "value": "1",
+              "description": "ID de la entidad"
+            }
+          ]
+        },
+        "description": "Verifica si una entidad tiene un rol específico"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener asignaciones de roles por entidad",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles/entity/:entity_type/:entity_id",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles", "entity", ":entity_type", ":entity_id"],
+          "variable": [
+            {
+              "key": "entity_type",
+              "value": "user",
+              "description": "Tipo de entidad"
+            },
+            {
+              "key": "entity_id",
+              "value": "1",
+              "description": "ID de la entidad"
+            }
+          ]
+        },
+        "description": "Obtiene todas las asignaciones de roles para una entidad específica"
+      },
+      "response": []
+    },
+    {
+      "name": "Revocar rol",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles/revoke/:role_id/:entity_type/:entity_id",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles", "revoke", ":role_id", ":entity_type", ":entity_id"],
+          "variable": [
+            {
+              "key": "role_id",
+              "value": "1",
+              "description": "ID del rol"
+            },
+            {
+              "key": "entity_type",
+              "value": "user",
+              "description": "Tipo de entidad"
+            },
+            {
+              "key": "entity_id",
+              "value": "1",
+              "description": "ID de la entidad"
+            }
+          ]
+        },
+        "description": "Revoca un rol de una entidad"
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "info": {
+    "_postman_id": "permissions-collection-id",
+    "name": "JVAIR Permissions",
+    "description": "Endpoints de permisos para JVAIR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar permisos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/permissions?page=1&page_size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Número de página (por defecto: 1)"
+            },
+            {
+              "key": "page_size",
+              "value": "10",
+              "description": "Tamaño de página (por defecto: 10)"
+            },
+            {
+              "key": "ability_id",
+              "value": "",
+              "description": "Filtrar por ID de ability",
+              "disabled": true
+            },
+            {
+              "key": "entity_type",
+              "value": "",
+              "description": "Filtrar por tipo de entidad",
+              "disabled": true
+            },
+            {
+              "key": "entity_id",
+              "value": "",
+              "description": "Filtrar por ID de entidad",
+              "disabled": true
+            },
+            {
+              "key": "forbidden",
+              "value": "",
+              "description": "Filtrar por prohibición",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Obtiene una lista paginada de permisos"
+      },
+      "response": []
+    },
+    {
+      "name": "Crear permiso",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ability_id\": 1,\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"forbidden\": false,\n    \"conditions\": \"{}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/permissions",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions"]
+        },
+        "description": "Crea un nuevo permiso en el sistema"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener permiso",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/permissions/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del permiso"
+            }
+          ]
+        },
+        "description": "Obtiene un permiso por su ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar permiso",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"ability_id\": 1,\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"forbidden\": true,\n    \"conditions\": \"{}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/permissions/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del permiso"
+            }
+          ]
+        },
+        "description": "Actualiza un permiso existente"
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar permiso",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/permissions/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del permiso"
+            }
+          ]
+        },
+        "description": "Elimina un permiso"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener permisos por ability",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/permissions/ability/:ability_id",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions", "ability", ":ability_id"],
+          "variable": [
+            {
+              "key": "ability_id",
+              "value": "1",
+              "description": "ID de la ability"
+            }
+          ]
+        },
+        "description": "Obtiene todos los permisos para una ability específica"
+      },
+      "response": []
+    },
+    {
+      "name": "Verificar permiso",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/permissions/check/:ability_id/:entity_type/:entity_id",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions", "check", ":ability_id", ":entity_type", ":entity_id"],
+          "variable": [
+            {
+              "key": "ability_id",
+              "value": "1",
+              "description": "ID de la ability"
+            },
+            {
+              "key": "entity_type",
+              "value": "user",
+              "description": "Tipo de entidad"
+            },
+            {
+              "key": "entity_id",
+              "value": "1",
+              "description": "ID de la entidad"
+            }
+          ]
+        },
+        "description": "Verifica si existe un permiso específico"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener permisos por entidad",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/permissions/entity/:entity_type/:entity_id",
+          "host": ["{{baseUrl}}"],
+          "path": ["permissions", "entity", ":entity_type", ":entity_id"],
+          "variable": [
+            {
+              "key": "entity_type",
+              "value": "user",
+              "description": "Tipo de entidad"
+            },
+            {
+              "key": "entity_id",
+              "value": "1",
+              "description": "ID de la entidad"
+            }
+          ]
+        },
+        "description": "Obtiene todos los permisos para una entidad específica"
+      },
+      "response": []
+    }
+  ]
+}

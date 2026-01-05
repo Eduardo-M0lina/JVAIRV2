@@ -1,0 +1,230 @@
+{
+  "info": {
+    "_postman_id": "users-collection-id",
+    "name": "JVAIR Users",
+    "description": "Endpoints de usuarios para JVAIR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar usuarios",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users?page=1&page_size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Número de página (por defecto: 1)"
+            },
+            {
+              "key": "page_size",
+              "value": "10",
+              "description": "Tamaño de página (por defecto: 10)"
+            },
+            {
+              "key": "name",
+              "value": "",
+              "description": "Filtrar por nombre",
+              "disabled": true
+            },
+            {
+              "key": "email",
+              "value": "",
+              "description": "Filtrar por email",
+              "disabled": true
+            },
+            {
+              "key": "role_id",
+              "value": "",
+              "description": "Filtrar por rol",
+              "disabled": true
+            },
+            {
+              "key": "is_active",
+              "value": "",
+              "description": "Filtrar por estado (activo/inactivo)",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Obtiene una lista paginada de usuarios"
+      },
+      "response": []
+    },
+    {
+      "name": "Crear usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Nuevo Usuario\",\n    \"email\": \"usuario@example.com\",\n    \"password\": \"password123\",\n    \"role_id\": \"1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["users"]
+        },
+        "description": "Crea un nuevo usuario en el sistema"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener usuario",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del usuario"
+            }
+          ]
+        },
+        "description": "Obtiene un usuario por su ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar usuario",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Usuario Actualizado\",\n    \"email\": \"usuario@example.com\",\n    \"is_active\": true,\n    \"password\": \"nuevapassword123\",\n    \"role_id\": \"1\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del usuario"
+            }
+          ]
+        },
+        "description": "Actualiza un usuario existente"
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar usuario",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del usuario"
+            }
+          ]
+        },
+        "description": "Elimina un usuario (soft delete)"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener habilidades de usuario",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id/abilities",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id", "abilities"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del usuario"
+            }
+          ]
+        },
+        "description": "Obtiene las habilidades asignadas a un usuario"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener roles de usuario",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/users/:id/roles",
+          "host": ["{{baseUrl}}"],
+          "path": ["users", ":id", "roles"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del usuario"
+            }
+          ]
+        },
+        "description": "Obtiene los roles asignados a un usuario"
+      },
+      "response": []
+    }
+  ]
+}
