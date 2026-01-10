@@ -95,15 +95,33 @@ go mod tidy
 
 2. Ejecuta la aplicación:
 
-```bash
-go run cmd/api/main.go
-```
+   **Opción 1**: Ejecución estándar
+   ```bash
+   go run cmd/api/main.go
+   ```
+
+   **Opción 2**: Ejecución con hot-reload (desarrollo)
+   ```bash
+   # Asegúrate de que el script tiene permisos de ejecución
+   chmod +x dev.sh
+
+   # Ejecuta el script de desarrollo
+   ./dev.sh
+   ```
+
+   > **Nota**: El script `dev.sh` utiliza [Air](https://github.com/cosmtrek/air) para proporcionar hot-reload durante el desarrollo. Esto permite que los cambios en el código se apliquen automáticamente sin necesidad de reiniciar manualmente el servidor. El script también se encarga de liberar el puerto 8090 si está en uso.
 
 3. Verifica que la aplicación esté funcionando correctamente:
 
-```bash
-curl http://localhost:8080/health
-```
+   Para la ejecución estándar:
+   ```bash
+   curl http://localhost:8080/health
+   ```
+
+   Para la ejecución con dev.sh:
+   ```bash
+   curl http://localhost:8090/health
+   ```
 
 Deberías recibir una respuesta JSON con el estado de la aplicación.
 
