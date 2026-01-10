@@ -1,0 +1,1692 @@
+definitions:
+  ability.Ability:
+    properties:
+      createdAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      entityID:
+        description: bigint unsigned DEFAULT NULL
+        format: int64
+        type: integer
+      entityType:
+        description: varchar(191) DEFAULT NULL
+        type: string
+      id:
+        description: bigint unsigned NOT NULL AUTO_INCREMENT
+        format: int64
+        type: integer
+      name:
+        description: varchar(191) NOT NULL
+        type: string
+      onlyOwned:
+        description: tinyint(1) NOT NULL DEFAULT '0'
+        type: boolean
+      options:
+        description: json DEFAULT NULL
+        type: string
+      scope:
+        description: int DEFAULT NULL
+        type: integer
+      title:
+        description: varchar(191) DEFAULT NULL
+        type: string
+      updatedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+    type: object
+  ability.AbilityResponse:
+    properties:
+      created_at:
+        type: string
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      only_owned:
+        type: boolean
+      options:
+        type: string
+      scope:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  ability.CreateAbilityRequest:
+    properties:
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      name:
+        type: string
+      only_owned:
+        type: boolean
+      options:
+        type: string
+      scope:
+        type: integer
+      title:
+        type: string
+    required:
+    - name
+    type: object
+  ability.UpdateAbilityRequest:
+    properties:
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      name:
+        type: string
+      only_owned:
+        type: boolean
+      options:
+        type: string
+      scope:
+        type: integer
+      title:
+        type: string
+    required:
+    - name
+    type: object
+  assigned_role.AssignRoleRequest:
+    properties:
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      restricted:
+        type: boolean
+      role_id:
+        type: integer
+      scope:
+        type: integer
+    required:
+    - entity_id
+    - entity_type
+    - role_id
+    type: object
+  assigned_role.AssignedRoleResponse:
+    properties:
+      created_at:
+        type: string
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      id:
+        type: integer
+      restricted:
+        type: boolean
+      role_id:
+        type: integer
+      scope:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  auth.LoginRequest:
+    properties:
+      email:
+        example: admin@example.com
+        type: string
+      password:
+        example: admin123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  auth.LoginResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expires_at:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/user.User'
+    type: object
+  auth.RefreshResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expires_at:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    type: object
+  permission.CreatePermissionRequest:
+    properties:
+      ability_id:
+        type: integer
+      conditions:
+        type: string
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      forbidden:
+        type: boolean
+    required:
+    - ability_id
+    - entity_id
+    - entity_type
+    type: object
+  permission.PermissionResponse:
+    properties:
+      ability_id:
+        type: integer
+      conditions:
+        type: string
+      created_at:
+        type: string
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      forbidden:
+        type: boolean
+      id:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  permission.UpdatePermissionRequest:
+    properties:
+      ability_id:
+        type: integer
+      conditions:
+        type: string
+      entity_id:
+        type: integer
+      entity_type:
+        type: string
+      forbidden:
+        type: boolean
+    required:
+    - ability_id
+    - entity_id
+    - entity_type
+    type: object
+  response.PaginatedResponse:
+    properties:
+      items: {}
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_items:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  role.CreateRoleRequest:
+    properties:
+      name:
+        type: string
+      scope:
+        type: integer
+      title:
+        type: string
+    required:
+    - name
+    type: object
+  role.Role:
+    properties:
+      createdAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      id:
+        description: bigint unsigned NOT NULL AUTO_INCREMENT
+        format: int64
+        type: integer
+      name:
+        description: varchar(191) NOT NULL
+        type: string
+      scope:
+        description: int DEFAULT NULL
+        type: integer
+      title:
+        description: varchar(191) DEFAULT NULL
+        type: string
+      updatedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+    type: object
+  role.RoleResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      scope:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  role.UpdateRoleRequest:
+    properties:
+      name:
+        type: string
+      scope:
+        type: integer
+      title:
+        type: string
+    required:
+    - name
+    type: object
+  user.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role_id:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  user.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      is_active:
+        type: boolean
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role_id:
+        type: string
+    required:
+    - email
+    - name
+    type: object
+  user.User:
+    properties:
+      createdAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      deletedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      email:
+        description: varchar(255) NOT NULL
+        type: string
+      emailVerifiedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      id:
+        description: bigint unsigned NOT NULL AUTO_INCREMENT
+        format: int64
+        type: integer
+      isActive:
+        description: tinyint(1) NOT NULL DEFAULT '1'
+        type: boolean
+      isChangePassword:
+        description: tinyint(1) NOT NULL DEFAULT '0'
+        type: boolean
+      name:
+        description: varchar(255) NOT NULL
+        type: string
+      password:
+        description: varchar(255) NOT NULL
+        type: string
+      rememberToken:
+        description: varchar(100) DEFAULT NULL
+        type: string
+      roleID:
+        description: varchar(191) DEFAULT NULL
+        type: string
+      updatedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+    type: object
+  user.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+      role_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/abilities:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de abilities
+      parameters:
+      - description: 'Número de página (por defecto: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (por defecto: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: Filtrar por nombre
+        in: query
+        name: name
+        type: string
+      - description: Filtrar por tipo de entidad
+        in: query
+        name: entity_type
+        type: string
+      - description: Filtrar por scope
+        in: query
+        name: scope
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Parámetros de consulta inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Listar abilities
+      tags:
+      - Abilities
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva ability en el sistema
+      parameters:
+      - description: Datos de la ability
+        in: body
+        name: ability
+        required: true
+        schema:
+          $ref: '#/definitions/ability.CreateAbilityRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/ability.AbilityResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "409":
+          description: Nombre de ability ya está en uso
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Crear ability
+      tags:
+      - Abilities
+  /api/v1/abilities/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una ability
+      parameters:
+      - description: ID de la ability
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: ID de ability inválido
+          schema:
+            type: string
+        "404":
+          description: Ability no encontrada
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Eliminar ability
+      tags:
+      - Abilities
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una ability por su ID
+      parameters:
+      - description: ID de la ability
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ability.AbilityResponse'
+        "400":
+          description: ID de ability inválido
+          schema:
+            type: string
+        "404":
+          description: Ability no encontrada
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener ability
+      tags:
+      - Abilities
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una ability existente
+      parameters:
+      - description: ID de la ability
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la ability
+        in: body
+        name: ability
+        required: true
+        schema:
+          $ref: '#/definitions/ability.UpdateAbilityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ability.AbilityResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "404":
+          description: Ability no encontrada
+          schema:
+            type: string
+        "409":
+          description: Nombre de ability ya está en uso
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Actualizar ability
+      tags:
+      - Abilities
+  /api/v1/assigned-roles:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de asignaciones de roles
+      parameters:
+      - description: 'Número de página (por defecto: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (por defecto: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: Filtrar por ID de rol
+        in: query
+        name: role_id
+        type: integer
+      - description: Filtrar por tipo de entidad
+        in: query
+        name: entity_type
+        type: string
+      - description: Filtrar por ID de entidad
+        in: query
+        name: entity_id
+        type: integer
+      - description: Filtrar por restricción
+        in: query
+        name: restricted
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Parámetros de consulta inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Listar asignaciones de roles
+      tags:
+      - AssignedRoles
+    post:
+      consumes:
+      - application/json
+      description: Asigna un rol a una entidad
+      parameters:
+      - description: Datos de la asignación de rol
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/assigned_role.AssignRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/assigned_role.AssignedRoleResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "409":
+          description: El rol ya está asignado a esta entidad
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Asignar rol
+      tags:
+      - AssignedRoles
+  /api/v1/assigned-roles/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una asignación de rol por su ID
+      parameters:
+      - description: ID de la asignación de rol
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/assigned_role.AssignedRoleResponse'
+        "400":
+          description: ID de asignación de rol inválido
+          schema:
+            type: string
+        "404":
+          description: Asignación de rol no encontrada
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener asignación de rol
+      tags:
+      - AssignedRoles
+  /api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}:
+    get:
+      consumes:
+      - application/json
+      description: Verifica si una entidad tiene un rol específico
+      parameters:
+      - description: ID del rol
+        in: path
+        name: role_id
+        required: true
+        type: integer
+      - description: Tipo de entidad
+        in: path
+        name: entity_type
+        required: true
+        type: string
+      - description: ID de la entidad
+        in: path
+        name: entity_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Parámetros inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Verificar rol
+      tags:
+      - AssignedRoles
+  /api/v1/assigned-roles/entity/{entity_type}/{entity_id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene todas las asignaciones de roles para una entidad específica
+      parameters:
+      - description: Tipo de entidad
+        in: path
+        name: entity_type
+        required: true
+        type: string
+      - description: ID de la entidad
+        in: path
+        name: entity_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/assigned_role.AssignedRoleResponse'
+            type: array
+        "400":
+          description: Parámetros inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener asignaciones de roles por entidad
+      tags:
+      - AssignedRoles
+  /api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Revoca un rol de una entidad
+      parameters:
+      - description: ID del rol
+        in: path
+        name: role_id
+        required: true
+        type: integer
+      - description: Tipo de entidad
+        in: path
+        name: entity_type
+        required: true
+        type: string
+      - description: ID de la entidad
+        in: path
+        name: entity_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Parámetros inválidos
+          schema:
+            type: string
+        "404":
+          description: Asignación de rol no encontrada
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Revocar rol
+      tags:
+      - AssignedRoles
+  /api/v1/permissions:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de permisos
+      parameters:
+      - description: 'Número de página (por defecto: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (por defecto: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: Filtrar por ID de ability
+        in: query
+        name: ability_id
+        type: integer
+      - description: Filtrar por tipo de entidad
+        in: query
+        name: entity_type
+        type: string
+      - description: Filtrar por ID de entidad
+        in: query
+        name: entity_id
+        type: integer
+      - description: Filtrar por prohibición
+        in: query
+        name: forbidden
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Parámetros de consulta inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Listar permisos
+      tags:
+      - Permissions
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo permiso en el sistema
+      parameters:
+      - description: Datos del permiso
+        in: body
+        name: permission
+        required: true
+        schema:
+          $ref: '#/definitions/permission.CreatePermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/permission.PermissionResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "409":
+          description: El permiso ya existe para esta entidad y ability
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Crear permiso
+      tags:
+      - Permissions
+  /api/v1/permissions/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un permiso
+      parameters:
+      - description: ID del permiso
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: ID de permiso inválido
+          schema:
+            type: string
+        "404":
+          description: Permiso no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Eliminar permiso
+      tags:
+      - Permissions
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un permiso por su ID
+      parameters:
+      - description: ID del permiso
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/permission.PermissionResponse'
+        "400":
+          description: ID de permiso inválido
+          schema:
+            type: string
+        "404":
+          description: Permiso no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener permiso
+      tags:
+      - Permissions
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un permiso existente
+      parameters:
+      - description: ID del permiso
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del permiso
+        in: body
+        name: permission
+        required: true
+        schema:
+          $ref: '#/definitions/permission.UpdatePermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/permission.PermissionResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "404":
+          description: Permiso no encontrado
+          schema:
+            type: string
+        "409":
+          description: El permiso ya existe para esta entidad y ability
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Actualizar permiso
+      tags:
+      - Permissions
+  /api/v1/permissions/ability/{ability_id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene todos los permisos para una ability específica
+      parameters:
+      - description: ID de la ability
+        in: path
+        name: ability_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/permission.PermissionResponse'
+            type: array
+        "400":
+          description: ID de ability inválido
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener permisos por ability
+      tags:
+      - Permissions
+  /api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}:
+    get:
+      consumes:
+      - application/json
+      description: Verifica si existe un permiso específico
+      parameters:
+      - description: ID de la ability
+        in: path
+        name: ability_id
+        required: true
+        type: integer
+      - description: Tipo de entidad
+        in: path
+        name: entity_type
+        required: true
+        type: string
+      - description: ID de la entidad
+        in: path
+        name: entity_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Parámetros inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Verificar permiso
+      tags:
+      - Permissions
+  /api/v1/permissions/entity/{entity_type}/{entity_id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene todos los permisos para una entidad específica
+      parameters:
+      - description: Tipo de entidad
+        in: path
+        name: entity_type
+        required: true
+        type: string
+      - description: ID de la entidad
+        in: path
+        name: entity_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/permission.PermissionResponse'
+            type: array
+        "400":
+          description: Parámetros inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener permisos por entidad
+      tags:
+      - Permissions
+  /api/v1/roles:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de roles
+      parameters:
+      - description: 'Número de página (por defecto: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (por defecto: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: Filtrar por nombre
+        in: query
+        name: name
+        type: string
+      - description: Filtrar por scope
+        in: query
+        name: scope
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Parámetros de consulta inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Listar roles
+      tags:
+      - Roles
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo rol en el sistema
+      parameters:
+      - description: Datos del rol
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/role.CreateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/role.RoleResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "409":
+          description: Nombre de rol ya está en uso
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Crear rol
+      tags:
+      - Roles
+  /api/v1/roles/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un rol
+      parameters:
+      - description: ID del rol
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: ID de rol inválido
+          schema:
+            type: string
+        "404":
+          description: Rol no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Eliminar rol
+      tags:
+      - Roles
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un rol por su ID
+      parameters:
+      - description: ID del rol
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/role.RoleResponse'
+        "400":
+          description: ID de rol inválido
+          schema:
+            type: string
+        "404":
+          description: Rol no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener rol
+      tags:
+      - Roles
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un rol existente
+      parameters:
+      - description: ID del rol
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del rol
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/role.UpdateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/role.RoleResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "404":
+          description: Rol no encontrado
+          schema:
+            type: string
+        "409":
+          description: Nombre de rol ya está en uso
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Actualizar rol
+      tags:
+      - Roles
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de usuarios
+      parameters:
+      - description: 'Número de página (por defecto: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (por defecto: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: Filtrar por nombre
+        in: query
+        name: name
+        type: string
+      - description: Filtrar por email
+        in: query
+        name: email
+        type: string
+      - description: Filtrar por rol
+        in: query
+        name: role_id
+        type: string
+      - description: Filtrar por estado (activo/inactivo)
+        in: query
+        name: is_active
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Parámetros de consulta inválidos
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Listar usuarios
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo usuario en el sistema
+      parameters:
+      - description: Datos del usuario
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "409":
+          description: Email ya está en uso
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Crear usuario
+      tags:
+      - Users
+  /api/v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un usuario (soft delete)
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: ID de usuario inválido
+          schema:
+            type: string
+        "404":
+          description: Usuario no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Eliminar usuario
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un usuario por su ID
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "400":
+          description: ID de usuario inválido
+          schema:
+            type: string
+        "404":
+          description: Usuario no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener usuario
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un usuario existente
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Datos del usuario
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.UserResponse'
+        "400":
+          description: Error al decodificar la solicitud o datos inválidos
+          schema:
+            type: string
+        "404":
+          description: Usuario no encontrado
+          schema:
+            type: string
+        "409":
+          description: Email ya está en uso
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Actualizar usuario
+      tags:
+      - Users
+  /api/v1/users/{id}/abilities:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene las habilidades asignadas a un usuario
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ability.Ability'
+            type: array
+        "400":
+          description: ID de usuario inválido
+          schema:
+            type: string
+        "404":
+          description: Usuario no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener habilidades de usuario
+      tags:
+      - Users
+  /api/v1/users/{id}/roles:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene los roles asignados a un usuario
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/role.Role'
+            type: array
+        "400":
+          description: ID de usuario inválido
+          schema:
+            type: string
+        "404":
+          description: Usuario no encontrado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Obtener roles de usuario
+      tags:
+      - Users
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Inicia sesión con email y contraseña
+      parameters:
+      - description: Credenciales de usuario
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "401":
+          description: Credenciales inválidas
+          schema:
+            type: string
+        "403":
+          description: Usuario inactivo
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Iniciar sesión
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Cierra la sesión del usuario actual
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Token de acceso no proporcionado
+          schema:
+            type: string
+        "401":
+          description: No autorizado
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Cerrar sesión
+      tags:
+      - Auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresca el token de acceso usando el token de refresco
+      parameters:
+      - description: Token de refresco
+        in: body
+        name: refresh_token
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.RefreshResponse'
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "401":
+          description: Token inválido
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Refrescar token
+      tags:
+      - Auth
+swagger: "2.0"

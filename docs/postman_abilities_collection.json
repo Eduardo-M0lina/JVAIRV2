@@ -1,0 +1,172 @@
+{
+  "info": {
+    "_postman_id": "abilities-collection-id",
+    "name": "JVAIR Abilities",
+    "description": "Endpoints de abilities para JVAIR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar abilities",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/abilities?page=1&page_size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["abilities"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Número de página (por defecto: 1)"
+            },
+            {
+              "key": "page_size",
+              "value": "10",
+              "description": "Tamaño de página (por defecto: 10)"
+            },
+            {
+              "key": "name",
+              "value": "",
+              "description": "Filtrar por nombre",
+              "disabled": true
+            },
+            {
+              "key": "entity_type",
+              "value": "",
+              "description": "Filtrar por tipo de entidad",
+              "disabled": true
+            },
+            {
+              "key": "scope",
+              "value": "",
+              "description": "Filtrar por scope",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Obtiene una lista paginada de abilities"
+      },
+      "response": []
+    },
+    {
+      "name": "Crear ability",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"nueva_ability\",\n    \"title\": \"Nueva Ability\",\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"scope\": 1,\n    \"only_owned\": false,\n    \"options\": \"{}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/abilities",
+          "host": ["{{baseUrl}}"],
+          "path": ["abilities"]
+        },
+        "description": "Crea una nueva ability en el sistema"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener ability",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/abilities/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["abilities", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID de la ability"
+            }
+          ]
+        },
+        "description": "Obtiene una ability por su ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar ability",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"ability_actualizada\",\n    \"title\": \"Ability Actualizada\",\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"scope\": 2,\n    \"only_owned\": true,\n    \"options\": \"{}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/abilities/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["abilities", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID de la ability"
+            }
+          ]
+        },
+        "description": "Actualiza una ability existente"
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar ability",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/abilities/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["abilities", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID de la ability"
+            }
+          ]
+        },
+        "description": "Elimina una ability"
+      },
+      "response": []
+    }
+  ]
+}
