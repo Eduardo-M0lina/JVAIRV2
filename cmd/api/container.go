@@ -87,7 +87,7 @@ func NewContainer(configPath string) (*Container, error) {
 	authHandler := authHandler.NewHandler(authUC)
 
 	// Inicializar handlers con sus casos de uso
-	userHandler := &userHandler.Handler{} // TODO: Implementar correctamente
+	userHandler := userHandler.NewHandler(userUC)
 	roleHandler := roleHandler.NewHandler(roleUC)
 	abilityHandler := abilityHandler.NewHandler(abilityUC)
 	assignedRoleHandler := assignedRoleHandler.NewHandler(assignedRoleUC)

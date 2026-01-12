@@ -2,6 +2,7 @@ package user
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -100,7 +101,9 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 			response.Error(w, http.StatusConflict, "Email ya está en uso")
 			return
 		}
-		response.Error(w, http.StatusInternalServerError, "Error al crear el usuario")
+		// Registrar el error detallado para depuración
+		log.Printf("Error al crear usuario '%s' <%s>: %v", req.Name, req.Email, err)
+		response.Error(w, http.StatusInternalServerError, "Error al crear el usuario: "+err.Error())
 		return
 	}
 

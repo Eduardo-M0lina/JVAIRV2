@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -50,18 +51,29 @@ func (uc *UseCase) GetByEmail(ctx context.Context, email string) (*User, error) 
 
 // Create crea un nuevo usuario
 func (uc *UseCase) Create(ctx context.Context, user *User) error {
+	// Verificar si el repositorio está inicializado
+	if uc.repo == nil {
+		log.Printf("ERROR: Repositorio de usuarios no inicializado")
+		return errors.New("repositorio de usuarios no inicializado")
+	}
+
 	// Verificar si ya existe un usuario con el mismo email
 	_, err := uc.repo.GetByEmail(ctx, user.Email)
 	if err == nil {
+		log.Printf("ERROR: Email ya en uso: %s", user.Email)
 		return ErrDuplicateEmail
 	} else if !errors.Is(err, ErrUserNotFound) {
-		return err
+		log.Printf("ERROR al verificar email existente: %v", err)
+		return fmt.Errorf("error al verificar email existente: %w", err)
 	}
+
+	log.Printf("Email disponible para nuevo usuario: %s", user.Email)
 
 	// Hash de la contraseña
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return err
+		log.Printf("ERROR al generar hash de contraseña: %v", err)
+		return fmt.Errorf("error al generar hash de contraseña: %w", err)
 	}
 	user.Password = string(hashedPassword)
 
@@ -72,30 +84,35 @@ func (uc *UseCase) Create(ctx context.Context, user *User) error {
 	user.IsActive = true
 
 	// Crear el usuario
+	log.Printf("Intentando crear usuario: %s <%s>", user.Name, user.Email)
 	err = uc.repo.Create(ctx, user)
 	if err != nil {
-		return err
+		log.Printf("ERROR al crear usuario en la base de datos: %v", err)
+		return fmt.Errorf("error al crear usuario en la base de datos: %w", err)
 	}
+	log.Printf("Usuario creado exitosamente con ID: %d", user.ID)
 
 	// Si se especificó un rol, asignar el rol al usuario
 	if user.RoleID != nil {
 		roleID, err := uc.getRoleID(*user.RoleID)
 		if err != nil {
-			return err
-		}
-
-		assignedRole := &assigned_role.AssignedRole{
-			RoleID:     roleID,
-			EntityID:   user.ID,
-			EntityType: "App\\Models\\User",
-			Restricted: false,
-		}
-
-		err = uc.assignedRoleRepo.Assign(ctx, assignedRole)
-		if err != nil {
-			// Si falla la asignación del rol, registrar el error pero continuar
+			// Si falla la obtención del rol, registrar el error pero continuar
 			// ya que el usuario ya fue creado
-			log.Printf("Error al asignar rol al usuario %d: %v", user.ID, err)
+			log.Printf("Error al obtener rol para el usuario %d: %v", user.ID, err)
+		} else {
+			assignedRole := &assigned_role.AssignedRole{
+				RoleID:     roleID,
+				EntityID:   user.ID,
+				EntityType: "App\\Models\\User",
+				Restricted: false,
+			}
+
+			err = uc.assignedRoleRepo.Assign(ctx, assignedRole)
+			if err != nil {
+				// Si falla la asignación del rol, registrar el error pero continuar
+				// ya que el usuario ya fue creado
+				log.Printf("Error al asignar rol al usuario %d: %v", user.ID, err)
+			}
 		}
 	}
 
@@ -242,21 +259,43 @@ func (uc *UseCase) HasAbility(ctx context.Context, userID string, abilityName st
 
 // Helper para obtener el ID numérico de un rol a partir de su ID de string
 func (uc *UseCase) getRoleID(roleIDStr string) (int64, error) {
+	// Verificar si el repositorio está inicializado
+	if uc.roleRepo == nil {
+		log.Printf("ERROR CRÍTICO: Repositorio de roles no inicializado")
+		return 0, errors.New("repositorio de roles no inicializado")
+	}
+
+	log.Printf("Intentando obtener rol con ID/nombre: '%s'", roleIDStr)
+
 	// Intentar obtener el rol por ID
 	roleID, err := parseRoleID(roleIDStr)
 	if err == nil {
-		_, err = uc.roleRepo.GetByID(context.Background(), roleID)
-		if err == nil {
+		log.Printf("Interpretado como ID numérico: %d", roleID)
+		role, err := uc.roleRepo.GetByID(context.Background(), roleID)
+		if err == nil && role != nil {
+			log.Printf("Rol encontrado por ID: %d, nombre: %s", role.ID, role.Name)
 			return roleID, nil
 		}
+		// Si hay un error específico, registrarlo
+		if err != nil {
+			log.Printf("ERROR al obtener rol por ID %d: %v", roleID, err)
+		} else {
+			log.Printf("ERROR: Rol con ID %d no encontrado o es nil", roleID)
+		}
+	} else {
+		log.Printf("No se pudo interpretar '%s' como ID numérico: %v", roleIDStr, err)
 	}
 
 	// Si no se encontró por ID, intentar por nombre
+	log.Printf("Intentando obtener rol por nombre: '%s'", roleIDStr)
 	r, err := uc.roleRepo.GetByName(context.Background(), roleIDStr)
 	if err != nil {
-		return 0, err
+		// Registrar el error específico
+		log.Printf("ERROR al obtener rol por nombre '%s': %v", roleIDStr, err)
+		return 0, fmt.Errorf("error al obtener rol por nombre '%s': %w", roleIDStr, err)
 	}
 
+	log.Printf("Rol encontrado por nombre: '%s', ID: %d", roleIDStr, r.ID)
 	return r.ID, nil
 }
 

@@ -13,5 +13,7 @@ func RegisterUserRoutes(r chi.Router, handler *userHandler.Handler) {
 		r.Get("/{id}", handler.Get)
 		r.Put("/{id}", handler.Update)
 		r.Delete("/{id}", handler.Delete)
+		r.Get("/{id}/roles", handler.GetRoles)
+		r.Get("/{id}/abilities", handler.GetAbilities)
 	})
 }

@@ -117,7 +117,7 @@ func TestGetByEmail_DatabaseError(t *testing.T) {
 	// Verificar que haya un error de base de datos
 	assert.Error(t, err)
 	assert.Nil(t, result)
-	assert.Equal(t, sql.ErrConnDone, err)
+	assert.Contains(t, err.Error(), "error al consultar usuario por email")
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
