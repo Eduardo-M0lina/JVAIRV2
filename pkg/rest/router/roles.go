@@ -11,5 +11,7 @@ func RegisterRoleRoutes(r chi.Router, handler *roleHandler.Handler) {
 		r.Get("/", handler.List)
 		r.Post("/", handler.Create)
 		r.Get("/{id}", handler.Get)
+		r.Put("/{id}", handler.Update)
+		r.Delete("/{id}", handler.Delete)
 	})
 }
