@@ -2,6 +2,7 @@ package assigned_role
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -410,7 +411,8 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Obtener la lista de asignaciones de roles
 	assignedRoles, total, err := h.assignedRoleUseCase.List(r.Context(), filters, page, pageSize)
 	if err != nil {
-		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles")
+		log.Printf("ERROR al listar asignaciones de roles: %v", err)
+		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles: "+err.Error())
 		return
 	}
 

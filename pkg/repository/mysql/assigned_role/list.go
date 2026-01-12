@@ -13,7 +13,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	// Construir la consulta base
 	countQuery := "SELECT COUNT(*) FROM assigned_roles"
 	selectQuery := `
-		SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at
+		SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope
 		FROM assigned_roles
 	`
 
@@ -81,28 +81,30 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	var assignedRoles []*domainAssignedRole.AssignedRole
 	for rows.Next() {
 		var assignedRole domainAssignedRole.AssignedRole
+		var restrictedToID sql.NullInt64
+		var restrictedToType sql.NullString
 		var scope sql.NullInt32
-		var createdAt, updatedAt sql.NullTime
 
 		err := rows.Scan(
 			&assignedRole.ID, &assignedRole.RoleID, &assignedRole.EntityID, &assignedRole.EntityType,
-			&assignedRole.Restricted, &scope, &createdAt, &updatedAt,
+			&restrictedToID, &restrictedToType, &scope,
 		)
 		if err != nil {
 			return nil, 0, err
 		}
 
+		if restrictedToID.Valid {
+			assignedRole.RestrictedToID = &restrictedToID.Int64
+			assignedRole.Restricted = true
+		}
+
+		if restrictedToType.Valid {
+			assignedRole.RestrictedToType = &restrictedToType.String
+		}
+
 		if scope.Valid {
 			scopeInt := int(scope.Int32)
 			assignedRole.Scope = &scopeInt
-		}
-
-		if createdAt.Valid {
-			assignedRole.CreatedAt = &createdAt.Time
-		}
-
-		if updatedAt.Valid {
-			assignedRole.UpdatedAt = &updatedAt.Time
 		}
 
 		assignedRoles = append(assignedRoles, &assignedRole)
