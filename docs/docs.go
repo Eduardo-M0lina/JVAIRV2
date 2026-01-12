@@ -398,7 +398,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Asigna un rol a una entidad",
+                "description": "Asigna un rol a una entidad (usuario, cliente, etc). Opcionalmente puede restringir la asignación a una entidad específica usando restricted_to_id y restricted_to_type",
                 "consumes": [
                     "application/json"
                 ],
@@ -408,10 +408,10 @@ const docTemplate = `{
                 "tags": [
                     "AssignedRoles"
                 ],
-                "summary": "Asignar rol",
+                "summary": "Asignar rol a una entidad",
                 "parameters": [
                     {
-                        "description": "Datos de la asignación de rol",
+                        "description": "Datos de la asignación de rol. Ejemplo: {\\",
                         "name": "role",
                         "in": "body",
                         "required": true,
@@ -422,13 +422,19 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created",
+                        "description": "Rol asignado exitosamente",
                         "schema": {
                             "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
                         "description": "Error al decodificar la solicitud o datos inválidos",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "No tiene permisos para asignar roles",
                         "schema": {
                             "type": "string"
                         }
@@ -2202,8 +2208,11 @@ const docTemplate = `{
                 "entity_type": {
                     "type": "string"
                 },
-                "restricted": {
-                    "type": "boolean"
+                "restricted_to_id": {
+                    "type": "integer"
+                },
+                "restricted_to_type": {
+                    "type": "string"
                 },
                 "role_id": {
                     "type": "integer"
@@ -2216,9 +2225,6 @@ const docTemplate = `{
         "assigned_role.AssignedRoleResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "type": "string"
-                },
                 "entity_id": {
                     "type": "integer"
                 },
@@ -2236,9 +2242,6 @@ const docTemplate = `{
                 },
                 "scope": {
                     "type": "integer"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },

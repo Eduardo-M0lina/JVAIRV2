@@ -3,7 +3,6 @@ package assigned_role
 import (
 	"context"
 	"database/sql"
-	"time"
 
 	"github.com/your-org/jvairv2/pkg/domain/assigned_role"
 )
@@ -25,29 +24,36 @@ func (r *Repository) Assign(ctx context.Context, assignedRole *assigned_role.Ass
 		return err
 	}
 
-	// Establecer timestamps
-	now := time.Now()
-	assignedRole.CreatedAt = &now
-	assignedRole.UpdatedAt = &now
-
 	// Preparar la consulta
 	insertQuery := `
-		INSERT INTO assigned_roles (role_id, entity_id, entity_type, restricted, scope, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO assigned_roles (role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope)
+		VALUES (?, ?, ?, ?, ?, ?)
 	`
 
 	// Preparar los argumentos
 	var args []interface{}
-	args = append(args, assignedRole.RoleID, assignedRole.EntityID, assignedRole.EntityType, assignedRole.Restricted)
+	args = append(args, assignedRole.RoleID, assignedRole.EntityID, assignedRole.EntityType)
 
-	// Manejar campos opcionales
+	// Manejar restricted_to_id
+	if assignedRole.RestrictedToID != nil {
+		args = append(args, *assignedRole.RestrictedToID)
+	} else {
+		args = append(args, nil)
+	}
+
+	// Manejar restricted_to_type
+	if assignedRole.RestrictedToType != nil {
+		args = append(args, *assignedRole.RestrictedToType)
+	} else {
+		args = append(args, nil)
+	}
+
+	// Manejar scope
 	if assignedRole.Scope != nil {
 		args = append(args, *assignedRole.Scope)
 	} else {
 		args = append(args, nil)
 	}
-
-	args = append(args, now, now)
 
 	// Ejecutar la consulta
 	result, err := r.db.ExecContext(ctx, insertQuery, args...)

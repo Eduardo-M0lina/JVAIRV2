@@ -2,14 +2,15 @@ package user
 
 import (
 	"database/sql"
-	"errors"
+
+	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
 )
 
-// Errores comunes del repositorio
+// Usar los errores del dominio
 var (
-	ErrUserNotFound       = errors.New("usuario no encontrado")
-	ErrInvalidCredentials = errors.New("credenciales inválidas")
-	ErrDuplicateEmail     = errors.New("email ya está en uso")
+	ErrUserNotFound       = domainUser.ErrUserNotFound
+	ErrInvalidCredentials = domainUser.ErrInvalidCredentials
+	ErrDuplicateEmail     = domainUser.ErrDuplicateEmail
 )
 
 // Repository implementa la interfaz domainUser.Repository para MySQL

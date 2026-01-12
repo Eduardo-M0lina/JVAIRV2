@@ -2,6 +2,7 @@ package assigned_role
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -28,11 +29,12 @@ func NewHandler(assignedRoleUseCase *assigned_role.UseCase) *Handler {
 
 // AssignRoleRequest representa la solicitud para asignar un rol a una entidad
 type AssignRoleRequest struct {
-	RoleID     int64  `json:"role_id" validate:"required"`
-	EntityID   int64  `json:"entity_id" validate:"required"`
-	EntityType string `json:"entity_type" validate:"required"`
-	Restricted bool   `json:"restricted"`
-	Scope      *int   `json:"scope,omitempty"`
+	RoleID           int64   `json:"role_id" validate:"required"`
+	EntityID         int64   `json:"entity_id" validate:"required"`
+	EntityType       string  `json:"entity_type" validate:"required"`
+	RestrictedToID   *int64  `json:"restricted_to_id,omitempty"`
+	RestrictedToType *string `json:"restricted_to_type,omitempty"`
+	Scope            *int    `json:"scope,omitempty"`
 }
 
 // AssignedRoleResponse representa la respuesta de una asignación de rol
@@ -43,19 +45,18 @@ type AssignedRoleResponse struct {
 	EntityType string `json:"entity_type"`
 	Restricted bool   `json:"restricted"`
 	Scope      *int   `json:"scope,omitempty"`
-	CreatedAt  string `json:"created_at,omitempty"`
-	UpdatedAt  string `json:"updated_at,omitempty"`
 }
 
 // Assign maneja la solicitud de asignación de un rol a una entidad
-// @Summary Asignar rol
-// @Description Asigna un rol a una entidad
+// @Summary Asignar rol a una entidad
+// @Description Asigna un rol a una entidad (usuario, cliente, etc). Opcionalmente puede restringir la asignación a una entidad específica usando restricted_to_id y restricted_to_type
 // @Tags AssignedRoles
 // @Accept json
 // @Produce json
-// @Param role body assigned_role.AssignRoleRequest true "Datos de la asignación de rol"
-// @Success 201 {object} assigned_role.AssignedRoleResponse
+// @Param role body assigned_role.AssignRoleRequest true "Datos de la asignación de rol. Ejemplo: {\"role_id\": 4, \"entity_id\": 148, \"entity_type\": \"App\\\\Models\\\\User\", \"restricted_to_id\": 10, \"restricted_to_type\": \"App\\\\Models\\\\Customer\", \"scope\": 1}"
+// @Success 201 {object} assigned_role.AssignedRoleResponse "Rol asignado exitosamente"
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
+// @Failure 403 {string} string "No tiene permisos para asignar roles"
 // @Failure 409 {string} string "El rol ya está asignado a esta entidad"
 // @Failure 500 {string} string "Error interno del servidor"
 // @Router /api/v1/assigned-roles [post]
@@ -82,11 +83,12 @@ func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 
 	// Asignar el rol
 	assignedRole := &assigned_role.AssignedRole{
-		RoleID:     req.RoleID,
-		EntityID:   req.EntityID,
-		EntityType: req.EntityType,
-		Restricted: req.Restricted,
-		Scope:      req.Scope,
+		RoleID:           req.RoleID,
+		EntityID:         req.EntityID,
+		EntityType:       req.EntityType,
+		RestrictedToID:   req.RestrictedToID,
+		RestrictedToType: req.RestrictedToType,
+		Scope:            req.Scope,
 	}
 
 	if err := h.assignedRoleUseCase.Assign(r.Context(), assignedRole); err != nil {
@@ -107,14 +109,6 @@ func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 		EntityType: assignedRole.EntityType,
 		Restricted: assignedRole.Restricted,
 		Scope:      assignedRole.Scope,
-	}
-
-	if assignedRole.CreatedAt != nil {
-		resp.CreatedAt = assignedRole.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if assignedRole.UpdatedAt != nil {
-		resp.UpdatedAt = assignedRole.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
 	}
 
 	response.JSON(w, http.StatusCreated, resp)
@@ -170,14 +164,6 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 		Scope:      assignedRole.Scope,
 	}
 
-	if assignedRole.CreatedAt != nil {
-		resp.CreatedAt = assignedRole.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if assignedRole.UpdatedAt != nil {
-		resp.UpdatedAt = assignedRole.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
 	response.JSON(w, http.StatusOK, resp)
 }
 
@@ -227,14 +213,6 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 			EntityType: ar.EntityType,
 			Restricted: ar.Restricted,
 			Scope:      ar.Scope,
-		}
-
-		if ar.CreatedAt != nil {
-			item.CreatedAt = ar.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if ar.UpdatedAt != nil {
-			item.UpdatedAt = ar.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
 		}
 
 		items = append(items, item)
@@ -410,7 +388,8 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Obtener la lista de asignaciones de roles
 	assignedRoles, total, err := h.assignedRoleUseCase.List(r.Context(), filters, page, pageSize)
 	if err != nil {
-		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles")
+		log.Printf("ERROR al listar asignaciones de roles: %v", err)
+		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles: "+err.Error())
 		return
 	}
 
@@ -424,14 +403,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 			EntityType: ar.EntityType,
 			Restricted: ar.Restricted,
 			Scope:      ar.Scope,
-		}
-
-		if ar.CreatedAt != nil {
-			item.CreatedAt = ar.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if ar.UpdatedAt != nil {
-			item.UpdatedAt = ar.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
 		}
 
 		items = append(items, item)
