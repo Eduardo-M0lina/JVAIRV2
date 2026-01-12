@@ -1,0 +1,110 @@
+{
+  "info": {
+    "_postman_id": "settings-collection-id",
+    "name": "JVAIR Settings",
+    "description": "Endpoints de configuraciones del sistema para JVAIR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener configuraciones",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/settings",
+          "host": ["{{baseUrl}}"],
+          "path": ["settings"]
+        },
+        "description": "Obtiene las configuraciones generales del sistema (políticas de contraseñas, configuración de Twilio, etc.)"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar configuraciones",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"is_twilio_enabled\": false,\n    \"twilio_sid\": null,\n    \"twilio_auth_token\": null,\n    \"twilio_from_number\": null,\n    \"is_enforce_routine_password_reset\": true,\n    \"password_expire_days\": 90,\n    \"password_history_count\": 10,\n    \"password_minimum_length\": 8,\n    \"password_age\": 5,\n    \"password_include_numbers\": true,\n    \"password_include_symbols\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/settings",
+          "host": ["{{baseUrl}}"],
+          "path": ["settings"]
+        },
+        "description": "Actualiza las configuraciones generales del sistema"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar configuraciones (PATCH)",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"is_twilio_enabled\": false,\n    \"twilio_sid\": null,\n    \"twilio_auth_token\": null,\n    \"twilio_from_number\": null,\n    \"is_enforce_routine_password_reset\": true,\n    \"password_expire_days\": 90,\n    \"password_history_count\": 10,\n    \"password_minimum_length\": 8,\n    \"password_age\": 5,\n    \"password_include_numbers\": true,\n    \"password_include_symbols\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/settings",
+          "host": ["{{baseUrl}}"],
+          "path": ["settings"]
+        },
+        "description": "Actualiza las configuraciones generales del sistema (método alternativo usando PATCH)"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar configuraciones con Twilio habilitado",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"is_twilio_enabled\": true,\n    \"twilio_sid\": \"ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\",\n    \"twilio_auth_token\": \"your_auth_token_here\",\n    \"twilio_from_number\": \"+15555551234\",\n    \"is_enforce_routine_password_reset\": true,\n    \"password_expire_days\": 90,\n    \"password_history_count\": 10,\n    \"password_minimum_length\": 8,\n    \"password_age\": 5,\n    \"password_include_numbers\": true,\n    \"password_include_symbols\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/settings",
+          "host": ["{{baseUrl}}"],
+          "path": ["settings"]
+        },
+        "description": "Actualiza las configuraciones del sistema habilitando Twilio para envío de SMS"
+      },
+      "response": []
+    }
+  ]
+}

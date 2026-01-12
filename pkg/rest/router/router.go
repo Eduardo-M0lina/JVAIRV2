@@ -12,6 +12,7 @@ import (
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
+	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
@@ -25,6 +26,7 @@ func New(
 	abilityHandler *abilityHandler.Handler,
 	assignedRoleHandler *assignedRoleHandler.Handler,
 	permissionHandler *permissionHandler.Handler,
+	settingsHandler *settingsHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -64,6 +66,8 @@ func New(
 			RegisterAssignedRoleRoutes(r, assignedRoleHandler)
 			// Rutas de permisos
 			RegisterPermissionRoutes(r, permissionHandler)
+			// Rutas de configuraciones
+			SetupSettingsRoutes(r, settingsHandler, authMiddleware)
 		})
 	})
 	return r
