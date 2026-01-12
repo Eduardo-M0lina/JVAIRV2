@@ -5,11 +5,16 @@ import (
 
 	"github.com/your-org/jvairv2/configs"
 	commonAuth "github.com/your-org/jvairv2/pkg/common/auth"
+	"github.com/your-org/jvairv2/pkg/domain/ability"
+	"github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
+	"github.com/your-org/jvairv2/pkg/domain/permission"
 	"github.com/your-org/jvairv2/pkg/domain/role"
 	"github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/repository/mysql"
+	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
+	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
 	"github.com/your-org/jvairv2/pkg/rest/handler"
@@ -56,6 +61,8 @@ func NewContainer(configPath string) (*Container, error) {
 	userRepo := mysqlUser.NewRepository(dbConn.GetDB())
 	assignedRoleRepo := mysqlAssignedRole.NewRepository(dbConn.GetDB())
 	roleRepo := mysqlRole.NewRepository(dbConn.GetDB())
+	abilityRepo := mysqlAbility.NewRepository(dbConn.GetDB())
+	permissionRepo := mysqlPermission.NewRepository(dbConn.GetDB())
 
 	// Inicializar servicios
 	tokenStore := commonAuth.NewMemoryTokenStore()
@@ -71,6 +78,9 @@ func NewContainer(configPath string) (*Container, error) {
 	authUC := domainAuth.NewUseCase(userRepo, authService)
 	userUC := user.NewUseCase(userRepo, assignedRoleRepo, roleRepo)
 	roleUC := role.NewUseCase(roleRepo)
+	abilityUC := ability.NewUseCase(abilityRepo)
+	assignedRoleUC := assigned_role.NewUseCase(assignedRoleRepo, roleRepo)
+	permissionUC := permission.NewUseCase(permissionRepo, abilityRepo)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -79,9 +89,9 @@ func NewContainer(configPath string) (*Container, error) {
 	// Inicializar handlers con sus casos de uso
 	userHandler := &userHandler.Handler{} // TODO: Implementar correctamente
 	roleHandler := roleHandler.NewHandler(roleUC)
-	abilityHandler := &abilityHandler.Handler{}           // TODO: Implementar correctamente
-	assignedRoleHandler := &assignedRoleHandler.Handler{} // TODO: Implementar correctamente
-	permissionHandler := &permissionHandler.Handler{}     // TODO: Implementar correctamente
+	abilityHandler := abilityHandler.NewHandler(abilityUC)
+	assignedRoleHandler := assignedRoleHandler.NewHandler(assignedRoleUC)
+	permissionHandler := permissionHandler.NewHandler(permissionUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
