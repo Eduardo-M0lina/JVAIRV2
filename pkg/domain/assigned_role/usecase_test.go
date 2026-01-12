@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/your-org/jvairv2/pkg/domain/role"
@@ -25,7 +24,6 @@ func TestUseCase_GetByID(t *testing.T) {
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
 	scope := 1
-	now := time.Now()
 
 	expectedAssignedRole := &AssignedRole{
 		ID:         assignedRoleID,
@@ -34,8 +32,6 @@ func TestUseCase_GetByID(t *testing.T) {
 		EntityType: entityType,
 		Restricted: false,
 		Scope:      &scope,
-		CreatedAt:  &now,
-		UpdatedAt:  &now,
 	}
 
 	// Configurar el comportamiento esperado del mock
@@ -92,7 +88,6 @@ func TestUseCase_GetByEntity(t *testing.T) {
 	ctx := context.Background()
 	entityType := "App\\Models\\User"
 	entityID := int64(10)
-	now := time.Now()
 	scope1 := 1
 	scope2 := 2
 
@@ -104,8 +99,6 @@ func TestUseCase_GetByEntity(t *testing.T) {
 			EntityType: entityType,
 			Restricted: false,
 			Scope:      &scope1,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
 		},
 		{
 			ID:         2,
@@ -114,8 +107,6 @@ func TestUseCase_GetByEntity(t *testing.T) {
 			EntityType: entityType,
 			Restricted: true,
 			Scope:      &scope2,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
 		},
 	}
 
@@ -279,7 +270,6 @@ func TestUseCase_List(t *testing.T) {
 	page := 1
 	pageSize := 10
 
-	now := time.Now()
 	scope1 := 1
 	scope2 := 2
 
@@ -291,8 +281,6 @@ func TestUseCase_List(t *testing.T) {
 			EntityType: "App\\Models\\User",
 			Restricted: false,
 			Scope:      &scope1,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
 		},
 		{
 			ID:         2,
@@ -301,8 +289,6 @@ func TestUseCase_List(t *testing.T) {
 			EntityType: "App\\Models\\User",
 			Restricted: true,
 			Scope:      &scope2,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
 		},
 	}
 	expectedTotal := 2

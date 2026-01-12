@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
@@ -36,7 +35,7 @@ func TestAssign_Success(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT
 	mock.ExpectExec("INSERT INTO assigned_roles").
-		WithArgs(roleID, entityID, entityType, false, scope, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(roleID, entityID, entityType, nil, nil, scope).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Ejecutar la función que estamos probando
@@ -45,8 +44,6 @@ func TestAssign_Success(t *testing.T) {
 	// Verificar que no haya errores
 	assert.NoError(t, err)
 	assert.Equal(t, int64(1), assignedRole.ID)
-	assert.NotNil(t, assignedRole.CreatedAt)
-	assert.NotNil(t, assignedRole.UpdatedAt)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -113,7 +110,7 @@ func TestAssign_AdditionalCases(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT
 	mock.ExpectExec("INSERT INTO assigned_roles").
-		WithArgs(roleID, entityID, entityType, true, scope, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(roleID, entityID, entityType, nil, nil, scope).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Ejecutar la función que estamos probando
@@ -152,7 +149,7 @@ func TestAssign_WithNilScope(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT
 	mock.ExpectExec("INSERT INTO assigned_roles").
-		WithArgs(roleID, entityID, entityType, false, nil, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(roleID, entityID, entityType, nil, nil, nil).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Ejecutar la función que estamos probando
@@ -174,20 +171,20 @@ func TestGetByEntity_Success(t *testing.T) {
 	// Datos de prueba
 	entityType := "App\\Models\\User"
 	entityID := int64(10)
-	now := time.Now()
 	scope1 := 1
 	scope2 := 2
 
 	// Configurar la expectativa para la consulta
+	restrictedToID := int64(5)
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		1, 2, entityID, entityType, false, scope1, now, now,
+		1, 2, entityID, entityType, nil, nil, scope1,
 	).AddRow(
-		2, 3, entityID, entityType, true, scope2, now, now,
+		2, 3, entityID, entityType, restrictedToID, "App\\Models\\Customer", scope2,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
 		WithArgs(entityType, entityID).
 		WillReturnRows(rows)
 
@@ -223,10 +220,10 @@ func TestGetByEntity_EmptyResult(t *testing.T) {
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	})
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
 		WithArgs(entityType, entityID).
 		WillReturnRows(rows)
 
@@ -250,16 +247,15 @@ func TestGetByEntity_WithNilScope(t *testing.T) {
 	// Datos de prueba
 	entityType := "App\\Models\\User"
 	entityID := int64(10)
-	now := time.Now()
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		1, 2, entityID, entityType, false, nil, now, now,
+		1, 2, entityID, entityType, nil, nil, nil,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
 		WithArgs(entityType, entityID).
 		WillReturnRows(rows)
 
@@ -291,7 +287,7 @@ func TestGetByEntity_ErrorCase(t *testing.T) {
 	entityID := int64(10)
 
 	// Configurar la expectativa para la consulta con error
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE entity_type = \\? AND entity_id = \\?").
 		WithArgs(entityType, entityID).
 		WillReturnError(sqlmock.ErrCancelled)
 
@@ -317,16 +313,15 @@ func TestGetByID_Success(t *testing.T) {
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
 	scope := 1
-	now := time.Now()
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		assignedRoleID, roleID, entityID, entityType, false, scope, now, now,
+		assignedRoleID, roleID, entityID, entityType, nil, nil, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE id = \\?").
 		WithArgs(assignedRoleID).
 		WillReturnRows(rows)
 
@@ -342,8 +337,6 @@ func TestGetByID_Success(t *testing.T) {
 	assert.Equal(t, entityType, assignedRole.EntityType)
 	assert.Equal(t, false, assignedRole.Restricted)
 	assert.Equal(t, scope, *assignedRole.Scope)
-	assert.NotNil(t, assignedRole.CreatedAt)
-	assert.NotNil(t, assignedRole.UpdatedAt)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -358,7 +351,7 @@ func TestGetByID_NotFound(t *testing.T) {
 	assignedRoleID := int64(999)
 
 	// Configurar la expectativa para la consulta
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE id = \\?").
 		WithArgs(assignedRoleID).
 		WillReturnError(sql.ErrNoRows)
 
@@ -385,16 +378,15 @@ func TestGetByID_WithNilScope(t *testing.T) {
 	roleID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		assignedRoleID, roleID, entityID, entityType, false, nil, now, now,
+		assignedRoleID, roleID, entityID, entityType, nil, nil, nil,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE id = \\?").
 		WithArgs(assignedRoleID).
 		WillReturnRows(rows)
 
@@ -425,7 +417,7 @@ func TestGetByID_ErrorCase(t *testing.T) {
 	assignedRoleID := int64(1)
 
 	// Configurar la expectativa para la consulta con error
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE id = \\?").
 		WithArgs(assignedRoleID).
 		WillReturnError(sqlmock.ErrCancelled)
 
@@ -526,7 +518,6 @@ func TestList_Success(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
-	now := time.Now()
 	scope1 := 1
 	scope2 := 2
 
@@ -536,15 +527,16 @@ func TestList_Success(t *testing.T) {
 		WillReturnRows(countRows)
 
 	// Configurar la expectativa para la consulta SELECT
+	restrictedToID := int64(5)
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		1, 2, 10, "App\\Models\\User", false, scope1, now, now,
+		1, 2, 10, "App\\Models\\User", nil, nil, scope1,
 	).AddRow(
-		2, 3, 20, "App\\Models\\User", true, scope2, now, now,
+		2, 3, 20, "App\\Models\\User", restrictedToID, "App\\Models\\Customer", scope2,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles ORDER BY id ASC LIMIT \\? OFFSET \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles ORDER BY id ASC LIMIT \\? OFFSET \\?").
 		WithArgs(10, 0).
 		WillReturnRows(rows)
 
@@ -577,7 +569,6 @@ func TestList_WithFilters(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
-	now := time.Now()
 	scope := 1
 	filters := map[string]interface{}{
 		"role_id":     int64(2),
@@ -593,12 +584,12 @@ func TestList_WithFilters(t *testing.T) {
 
 	// Configurar la expectativa para la consulta SELECT
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		1, 2, 10, "App\\Models\\User", false, scope, now, now,
+		1, 2, 10, "App\\Models\\User", nil, nil, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE").
 		WillReturnRows(rows)
 
 	// Ejecutar la función que estamos probando
@@ -669,7 +660,7 @@ func TestList_QueryError(t *testing.T) {
 		WillReturnRows(countRows)
 
 	// Configurar la expectativa para la consulta SELECT con error
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles ORDER BY id ASC LIMIT \\? OFFSET \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles ORDER BY id ASC LIMIT \\? OFFSET \\?").
 		WithArgs(10, 0).
 		WillReturnError(sqlmock.ErrCancelled)
 
@@ -691,7 +682,6 @@ func TestList_WithPartialFilters(t *testing.T) {
 	defer func() { _ = db.Close() }()
 
 	// Datos de prueba
-	now := time.Now()
 	scope := 1
 	filters := map[string]interface{}{
 		"role_id": int64(2),
@@ -706,12 +696,12 @@ func TestList_WithPartialFilters(t *testing.T) {
 
 	// Configurar la expectativa para la consulta SELECT
 	rows := sqlmock.NewRows([]string{
-		"id", "role_id", "entity_id", "entity_type", "restricted", "scope", "created_at", "updated_at",
+		"id", "role_id", "entity_id", "entity_type", "restricted_to_id", "restricted_to_type", "scope",
 	}).AddRow(
-		1, 2, 10, "App\\Models\\User", false, scope, now, now,
+		1, 2, 10, "App\\Models\\User", nil, nil, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted, scope, created_at, updated_at FROM assigned_roles WHERE role_id = \\? ORDER BY id ASC LIMIT \\? OFFSET \\?").
+	mock.ExpectQuery("SELECT id, role_id, entity_id, entity_type, restricted_to_id, restricted_to_type, scope FROM assigned_roles WHERE role_id = \\? ORDER BY id ASC LIMIT \\? OFFSET \\?").
 		WithArgs(int64(2), 10, 0).
 		WillReturnRows(rows)
 
