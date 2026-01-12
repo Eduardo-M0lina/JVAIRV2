@@ -6,7 +6,11 @@ import (
 	"github.com/your-org/jvairv2/configs"
 	commonAuth "github.com/your-org/jvairv2/pkg/common/auth"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
+	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/repository/mysql"
+	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
+	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
 	"github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
@@ -50,6 +54,8 @@ func NewContainer(configPath string) (*Container, error) {
 
 	// Inicializar repositorios
 	userRepo := mysqlUser.NewRepository(dbConn.GetDB())
+	assignedRoleRepo := mysqlAssignedRole.NewRepository(dbConn.GetDB())
+	roleRepo := mysqlRole.NewRepository(dbConn.GetDB())
 
 	// Inicializar servicios
 	tokenStore := commonAuth.NewMemoryTokenStore()
@@ -63,18 +69,19 @@ func NewContainer(configPath string) (*Container, error) {
 
 	// Inicializar casos de uso
 	authUC := domainAuth.NewUseCase(userRepo, authService)
+	userUC := user.NewUseCase(userRepo, assignedRoleRepo, roleRepo)
+	roleUC := role.NewUseCase(roleRepo)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHandler := authHandler.NewHandler(authUC)
 
-	// TODO: Implementar los casos de uso para estos handlers
-	// Por ahora, usamos nil para permitir la compilación
-	userHandler := &userHandler.Handler{}
-	roleHandler := &roleHandler.Handler{}
-	abilityHandler := &abilityHandler.Handler{}
-	assignedRoleHandler := &assignedRoleHandler.Handler{}
-	permissionHandler := &permissionHandler.Handler{}
+	// Inicializar handlers con sus casos de uso
+	userHandler := &userHandler.Handler{} // TODO: Implementar correctamente
+	roleHandler := roleHandler.NewHandler(roleUC)
+	abilityHandler := &abilityHandler.Handler{}           // TODO: Implementar correctamente
+	assignedRoleHandler := &assignedRoleHandler.Handler{} // TODO: Implementar correctamente
+	permissionHandler := &permissionHandler.Handler{}     // TODO: Implementar correctamente
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -89,6 +96,7 @@ func NewContainer(configPath string) (*Container, error) {
 		assignedRoleHandler,
 		permissionHandler,
 		authMiddleware,
+		userUC,
 	)
 
 	return &Container{

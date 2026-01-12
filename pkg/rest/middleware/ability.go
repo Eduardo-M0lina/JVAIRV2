@@ -3,32 +3,52 @@ package middleware
 import (
 	"context"
 	"net/http"
+	"strconv"
+
+	"github.com/your-org/jvairv2/pkg/domain/user"
 )
 
 // abilityKey es la clave para almacenar las habilidades del usuario en el contexto
 type abilityKey struct{}
 
 // WithAbilities agrega las habilidades del usuario al contexto
-func WithAbilities(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// En un caso real, aquí se obtendrían las habilidades del usuario
-		// desde el token JWT o desde la base de datos
-		abilities := []string{
-			"create_user",
-			"view_user",
-			"update_user",
-			"delete_user",
-			"list_users",
-			"view_user_roles",
-			"view_user_abilities",
-		}
+func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Obtener el usuario del contexto
+			userCtx := r.Context().Value(UserContextKey)
+			if userCtx == nil {
+				next.ServeHTTP(w, r)
+				return
+			}
 
-		// Agregar las habilidades al contexto
-		ctx := context.WithValue(r.Context(), abilityKey{}, abilities)
+			// Convertir el usuario a un objeto User
+			u, ok := userCtx.(*user.User)
+			if !ok {
+				next.ServeHTTP(w, r)
+				return
+			}
 
-		// Continuar con el siguiente handler
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
+			// Obtener las habilidades del usuario desde la base de datos
+			abilities, err := userUseCase.GetUserAbilities(r.Context(), strconv.FormatInt(u.ID, 10))
+			if err != nil {
+				next.ServeHTTP(w, r)
+				return
+			}
+
+			// Convertir las habilidades a un slice de strings
+			abilityNames := make([]string, len(abilities))
+			for i, a := range abilities {
+				abilityNames[i] = a.Name
+			}
+
+			// Agregar las habilidades al contexto
+			ctx := context.WithValue(r.Context(), abilityKey{}, abilityNames)
+
+			// Continuar con el siguiente handler
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
 }
 
 // HasAbility verifica si el usuario tiene una habilidad específica
@@ -39,7 +59,14 @@ func HasAbility(ctx context.Context, ability string) bool {
 		return false
 	}
 
-	// Verificar si el usuario tiene la habilidad
+	// Verificar si el usuario tiene la habilidad "*" (superadmin)
+	for _, a := range abilities {
+		if a == "*" {
+			return true
+		}
+	}
+
+	// Verificar si el usuario tiene la habilidad específica
 	for _, a := range abilities {
 		if a == ability {
 			return true
