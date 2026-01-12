@@ -1,31 +1,31 @@
 package main
 
 import (
-	"net/http"
+	http "net/http"
 
-	"github.com/your-org/jvairv2/configs"
+	configs "github.com/your-org/jvairv2/configs"
 	commonAuth "github.com/your-org/jvairv2/pkg/common/auth"
-	"github.com/your-org/jvairv2/pkg/domain/ability"
-	"github.com/your-org/jvairv2/pkg/domain/assigned_role"
+	ability "github.com/your-org/jvairv2/pkg/domain/ability"
+	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
-	"github.com/your-org/jvairv2/pkg/domain/permission"
-	"github.com/your-org/jvairv2/pkg/domain/role"
-	"github.com/your-org/jvairv2/pkg/domain/user"
-	"github.com/your-org/jvairv2/pkg/repository/mysql"
+	permission "github.com/your-org/jvairv2/pkg/domain/permission"
+	role "github.com/your-org/jvairv2/pkg/domain/role"
+	user "github.com/your-org/jvairv2/pkg/domain/user"
+	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
-	"github.com/your-org/jvairv2/pkg/rest/handler"
+	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/router"
+	middleware "github.com/your-org/jvairv2/pkg/rest/middleware"
+	router "github.com/your-org/jvairv2/pkg/rest/router"
 )
 
 // Container contiene todas las dependencias de la aplicación
@@ -79,7 +79,7 @@ func NewContainer(configPath string) (*Container, error) {
 	userUC := user.NewUseCase(userRepo, assignedRoleRepo, roleRepo)
 	roleUC := role.NewUseCase(roleRepo)
 	abilityUC := ability.NewUseCase(abilityRepo)
-	assignedRoleUC := assigned_role.NewUseCase(assignedRoleRepo, roleRepo)
+	assignedRoleUC := assignedRole.NewUseCase(assignedRoleRepo, roleRepo)
 	permissionUC := permission.NewUseCase(permissionRepo, abilityRepo)
 
 	// Inicializar handlers
