@@ -1477,6 +1477,113 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/settings": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene las configuraciones generales del sistema (políticas de contraseñas, Twilio, etc.)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Obtener configuraciones del sistema",
+                "responses": {
+                    "200": {
+                        "description": "Configuraciones obtenidas exitosamente",
+                        "schema": {
+                            "$ref": "#/definitions/settings.SettingsResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "No tiene permisos para ver configuraciones",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Configuraciones no encontradas",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza las configuraciones generales del sistema. Ejemplo: {\"is_twilio_enabled\": false, \"twilio_sid\": null, \"twilio_auth_token\": null, \"twilio_from_number\": null, \"is_enforce_routine_password_reset\": true, \"password_expire_days\": 90, \"password_history_count\": 10, \"password_minimum_length\": 8, \"password_age\": 5, \"password_include_numbers\": true, \"password_include_symbols\": true}",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Actualizar configuraciones del sistema",
+                "parameters": [
+                    {
+                        "description": "Datos de las configuraciones a actualizar",
+                        "name": "settings",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/settings.UpdateSettingsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Configuraciones actualizadas exitosamente",
+                        "schema": {
+                            "$ref": "#/definitions/settings.SettingsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error al decodificar la solicitud o datos inválidos",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "No tiene permisos para actualizar configuraciones",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Configuraciones no encontradas",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/users": {
             "get": {
                 "security": [
@@ -2479,6 +2586,95 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "settings.SettingsResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "is_enforce_routine_password_reset": {
+                    "type": "boolean"
+                },
+                "is_twilio_enabled": {
+                    "type": "boolean"
+                },
+                "password_age": {
+                    "type": "integer"
+                },
+                "password_expire_days": {
+                    "type": "integer"
+                },
+                "password_history_count": {
+                    "type": "integer"
+                },
+                "password_include_numbers": {
+                    "type": "boolean"
+                },
+                "password_include_symbols": {
+                    "type": "boolean"
+                },
+                "password_minimum_length": {
+                    "type": "integer"
+                },
+                "twilio_auth_token": {
+                    "type": "string"
+                },
+                "twilio_from_number": {
+                    "type": "string"
+                },
+                "twilio_sid": {
+                    "type": "string"
+                }
+            }
+        },
+        "settings.UpdateSettingsRequest": {
+            "type": "object",
+            "required": [
+                "password_age",
+                "password_expire_days",
+                "password_history_count",
+                "password_minimum_length"
+            ],
+            "properties": {
+                "is_enforce_routine_password_reset": {
+                    "type": "boolean"
+                },
+                "is_twilio_enabled": {
+                    "type": "boolean"
+                },
+                "password_age": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "password_expire_days": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "password_history_count": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "password_include_numbers": {
+                    "type": "boolean"
+                },
+                "password_include_symbols": {
+                    "type": "boolean"
+                },
+                "password_minimum_length": {
+                    "type": "integer",
+                    "minimum": 4
+                },
+                "twilio_auth_token": {
+                    "type": "string"
+                },
+                "twilio_from_number": {
+                    "type": "string"
+                },
+                "twilio_sid": {
                     "type": "string"
                 }
             }
