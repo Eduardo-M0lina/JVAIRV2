@@ -44,8 +44,6 @@ type AssignedRoleResponse struct {
 	EntityType string `json:"entity_type"`
 	Restricted bool   `json:"restricted"`
 	Scope      *int   `json:"scope,omitempty"`
-	CreatedAt  string `json:"created_at,omitempty"`
-	UpdatedAt  string `json:"updated_at,omitempty"`
 }
 
 // Assign maneja la solicitud de asignación de un rol a una entidad
@@ -110,14 +108,6 @@ func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 		Scope:      assignedRole.Scope,
 	}
 
-	if assignedRole.CreatedAt != nil {
-		resp.CreatedAt = assignedRole.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if assignedRole.UpdatedAt != nil {
-		resp.UpdatedAt = assignedRole.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
 	response.JSON(w, http.StatusCreated, resp)
 }
 
@@ -171,14 +161,6 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 		Scope:      assignedRole.Scope,
 	}
 
-	if assignedRole.CreatedAt != nil {
-		resp.CreatedAt = assignedRole.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if assignedRole.UpdatedAt != nil {
-		resp.UpdatedAt = assignedRole.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
 	response.JSON(w, http.StatusOK, resp)
 }
 
@@ -228,14 +210,6 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 			EntityType: ar.EntityType,
 			Restricted: ar.Restricted,
 			Scope:      ar.Scope,
-		}
-
-		if ar.CreatedAt != nil {
-			item.CreatedAt = ar.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if ar.UpdatedAt != nil {
-			item.UpdatedAt = ar.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
 		}
 
 		items = append(items, item)
@@ -426,14 +400,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 			EntityType: ar.EntityType,
 			Restricted: ar.Restricted,
 			Scope:      ar.Scope,
-		}
-
-		if ar.CreatedAt != nil {
-			item.CreatedAt = ar.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if ar.UpdatedAt != nil {
-			item.UpdatedAt = ar.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
 		}
 
 		items = append(items, item)
