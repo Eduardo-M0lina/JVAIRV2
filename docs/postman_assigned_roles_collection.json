@@ -77,14 +77,41 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"role_id\": 1,\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"restricted\": false,\n    \"scope\": 1\n}"
+          "raw": "{\n    \"role_id\": 4,\n    \"entity_type\": \"App\\\\Models\\\\User\",\n    \"entity_id\": 148,\n    \"restricted_to_id\": null,\n    \"restricted_to_type\": null,\n    \"scope\": null\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/assigned-roles",
           "host": ["{{baseUrl}}"],
           "path": ["assigned-roles"]
         },
-        "description": "Asigna un rol a una entidad"
+        "description": "Asigna un rol a una entidad sin restricción"
+      },
+      "response": []
+    },
+    {
+      "name": "Asignar rol con restricción",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"role_id\": 4,\n    \"entity_type\": \"App\\\\Models\\\\User\",\n    \"entity_id\": 148,\n    \"restricted_to_id\": 10,\n    \"restricted_to_type\": \"App\\\\Models\\\\Customer\",\n    \"scope\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/assigned-roles",
+          "host": ["{{baseUrl}}"],
+          "path": ["assigned-roles"]
+        },
+        "description": "Asigna un rol a una entidad con restricción a un cliente específico"
       },
       "response": []
     },
@@ -105,7 +132,7 @@
           "variable": [
             {
               "key": "id",
-              "value": "1",
+              "value": "11",
               "description": "ID de la asignación de rol"
             }
           ]
@@ -131,17 +158,17 @@
           "variable": [
             {
               "key": "role_id",
-              "value": "1",
+              "value": "4",
               "description": "ID del rol"
             },
             {
               "key": "entity_type",
-              "value": "user",
-              "description": "Tipo de entidad"
+              "value": "App\\Models\\User",
+              "description": "Tipo de entidad (ej: App\\Models\\User, App\\Models\\Customer)"
             },
             {
               "key": "entity_id",
-              "value": "1",
+              "value": "30",
               "description": "ID de la entidad"
             }
           ]
@@ -167,12 +194,12 @@
           "variable": [
             {
               "key": "entity_type",
-              "value": "user",
-              "description": "Tipo de entidad"
+              "value": "App\\Models\\User",
+              "description": "Tipo de entidad (ej: App\\Models\\User, App\\Models\\Customer)"
             },
             {
               "key": "entity_id",
-              "value": "1",
+              "value": "30",
               "description": "ID de la entidad"
             }
           ]
@@ -198,17 +225,17 @@
           "variable": [
             {
               "key": "role_id",
-              "value": "1",
+              "value": "4",
               "description": "ID del rol"
             },
             {
               "key": "entity_type",
-              "value": "user",
-              "description": "Tipo de entidad"
+              "value": "App\\Models\\User",
+              "description": "Tipo de entidad (ej: App\\Models\\User, App\\Models\\Customer)"
             },
             {
               "key": "entity_id",
-              "value": "1",
+              "value": "30",
               "description": "ID de la entidad"
             }
           ]
