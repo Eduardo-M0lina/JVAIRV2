@@ -12,6 +12,7 @@ import (
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
 	user "github.com/your-org/jvairv2/pkg/domain/user"
+	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
@@ -19,6 +20,7 @@ import (
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
+	mysqlWorkflow "github.com/your-org/jvairv2/pkg/repository/mysql/workflow"
 	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
@@ -27,6 +29,7 @@ import (
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
+	workflowHandler "github.com/your-org/jvairv2/pkg/rest/handler/workflow"
 	middleware "github.com/your-org/jvairv2/pkg/rest/middleware"
 	router "github.com/your-org/jvairv2/pkg/rest/router"
 )
@@ -43,6 +46,7 @@ type Container struct {
 	AssignedRoleHandler *assignedRoleHandler.Handler
 	PermissionHandler   *permissionHandler.Handler
 	SettingsHandler     *settingsHandler.Handler
+	WorkflowHandler     *workflowHandler.Handler
 	AuthMiddleware      *middleware.AuthMiddleware
 	Router              http.Handler
 }
@@ -68,6 +72,7 @@ func NewContainer(configPath string) (*Container, error) {
 	abilityRepo := mysqlAbility.NewRepository(dbConn.GetDB())
 	permissionRepo := mysqlPermission.NewRepository(dbConn.GetDB())
 	settingsRepo := mysqlSettings.NewRepository(dbConn.GetDB())
+	workflowRepo := mysqlWorkflow.NewRepository(dbConn.GetDB())
 
 	// Inicializar servicios
 	tokenStore := commonAuth.NewMemoryTokenStore()
@@ -87,6 +92,7 @@ func NewContainer(configPath string) (*Container, error) {
 	assignedRoleUC := assignedRole.NewUseCase(assignedRoleRepo, roleRepo)
 	permissionUC := permission.NewUseCase(permissionRepo, abilityRepo)
 	settingsUC := settings.NewUseCase(settingsRepo)
+	workflowUC := workflow.NewUseCase(workflowRepo)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -99,6 +105,7 @@ func NewContainer(configPath string) (*Container, error) {
 	assignedRoleHandler := assignedRoleHandler.NewHandler(assignedRoleUC)
 	permissionHandler := permissionHandler.NewHandler(permissionUC)
 	settingsHandler := settingsHandler.NewHandler(settingsUC)
+	workflowHandler := workflowHandler.NewHandler(workflowUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -113,6 +120,7 @@ func NewContainer(configPath string) (*Container, error) {
 		assignedRoleHandler,
 		permissionHandler,
 		settingsHandler,
+		workflowHandler,
 		authMiddleware,
 		userUC,
 	)
@@ -128,6 +136,7 @@ func NewContainer(configPath string) (*Container, error) {
 		AssignedRoleHandler: assignedRoleHandler,
 		PermissionHandler:   permissionHandler,
 		SettingsHandler:     settingsHandler,
+		WorkflowHandler:     workflowHandler,
 		AuthMiddleware:      authMiddleware,
 		Router:              r,
 	}, nil

@@ -1,0 +1,198 @@
+{
+  "info": {
+    "_postman_id": "workflows-collection-id",
+    "name": "JVAIR Workflows",
+    "description": "Endpoints de workflows para JVAIR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar workflows",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/workflows?page=1&page_size=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["workflows"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Número de página (por defecto: 1)"
+            },
+            {
+              "key": "page_size",
+              "value": "10",
+              "description": "Tamaño de página (por defecto: 10)"
+            },
+            {
+              "key": "name",
+              "value": "",
+              "description": "Filtrar por nombre",
+              "disabled": true
+            },
+            {
+              "key": "is_active",
+              "value": "true",
+              "description": "Filtrar por estado activo",
+              "disabled": true
+            },
+            {
+              "key": "search",
+              "value": "",
+              "description": "Búsqueda en nombre y notas",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Obtiene una lista paginada de workflows con filtros opcionales"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener workflow por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/workflows/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["workflows", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del workflow"
+            }
+          ]
+        },
+        "description": "Obtiene un workflow por su ID incluyendo sus statuses asociados"
+      },
+      "response": []
+    },
+    {
+      "name": "Crear workflow",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Workflow de Instalación\",\n    \"notes\": \"Flujo para trabajos de instalación de nuevos equipos\",\n    \"is_active\": true,\n    \"statuses\": [1, 2, 3, 4]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/workflows",
+          "host": ["{{baseUrl}}"],
+          "path": ["workflows"]
+        },
+        "description": "Crea un nuevo workflow con sus statuses asociados. El campo 'statuses' es un array de IDs de job_statuses que se asociarán al workflow en el orden especificado."
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar workflow",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Workflow de Instalación Actualizado\",\n    \"notes\": \"Flujo actualizado para trabajos de instalación\",\n    \"is_active\": true,\n    \"statuses\": [1, 2, 3]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/workflows/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["workflows", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del workflow a actualizar"
+            }
+          ]
+        },
+        "description": "Actualiza un workflow existente y sus statuses asociados"
+      },
+      "response": []
+    },
+    {
+      "name": "Duplicar workflow",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/workflows/:id/duplicate",
+          "host": ["{{baseUrl}}"],
+          "path": ["workflows", ":id", "duplicate"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del workflow a duplicar"
+            }
+          ]
+        },
+        "description": "Duplica un workflow existente con todos sus statuses. El nuevo workflow tendrá el nombre 'Copy of {nombre original} ({nuevo_id})'"
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar workflow",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/workflows/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["workflows", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del workflow a eliminar"
+            }
+          ]
+        },
+        "description": "Elimina un workflow y sus relaciones con job_statuses"
+      },
+      "response": []
+    }
+  ]
+}
