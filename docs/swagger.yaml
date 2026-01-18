@@ -511,6 +511,60 @@ definitions:
       statusName:
         type: string
     type: object
+  workflow.CreateWorkflowRequest:
+    properties:
+      is_active:
+        type: boolean
+      name:
+        type: string
+      notes:
+        type: string
+      statuses:
+        items:
+          type: integer
+        type: array
+    required:
+    - name
+    type: object
+  workflow.UpdateWorkflowRequest:
+    properties:
+      is_active:
+        type: boolean
+      name:
+        type: string
+      notes:
+        type: string
+      statuses:
+        items:
+          type: integer
+        type: array
+    required:
+    - name
+    type: object
+  workflow.WorkflowResponse:
+    properties:
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      name:
+        type: string
+      notes:
+        type: string
+      statuses:
+        items:
+          $ref: '#/definitions/workflow.WorkflowStatusResponse'
+        type: array
+    type: object
+  workflow.WorkflowStatusResponse:
+    properties:
+      job_status_id:
+        type: integer
+      order:
+        type: integer
+      status_name:
+        type: string
+    type: object
 info:
   contact: {}
 paths:

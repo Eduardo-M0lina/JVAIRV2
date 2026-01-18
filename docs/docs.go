@@ -3289,6 +3289,89 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "workflow.CreateWorkflowRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "statuses": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "workflow.UpdateWorkflowRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "statuses": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "workflow.WorkflowResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "statuses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
+                    }
+                }
+            }
+        },
+        "workflow.WorkflowStatusResponse": {
+            "type": "object",
+            "properties": {
+                "job_status_id": {
+                    "type": "integer"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "status_name": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
