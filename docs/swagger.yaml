@@ -1,39 +1,4 @@
 definitions:
-  ability.Ability:
-    properties:
-      createdAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      entityID:
-        description: bigint unsigned DEFAULT NULL
-        format: int64
-        type: integer
-      entityType:
-        description: varchar(191) DEFAULT NULL
-        type: string
-      id:
-        description: bigint unsigned NOT NULL AUTO_INCREMENT
-        format: int64
-        type: integer
-      name:
-        description: varchar(191) NOT NULL
-        type: string
-      onlyOwned:
-        description: tinyint(1) NOT NULL DEFAULT '0'
-        type: boolean
-      options:
-        description: json DEFAULT NULL
-        type: string
-      scope:
-        description: int DEFAULT NULL
-        type: integer
-      title:
-        description: varchar(191) DEFAULT NULL
-        type: string
-      updatedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-    type: object
   ability.AbilityResponse:
     properties:
       createdAt:
@@ -167,18 +132,170 @@ definitions:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
     type: object
+  customer.CreateCustomerRequest:
+    properties:
+      billingAddressCity:
+        example: New York
+        type: string
+      billingAddressState:
+        example: NY
+        type: string
+      billingAddressStreet:
+        example: 123 Main St
+        type: string
+      billingAddressZip:
+        example: "10001"
+        type: string
+      contactEmail:
+        example: john@acme.com
+        type: string
+      contactName:
+        example: John Doe
+        type: string
+      contactPhone:
+        example: +1-555-0104
+        type: string
+      email:
+        example: contact@acme.com
+        type: string
+      fax:
+        example: +1-555-0102
+        type: string
+      mobile:
+        example: +1-555-0101
+        type: string
+      name:
+        example: ACME Corporation
+        type: string
+      notes:
+        example: Important client notes
+        type: string
+      phone:
+        example: +1-555-0100
+        type: string
+      phoneOther:
+        example: +1-555-0103
+        type: string
+      website:
+        example: https://acme.com
+        type: string
+      workflowId:
+        example: 5
+        type: integer
+    type: object
+  customer.CustomerResponse:
+    properties:
+      billingAddress:
+        $ref: '#/definitions/pkg_rest_handler_customer.BillingAddress'
+      contactEmail:
+        example: john@acme.com
+        type: string
+      contactName:
+        example: John Doe
+        type: string
+      contactPhone:
+        example: +1-555-0104
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      email:
+        example: contact@acme.com
+        type: string
+      fax:
+        example: +1-555-0102
+        type: string
+      id:
+        example: 1
+        type: integer
+      mobile:
+        example: +1-555-0101
+        type: string
+      name:
+        example: ACME Corporation
+        type: string
+      notes:
+        example: Important client notes
+        type: string
+      phone:
+        example: +1-555-0100
+        type: string
+      phoneOther:
+        example: +1-555-0103
+        type: string
+      updatedAt:
+        example: "2024-01-18T14:20:00Z"
+        type: string
+      website:
+        example: https://acme.com
+        type: string
+      workflowId:
+        example: 5
+        type: integer
+    type: object
+  customer.UpdateCustomerRequest:
+    properties:
+      billingAddressCity:
+        example: New York
+        type: string
+      billingAddressState:
+        example: NY
+        type: string
+      billingAddressStreet:
+        example: 123 Main St
+        type: string
+      billingAddressZip:
+        example: "10001"
+        type: string
+      contactEmail:
+        example: john@acme.com
+        type: string
+      contactName:
+        example: John Doe
+        type: string
+      contactPhone:
+        example: +1-555-0104
+        type: string
+      email:
+        example: contact@acme.com
+        type: string
+      fax:
+        example: +1-555-0102
+        type: string
+      mobile:
+        example: +1-555-0101
+        type: string
+      name:
+        example: ACME Corporation
+        type: string
+      notes:
+        example: Important client notes
+        type: string
+      phone:
+        example: +1-555-0100
+        type: string
+      phoneOther:
+        example: +1-555-0103
+        type: string
+      website:
+        example: https://acme.com
+        type: string
+      workflowId:
+        example: 5
+        type: integer
+    type: object
   permission.CreatePermissionRequest:
     properties:
       abilityId:
         type: integer
-      conditions:
-        type: string
       entityId:
         type: integer
       entityType:
         type: string
       forbidden:
         type: boolean
+      scope:
+        type: integer
     required:
     - abilityId
     - entityId
@@ -188,10 +305,6 @@ definitions:
     properties:
       abilityId:
         type: integer
-      conditions:
-        type: string
-      createdAt:
-        type: string
       entityId:
         type: integer
       entityType:
@@ -200,25 +313,106 @@ definitions:
         type: boolean
       id:
         type: integer
-      updatedAt:
-        type: string
+      scope:
+        type: integer
     type: object
   permission.UpdatePermissionRequest:
     properties:
       abilityId:
         type: integer
-      conditions:
-        type: string
       entityId:
         type: integer
       entityType:
         type: string
       forbidden:
         type: boolean
+      scope:
+        type: integer
     required:
     - abilityId
     - entityId
     - entityType
+    type: object
+  pkg_rest_handler_customer.BillingAddress:
+    properties:
+      city:
+        example: New York
+        type: string
+      state:
+        example: NY
+        type: string
+      street:
+        example: 123 Main St
+        type: string
+      zip:
+        example: "10001"
+        type: string
+    type: object
+  property.CreatePropertyRequest:
+    properties:
+      city:
+        type: string
+      customerId:
+        type: integer
+      notes:
+        type: string
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      zip:
+        type: string
+    type: object
+  property.PropertyResponse:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      createdAt:
+        type: string
+      customerId:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      notes:
+        type: string
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      updatedAt:
+        type: string
+      zip:
+        type: string
+    type: object
+  property.UpdatePropertyRequest:
+    properties:
+      city:
+        type: string
+      customerId:
+        type: integer
+      notes:
+        type: string
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      zip:
+        type: string
+    type: object
+  response.ErrorResponse:
+    properties:
+      error:
+        type: string
     type: object
   response.PaginatedResponse:
     properties:
@@ -242,28 +436,6 @@ definitions:
         type: string
     required:
     - name
-    type: object
-  role.Role:
-    properties:
-      createdAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      id:
-        description: bigint unsigned NOT NULL AUTO_INCREMENT
-        format: int64
-        type: integer
-      name:
-        description: varchar(191) NOT NULL
-        type: string
-      scope:
-        description: int DEFAULT NULL
-        type: integer
-      title:
-        description: varchar(191) DEFAULT NULL
-        type: string
-      updatedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
     type: object
   role.RoleResponse:
     properties:
@@ -511,60 +683,6 @@ definitions:
       statusName:
         type: string
     type: object
-  workflow.CreateWorkflowRequest:
-    properties:
-      is_active:
-        type: boolean
-      name:
-        type: string
-      notes:
-        type: string
-      statuses:
-        items:
-          type: integer
-        type: array
-    required:
-    - name
-    type: object
-  workflow.UpdateWorkflowRequest:
-    properties:
-      is_active:
-        type: boolean
-      name:
-        type: string
-      notes:
-        type: string
-      statuses:
-        items:
-          type: integer
-        type: array
-    required:
-    - name
-    type: object
-  workflow.WorkflowResponse:
-    properties:
-      id:
-        type: integer
-      is_active:
-        type: boolean
-      name:
-        type: string
-      notes:
-        type: string
-      statuses:
-        items:
-          $ref: '#/definitions/workflow.WorkflowStatusResponse'
-        type: array
-    type: object
-  workflow.WorkflowStatusResponse:
-    properties:
-      job_status_id:
-        type: integer
-      order:
-        type: integer
-      status_name:
-        type: string
-    type: object
 info:
   contact: {}
 paths:
@@ -580,7 +698,7 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -588,7 +706,7 @@ paths:
         type: string
       - description: Filtrar por tipo de entidad
         in: query
-        name: entity_type
+        name: entityType
         type: string
       - description: Filtrar por scope
         in: query
@@ -772,19 +890,19 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por ID de rol
         in: query
-        name: role_id
+        name: roleId
         type: integer
       - description: Filtrar por tipo de entidad
         in: query
-        name: entity_type
+        name: entityType
         type: string
       - description: Filtrar por ID de entidad
         in: query
-        name: entity_id
+        name: entityId
         type: integer
       - description: Filtrar por restricción
         in: query
@@ -886,7 +1004,7 @@ paths:
       summary: Obtener asignación de rol
       tags:
       - AssignedRoles
-  /api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/check/{roleId}/{entityType}/{entityId}:
     get:
       consumes:
       - application/json
@@ -894,17 +1012,17 @@ paths:
       parameters:
       - description: ID del rol
         in: path
-        name: role_id
+        name: roleId
         required: true
         type: integer
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -967,7 +1085,7 @@ paths:
       summary: Obtener asignaciones de roles por entidad
       tags:
       - AssignedRoles
-  /api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/revoke/{roleId}/{entityType}/{entityId}:
     delete:
       consumes:
       - application/json
@@ -975,17 +1093,17 @@ paths:
       parameters:
       - description: ID del rol
         in: path
-        name: role_id
+        name: roleId
         required: true
         type: integer
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1022,19 +1140,19 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por ID de ability
         in: query
-        name: ability_id
+        name: abilityId
         type: integer
       - description: Filtrar por tipo de entidad
         in: query
-        name: entity_type
+        name: entityType
         type: string
       - description: Filtrar por ID de entidad
         in: query
-        name: entity_id
+        name: entityId
         type: integer
       - description: Filtrar por prohibición
         in: query
@@ -1206,7 +1324,7 @@ paths:
       summary: Actualizar permiso
       tags:
       - Permissions
-  /api/v1/permissions/ability/{ability_id}:
+  /api/v1/permissions/ability/{abilityId}:
     get:
       consumes:
       - application/json
@@ -1214,7 +1332,7 @@ paths:
       parameters:
       - description: ID de la ability
         in: path
-        name: ability_id
+        name: abilityId
         required: true
         type: integer
       produces:
@@ -1239,7 +1357,7 @@ paths:
       summary: Obtener permisos por ability
       tags:
       - Permissions
-  /api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}:
+  /api/v1/permissions/check/{abilityId}/{entityType}/{entityId}:
     get:
       consumes:
       - application/json
@@ -1247,17 +1365,17 @@ paths:
       parameters:
       - description: ID de la ability
         in: path
-        name: ability_id
+        name: abilityId
         required: true
         type: integer
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1282,7 +1400,7 @@ paths:
       summary: Verificar permiso
       tags:
       - Permissions
-  /api/v1/permissions/entity/{entity_type}/{entity_id}:
+  /api/v1/permissions/entity/{entityType}/{entityId}:
     get:
       consumes:
       - application/json
@@ -1290,12 +1408,12 @@ paths:
       parameters:
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1332,7 +1450,7 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -1593,7 +1711,7 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -1605,11 +1723,11 @@ paths:
         type: string
       - description: Filtrar por rol
         in: query
-        name: role_id
+        name: roleId
         type: string
       - description: Filtrar por estado (activo/inactivo)
         in: query
-        name: is_active
+        name: isActive
         type: boolean
       produces:
       - application/json
@@ -1795,20 +1913,20 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/ability.Ability'
+              type: string
             type: array
         "400":
-          description: ID de usuario inválido
+          description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
-          description: Usuario no encontrado
+          description: Not Found
           schema:
-            type: string
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
-          description: Error interno del servidor
+          description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Obtener habilidades de usuario
@@ -1832,20 +1950,20 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/role.Role'
+              type: string
             type: array
         "400":
-          description: ID de usuario inválido
+          description: Bad Request
           schema:
-            type: string
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
-          description: Usuario no encontrado
+          description: Not Found
           schema:
-            type: string
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
-          description: Error interno del servidor
+          description: Internal Server Error
           schema:
-            type: string
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Obtener roles de usuario
@@ -1865,7 +1983,7 @@ paths:
       - default: 10
         description: Tamaño de página
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -2195,4 +2313,411 @@ paths:
       summary: Refrescar token
       tags:
       - Auth
+  /customers:
+    get:
+      description: Get a paginated list of customers with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by workflow ID
+        in: query
+        name: workflowId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/customer.CustomerResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List customers
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer with the provided information
+      parameters:
+      - description: Customer information
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customer.CreateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new customer
+      tags:
+      - customers
+  /customers/{id}:
+    delete:
+      description: Soft delete a customer by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a customer
+      tags:
+      - customers
+    get:
+      description: Get a customer by its ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer by ID
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing customer with the provided information
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer information
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customer.UpdateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a customer
+      tags:
+      - customers
+  /customers/{id}/properties:
+    get:
+      description: Get all properties for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer properties
+      tags:
+      - customers
+  /properties:
+    get:
+      description: Get a paginated list of properties with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by customer ID
+        in: query
+        name: customerId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/property.PropertyResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List properties
+      tags:
+      - properties
+    post:
+      consumes:
+      - application/json
+      description: Create a new property
+      parameters:
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.CreatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create property
+      tags:
+      - properties
+  /properties/{id}:
+    delete:
+      description: Delete a property (soft delete)
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete property
+      tags:
+      - properties
+    get:
+      description: Get a property by its ID
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get property by ID
+      tags:
+      - properties
+    put:
+      consumes:
+      - application/json
+      description: Update an existing property
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.UpdatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update property
+      tags:
+      - properties
 swagger: "2.0"

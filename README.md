@@ -134,7 +134,7 @@ Para agregar nuevos módulos, sigue estos pasos:
 3. Implementa el repositorio en `pkg/repository/mysql/{module}_repository.go`
 4. Implementa los casos de uso en `pkg/usecase/{module}/service.go`
 5. Implementa los handlers HTTP en `pkg/rest/handler/{module}_handler.go`
-6. Registra las rutas en `internal/bootstrap/router.go`
+6. Registra las rutas en `pkg/rest/router.go`
 
 ## Próximos Pasos
 

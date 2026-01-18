@@ -53,7 +53,7 @@ type AssignedRoleResponse struct {
 // @Tags AssignedRoles
 // @Accept json
 // @Produce json
-// @Param role body assigned_role.AssignRoleRequest true "Datos de la asignación de rol. Ejemplo: {\"role_id\": 4, \"entity_id\": 148, \"entity_type\": \"App\\\\Models\\\\User\", \"restricted_to_id\": 10, \"restricted_to_type\": \"App\\\\Models\\\\Customer\", \"scope\": 1}"
+// @Param role body assigned_role.AssignRoleRequest true "Datos de la asignación de rol. Ejemplo: {\"roleId\": 4, \"entityId\": 148, \"entityType\": \"App\\\\Models\\\\User\", \"restrictedToId\": 10, \"restrictedToType\": \"App\\\\Models\\\\Customer\", \"scope\": 1}"
 // @Success 201 {object} assigned_role.AssignedRoleResponse "Rol asignado exitosamente"
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
 // @Failure 403 {string} string "No tiene permisos para asignar roles"
@@ -188,8 +188,8 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Obtener los parámetros de la URL
-	entityType := chi.URLParam(r, "entity_type")
-	entityIDStr := chi.URLParam(r, "entity_id")
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
@@ -227,14 +227,14 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 // @Tags AssignedRoles
 // @Accept json
 // @Produce json
-// @Param role_id path int true "ID del rol"
-// @Param entity_type path string true "Tipo de entidad"
-// @Param entity_id path int true "ID de la entidad"
+// @Param roleId path int true "ID del rol"
+// @Param entityType path string true "Tipo de entidad"
+// @Param entityId path int true "ID de la entidad"
 // @Success 204 "No Content"
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 404 {string} string "Asignación de rol no encontrada"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id} [delete]
+// @Router /api/v1/assigned-roles/revoke/{roleId}/{entityType}/{entityId} [delete]
 // @Security BearerAuth
 func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -244,15 +244,15 @@ func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Obtener los parámetros de la URL
-	roleIDStr := chi.URLParam(r, "role_id")
+	roleIDStr := chi.URLParam(r, "roleId")
 	roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de rol inválido")
 		return
 	}
 
-	entityType := chi.URLParam(r, "entity_type")
-	entityIDStr := chi.URLParam(r, "entity_id")
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
@@ -279,13 +279,13 @@ func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 // @Tags AssignedRoles
 // @Accept json
 // @Produce json
-// @Param role_id path int true "ID del rol"
-// @Param entity_type path string true "Tipo de entidad"
-// @Param entity_id path int true "ID de la entidad"
+// @Param roleId path int true "ID del rol"
+// @Param entityType path string true "Tipo de entidad"
+// @Param entityId path int true "ID de la entidad"
 // @Success 200 {object} map[string]bool
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id} [get]
+// @Router /api/v1/assigned-roles/check/{roleId}/{entityType}/{entityId} [get]
 // @Security BearerAuth
 func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -295,15 +295,15 @@ func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Obtener los parámetros de la URL
-	roleIDStr := chi.URLParam(r, "role_id")
+	roleIDStr := chi.URLParam(r, "roleId")
 	roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de rol inválido")
 		return
 	}
 
-	entityType := chi.URLParam(r, "entity_type")
-	entityIDStr := chi.URLParam(r, "entity_id")
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
@@ -327,10 +327,10 @@ func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param page query int false "Número de página (por defecto: 1)"
-// @Param page_size query int false "Tamaño de página (por defecto: 10)"
-// @Param role_id query int false "Filtrar por ID de rol"
-// @Param entity_type query string false "Filtrar por tipo de entidad"
-// @Param entity_id query int false "Filtrar por ID de entidad"
+// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
+// @Param roleId query int false "Filtrar por ID de rol"
+// @Param entityType query string false "Filtrar por tipo de entidad"
+// @Param entityId query int false "Filtrar por ID de entidad"
 // @Param restricted query bool false "Filtrar por restricción"
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
@@ -350,7 +350,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	pageSize, err := strconv.Atoi(r.URL.Query().Get("page_size"))
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
 	if err != nil || pageSize < 1 {
 		pageSize = 10
 	}
@@ -358,18 +358,18 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Construir filtros
 	filters := make(map[string]interface{})
 
-	if roleIDStr := r.URL.Query().Get("role_id"); roleIDStr != "" {
+	if roleIDStr := r.URL.Query().Get("roleId"); roleIDStr != "" {
 		roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
 		if err == nil {
 			filters["role_id"] = roleID
 		}
 	}
 
-	if entityType := r.URL.Query().Get("entity_type"); entityType != "" {
+	if entityType := r.URL.Query().Get("entityType"); entityType != "" {
 		filters["entity_type"] = entityType
 	}
 
-	if entityIDStr := r.URL.Query().Get("entity_id"); entityIDStr != "" {
+	if entityIDStr := r.URL.Query().Get("entityId"); entityIDStr != "" {
 		entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 		if err == nil {
 			filters["entity_id"] = entityID
@@ -391,7 +391,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		slog.Error("Error al listar asignaciones de roles",
 			"error", err,
 			"page", page,
-			"page_size", pageSize,
+			"pageSize", pageSize,
 		)
 		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles: "+err.Error())
 		return

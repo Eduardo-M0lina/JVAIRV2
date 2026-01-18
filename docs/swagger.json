@@ -32,7 +32,7 @@
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -44,7 +44,7 @@
                     {
                         "type": "string",
                         "description": "Filtrar por tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "query"
                     },
                     {
@@ -332,25 +332,25 @@
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Filtrar por tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "query"
                     },
                     {
@@ -443,7 +443,7 @@
                 }
             }
         },
-        "/api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/check/{roleId}/{entityType}/{entityId}": {
             "get": {
                 "security": [
                     {
@@ -465,21 +465,21 @@
                     {
                         "type": "integer",
                         "description": "ID del rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -568,7 +568,7 @@
                 }
             }
         },
-        "/api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/revoke/{roleId}/{entityType}/{entityId}": {
             "delete": {
                 "security": [
                     {
@@ -590,21 +590,21 @@
                     {
                         "type": "integer",
                         "description": "ID del rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -717,25 +717,25 @@
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de ability",
-                        "name": "ability_id",
+                        "name": "abilityId",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Filtrar por tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "query"
                     },
                     {
@@ -822,7 +822,7 @@
                 }
             }
         },
-        "/api/v1/permissions/ability/{ability_id}": {
+        "/api/v1/permissions/ability/{abilityId}": {
             "get": {
                 "security": [
                     {
@@ -844,7 +844,7 @@
                     {
                         "type": "integer",
                         "description": "ID de la ability",
-                        "name": "ability_id",
+                        "name": "abilityId",
                         "in": "path",
                         "required": true
                     }
@@ -874,7 +874,7 @@
                 }
             }
         },
-        "/api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}": {
+        "/api/v1/permissions/check/{abilityId}/{entityType}/{entityId}": {
             "get": {
                 "security": [
                     {
@@ -896,21 +896,21 @@
                     {
                         "type": "integer",
                         "description": "ID de la ability",
-                        "name": "ability_id",
+                        "name": "abilityId",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -940,7 +940,7 @@
                 }
             }
         },
-        "/api/v1/permissions/entity/{entity_type}/{entity_id}": {
+        "/api/v1/permissions/entity/{entityType}/{entityId}": {
             "get": {
                 "security": [
                     {
@@ -962,14 +962,14 @@
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -1200,7 +1200,7 @@
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1601,7 +1601,7 @@
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1619,13 +1619,13 @@
                     {
                         "type": "string",
                         "description": "Filtrar por rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Filtrar por estado (activo/inactivo)",
-                        "name": "is_active",
+                        "name": "isActive",
                         "in": "query"
                     }
                 ],
@@ -1912,26 +1912,26 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ability.Ability"
+                                "type": "string"
                             }
                         }
                     },
                     "400": {
-                        "description": "ID de usuario inválido",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Usuario no encontrado",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Error interno del servidor",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1970,26 +1970,26 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/role.Role"
+                                "type": "string"
                             }
                         }
                     },
                     "400": {
-                        "description": "ID de usuario inválido",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Usuario no encontrado",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Error interno del servidor",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2025,7 +2025,7 @@
                         "type": "integer",
                         "default": 10,
                         "description": "Tamaño de página",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -2525,56 +2525,652 @@
                     }
                 }
             }
-        }
-    },
-    "definitions": {
-        "ability.Ability": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "entityID": {
-                    "description": "bigint unsigned DEFAULT NULL",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "entityType": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "name": {
-                    "description": "varchar(191) NOT NULL",
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "description": "tinyint(1) NOT NULL DEFAULT '0'",
-                    "type": "boolean"
-                },
-                "options": {
-                    "description": "json DEFAULT NULL",
-                    "type": "string"
-                },
-                "scope": {
-                    "description": "int DEFAULT NULL",
-                    "type": "integer"
-                },
-                "title": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
+        },
+        "/customers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of customers with optional filters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "List customers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by workflow ID",
+                        "name": "workflowId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/customer.CustomerResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new customer with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create a new customer",
+                "parameters": [
+                    {
+                        "description": "Customer information",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customer.CreateCustomerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/customer.CustomerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
                 }
             }
         },
+        "/customers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a customer by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get customer by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customer.CustomerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update an existing customer with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Update a customer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Customer information",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customer.UpdateCustomerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customer.CustomerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Soft delete a customer by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Delete a customer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}/properties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all properties for a specific customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get customer properties",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/properties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of properties with optional filters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "List properties",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by customer ID",
+                        "name": "customerId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/property.PropertyResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new property",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Create property",
+                "parameters": [
+                    {
+                        "description": "Property data",
+                        "name": "property",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/property.CreatePropertyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/property.PropertyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/properties/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a property by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Get property by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Property ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/property.PropertyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update an existing property",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Update property",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Property ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Property data",
+                        "name": "property",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/property.UpdatePropertyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/property.PropertyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a property (soft delete)",
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Delete property",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Property ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
         "ability.AbilityResponse": {
             "type": "object",
             "properties": {
@@ -2773,6 +3369,212 @@
                 }
             }
         },
+        "customer.CreateCustomerRequest": {
+            "type": "object",
+            "properties": {
+                "billingAddressCity": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "billingAddressState": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "billingAddressStreet": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "billingAddressZip": {
+                    "type": "string",
+                    "example": "10001"
+                },
+                "contactEmail": {
+                    "type": "string",
+                    "example": "john@acme.com"
+                },
+                "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "contactPhone": {
+                    "type": "string",
+                    "example": "+1-555-0104"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "contact@acme.com"
+                },
+                "fax": {
+                    "type": "string",
+                    "example": "+1-555-0102"
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "+1-555-0101"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ACME Corporation"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Important client notes"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "phoneOther": {
+                    "type": "string",
+                    "example": "+1-555-0103"
+                },
+                "website": {
+                    "type": "string",
+                    "example": "https://acme.com"
+                },
+                "workflowId": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
+        "customer.CustomerResponse": {
+            "type": "object",
+            "properties": {
+                "billingAddress": {
+                    "$ref": "#/definitions/pkg_rest_handler_customer.BillingAddress"
+                },
+                "contactEmail": {
+                    "type": "string",
+                    "example": "john@acme.com"
+                },
+                "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "contactPhone": {
+                    "type": "string",
+                    "example": "+1-555-0104"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "contact@acme.com"
+                },
+                "fax": {
+                    "type": "string",
+                    "example": "+1-555-0102"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "+1-555-0101"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ACME Corporation"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Important client notes"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "phoneOther": {
+                    "type": "string",
+                    "example": "+1-555-0103"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-18T14:20:00Z"
+                },
+                "website": {
+                    "type": "string",
+                    "example": "https://acme.com"
+                },
+                "workflowId": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
+        "customer.UpdateCustomerRequest": {
+            "type": "object",
+            "properties": {
+                "billingAddressCity": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "billingAddressState": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "billingAddressStreet": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "billingAddressZip": {
+                    "type": "string",
+                    "example": "10001"
+                },
+                "contactEmail": {
+                    "type": "string",
+                    "example": "john@acme.com"
+                },
+                "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "contactPhone": {
+                    "type": "string",
+                    "example": "+1-555-0104"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "contact@acme.com"
+                },
+                "fax": {
+                    "type": "string",
+                    "example": "+1-555-0102"
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "+1-555-0101"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ACME Corporation"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Important client notes"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "phoneOther": {
+                    "type": "string",
+                    "example": "+1-555-0103"
+                },
+                "website": {
+                    "type": "string",
+                    "example": "https://acme.com"
+                },
+                "workflowId": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
         "permission.CreatePermissionRequest": {
             "type": "object",
             "required": [
@@ -2784,9 +3586,6 @@
                 "abilityId": {
                     "type": "integer"
                 },
-                "conditions": {
-                    "type": "string"
-                },
                 "entityId": {
                     "type": "integer"
                 },
@@ -2795,6 +3594,9 @@
                 },
                 "forbidden": {
                     "type": "boolean"
+                },
+                "scope": {
+                    "type": "integer"
                 }
             }
         },
@@ -2803,12 +3605,6 @@
             "properties": {
                 "abilityId": {
                     "type": "integer"
-                },
-                "conditions": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
                 },
                 "entityId": {
                     "type": "integer"
@@ -2822,8 +3618,8 @@
                 "id": {
                     "type": "integer"
                 },
-                "updatedAt": {
-                    "type": "string"
+                "scope": {
+                    "type": "integer"
                 }
             }
         },
@@ -2838,9 +3634,6 @@
                 "abilityId": {
                     "type": "integer"
                 },
-                "conditions": {
-                    "type": "string"
-                },
                 "entityId": {
                     "type": "integer"
                 },
@@ -2849,6 +3642,131 @@
                 },
                 "forbidden": {
                     "type": "boolean"
+                },
+                "scope": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_customer.BillingAddress": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "street": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "zip": {
+                    "type": "string",
+                    "example": "10001"
+                }
+            }
+        },
+        "property.CreatePropertyRequest": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "property.PropertyResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "property.UpdatePropertyRequest": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
                 }
             }
         },
@@ -2883,36 +3801,6 @@
                     "type": "integer"
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "role.Role": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "name": {
-                    "description": "varchar(191) NOT NULL",
-                    "type": "string"
-                },
-                "scope": {
-                    "description": "int DEFAULT NULL",
-                    "type": "integer"
-                },
-                "title": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
                     "type": "string"
                 }
             }
@@ -3275,89 +4163,6 @@
                     "type": "integer"
                 },
                 "statusName": {
-                    "type": "string"
-                }
-            }
-        },
-        "workflow.CreateWorkflowRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "statuses": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "workflow.UpdateWorkflowRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "statuses": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "workflow.WorkflowResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "statuses": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
-                    }
-                }
-            }
-        },
-        "workflow.WorkflowStatusResponse": {
-            "type": "object",
-            "properties": {
-                "job_status_id": {
-                    "type": "integer"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "status_name": {
                     "type": "string"
                 }
             }

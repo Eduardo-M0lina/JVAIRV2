@@ -2,6 +2,7 @@ package permission
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -28,32 +29,30 @@ func NewHandler(permissionUseCase *permission.UseCase) *Handler {
 
 // CreatePermissionRequest representa la solicitud para crear un permiso
 type CreatePermissionRequest struct {
-	AbilityID  int64   `json:"abilityId" validate:"required"`
-	EntityID   int64   `json:"entityId" validate:"required"`
-	EntityType string  `json:"entityType" validate:"required"`
-	Forbidden  bool    `json:"forbidden"`
-	Conditions *string `json:"conditions,omitempty"`
+	AbilityID  int64  `json:"abilityId" validate:"required"`
+	EntityID   int64  `json:"entityId" validate:"required"`
+	EntityType string `json:"entityType" validate:"required"`
+	Forbidden  bool   `json:"forbidden"`
+	Scope      *int   `json:"scope,omitempty"`
 }
 
 // UpdatePermissionRequest representa la solicitud para actualizar un permiso
 type UpdatePermissionRequest struct {
-	AbilityID  int64   `json:"abilityId" validate:"required"`
-	EntityID   int64   `json:"entityId" validate:"required"`
-	EntityType string  `json:"entityType" validate:"required"`
-	Forbidden  bool    `json:"forbidden"`
-	Conditions *string `json:"conditions,omitempty"`
+	AbilityID  int64  `json:"abilityId" validate:"required"`
+	EntityID   int64  `json:"entityId" validate:"required"`
+	EntityType string `json:"entityType" validate:"required"`
+	Forbidden  bool   `json:"forbidden"`
+	Scope      *int   `json:"scope,omitempty"`
 }
 
 // PermissionResponse representa la respuesta de un permiso
 type PermissionResponse struct {
-	ID         int64   `json:"id"`
-	AbilityID  int64   `json:"abilityId"`
-	EntityID   int64   `json:"entityId"`
-	EntityType string  `json:"entityType"`
-	Forbidden  bool    `json:"forbidden"`
-	Conditions *string `json:"conditions,omitempty"`
-	CreatedAt  string  `json:"createdAt,omitempty"`
-	UpdatedAt  string  `json:"updatedAt,omitempty"`
+	ID         int64  `json:"id"`
+	AbilityID  int64  `json:"abilityId"`
+	EntityID   int64  `json:"entityId"`
+	EntityType string `json:"entityType"`
+	Forbidden  bool   `json:"forbidden"`
+	Scope      *int   `json:"scope,omitempty"`
 }
 
 // Create maneja la solicitud de creación de un permiso
@@ -95,7 +94,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		EntityID:   req.EntityID,
 		EntityType: req.EntityType,
 		Forbidden:  req.Forbidden,
-		Conditions: req.Conditions,
+		Scope:      req.Scope,
 	}
 
 	if err := h.permissionUseCase.Create(r.Context(), permission); err != nil {
@@ -115,15 +114,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		EntityID:   permission.EntityID,
 		EntityType: permission.EntityType,
 		Forbidden:  permission.Forbidden,
-		Conditions: permission.Conditions,
-	}
-
-	if permission.CreatedAt != nil {
-		resp.CreatedAt = permission.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if permission.UpdatedAt != nil {
-		resp.UpdatedAt = permission.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
+		Scope:      permission.Scope,
 	}
 
 	response.JSON(w, http.StatusCreated, resp)
@@ -176,15 +167,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 		EntityID:   permission.EntityID,
 		EntityType: permission.EntityType,
 		Forbidden:  permission.Forbidden,
-		Conditions: permission.Conditions,
-	}
-
-	if permission.CreatedAt != nil {
-		resp.CreatedAt = permission.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if permission.UpdatedAt != nil {
-		resp.UpdatedAt = permission.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
+		Scope:      permission.Scope,
 	}
 
 	response.JSON(w, http.StatusOK, resp)
@@ -196,12 +179,12 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Tags Permissions
 // @Accept json
 // @Produce json
-// @Param entity_type path string true "Tipo de entidad"
-// @Param entity_id path int true "ID de la entidad"
+// @Param entityType path string true "Tipo de entidad"
+// @Param entityId path int true "ID de la entidad"
 // @Success 200 {array} PermissionResponse
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/permissions/entity/{entity_type}/{entity_id} [get]
+// @Router /api/v1/permissions/entity/{entityType}/{entityId} [get]
 // @Security BearerAuth
 func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -211,8 +194,8 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Obtener los parámetros de la URL
-	entityType := chi.URLParam(r, "entity_type")
-	entityIDStr := chi.URLParam(r, "entity_id")
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
@@ -235,15 +218,7 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 			EntityID:   p.EntityID,
 			EntityType: p.EntityType,
 			Forbidden:  p.Forbidden,
-			Conditions: p.Conditions,
-		}
-
-		if p.CreatedAt != nil {
-			item.CreatedAt = p.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if p.UpdatedAt != nil {
-			item.UpdatedAt = p.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
+			Scope:      p.Scope,
 		}
 
 		items = append(items, item)
@@ -258,11 +233,11 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 // @Tags Permissions
 // @Accept json
 // @Produce json
-// @Param ability_id path int true "ID de la ability"
+// @Param abilityId path int true "ID de la ability"
 // @Success 200 {array} PermissionResponse
 // @Failure 400 {string} string "ID de ability inválido"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/permissions/ability/{ability_id} [get]
+// @Router /api/v1/permissions/ability/{abilityId} [get]
 // @Security BearerAuth
 func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -272,7 +247,7 @@ func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Obtener el ID de la ability de la URL
-	abilityIDStr := chi.URLParam(r, "ability_id")
+	abilityIDStr := chi.URLParam(r, "abilityId")
 	abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de ability inválido")
@@ -295,15 +270,7 @@ func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 			EntityID:   p.EntityID,
 			EntityType: p.EntityType,
 			Forbidden:  p.Forbidden,
-			Conditions: p.Conditions,
-		}
-
-		if p.CreatedAt != nil {
-			item.CreatedAt = p.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if p.UpdatedAt != nil {
-			item.UpdatedAt = p.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
+			Scope:      p.Scope,
 		}
 
 		items = append(items, item)
@@ -362,7 +329,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		EntityID:   req.EntityID,
 		EntityType: req.EntityType,
 		Forbidden:  req.Forbidden,
-		Conditions: req.Conditions,
+		Scope:      req.Scope,
 	}
 
 	if err := h.permissionUseCase.Update(r.Context(), permission); err != nil {
@@ -387,15 +354,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		EntityID:   permission.EntityID,
 		EntityType: permission.EntityType,
 		Forbidden:  permission.Forbidden,
-		Conditions: permission.Conditions,
-	}
-
-	if permission.CreatedAt != nil {
-		resp.CreatedAt = permission.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-	}
-
-	if permission.UpdatedAt != nil {
-		resp.UpdatedAt = permission.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
+		Scope:      permission.Scope,
 	}
 
 	response.JSON(w, http.StatusOK, resp)
@@ -449,13 +408,13 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Tags Permissions
 // @Accept json
 // @Produce json
-// @Param ability_id path int true "ID de la ability"
-// @Param entity_type path string true "Tipo de entidad"
-// @Param entity_id path int true "ID de la entidad"
+// @Param abilityId path int true "ID de la ability"
+// @Param entityType path string true "Tipo de entidad"
+// @Param entityId path int true "ID de la entidad"
 // @Success 200 {object} map[string]bool
 // @Failure 400 {string} string "Parámetros inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id} [get]
+// @Router /api/v1/permissions/check/{abilityId}/{entityType}/{entityId} [get]
 // @Security BearerAuth
 func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
@@ -465,15 +424,15 @@ func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Obtener los parámetros de la URL
-	abilityIDStr := chi.URLParam(r, "ability_id")
+	abilityIDStr := chi.URLParam(r, "abilityId")
 	abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de ability inválido")
 		return
 	}
 
-	entityType := chi.URLParam(r, "entity_type")
-	entityIDStr := chi.URLParam(r, "entity_id")
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 	if err != nil {
 		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
@@ -497,10 +456,10 @@ func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param page query int false "Número de página (por defecto: 1)"
-// @Param page_size query int false "Tamaño de página (por defecto: 10)"
-// @Param ability_id query int false "Filtrar por ID de ability"
-// @Param entity_type query string false "Filtrar por tipo de entidad"
-// @Param entity_id query int false "Filtrar por ID de entidad"
+// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
+// @Param abilityId query int false "Filtrar por ID de ability"
+// @Param entityType query string false "Filtrar por tipo de entidad"
+// @Param entityId query int false "Filtrar por ID de entidad"
 // @Param forbidden query bool false "Filtrar por prohibición"
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
@@ -520,7 +479,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	pageSize, err := strconv.Atoi(r.URL.Query().Get("page_size"))
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
 	if err != nil || pageSize < 1 {
 		pageSize = 10
 	}
@@ -528,18 +487,18 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Construir filtros
 	filters := make(map[string]interface{})
 
-	if abilityIDStr := r.URL.Query().Get("ability_id"); abilityIDStr != "" {
+	if abilityIDStr := r.URL.Query().Get("abilityId"); abilityIDStr != "" {
 		abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
 		if err == nil {
 			filters["ability_id"] = abilityID
 		}
 	}
 
-	if entityType := r.URL.Query().Get("entity_type"); entityType != "" {
+	if entityType := r.URL.Query().Get("entityType"); entityType != "" {
 		filters["entity_type"] = entityType
 	}
 
-	if entityIDStr := r.URL.Query().Get("entity_id"); entityIDStr != "" {
+	if entityIDStr := r.URL.Query().Get("entityId"); entityIDStr != "" {
 		entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
 		if err == nil {
 			filters["entity_id"] = entityID
@@ -558,6 +517,10 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Obtener la lista de permisos
 	permissions, total, err := h.permissionUseCase.List(r.Context(), filters, page, pageSize)
 	if err != nil {
+		slog.ErrorContext(r.Context(), "Failed to list permissions",
+			slog.String("error", err.Error()),
+			slog.Int("page", page),
+			slog.Int("pageSize", pageSize))
 		response.Error(w, http.StatusInternalServerError, "Error al listar permisos")
 		return
 	}
@@ -571,15 +534,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 			EntityID:   p.EntityID,
 			EntityType: p.EntityType,
 			Forbidden:  p.Forbidden,
-			Conditions: p.Conditions,
-		}
-
-		if p.CreatedAt != nil {
-			item.CreatedAt = p.CreatedAt.Format("2006-01-02T15:04:05Z07:00")
-		}
-
-		if p.UpdatedAt != nil {
-			item.UpdatedAt = p.UpdatedAt.Format("2006-01-02T15:04:05Z07:00")
+			Scope:      p.Scope,
 		}
 
 		items = append(items, item)

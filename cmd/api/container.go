@@ -8,7 +8,9 @@ import (
 	ability "github.com/your-org/jvairv2/pkg/domain/ability"
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
+	customer "github.com/your-org/jvairv2/pkg/domain/customer"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
+	property "github.com/your-org/jvairv2/pkg/domain/property"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
 	user "github.com/your-org/jvairv2/pkg/domain/user"
@@ -16,7 +18,9 @@ import (
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
+	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
+	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
@@ -25,7 +29,9 @@ import (
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
+	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
+	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
@@ -47,6 +53,8 @@ type Container struct {
 	PermissionHandler   *permissionHandler.Handler
 	SettingsHandler     *settingsHandler.Handler
 	WorkflowHandler     *workflowHandler.Handler
+	CustomerHandler     *customerHandler.Handler
+	PropertyHandler     *propertyHandler.Handler
 	AuthMiddleware      *middleware.AuthMiddleware
 	Router              http.Handler
 }
@@ -73,6 +81,7 @@ func NewContainer(configPath string) (*Container, error) {
 	permissionRepo := mysqlPermission.NewRepository(dbConn.GetDB())
 	settingsRepo := mysqlSettings.NewRepository(dbConn.GetDB())
 	workflowRepo := mysqlWorkflow.NewRepository(dbConn.GetDB())
+	customerRepo := mysqlCustomer.NewRepository(dbConn.GetDB())
 
 	// Inicializar servicios
 	tokenStore := commonAuth.NewMemoryTokenStore()
@@ -93,6 +102,9 @@ func NewContainer(configPath string) (*Container, error) {
 	permissionUC := permission.NewUseCase(permissionRepo, abilityRepo)
 	settingsUC := settings.NewUseCase(settingsRepo)
 	workflowUC := workflow.NewUseCase(workflowRepo)
+	customerUC := customer.NewUseCase(customerRepo, workflowRepo)
+	propertyRepo := mysqlProperty.NewRepository(dbConn.DB)
+	propertyUC := property.NewUseCase(propertyRepo, customerRepo)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -106,6 +118,8 @@ func NewContainer(configPath string) (*Container, error) {
 	permissionHandler := permissionHandler.NewHandler(permissionUC)
 	settingsHandler := settingsHandler.NewHandler(settingsUC)
 	workflowHandler := workflowHandler.NewHandler(workflowUC)
+	customerHandler := customerHandler.NewHandler(customerUC, propertyUC)
+	propHandler := propertyHandler.NewHandler(propertyUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -121,6 +135,8 @@ func NewContainer(configPath string) (*Container, error) {
 		permissionHandler,
 		settingsHandler,
 		workflowHandler,
+		customerHandler,
+		propHandler,
 		authMiddleware,
 		userUC,
 	)
@@ -137,6 +153,8 @@ func NewContainer(configPath string) (*Container, error) {
 		PermissionHandler:   permissionHandler,
 		SettingsHandler:     settingsHandler,
 		WorkflowHandler:     workflowHandler,
+		CustomerHandler:     customerHandler,
+		PropertyHandler:     propHandler,
 		AuthMiddleware:      authMiddleware,
 		Router:              r,
 	}, nil

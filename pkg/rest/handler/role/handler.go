@@ -327,7 +327,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param page query int false "Número de página (por defecto: 1)"
-// @Param page_size query int false "Tamaño de página (por defecto: 10)"
+// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
 // @Param name query string false "Filtrar por nombre"
 // @Param scope query int false "Filtrar por scope"
 // @Success 200 {object} response.PaginatedResponse
@@ -348,7 +348,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	pageSize, err := strconv.Atoi(r.URL.Query().Get("page_size"))
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
 	if err != nil || pageSize < 1 {
 		pageSize = 10
 	}

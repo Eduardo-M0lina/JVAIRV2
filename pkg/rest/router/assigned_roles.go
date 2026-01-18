@@ -11,8 +11,8 @@ func RegisterAssignedRoleRoutes(r chi.Router, handler *assignedRoleHandler.Handl
 		r.Get("/", handler.List)
 		r.Post("/", handler.Assign)
 		r.Get("/{id}", handler.Get)
-		r.Get("/entity/{entity_type}/{entity_id}", handler.GetByEntity)
-		r.Get("/check/{role_id}/{entity_type}/{entity_id}", handler.HasRole)
-		r.Delete("/revoke/{role_id}/{entity_type}/{entity_id}", handler.Revoke)
+		r.Get("/entity/{entityType}/{entityId}", handler.GetByEntity)
+		r.Get("/check/{roleId}/{entityType}/{entityId}", handler.HasRole)
+		r.Delete("/revoke/{roleId}/{entityType}/{entityId}", handler.Revoke)
 	})
 }

@@ -2,7 +2,6 @@ package permission
 
 import (
 	"context"
-	"time"
 
 	"github.com/your-org/jvairv2/pkg/domain/permission"
 )
@@ -28,14 +27,10 @@ func (r *Repository) Update(ctx context.Context, permission *permission.Permissi
 		}
 	}
 
-	// Actualizar timestamps
-	now := time.Now()
-	permission.UpdatedAt = &now
-
 	// Preparar la consulta
 	query := `
 		UPDATE permissions
-		SET ability_id = ?, entity_id = ?, entity_type = ?, forbidden = ?, conditions = ?, updated_at = ?
+		SET ability_id = ?, entity_id = ?, entity_type = ?, forbidden = ?, scope = ?
 		WHERE id = ?
 	`
 
@@ -44,13 +39,13 @@ func (r *Repository) Update(ctx context.Context, permission *permission.Permissi
 	args = append(args, permission.AbilityID, permission.EntityID, permission.EntityType, permission.Forbidden)
 
 	// Manejar campos opcionales
-	if permission.Conditions != nil {
-		args = append(args, *permission.Conditions)
+	if permission.Scope != nil {
+		args = append(args, *permission.Scope)
 	} else {
 		args = append(args, nil)
 	}
 
-	args = append(args, now, permission.ID)
+	args = append(args, permission.ID)
 
 	// Ejecutar la consulta
 	_, err = r.db.ExecContext(ctx, query, args...)

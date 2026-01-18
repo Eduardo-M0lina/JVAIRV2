@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"testing"
-	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
@@ -31,17 +30,16 @@ func TestGetByID_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = ?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
@@ -55,7 +53,7 @@ func TestGetByID_Success(t *testing.T) {
 	assert.Equal(t, entityID, permission.EntityID)
 	assert.Equal(t, entityType, permission.EntityType)
 	assert.Equal(t, false, permission.Forbidden)
-	assert.Equal(t, conditions, *permission.Conditions)
+	assert.Equal(t, scope, *permission.Scope)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -70,7 +68,7 @@ func TestGetByID_NotFound(t *testing.T) {
 	permissionID := int64(999)
 
 	// Configurar la expectativa para la consulta
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = ?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnError(sql.ErrNoRows)
 
@@ -94,17 +92,16 @@ func TestGetByEntity_Success(t *testing.T) {
 	// Datos de prueba
 	entityType := "App\\Models\\User"
 	entityID := int64(10)
-	now := time.Now()
-	conditions1 := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope1 := 1
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		1, 2, entityID, entityType, false, conditions1, now, now,
+		1, 2, entityID, entityType, false, scope1,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE entity_type = \\? AND entity_id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE entity_type = \\? AND entity_id = \\?").
 		WithArgs(entityType, entityID).
 		WillReturnRows(rows)
 
@@ -129,17 +126,16 @@ func TestGetByAbility_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	// Configurar la expectativa para la consulta
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		1, abilityID, entityID, entityType, false, conditions, now, now,
+		1, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE ability_id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE ability_id = ?").
 		WithArgs(abilityID).
 		WillReturnRows(rows)
 
@@ -154,7 +150,7 @@ func TestGetByAbility_Success(t *testing.T) {
 	assert.Equal(t, entityID, permissions[0].EntityID)
 	assert.Equal(t, entityType, permissions[0].EntityType)
 	assert.Equal(t, false, permissions[0].Forbidden)
-	assert.Equal(t, conditions, *permissions[0].Conditions)
+	assert.Equal(t, scope, *permissions[0].Scope)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -225,14 +221,14 @@ func TestList_Success(t *testing.T) {
 
 	// Configurar la expectativa para la consulta SELECT
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		1, 2, 10, "App\\Models\\User", false, "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}", time.Now(), time.Now(),
+		1, 2, 10, "App\\Models\\User", false, 1,
 	).AddRow(
-		2, 3, 5, "App\\Models\\Role", true, nil, time.Now(), time.Now(),
+		2, 3, 5, "App\\Models\\Role", true, nil,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions ORDER BY id LIMIT \\? OFFSET \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions ORDER BY id LIMIT \\? OFFSET \\?").
 		WithArgs(10, 0).
 		WillReturnRows(rows)
 
@@ -268,12 +264,12 @@ func TestList_WithFilters(t *testing.T) {
 
 	// Configurar la expectativa para la consulta SELECT
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		1, 2, 10, "App\\Models\\User", false, "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}", time.Now(), time.Now(),
+		1, 2, 10, "App\\Models\\User", false, 1,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE").
 		WillReturnRows(rows)
 
 	// Ejecutar la función que estamos probando
@@ -327,22 +323,21 @@ func TestDelete_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	// Configurar la expectativa para la consulta GetByID
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
 	// Configurar la expectativa para la consulta DELETE
-	mock.ExpectExec("DELETE FROM permissions WHERE id = \\?").
+	mock.ExpectExec("DELETE FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnResult(sqlmock.NewResult(0, 1))
 
@@ -365,7 +360,7 @@ func TestDelete_NotFound(t *testing.T) {
 	permissionID := int64(999)
 
 	// Configurar la expectativa para la consulta GetByID
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnError(sql.ErrNoRows)
 
@@ -390,22 +385,21 @@ func TestDelete_ErrorOnDelete(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	// Configurar la expectativa para la consulta GetByID
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
 	// Configurar la expectativa para la consulta DELETE con error
-	mock.ExpectExec("DELETE FROM permissions WHERE id = \\?").
+	mock.ExpectExec("DELETE FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnError(sql.ErrConnDone)
 
@@ -430,31 +424,30 @@ func TestUpdate_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		ID:         permissionID,
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
 	// Configurar la expectativa para la consulta UPDATE
 	mock.ExpectExec("UPDATE permissions SET").
-		WithArgs(abilityID, entityID, entityType, false, conditions, sqlmock.AnyArg(), permissionID).
+		WithArgs(abilityID, entityID, entityType, false, scope, permissionID).
 		WillReturnResult(sqlmock.NewResult(0, 1))
 
 	// Ejecutar la función que estamos probando
@@ -462,7 +455,6 @@ func TestUpdate_Success(t *testing.T) {
 
 	// Verificar que no haya errores
 	assert.NoError(t, err)
-	assert.NotNil(t, permission.UpdatedAt)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -478,18 +470,18 @@ func TestUpdate_NotFound(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		ID:         permissionID,
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnError(sql.ErrNoRows)
 
@@ -514,25 +506,24 @@ func TestUpdate_DuplicatePermission(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		ID:         permissionID,
 		AbilityID:  3, // Cambiamos el ability_id para que se verifique la existencia
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
@@ -568,7 +559,7 @@ func TestNewRepository(t *testing.T) {
 	assert.Equal(t, db, repo.db)
 }
 
-func TestUpdate_WithNilConditions(t *testing.T) {
+func TestUpdate_WithNilScope(t *testing.T) {
 	// Configurar el mock de la base de datos
 	db, mock, repo := setupMockDB(t)
 	defer func() { _ = db.Close() }()
@@ -578,31 +569,30 @@ func TestUpdate_WithNilConditions(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		ID:         permissionID,
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: nil, // Condiciones nulas
+		Scope:      nil, // Condiciones nulas
 	}
 
 	// Configurar la expectativa para la consulta GetByID
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
 	// Configurar la expectativa para la consulta UPDATE
 	mock.ExpectExec("UPDATE permissions SET").
-		WithArgs(abilityID, entityID, entityType, false, nil, sqlmock.AnyArg(), permissionID).
+		WithArgs(abilityID, entityID, entityType, false, nil, permissionID).
 		WillReturnResult(sqlmock.NewResult(0, 1))
 
 	// Ejecutar la función que estamos probando
@@ -610,7 +600,6 @@ func TestUpdate_WithNilConditions(t *testing.T) {
 
 	// Verificar que no haya errores
 	assert.NoError(t, err)
-	assert.NotNil(t, permission.UpdatedAt)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -626,31 +615,30 @@ func TestUpdate_ErrorOnUpdate(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		ID:         permissionID,
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
 	rows := sqlmock.NewRows([]string{
-		"id", "ability_id", "entity_id", "entity_type", "forbidden", "conditions", "created_at", "updated_at",
+		"id", "ability_id", "entity_id", "entity_type", "forbidden", "scope",
 	}).AddRow(
-		permissionID, abilityID, entityID, entityType, false, conditions, now, now,
+		permissionID, abilityID, entityID, entityType, false, scope,
 	)
 
-	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at FROM permissions WHERE id = \\?").
+	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions WHERE id = ?").
 		WithArgs(permissionID).
 		WillReturnRows(rows)
 
 	// Configurar la expectativa para la consulta UPDATE con error
 	mock.ExpectExec("UPDATE permissions SET").
-		WithArgs(abilityID, entityID, entityType, false, conditions, sqlmock.AnyArg(), permissionID).
+		WithArgs(abilityID, entityID, entityType, false, scope, permissionID).
 		WillReturnError(sql.ErrConnDone)
 
 	// Ejecutar la función que estamos probando
@@ -673,13 +661,13 @@ func TestCreate_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta Exists
@@ -689,7 +677,7 @@ func TestCreate_Success(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT
 	mock.ExpectExec("INSERT INTO permissions").
-		WithArgs(abilityID, entityID, entityType, false, conditions, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(abilityID, entityID, entityType, false, scope).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Ejecutar la función que estamos probando
@@ -698,8 +686,6 @@ func TestCreate_Success(t *testing.T) {
 	// Verificar que no haya errores
 	assert.NoError(t, err)
 	assert.Equal(t, int64(1), permission.ID)
-	assert.NotNil(t, permission.CreatedAt)
-	assert.NotNil(t, permission.UpdatedAt)
 
 	// Verificar que todas las expectativas se cumplieron
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -714,13 +700,13 @@ func TestCreate_DuplicatePermission(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta Exists
@@ -739,7 +725,7 @@ func TestCreate_DuplicatePermission(t *testing.T) {
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
 
-func TestCreate_WithNilConditions(t *testing.T) {
+func TestCreate_WithNilScope(t *testing.T) {
 	// Configurar el mock de la base de datos
 	db, mock, repo := setupMockDB(t)
 	defer func() { _ = db.Close() }()
@@ -753,7 +739,7 @@ func TestCreate_WithNilConditions(t *testing.T) {
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: nil, // Condiciones nulas
+		Scope:      nil, // Condiciones nulas
 	}
 
 	// Configurar la expectativa para la consulta Exists
@@ -763,7 +749,7 @@ func TestCreate_WithNilConditions(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT
 	mock.ExpectExec("INSERT INTO permissions").
-		WithArgs(abilityID, entityID, entityType, false, nil, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(abilityID, entityID, entityType, false, nil).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// Ejecutar la función que estamos probando
@@ -786,13 +772,13 @@ func TestCreate_ErrorOnExists(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta Exists con error
@@ -820,13 +806,13 @@ func TestCreate_ErrorOnInsert(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta Exists
@@ -836,7 +822,7 @@ func TestCreate_ErrorOnInsert(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT con error
 	mock.ExpectExec("INSERT INTO permissions").
-		WithArgs(abilityID, entityID, entityType, false, conditions, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(abilityID, entityID, entityType, false, scope).
 		WillReturnError(sql.ErrConnDone)
 
 	// Ejecutar la función que estamos probando
@@ -859,13 +845,13 @@ func TestCreate_ErrorOnLastInsertID(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	permission := &permission.Permission{
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar la expectativa para la consulta Exists
@@ -875,7 +861,7 @@ func TestCreate_ErrorOnLastInsertID(t *testing.T) {
 
 	// Configurar la expectativa para la consulta INSERT con error en LastInsertId
 	mock.ExpectExec("INSERT INTO permissions").
-		WithArgs(abilityID, entityID, entityType, false, conditions, sqlmock.AnyArg(), sqlmock.AnyArg()).
+		WithArgs(abilityID, entityID, entityType, false, scope).
 		WillReturnResult(sqlmock.NewErrorResult(sql.ErrConnDone))
 
 	// Ejecutar la función que estamos probando
