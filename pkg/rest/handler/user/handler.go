@@ -479,10 +479,10 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path string true "ID del usuario"
-// @Success 200 {array} role.Role
-// @Failure 400 {string} string "ID de usuario inválido"
-// @Failure 404 {string} string "Usuario no encontrado"
-// @Failure 500 {string} string "Error interno del servidor"
+// @Success 200 {array} string
+// @Failure 400 {object} response.ErrorResponse
+// @Failure 404 {object} response.ErrorResponse
+// @Failure 500 {object} response.ErrorResponse
 // @Router /api/v1/users/{id}/roles [get]
 // @Security BearerAuth
 func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
@@ -520,10 +520,10 @@ func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param id path string true "ID del usuario"
-// @Success 200 {array} ability.Ability
-// @Failure 400 {string} string "ID de usuario inválido"
-// @Failure 404 {string} string "Usuario no encontrado"
-// @Failure 500 {string} string "Error interno del servidor"
+// @Success 200 {array} string
+// @Failure 400 {object} response.ErrorResponse
+// @Failure 404 {object} response.ErrorResponse
+// @Failure 500 {object} response.ErrorResponse
 // @Router /api/v1/users/{id}/abilities [get]
 // @Security BearerAuth
 func (h *Handler) GetAbilities(w http.ResponseWriter, r *http.Request) {

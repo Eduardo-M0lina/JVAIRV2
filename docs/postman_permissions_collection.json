@@ -17,9 +17,9 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/permissions?page=1&page_size=10",
+          "raw": "{{baseUrl}}/api/v1/permissions?page=1&page_size=10",
           "host": ["{{baseUrl}}"],
-          "path": ["permissions"],
+          "path": ["api", "v1", "permissions"],
           "query": [
             {
               "key": "page",

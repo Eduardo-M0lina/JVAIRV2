@@ -69,7 +69,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -110,7 +110,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ability.CreateAbilityRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.CreateAbilityRequest"
                         }
                     }
                 ],
@@ -118,7 +118,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/ability.AbilityResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -173,7 +173,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ability.AbilityResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -227,7 +227,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ability.UpdateAbilityRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.UpdateAbilityRequest"
                         }
                     }
                 ],
@@ -235,7 +235,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ability.AbilityResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -375,7 +375,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -416,7 +416,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/assigned_role.AssignRoleRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignRoleRequest"
                         }
                     }
                 ],
@@ -424,7 +424,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Rol asignado exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -560,7 +560,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
+                                "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
                             }
                         }
                     },
@@ -676,7 +676,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -760,7 +760,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -801,7 +801,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/permission.CreatePermissionRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.CreatePermissionRequest"
                         }
                     }
                 ],
@@ -809,7 +809,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/permission.PermissionResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -866,7 +866,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/permission.PermissionResponse"
+                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                             }
                         }
                     },
@@ -991,7 +991,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/permission.PermissionResponse"
+                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                             }
                         }
                     },
@@ -1041,7 +1041,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/permission.PermissionResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -1095,7 +1095,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/permission.UpdatePermissionRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.UpdatePermissionRequest"
                         }
                     }
                 ],
@@ -1103,7 +1103,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/permission.PermissionResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -1231,7 +1231,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -1272,7 +1272,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/role.CreateRoleRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_role.CreateRoleRequest"
                         }
                     }
                 ],
@@ -1280,7 +1280,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/role.RoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1335,7 +1335,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/role.RoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1389,7 +1389,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/role.UpdateRoleRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_role.UpdateRoleRequest"
                         }
                     }
                 ],
@@ -1397,7 +1397,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/role.RoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1499,7 +1499,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones obtenidas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/settings.SettingsResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
                         }
                     },
                     "403": {
@@ -1546,7 +1546,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/settings.UpdateSettingsRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_settings.UpdateSettingsRequest"
                         }
                     }
                 ],
@@ -1554,7 +1554,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones actualizadas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/settings.SettingsResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
                         }
                     },
                     "400": {
@@ -1644,7 +1644,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -1685,7 +1685,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.CreateUserRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_user.CreateUserRequest"
                         }
                     }
                 ],
@@ -1693,7 +1693,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
                         }
                     },
                     "400": {
@@ -1748,7 +1748,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
                         }
                     },
                     "400": {
@@ -1802,7 +1802,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.UpdateUserRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UpdateUserRequest"
                         }
                     }
                 ],
@@ -1810,7 +1810,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
                         }
                     },
                     "400": {
@@ -1923,26 +1923,26 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/ability.Ability"
+                                "type": "string"
                             }
                         }
                     },
                     "400": {
-                        "description": "ID de usuario inválido",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Usuario no encontrado",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Error interno del servidor",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -1981,26 +1981,26 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/role.Role"
+                                "type": "string"
                             }
                         }
                     },
                     "400": {
-                        "description": "ID de usuario inválido",
+                        "description": "Bad Request",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
-                        "description": "Usuario no encontrado",
+                        "description": "Not Found",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Error interno del servidor",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2062,7 +2062,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "403": {
@@ -2103,7 +2103,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/workflow.CreateWorkflowRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.CreateWorkflowRequest"
                         }
                     }
                 ],
@@ -2111,7 +2111,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2166,7 +2166,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2226,7 +2226,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/workflow.UpdateWorkflowRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.UpdateWorkflowRequest"
                         }
                     }
                 ],
@@ -2234,7 +2234,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2354,7 +2354,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2404,7 +2404,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.LoginRequest"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest"
                         }
                     }
                 ],
@@ -2412,7 +2412,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.LoginResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse"
                         }
                     },
                     "400": {
@@ -2513,7 +2513,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.RefreshResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse"
                         }
                     },
                     "400": {
@@ -2536,201 +2536,294 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/customers": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of customers with optional filters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "List customers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by workflow ID",
+                        "name": "workflow_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new customer with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Create a new customer",
+                "parameters": [
+                    {
+                        "description": "Customer information",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CreateCustomerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a customer by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get customer by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update an existing customer with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Update a customer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Customer information",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_customer.UpdateCustomerRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Soft delete a customer by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Delete a customer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "ability.Ability": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "entityID": {
-                    "description": "bigint unsigned DEFAULT NULL",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "entityType": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "name": {
-                    "description": "varchar(191) NOT NULL",
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "description": "tinyint(1) NOT NULL DEFAULT '0'",
-                    "type": "boolean"
-                },
-                "options": {
-                    "description": "json DEFAULT NULL",
-                    "type": "string"
-                },
-                "scope": {
-                    "description": "int DEFAULT NULL",
-                    "type": "integer"
-                },
-                "title": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                }
-            }
-        },
-        "ability.AbilityResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "ability.CreateAbilityRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "ability.UpdateAbilityRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "assigned_role.AssignRoleRequest": {
-            "type": "object",
-            "required": [
-                "entityId",
-                "entityType",
-                "roleId"
-            ],
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "restrictedToId": {
-                    "type": "integer"
-                },
-                "restrictedToType": {
-                    "type": "string"
-                },
-                "roleId": {
-                    "type": "integer"
-                },
-                "scope": {
-                    "type": "integer"
-                }
-            }
-        },
-        "assigned_role.AssignedRoleResponse": {
-            "type": "object",
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "restricted": {
-                    "type": "boolean"
-                },
-                "roleId": {
-                    "type": "integer"
-                },
-                "scope": {
-                    "type": "integer"
-                }
-            }
-        },
-        "auth.LoginRequest": {
+        "github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -2747,7 +2840,7 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.LoginResponse": {
+        "github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -2763,11 +2856,11 @@ const docTemplate = `{
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
                 "user": {
-                    "$ref": "#/definitions/user.User"
+                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_user.User"
                 }
             }
         },
-        "auth.RefreshResponse": {
+        "github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -2784,339 +2877,7 @@ const docTemplate = `{
                 }
             }
         },
-        "permission.CreatePermissionRequest": {
-            "type": "object",
-            "required": [
-                "abilityId",
-                "entityId",
-                "entityType"
-            ],
-            "properties": {
-                "abilityId": {
-                    "type": "integer"
-                },
-                "conditions": {
-                    "type": "string"
-                },
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "forbidden": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "permission.PermissionResponse": {
-            "type": "object",
-            "properties": {
-                "abilityId": {
-                    "type": "integer"
-                },
-                "conditions": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
-                },
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "forbidden": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "permission.UpdatePermissionRequest": {
-            "type": "object",
-            "required": [
-                "abilityId",
-                "entityId",
-                "entityType"
-            ],
-            "properties": {
-                "abilityId": {
-                    "type": "integer"
-                },
-                "conditions": {
-                    "type": "string"
-                },
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "forbidden": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "response.PaginatedResponse": {
-            "type": "object",
-            "properties": {
-                "items": {},
-                "page": {
-                    "type": "integer"
-                },
-                "pageSize": {
-                    "type": "integer"
-                },
-                "totalItems": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
-        "role.CreateRoleRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "role.Role": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "name": {
-                    "description": "varchar(191) NOT NULL",
-                    "type": "string"
-                },
-                "scope": {
-                    "description": "int DEFAULT NULL",
-                    "type": "integer"
-                },
-                "title": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                }
-            }
-        },
-        "role.RoleResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "role.UpdateRoleRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "settings.SettingsResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "isEnforceRoutinePasswordReset": {
-                    "type": "boolean"
-                },
-                "isTwilioEnabled": {
-                    "type": "boolean"
-                },
-                "passwordAge": {
-                    "type": "integer"
-                },
-                "passwordExpireDays": {
-                    "type": "integer"
-                },
-                "passwordHistoryCount": {
-                    "type": "integer"
-                },
-                "passwordIncludeNumbers": {
-                    "type": "boolean"
-                },
-                "passwordIncludeSymbols": {
-                    "type": "boolean"
-                },
-                "passwordMinimumLength": {
-                    "type": "integer"
-                },
-                "twilioAuthToken": {
-                    "type": "string"
-                },
-                "twilioFromNumber": {
-                    "type": "string"
-                },
-                "twilioSid": {
-                    "type": "string"
-                }
-            }
-        },
-        "settings.UpdateSettingsRequest": {
-            "type": "object",
-            "required": [
-                "passwordAge",
-                "passwordExpireDays",
-                "passwordHistoryCount",
-                "passwordMinimumLength"
-            ],
-            "properties": {
-                "isEnforceRoutinePasswordReset": {
-                    "type": "boolean"
-                },
-                "isTwilioEnabled": {
-                    "type": "boolean"
-                },
-                "passwordAge": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "passwordExpireDays": {
-                    "type": "integer",
-                    "minimum": 1
-                },
-                "passwordHistoryCount": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "passwordIncludeNumbers": {
-                    "type": "boolean"
-                },
-                "passwordIncludeSymbols": {
-                    "type": "boolean"
-                },
-                "passwordMinimumLength": {
-                    "type": "integer",
-                    "minimum": 4
-                },
-                "twilioAuthToken": {
-                    "type": "string"
-                },
-                "twilioFromNumber": {
-                    "type": "string"
-                },
-                "twilioSid": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.CreateUserRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "name",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 6
-                },
-                "roleId": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.RoleInfo": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.UpdateUserRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "name"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "isActive": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 6
-                },
-                "roleId": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.User": {
+        "github_com_your-org_jvairv2_pkg_domain_user.User": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3178,7 +2939,696 @@ const docTemplate = `{
                 }
             }
         },
-        "user.UserResponse": {
+        "github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse": {
+            "type": "object",
+            "properties": {
+                "items": {},
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "totalItems": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_ability.AbilityResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "onlyOwned": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_ability.CreateAbilityRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "onlyOwned": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_ability.UpdateAbilityRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "onlyOwned": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_assigned_role.AssignRoleRequest": {
+            "type": "object",
+            "required": [
+                "entityId",
+                "entityType",
+                "roleId"
+            ],
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "restrictedToId": {
+                    "type": "integer"
+                },
+                "restrictedToType": {
+                    "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "scope": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_assigned_role.AssignedRoleResponse": {
+            "type": "object",
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "restricted": {
+                    "type": "boolean"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "scope": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_customer.BillingAddress": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "street": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "zip": {
+                    "type": "string",
+                    "example": "10001"
+                }
+            }
+        },
+        "pkg_rest_handler_customer.CreateCustomerRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "workflowId"
+            ],
+            "properties": {
+                "billingAddressCity": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "billingAddressState": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "billingAddressStreet": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "billingAddressZip": {
+                    "type": "string",
+                    "example": "10001"
+                },
+                "contactEmail": {
+                    "type": "string",
+                    "example": "john@acme.com"
+                },
+                "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "contactPhone": {
+                    "type": "string",
+                    "example": "+1-555-0104"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "contact@acme.com"
+                },
+                "fax": {
+                    "type": "string",
+                    "example": "+1-555-0102"
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "+1-555-0101"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ACME Corporation"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Important client notes"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "phoneOther": {
+                    "type": "string",
+                    "example": "+1-555-0103"
+                },
+                "website": {
+                    "type": "string",
+                    "example": "https://acme.com"
+                },
+                "workflowId": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
+        "pkg_rest_handler_customer.CustomerResponse": {
+            "type": "object",
+            "properties": {
+                "billingAddress": {
+                    "$ref": "#/definitions/pkg_rest_handler_customer.BillingAddress"
+                },
+                "contactEmail": {
+                    "type": "string",
+                    "example": "john@acme.com"
+                },
+                "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "contactPhone": {
+                    "type": "string",
+                    "example": "+1-555-0104"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "contact@acme.com"
+                },
+                "fax": {
+                    "type": "string",
+                    "example": "+1-555-0102"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "+1-555-0101"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ACME Corporation"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Important client notes"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "phoneOther": {
+                    "type": "string",
+                    "example": "+1-555-0103"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-18T14:20:00Z"
+                },
+                "website": {
+                    "type": "string",
+                    "example": "https://acme.com"
+                },
+                "workflowId": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
+        "pkg_rest_handler_customer.UpdateCustomerRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "workflowId"
+            ],
+            "properties": {
+                "billingAddressCity": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "billingAddressState": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "billingAddressStreet": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "billingAddressZip": {
+                    "type": "string",
+                    "example": "10001"
+                },
+                "contactEmail": {
+                    "type": "string",
+                    "example": "john@acme.com"
+                },
+                "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "contactPhone": {
+                    "type": "string",
+                    "example": "+1-555-0104"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "contact@acme.com"
+                },
+                "fax": {
+                    "type": "string",
+                    "example": "+1-555-0102"
+                },
+                "mobile": {
+                    "type": "string",
+                    "example": "+1-555-0101"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ACME Corporation"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Important client notes"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "phoneOther": {
+                    "type": "string",
+                    "example": "+1-555-0103"
+                },
+                "website": {
+                    "type": "string",
+                    "example": "https://acme.com"
+                },
+                "workflowId": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        },
+        "pkg_rest_handler_permission.CreatePermissionRequest": {
+            "type": "object",
+            "required": [
+                "abilityId",
+                "entityId",
+                "entityType"
+            ],
+            "properties": {
+                "abilityId": {
+                    "type": "integer"
+                },
+                "conditions": {
+                    "type": "string"
+                },
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "forbidden": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pkg_rest_handler_permission.PermissionResponse": {
+            "type": "object",
+            "properties": {
+                "abilityId": {
+                    "type": "integer"
+                },
+                "conditions": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "forbidden": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_permission.UpdatePermissionRequest": {
+            "type": "object",
+            "required": [
+                "abilityId",
+                "entityId",
+                "entityType"
+            ],
+            "properties": {
+                "abilityId": {
+                    "type": "integer"
+                },
+                "conditions": {
+                    "type": "string"
+                },
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "forbidden": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "pkg_rest_handler_role.CreateRoleRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_role.RoleResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_role.UpdateRoleRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_settings.SettingsResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isEnforceRoutinePasswordReset": {
+                    "type": "boolean"
+                },
+                "isTwilioEnabled": {
+                    "type": "boolean"
+                },
+                "passwordAge": {
+                    "type": "integer"
+                },
+                "passwordExpireDays": {
+                    "type": "integer"
+                },
+                "passwordHistoryCount": {
+                    "type": "integer"
+                },
+                "passwordIncludeNumbers": {
+                    "type": "boolean"
+                },
+                "passwordIncludeSymbols": {
+                    "type": "boolean"
+                },
+                "passwordMinimumLength": {
+                    "type": "integer"
+                },
+                "twilioAuthToken": {
+                    "type": "string"
+                },
+                "twilioFromNumber": {
+                    "type": "string"
+                },
+                "twilioSid": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_settings.UpdateSettingsRequest": {
+            "type": "object",
+            "required": [
+                "passwordAge",
+                "passwordExpireDays",
+                "passwordHistoryCount",
+                "passwordMinimumLength"
+            ],
+            "properties": {
+                "isEnforceRoutinePasswordReset": {
+                    "type": "boolean"
+                },
+                "isTwilioEnabled": {
+                    "type": "boolean"
+                },
+                "passwordAge": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "passwordExpireDays": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "passwordHistoryCount": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "passwordIncludeNumbers": {
+                    "type": "boolean"
+                },
+                "passwordIncludeSymbols": {
+                    "type": "boolean"
+                },
+                "passwordMinimumLength": {
+                    "type": "integer",
+                    "minimum": 4
+                },
+                "twilioAuthToken": {
+                    "type": "string"
+                },
+                "twilioFromNumber": {
+                    "type": "string"
+                },
+                "twilioSid": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_user.CreateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "roleId": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_user.RoleInfo": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_user.UpdateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 6
+                },
+                "roleId": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_user.UserResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3197,7 +3647,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/user.RoleInfo"
+                    "$ref": "#/definitions/pkg_rest_handler_user.RoleInfo"
                 },
                 "roleId": {
                     "type": "string"
@@ -3207,7 +3657,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.CreateWorkflowRequest": {
+        "pkg_rest_handler_workflow.CreateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3230,7 +3680,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.UpdateWorkflowRequest": {
+        "pkg_rest_handler_workflow.UpdateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3253,7 +3703,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.WorkflowResponse": {
+        "pkg_rest_handler_workflow.WorkflowResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -3271,12 +3721,12 @@ const docTemplate = `{
                 "statuses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
+                        "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowStatusResponse"
                     }
                 }
             }
         },
-        "workflow.WorkflowStatusResponse": {
+        "pkg_rest_handler_workflow.WorkflowStatusResponse": {
             "type": "object",
             "properties": {
                 "jobStatusId": {
@@ -3286,89 +3736,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "statusName": {
-                    "type": "string"
-                }
-            }
-        },
-        "workflow.CreateWorkflowRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "statuses": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "workflow.UpdateWorkflowRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "statuses": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                }
-            }
-        },
-        "workflow.WorkflowResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "is_active": {
-                    "type": "boolean"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "notes": {
-                    "type": "string"
-                },
-                "statuses": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
-                    }
-                }
-            }
-        },
-        "workflow.WorkflowStatusResponse": {
-            "type": "object",
-            "properties": {
-                "job_status_id": {
-                    "type": "integer"
-                },
-                "order": {
-                    "type": "integer"
-                },
-                "status_name": {
                     "type": "string"
                 }
             }
