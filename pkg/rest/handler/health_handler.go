@@ -22,7 +22,7 @@ type HealthResponse struct {
 	Status    string    `json:"status"`
 	Timestamp time.Time `json:"timestamp"`
 	Version   string    `json:"version"`
-	DBStatus  string    `json:"db_status"`
+	DBStatus  string    `json:"dbStatus"`
 }
 
 // NewHealthHandler crea un nuevo handler para health check

@@ -46,8 +46,8 @@ type RoleResponse struct {
 	Name      string  `json:"name"`
 	Title     *string `json:"title,omitempty"`
 	Scope     *int    `json:"scope,omitempty"`
-	CreatedAt string  `json:"created_at,omitempty"`
-	UpdatedAt string  `json:"updated_at,omitempty"`
+	CreatedAt string  `json:"createdAt,omitempty"`
+	UpdatedAt string  `json:"updatedAt,omitempty"`
 }
 
 // Create maneja la solicitud de creación de un rol

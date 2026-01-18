@@ -44,13 +44,13 @@
               "disabled": true
             },
             {
-              "key": "role_id",
+              "key": "roleId",
               "value": "",
               "description": "Filtrar por rol",
               "disabled": true
             },
             {
-              "key": "is_active",
+              "key": "isActive",
               "value": "",
               "description": "Filtrar por estado (activo/inactivo)",
               "disabled": true

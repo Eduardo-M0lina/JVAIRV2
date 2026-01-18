@@ -36,17 +36,17 @@ definitions:
     type: object
   ability.AbilityResponse:
     properties:
-      created_at:
+      createdAt:
         type: string
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       id:
         type: integer
       name:
         type: string
-      only_owned:
+      onlyOwned:
         type: boolean
       options:
         type: string
@@ -54,18 +54,18 @@ definitions:
         type: integer
       title:
         type: string
-      updated_at:
+      updatedAt:
         type: string
     type: object
   ability.CreateAbilityRequest:
     properties:
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       name:
         type: string
-      only_owned:
+      onlyOwned:
         type: boolean
       options:
         type: string
@@ -78,13 +78,13 @@ definitions:
     type: object
   ability.UpdateAbilityRequest:
     properties:
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       name:
         type: string
-      only_owned:
+      onlyOwned:
         type: boolean
       options:
         type: string
@@ -97,34 +97,34 @@ definitions:
     type: object
   assigned_role.AssignRoleRequest:
     properties:
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
-      restricted_to_id:
+      restrictedToId:
         type: integer
-      restricted_to_type:
+      restrictedToType:
         type: string
-      role_id:
+      roleId:
         type: integer
       scope:
         type: integer
     required:
-    - entity_id
-    - entity_type
-    - role_id
+    - entityId
+    - entityType
+    - roleId
     type: object
   assigned_role.AssignedRoleResponse:
     properties:
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       id:
         type: integer
       restricted:
         type: boolean
-      role_id:
+      roleId:
         type: integer
       scope:
         type: integer
@@ -169,56 +169,56 @@ definitions:
     type: object
   permission.CreatePermissionRequest:
     properties:
-      ability_id:
+      abilityId:
         type: integer
       conditions:
         type: string
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       forbidden:
         type: boolean
     required:
-    - ability_id
-    - entity_id
-    - entity_type
+    - abilityId
+    - entityId
+    - entityType
     type: object
   permission.PermissionResponse:
     properties:
-      ability_id:
+      abilityId:
         type: integer
       conditions:
         type: string
-      created_at:
+      createdAt:
         type: string
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       forbidden:
         type: boolean
       id:
         type: integer
-      updated_at:
+      updatedAt:
         type: string
     type: object
   permission.UpdatePermissionRequest:
     properties:
-      ability_id:
+      abilityId:
         type: integer
       conditions:
         type: string
-      entity_id:
+      entityId:
         type: integer
-      entity_type:
+      entityType:
         type: string
       forbidden:
         type: boolean
     required:
-    - ability_id
-    - entity_id
-    - entity_type
+    - abilityId
+    - entityId
+    - entityType
     type: object
   response.PaginatedResponse:
     properties:
@@ -267,7 +267,7 @@ definitions:
     type: object
   role.RoleResponse:
     properties:
-      created_at:
+      createdAt:
         type: string
       id:
         type: integer
@@ -277,7 +277,7 @@ definitions:
         type: integer
       title:
         type: string
-      updated_at:
+      updatedAt:
         type: string
     type: object
   role.UpdateRoleRequest:
@@ -295,62 +295,62 @@ definitions:
     properties:
       id:
         type: integer
-      is_enforce_routine_password_reset:
+      isEnforceRoutinePasswordReset:
         type: boolean
-      is_twilio_enabled:
+      isTwilioEnabled:
         type: boolean
-      password_age:
+      passwordAge:
         type: integer
-      password_expire_days:
+      passwordExpireDays:
         type: integer
-      password_history_count:
+      passwordHistoryCount:
         type: integer
-      password_include_numbers:
+      passwordIncludeNumbers:
         type: boolean
-      password_include_symbols:
+      passwordIncludeSymbols:
         type: boolean
-      password_minimum_length:
+      passwordMinimumLength:
         type: integer
-      twilio_auth_token:
+      twilioAuthToken:
         type: string
-      twilio_from_number:
+      twilioFromNumber:
         type: string
-      twilio_sid:
+      twilioSid:
         type: string
     type: object
   settings.UpdateSettingsRequest:
     properties:
-      is_enforce_routine_password_reset:
+      isEnforceRoutinePasswordReset:
         type: boolean
-      is_twilio_enabled:
+      isTwilioEnabled:
         type: boolean
-      password_age:
+      passwordAge:
         minimum: 0
         type: integer
-      password_expire_days:
+      passwordExpireDays:
         minimum: 1
         type: integer
-      password_history_count:
+      passwordHistoryCount:
         minimum: 0
         type: integer
-      password_include_numbers:
+      passwordIncludeNumbers:
         type: boolean
-      password_include_symbols:
+      passwordIncludeSymbols:
         type: boolean
-      password_minimum_length:
+      passwordMinimumLength:
         minimum: 4
         type: integer
-      twilio_auth_token:
+      twilioAuthToken:
         type: string
-      twilio_from_number:
+      twilioFromNumber:
         type: string
-      twilio_sid:
+      twilioSid:
         type: string
     required:
-    - password_age
-    - password_expire_days
-    - password_history_count
-    - password_minimum_length
+    - passwordAge
+    - passwordExpireDays
+    - passwordHistoryCount
+    - passwordMinimumLength
     type: object
   user.CreateUserRequest:
     properties:
@@ -361,7 +361,7 @@ definitions:
       password:
         minLength: 6
         type: string
-      role_id:
+      roleId:
         type: string
     required:
     - email
@@ -372,14 +372,14 @@ definitions:
     properties:
       email:
         type: string
-      is_active:
+      isActive:
         type: boolean
       name:
         type: string
       password:
         minLength: 6
         type: string
-      role_id:
+      roleId:
         type: string
     required:
     - email
@@ -427,24 +427,24 @@ definitions:
     type: object
   user.UserResponse:
     properties:
-      created_at:
+      createdAt:
         type: string
       email:
         type: string
       id:
         type: integer
-      is_active:
+      isActive:
         type: boolean
       name:
         type: string
-      role_id:
+      roleId:
         type: string
-      updated_at:
+      updatedAt:
         type: string
     type: object
   workflow.CreateWorkflowRequest:
     properties:
-      is_active:
+      isActive:
         type: boolean
       name:
         type: string
@@ -459,7 +459,7 @@ definitions:
     type: object
   workflow.UpdateWorkflowRequest:
     properties:
-      is_active:
+      isActive:
         type: boolean
       name:
         type: string
@@ -476,7 +476,7 @@ definitions:
     properties:
       id:
         type: integer
-      is_active:
+      isActive:
         type: boolean
       name:
         type: string
@@ -489,11 +489,11 @@ definitions:
     type: object
   workflow.WorkflowStatusResponse:
     properties:
-      job_status_id:
+      jobStatusId:
         type: integer
       order:
         type: integer
-      status_name:
+      statusName:
         type: string
     type: object
 info:

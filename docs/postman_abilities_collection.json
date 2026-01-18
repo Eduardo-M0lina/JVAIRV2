@@ -38,7 +38,7 @@
               "disabled": true
             },
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "",
               "description": "Filtrar por tipo de entidad",
               "disabled": true

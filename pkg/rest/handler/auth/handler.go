@@ -125,7 +125,7 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 // @Router /auth/refresh [post]
 func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		RefreshToken string `json:"refresh_token"`
+		RefreshToken string `json:"refreshToken"`
 	}
 
 	// Decodificar el cuerpo de la solicitud
@@ -153,9 +153,9 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 
 	// Responder con los nuevos tokens
 	resp := struct {
-		AccessToken  string `json:"access_token"`
-		RefreshToken string `json:"refresh_token"`
-		ExpiresAt    int64  `json:"expires_at"`
+		AccessToken  string `json:"accessToken"`
+		RefreshToken string `json:"refreshToken"`
+		ExpiresAt    int64  `json:"expiresAt"`
 	}{
 		AccessToken:  td.AccessToken,
 		RefreshToken: td.RefreshToken,

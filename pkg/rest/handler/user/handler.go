@@ -32,7 +32,7 @@ type CreateUserRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Email    string  `json:"email" validate:"required,email"`
 	Password string  `json:"password" validate:"required,min=6"`
-	RoleID   *string `json:"role_id,omitempty"`
+	RoleID   *string `json:"roleId,omitempty"`
 }
 
 // UpdateUserRequest representa la solicitud para actualizar un usuario
@@ -40,8 +40,8 @@ type UpdateUserRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Email    string  `json:"email" validate:"required,email"`
 	Password string  `json:"password,omitempty" validate:"omitempty,min=6"`
-	RoleID   *string `json:"role_id,omitempty"`
-	IsActive bool    `json:"is_active"`
+	RoleID   *string `json:"roleId,omitempty"`
+	IsActive bool    `json:"isActive"`
 }
 
 // UserResponse representa la respuesta de un usuario
@@ -49,10 +49,10 @@ type UserResponse struct {
 	ID        int64   `json:"id"`
 	Name      string  `json:"name"`
 	Email     string  `json:"email"`
-	RoleID    *string `json:"role_id,omitempty"`
-	IsActive  bool    `json:"is_active"`
-	CreatedAt string  `json:"created_at,omitempty"`
-	UpdatedAt string  `json:"updated_at,omitempty"`
+	RoleID    *string `json:"roleId,omitempty"`
+	IsActive  bool    `json:"isActive"`
+	CreatedAt string  `json:"createdAt,omitempty"`
+	UpdatedAt string  `json:"updatedAt,omitempty"`
 }
 
 // Create maneja la solicitud de creación de un usuario

@@ -38,7 +38,7 @@
               "disabled": true
             },
             {
-              "key": "is_active",
+              "key": "isActive",
               "value": "true",
               "description": "Filtrar por estado activo",
               "disabled": true
@@ -97,7 +97,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Workflow de Instalación\",\n    \"notes\": \"Flujo para trabajos de instalación de nuevos equipos\",\n    \"is_active\": true,\n    \"statuses\": [1, 2, 3, 4]\n}"
+          "raw": "{\n    \"name\": \"Workflow de Instalación\",\n    \"notes\": \"Flujo para trabajos de instalación de nuevos equipos\",\n    \"isActive\": true,\n    \"statuses\": [1, 2, 3, 4]\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/workflows",
@@ -124,7 +124,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Workflow de Instalación Actualizado\",\n    \"notes\": \"Flujo actualizado para trabajos de instalación\",\n    \"is_active\": true,\n    \"statuses\": [1, 2, 3]\n}"
+          "raw": "{\n    \"name\": \"Workflow de Instalación Actualizado\",\n    \"notes\": \"Flujo actualizado para trabajos de instalación\",\n    \"isActive\": true,\n    \"statuses\": [1, 2, 3]\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/workflows/:id",

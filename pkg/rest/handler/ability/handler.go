@@ -30,9 +30,9 @@ func NewHandler(abilityUseCase *ability.UseCase) *Handler {
 type CreateAbilityRequest struct {
 	Name       string  `json:"name" validate:"required"`
 	Title      *string `json:"title,omitempty"`
-	EntityID   *int64  `json:"entity_id,omitempty"`
-	EntityType *string `json:"entity_type,omitempty"`
-	OnlyOwned  bool    `json:"only_owned"`
+	EntityID   *int64  `json:"entityId,omitempty"`
+	EntityType *string `json:"entityType,omitempty"`
+	OnlyOwned  bool    `json:"onlyOwned"`
 	Options    *string `json:"options,omitempty"`
 	Scope      *int    `json:"scope,omitempty"`
 }
@@ -41,9 +41,9 @@ type CreateAbilityRequest struct {
 type UpdateAbilityRequest struct {
 	Name       string  `json:"name" validate:"required"`
 	Title      *string `json:"title,omitempty"`
-	EntityID   *int64  `json:"entity_id,omitempty"`
-	EntityType *string `json:"entity_type,omitempty"`
-	OnlyOwned  bool    `json:"only_owned"`
+	EntityID   *int64  `json:"entityId,omitempty"`
+	EntityType *string `json:"entityType,omitempty"`
+	OnlyOwned  bool    `json:"onlyOwned"`
 	Options    *string `json:"options,omitempty"`
 	Scope      *int    `json:"scope,omitempty"`
 }
@@ -53,13 +53,13 @@ type AbilityResponse struct {
 	ID         int64   `json:"id"`
 	Name       string  `json:"name"`
 	Title      *string `json:"title,omitempty"`
-	EntityID   *int64  `json:"entity_id,omitempty"`
-	EntityType *string `json:"entity_type,omitempty"`
-	OnlyOwned  bool    `json:"only_owned"`
+	EntityID   *int64  `json:"entityId,omitempty"`
+	EntityType *string `json:"entityType,omitempty"`
+	OnlyOwned  bool    `json:"onlyOwned"`
 	Options    *string `json:"options,omitempty"`
 	Scope      *int    `json:"scope,omitempty"`
-	CreatedAt  string  `json:"created_at,omitempty"`
-	UpdatedAt  string  `json:"updated_at,omitempty"`
+	CreatedAt  string  `json:"createdAt,omitempty"`
+	UpdatedAt  string  `json:"updatedAt,omitempty"`
 }
 
 // Create maneja la solicitud de creación de una ability

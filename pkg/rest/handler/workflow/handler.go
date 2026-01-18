@@ -31,7 +31,7 @@ func NewHandler(workflowUseCase *workflow.UseCase) *Handler {
 type CreateWorkflowRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Notes    *string `json:"notes,omitempty"`
-	IsActive bool    `json:"is_active"`
+	IsActive bool    `json:"isActive"`
 	Statuses []int64 `json:"statuses,omitempty"`
 }
 
@@ -39,7 +39,7 @@ type CreateWorkflowRequest struct {
 type UpdateWorkflowRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Notes    *string `json:"notes,omitempty"`
-	IsActive bool    `json:"is_active"`
+	IsActive bool    `json:"isActive"`
 	Statuses []int64 `json:"statuses,omitempty"`
 }
 
@@ -48,15 +48,15 @@ type WorkflowResponse struct {
 	ID       int64                    `json:"id"`
 	Name     string                   `json:"name"`
 	Notes    *string                  `json:"notes,omitempty"`
-	IsActive bool                     `json:"is_active"`
+	IsActive bool                     `json:"isActive"`
 	Statuses []WorkflowStatusResponse `json:"statuses,omitempty"`
 }
 
 // WorkflowStatusResponse representa la respuesta de un status de workflow
 type WorkflowStatusResponse struct {
-	JobStatusID int64  `json:"job_status_id"`
+	JobStatusID int64  `json:"jobStatusId"`
 	Order       int    `json:"order"`
-	StatusName  string `json:"status_name,omitempty"`
+	StatusName  string `json:"statusName,omitempty"`
 }
 
 // List maneja la solicitud de listado de workflows
