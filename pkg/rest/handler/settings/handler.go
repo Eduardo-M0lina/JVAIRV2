@@ -26,33 +26,33 @@ func NewHandler(settingsUseCase *settings.UseCase) *Handler {
 
 // UpdateSettingsRequest representa la solicitud para actualizar configuraciones
 type UpdateSettingsRequest struct {
-	IsTwilioEnabled               bool    `json:"is_twilio_enabled"`
-	TwilioSID                     *string `json:"twilio_sid,omitempty"`
-	TwilioAuthToken               *string `json:"twilio_auth_token,omitempty"`
-	TwilioFromNumber              *string `json:"twilio_from_number,omitempty"`
-	IsEnforceRoutinePasswordReset bool    `json:"is_enforce_routine_password_reset"`
-	PasswordExpireDays            int     `json:"password_expire_days" validate:"required,min=1"`
-	PasswordHistoryCount          int     `json:"password_history_count" validate:"required,min=0"`
-	PasswordMinimumLength         int     `json:"password_minimum_length" validate:"required,min=4"`
-	PasswordAge                   int     `json:"password_age" validate:"required,min=0"`
-	PasswordIncludeNumbers        bool    `json:"password_include_numbers"`
-	PasswordIncludeSymbols        bool    `json:"password_include_symbols"`
+	IsTwilioEnabled               bool    `json:"isTwilioEnabled"`
+	TwilioSID                     *string `json:"twilioSid,omitempty"`
+	TwilioAuthToken               *string `json:"twilioAuthToken,omitempty"`
+	TwilioFromNumber              *string `json:"twilioFromNumber,omitempty"`
+	IsEnforceRoutinePasswordReset bool    `json:"isEnforceRoutinePasswordReset"`
+	PasswordExpireDays            int     `json:"passwordExpireDays" validate:"required,min=1"`
+	PasswordHistoryCount          int     `json:"passwordHistoryCount" validate:"required,min=0"`
+	PasswordMinimumLength         int     `json:"passwordMinimumLength" validate:"required,min=4"`
+	PasswordAge                   int     `json:"passwordAge" validate:"required,min=0"`
+	PasswordIncludeNumbers        bool    `json:"passwordIncludeNumbers"`
+	PasswordIncludeSymbols        bool    `json:"passwordIncludeSymbols"`
 }
 
 // SettingsResponse representa la respuesta de configuraciones
 type SettingsResponse struct {
 	ID                            int64   `json:"id"`
-	IsTwilioEnabled               bool    `json:"is_twilio_enabled"`
-	TwilioSID                     *string `json:"twilio_sid,omitempty"`
-	TwilioAuthToken               *string `json:"twilio_auth_token,omitempty"`
-	TwilioFromNumber              *string `json:"twilio_from_number,omitempty"`
-	IsEnforceRoutinePasswordReset bool    `json:"is_enforce_routine_password_reset"`
-	PasswordExpireDays            int     `json:"password_expire_days"`
-	PasswordHistoryCount          int     `json:"password_history_count"`
-	PasswordMinimumLength         int     `json:"password_minimum_length"`
-	PasswordAge                   int     `json:"password_age"`
-	PasswordIncludeNumbers        bool    `json:"password_include_numbers"`
-	PasswordIncludeSymbols        bool    `json:"password_include_symbols"`
+	IsTwilioEnabled               bool    `json:"isTwilioEnabled"`
+	TwilioSID                     *string `json:"twilioSid,omitempty"`
+	TwilioAuthToken               *string `json:"twilioAuthToken,omitempty"`
+	TwilioFromNumber              *string `json:"twilioFromNumber,omitempty"`
+	IsEnforceRoutinePasswordReset bool    `json:"isEnforceRoutinePasswordReset"`
+	PasswordExpireDays            int     `json:"passwordExpireDays"`
+	PasswordHistoryCount          int     `json:"passwordHistoryCount"`
+	PasswordMinimumLength         int     `json:"passwordMinimumLength"`
+	PasswordAge                   int     `json:"passwordAge"`
+	PasswordIncludeNumbers        bool    `json:"passwordIncludeNumbers"`
+	PasswordIncludeSymbols        bool    `json:"passwordIncludeSymbols"`
 }
 
 // Get maneja la solicitud de obtención de configuraciones

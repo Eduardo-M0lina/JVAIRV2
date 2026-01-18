@@ -2,7 +2,7 @@ package assigned_role
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -29,20 +29,20 @@ func NewHandler(assignedRoleUseCase *assigned_role.UseCase) *Handler {
 
 // AssignRoleRequest representa la solicitud para asignar un rol a una entidad
 type AssignRoleRequest struct {
-	RoleID           int64   `json:"role_id" validate:"required"`
-	EntityID         int64   `json:"entity_id" validate:"required"`
-	EntityType       string  `json:"entity_type" validate:"required"`
-	RestrictedToID   *int64  `json:"restricted_to_id,omitempty"`
-	RestrictedToType *string `json:"restricted_to_type,omitempty"`
+	RoleID           int64   `json:"roleId" validate:"required"`
+	EntityID         int64   `json:"entityId" validate:"required"`
+	EntityType       string  `json:"entityType" validate:"required"`
+	RestrictedToID   *int64  `json:"restrictedToId,omitempty"`
+	RestrictedToType *string `json:"restrictedToType,omitempty"`
 	Scope            *int    `json:"scope,omitempty"`
 }
 
 // AssignedRoleResponse representa la respuesta de una asignación de rol
 type AssignedRoleResponse struct {
 	ID         int64  `json:"id"`
-	RoleID     int64  `json:"role_id"`
-	EntityID   int64  `json:"entity_id"`
-	EntityType string `json:"entity_type"`
+	RoleID     int64  `json:"roleId"`
+	EntityID   int64  `json:"entityId"`
+	EntityType string `json:"entityType"`
 	Restricted bool   `json:"restricted"`
 	Scope      *int   `json:"scope,omitempty"`
 }
@@ -388,7 +388,11 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Obtener la lista de asignaciones de roles
 	assignedRoles, total, err := h.assignedRoleUseCase.List(r.Context(), filters, page, pageSize)
 	if err != nil {
-		log.Printf("ERROR al listar asignaciones de roles: %v", err)
+		slog.Error("Error al listar asignaciones de roles",
+			"error", err,
+			"page", page,
+			"page_size", pageSize,
+		)
 		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles: "+err.Error())
 		return
 	}

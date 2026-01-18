@@ -3,29 +3,48 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"syscall"
 	"time"
+
+	"github.com/your-org/jvairv2/configs"
+	"github.com/your-org/jvairv2/pkg/common/logger"
 )
 
 func main() {
-	// Inicializar contenedor de dependencias
+	// Cargar configuración primero para obtener el ambiente
 	configPath := filepath.Join(".", "configs")
+	cfg, err := configs.LoadConfig(configPath)
+	if err != nil {
+		// Si falla la carga de config, usar desarrollo por defecto
+		logger.Init("development")
+		slog.Error("Error al cargar configuración, usando valores por defecto", "error", err)
+	} else {
+		// Inicializar logger con el ambiente configurado
+		logger.Init(cfg.App.Environment)
+		slog.Info("Iniciando aplicación JVAIR V2",
+			"environment", cfg.App.Environment,
+			"version", "2.0",
+		)
+	}
+
+	// Inicializar contenedor de dependencias
 	container, err := NewContainer(configPath)
 	if err != nil {
-		log.Fatalf("Error al inicializar el contenedor: %v", err)
+		slog.Error("Error al inicializar el contenedor", "error", err)
+		os.Exit(1)
 	}
 	defer func() {
 		if err := container.Close(); err != nil {
-			log.Printf("Error al cerrar el contenedor: %v", err)
+			slog.Error("Error al cerrar el contenedor", "error", err)
 		}
 	}()
 
-	log.Println("Conexión a la base de datos establecida correctamente")
+	slog.Info("Conexión a la base de datos establecida correctamente")
 
 	// Configurar servidor HTTP
 	server := &http.Server{
@@ -41,7 +60,7 @@ func main() {
 
 	// Iniciar el servidor en una goroutine
 	go func() {
-		log.Printf("Servidor iniciado en %s", server.Addr)
+		slog.Info("Servidor HTTP iniciado", "addr", server.Addr)
 		serverErrors <- server.ListenAndServe()
 	}()
 
@@ -52,10 +71,11 @@ func main() {
 	// Bloquear hasta recibir una señal o un error
 	select {
 	case err := <-serverErrors:
-		log.Fatalf("Error al iniciar el servidor: %v", err)
+		slog.Error("Error al iniciar el servidor", "error", err)
+		os.Exit(1)
 
 	case <-shutdown:
-		log.Println("Apagando el servidor...")
+		slog.Info("Señal de apagado recibida, cerrando servidor...")
 
 		// Crear un contexto con timeout para el apagado
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -64,13 +84,13 @@ func main() {
 		// Apagar el servidor
 		err := server.Shutdown(ctx)
 		if err != nil {
-			log.Printf("Error al apagar el servidor: %v", err)
+			slog.Error("Error al apagar el servidor", "error", err)
 			err = server.Close()
 			if err != nil {
-				log.Printf("Error al cerrar el servidor: %v", err)
+				slog.Error("Error al cerrar el servidor", "error", err)
 			}
 		}
 
-		log.Println("Servidor apagado correctamente")
+		slog.Info("Servidor apagado correctamente")
 	}
 }

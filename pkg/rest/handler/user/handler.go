@@ -2,7 +2,7 @@ package user
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -32,7 +32,7 @@ type CreateUserRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Email    string  `json:"email" validate:"required,email"`
 	Password string  `json:"password" validate:"required,min=6"`
-	RoleID   *string `json:"role_id,omitempty"`
+	RoleID   *string `json:"roleId,omitempty"`
 }
 
 // UpdateUserRequest representa la solicitud para actualizar un usuario
@@ -40,19 +40,26 @@ type UpdateUserRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Email    string  `json:"email" validate:"required,email"`
 	Password string  `json:"password,omitempty" validate:"omitempty,min=6"`
-	RoleID   *string `json:"role_id,omitempty"`
-	IsActive bool    `json:"is_active"`
+	RoleID   *string `json:"roleId,omitempty"`
+	IsActive bool    `json:"isActive"`
 }
 
 // UserResponse representa la respuesta de un usuario
 type UserResponse struct {
-	ID        int64   `json:"id"`
-	Name      string  `json:"name"`
-	Email     string  `json:"email"`
-	RoleID    *string `json:"role_id,omitempty"`
-	IsActive  bool    `json:"is_active"`
-	CreatedAt string  `json:"created_at,omitempty"`
-	UpdatedAt string  `json:"updated_at,omitempty"`
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	RoleID    *string   `json:"roleId,omitempty"`
+	Role      *RoleInfo `json:"role,omitempty"`
+	IsActive  bool      `json:"isActive"`
+	CreatedAt string    `json:"createdAt,omitempty"`
+	UpdatedAt string    `json:"updatedAt,omitempty"`
+}
+
+// RoleInfo representa la información básica del rol en la respuesta
+type RoleInfo struct {
+	Name  string  `json:"name"`
+	Title *string `json:"title,omitempty"`
 }
 
 // Create maneja la solicitud de creación de un usuario
@@ -102,7 +109,11 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Registrar el error detallado para depuración
-		log.Printf("Error al crear usuario '%s' <%s>: %v", req.Name, req.Email, err)
+		slog.Error("Error al crear usuario",
+			"name", req.Name,
+			"email", req.Email,
+			"error", err,
+		)
 		response.Error(w, http.StatusInternalServerError, "Error al crear el usuario: "+err.Error())
 		return
 	}
@@ -114,6 +125,14 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		Email:    u.Email,
 		RoleID:   u.RoleID,
 		IsActive: u.IsActive,
+	}
+
+	// Agregar información del rol si existe
+	if u.RoleName != nil {
+		resp.Role = &RoleInfo{
+			Name:  *u.RoleName,
+			Title: u.RoleTitle,
+		}
 	}
 
 	if u.CreatedAt != nil {
@@ -172,6 +191,14 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 		Email:    u.Email,
 		RoleID:   u.RoleID,
 		IsActive: u.IsActive,
+	}
+
+	// Agregar información del rol si existe
+	if u.RoleName != nil {
+		resp.Role = &RoleInfo{
+			Name:  *u.RoleName,
+			Title: u.RoleTitle,
+		}
 	}
 
 	if u.CreatedAt != nil {
@@ -264,6 +291,14 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		Email:    u.Email,
 		RoleID:   u.RoleID,
 		IsActive: u.IsActive,
+	}
+
+	// Agregar información del rol si existe
+	if u.RoleName != nil {
+		resp.Role = &RoleInfo{
+			Name:  *u.RoleName,
+			Title: u.RoleTitle,
+		}
 	}
 
 	if u.CreatedAt != nil {
@@ -383,15 +418,43 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	slog.Info("Usuarios obtenidos del repositorio",
+		"count", len(users),
+		"total", total,
+	)
+
 	// Preparar la respuesta
 	var items []UserResponse
 	for _, u := range users {
+		slog.Debug("Procesando usuario para respuesta",
+			"user_id", u.ID,
+			"email", u.Email,
+			"role_name", u.RoleName,
+			"role_title", u.RoleTitle,
+		)
 		item := UserResponse{
 			ID:       u.ID,
 			Name:     u.Name,
 			Email:    u.Email,
 			RoleID:   u.RoleID,
 			IsActive: u.IsActive,
+		}
+
+		// Agregar información del rol si existe
+		if u.RoleName != nil {
+			item.Role = &RoleInfo{
+				Name:  *u.RoleName,
+				Title: u.RoleTitle,
+			}
+			slog.Debug("Rol agregado a la respuesta",
+				"user_id", u.ID,
+				"role_name", *u.RoleName,
+			)
+		} else {
+			slog.Debug("Usuario sin rol en la respuesta",
+				"user_id", u.ID,
+				"email", u.Email,
+			)
 		}
 
 		if u.CreatedAt != nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"log/slog"
 	"strconv"
 
 	"github.com/your-org/jvairv2/pkg/domain/ability"
@@ -30,8 +31,16 @@ func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ab
 		WHERE ar.entity_id = ? AND p.entity_type = 'App\\Models\\Role' AND ar.entity_type = 'App\\Models\\User'
 	`
 
+	slog.Debug("Ejecutando consulta de habilidades de usuario",
+		"user_id", idInt,
+	)
+
 	rows, err := r.db.QueryContext(ctx, query, idInt, idInt)
 	if err != nil {
+		slog.Error("Error al ejecutar consulta de habilidades",
+			"user_id", idInt,
+			"error", err,
+		)
 		return nil, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -85,8 +94,17 @@ func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ab
 	}
 
 	if err = rows.Err(); err != nil {
+		slog.Error("Error al iterar resultados de habilidades",
+			"user_id", idInt,
+			"error", err,
+		)
 		return nil, err
 	}
+
+	slog.Debug("Habilidades obtenidas exitosamente",
+		"user_id", idInt,
+		"count", len(abilities),
+	)
 
 	return abilities, nil
 }

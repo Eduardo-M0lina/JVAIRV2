@@ -32,19 +32,19 @@
               "description": "Tamaño de página (por defecto: 10)"
             },
             {
-              "key": "role_id",
+              "key": "roleId",
               "value": "",
               "description": "Filtrar por ID de rol",
               "disabled": true
             },
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "",
               "description": "Filtrar por tipo de entidad",
               "disabled": true
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "",
               "description": "Filtrar por ID de entidad",
               "disabled": true
@@ -157,17 +157,17 @@
           "path": ["assigned-roles", "check", ":role_id", ":entity_type", ":entity_id"],
           "variable": [
             {
-              "key": "role_id",
+              "key": "roleId",
               "value": "4",
               "description": "ID del rol"
             },
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "App\\Models\\User",
               "description": "Tipo de entidad (ej: App\\Models\\User, App\\Models\\Customer)"
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "30",
               "description": "ID de la entidad"
             }
@@ -193,12 +193,12 @@
           "path": ["assigned-roles", "entity", ":entity_type", ":entity_id"],
           "variable": [
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "App\\Models\\User",
               "description": "Tipo de entidad (ej: App\\Models\\User, App\\Models\\Customer)"
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "30",
               "description": "ID de la entidad"
             }
@@ -224,17 +224,17 @@
           "path": ["assigned-roles", "revoke", ":role_id", ":entity_type", ":entity_id"],
           "variable": [
             {
-              "key": "role_id",
+              "key": "roleId",
               "value": "4",
               "description": "ID del rol"
             },
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "App\\Models\\User",
               "description": "Tipo de entidad (ej: App\\Models\\User, App\\Models\\Customer)"
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "30",
               "description": "ID de la entidad"
             }

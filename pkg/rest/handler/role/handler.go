@@ -2,6 +2,7 @@ package role
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -46,8 +47,8 @@ type RoleResponse struct {
 	Name      string  `json:"name"`
 	Title     *string `json:"title,omitempty"`
 	Scope     *int    `json:"scope,omitempty"`
-	CreatedAt string  `json:"created_at,omitempty"`
-	UpdatedAt string  `json:"updated_at,omitempty"`
+	CreatedAt string  `json:"createdAt,omitempty"`
+	UpdatedAt string  `json:"updatedAt,omitempty"`
 }
 
 // Create maneja la solicitud de creación de un rol
@@ -66,6 +67,9 @@ type RoleResponse struct {
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "create_role") {
+		slog.Warn("Intento de crear rol sin permisos",
+			"path", r.URL.Path,
+		)
 		response.Error(w, http.StatusForbidden, "No tiene permisos para crear roles")
 		return
 	}
@@ -73,6 +77,9 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Decodificar la solicitud
 	var req CreateRoleRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		slog.Warn("Error al decodificar solicitud de creación de rol",
+			"error", err,
+		)
 		response.Error(w, http.StatusBadRequest, "Error al decodificar la solicitud")
 		return
 	}

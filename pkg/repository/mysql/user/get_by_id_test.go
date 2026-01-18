@@ -30,19 +30,31 @@ func TestGetByID_Success(t *testing.T) {
 	}
 
 	// Configurar la expectativa para la consulta
+	roleName := "Admin"
+	roleTitle := "Administrator"
 	rows := sqlmock.NewRows([]string{
 		"id", "name", "email", "password", "role_id",
 		"email_verified_at", "remember_token", "created_at", "updated_at", "deleted_at",
+		"role_id_int", "role_name", "role_title",
 	}).AddRow(
 		123, "Test User", "test@example.com", "hashed_password", roleID,
 		time.Now(), "token123", time.Now(), time.Now(), nil,
+		1, roleName, roleTitle,
 	)
 
 	mock.ExpectQuery(regexp.QuoteMeta(`
-		SELECT id, name, email, password, role_id,
-		       email_verified_at, remember_token, created_at, updated_at, deleted_at
-		FROM users
-		WHERE id = ? AND deleted_at IS NULL
+		SELECT u.id, u.name, u.email, u.password, u.role_id,
+		       u.email_verified_at, u.remember_token, u.created_at, u.updated_at, u.deleted_at,
+		       r.id as role_id_int, r.name as role_name, r.title as role_title
+		FROM users u
+		LEFT JOIN (
+			SELECT ar.entity_id, ar.role_id
+			FROM assigned_roles ar
+			WHERE ar.entity_type = 'App\\Models\\User'
+			GROUP BY ar.entity_id
+		) ar ON ar.entity_id = u.id
+		LEFT JOIN roles r ON r.id = ar.role_id
+		WHERE u.id = ? AND u.deleted_at IS NULL
 	`)).WithArgs(123).WillReturnRows(rows)
 
 	// Ejecutar la función que estamos probando
@@ -94,10 +106,18 @@ func TestGetByID_NotFound(t *testing.T) {
 
 	// Configurar la expectativa para la consulta que no encuentra resultados
 	mock.ExpectQuery(regexp.QuoteMeta(`
-		SELECT id, name, email, password, role_id,
-		       email_verified_at, remember_token, created_at, updated_at, deleted_at
-		FROM users
-		WHERE id = ? AND deleted_at IS NULL
+		SELECT u.id, u.name, u.email, u.password, u.role_id,
+		       u.email_verified_at, u.remember_token, u.created_at, u.updated_at, u.deleted_at,
+		       r.id as role_id_int, r.name as role_name, r.title as role_title
+		FROM users u
+		LEFT JOIN (
+			SELECT ar.entity_id, ar.role_id
+			FROM assigned_roles ar
+			WHERE ar.entity_type = 'App\\Models\\User'
+			GROUP BY ar.entity_id
+		) ar ON ar.entity_id = u.id
+		LEFT JOIN roles r ON r.id = ar.role_id
+		WHERE u.id = ? AND u.deleted_at IS NULL
 	`)).WithArgs(999).WillReturnError(sql.ErrNoRows)
 
 	// Ejecutar la función que estamos probando
@@ -122,10 +142,18 @@ func TestGetByID_DatabaseError(t *testing.T) {
 
 	// Configurar la expectativa para la consulta que devuelve un error de base de datos
 	mock.ExpectQuery(regexp.QuoteMeta(`
-		SELECT id, name, email, password, role_id,
-		       email_verified_at, remember_token, created_at, updated_at, deleted_at
-		FROM users
-		WHERE id = ? AND deleted_at IS NULL
+		SELECT u.id, u.name, u.email, u.password, u.role_id,
+		       u.email_verified_at, u.remember_token, u.created_at, u.updated_at, u.deleted_at,
+		       r.id as role_id_int, r.name as role_name, r.title as role_title
+		FROM users u
+		LEFT JOIN (
+			SELECT ar.entity_id, ar.role_id
+			FROM assigned_roles ar
+			WHERE ar.entity_type = 'App\\Models\\User'
+			GROUP BY ar.entity_id
+		) ar ON ar.entity_id = u.id
+		LEFT JOIN roles r ON r.id = ar.role_id
+		WHERE u.id = ? AND u.deleted_at IS NULL
 	`)).WithArgs(123).WillReturnError(sql.ErrConnDone)
 
 	// Ejecutar la función que estamos probando

@@ -3,24 +3,34 @@ package user
 import (
 	"context"
 	"database/sql"
+	"log/slog"
 
 	"github.com/your-org/jvairv2/pkg/domain/user"
 )
 
 // List lista usuarios con paginación y filtros
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*user.User, int, error) {
-	// Construir la consulta base
+	// Construir la consulta base con JOIN a assigned_roles y roles
+	// Usamos una subconsulta para obtener solo el primer rol asignado por usuario
 	baseQuery := `
-		SELECT id, name, email, password, role_id,
-		       email_verified_at, remember_token, created_at, updated_at, deleted_at
-		FROM users
-		WHERE deleted_at IS NULL
+		SELECT u.id, u.name, u.email, u.password, u.role_id,
+		       u.email_verified_at, u.remember_token, u.created_at, u.updated_at, u.deleted_at,
+		       r.id as role_id_int, r.name as role_name, r.title as role_title
+		FROM users u
+		LEFT JOIN (
+			SELECT ar.entity_id, ar.role_id
+			FROM assigned_roles ar
+			WHERE ar.entity_type = 'App\\Models\\User'
+			GROUP BY ar.entity_id
+		) ar ON ar.entity_id = u.id
+		LEFT JOIN roles r ON r.id = ar.role_id
+		WHERE u.deleted_at IS NULL
 	`
 
 	countQuery := `
 		SELECT COUNT(*)
-		FROM users
-		WHERE deleted_at IS NULL
+		FROM users u
+		WHERE u.deleted_at IS NULL
 	`
 
 	// Aplicar filtros si existen
@@ -58,8 +68,15 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	}
 
 	// Ejecutar la consulta paginada
+	slog.Debug("Ejecutando query de listado de usuarios",
+		"query", query,
+		"args", queryArgs,
+	)
 	rows, err := r.db.QueryContext(ctx, query, queryArgs...)
 	if err != nil {
+		slog.Error("Error al ejecutar query de listado",
+			"error", err,
+		)
 		return nil, 0, err
 	}
 	defer func() { _ = rows.Close() }()
@@ -70,15 +87,30 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		var u user.User
 		var emailVerifiedAt, createdAt, updatedAt, deletedAt sql.NullTime
 		var rememberToken sql.NullString
+		var roleIDInt sql.NullInt64
+		var roleName, roleTitle sql.NullString
 
 		err := rows.Scan(
 			&u.ID, &u.Name, &u.Email, &u.Password, &u.RoleID,
 			&emailVerifiedAt, &rememberToken, &createdAt, &updatedAt, &deletedAt,
+			&roleIDInt, &roleName, &roleTitle,
 		)
 
 		if err != nil {
+			slog.Error("Error al escanear fila de usuario",
+				"error", err,
+			)
 			return nil, 0, err
 		}
+
+		slog.Debug("Usuario escaneado",
+			"user_id", u.ID,
+			"email", u.Email,
+			"role_id_field", u.RoleID,
+			"role_id_int", roleIDInt,
+			"role_name", roleName,
+			"role_title", roleTitle,
+		)
 
 		if emailVerifiedAt.Valid {
 			u.EmailVerifiedAt = &emailVerifiedAt.Time
@@ -98,6 +130,23 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 
 		if deletedAt.Valid {
 			u.DeletedAt = &deletedAt.Time
+		}
+
+		// Información del rol
+		if roleName.Valid {
+			u.RoleName = &roleName.String
+			slog.Debug("Rol asignado al usuario",
+				"user_id", u.ID,
+				"role_name", *u.RoleName,
+			)
+		} else {
+			slog.Debug("Usuario sin rol asignado",
+				"user_id", u.ID,
+				"email", u.Email,
+			)
+		}
+		if roleTitle.Valid {
+			u.RoleTitle = &roleTitle.String
 		}
 
 		// Campo virtual

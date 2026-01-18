@@ -2,7 +2,7 @@ package workflow
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -31,7 +31,7 @@ func NewHandler(workflowUseCase *workflow.UseCase) *Handler {
 type CreateWorkflowRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Notes    *string `json:"notes,omitempty"`
-	IsActive bool    `json:"is_active"`
+	IsActive bool    `json:"isActive"`
 	Statuses []int64 `json:"statuses,omitempty"`
 }
 
@@ -39,7 +39,7 @@ type CreateWorkflowRequest struct {
 type UpdateWorkflowRequest struct {
 	Name     string  `json:"name" validate:"required"`
 	Notes    *string `json:"notes,omitempty"`
-	IsActive bool    `json:"is_active"`
+	IsActive bool    `json:"isActive"`
 	Statuses []int64 `json:"statuses,omitempty"`
 }
 
@@ -48,15 +48,15 @@ type WorkflowResponse struct {
 	ID       int64                    `json:"id"`
 	Name     string                   `json:"name"`
 	Notes    *string                  `json:"notes,omitempty"`
-	IsActive bool                     `json:"is_active"`
+	IsActive bool                     `json:"isActive"`
 	Statuses []WorkflowStatusResponse `json:"statuses,omitempty"`
 }
 
 // WorkflowStatusResponse representa la respuesta de un status de workflow
 type WorkflowStatusResponse struct {
-	JobStatusID int64  `json:"job_status_id"`
+	JobStatusID int64  `json:"jobStatusId"`
 	Order       int    `json:"order"`
-	StatusName  string `json:"status_name,omitempty"`
+	StatusName  string `json:"statusName,omitempty"`
 }
 
 // List maneja la solicitud de listado de workflows
@@ -107,7 +107,11 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Obtener workflows
 	workflows, total, err := h.workflowUseCase.List(r.Context(), filters, page, pageSize)
 	if err != nil {
-		log.Printf("ERROR al listar workflows: %v", err)
+		slog.Error("Error al listar workflows",
+			"error", err,
+			"page", page,
+			"page_size", pageSize,
+		)
 		response.Error(w, http.StatusInternalServerError, "Error al listar workflows")
 		return
 	}
@@ -170,7 +174,10 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 			response.Error(w, http.StatusNotFound, "Workflow no encontrado")
 			return
 		}
-		log.Printf("ERROR al obtener workflow por ID %d: %v", id, err)
+		slog.Error("Error al obtener workflow por ID",
+			"workflow_id", id,
+			"error", err,
+		)
 		response.Error(w, http.StatusInternalServerError, "Error al obtener el workflow: "+err.Error())
 		return
 	}

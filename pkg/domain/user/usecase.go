@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 	"strconv"
 	"time"
 
@@ -53,26 +53,31 @@ func (uc *UseCase) GetByEmail(ctx context.Context, email string) (*User, error) 
 func (uc *UseCase) Create(ctx context.Context, user *User) error {
 	// Verificar si el repositorio está inicializado
 	if uc.repo == nil {
-		log.Printf("ERROR: Repositorio de usuarios no inicializado")
+		slog.Error("Repositorio de usuarios no inicializado")
 		return errors.New("repositorio de usuarios no inicializado")
 	}
 
 	// Verificar si ya existe un usuario con el mismo email
 	_, err := uc.repo.GetByEmail(ctx, user.Email)
 	if err == nil {
-		log.Printf("ERROR: Email ya en uso: %s", user.Email)
+		slog.Warn("Intento de crear usuario con email duplicado",
+			"email", user.Email,
+		)
 		return ErrDuplicateEmail
 	} else if !errors.Is(err, ErrUserNotFound) {
-		log.Printf("ERROR al verificar email existente: %v", err)
+		slog.Error("Error al verificar email existente",
+			"email", user.Email,
+			"error", err,
+		)
 		return fmt.Errorf("error al verificar email existente: %w", err)
 	}
-
-	log.Printf("Email disponible para nuevo usuario: %s", user.Email)
 
 	// Hash de la contraseña
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		log.Printf("ERROR al generar hash de contraseña: %v", err)
+		slog.Error("Error al generar hash de contraseña",
+			"error", err,
+		)
 		return fmt.Errorf("error al generar hash de contraseña: %w", err)
 	}
 	user.Password = string(hashedPassword)
@@ -84,13 +89,22 @@ func (uc *UseCase) Create(ctx context.Context, user *User) error {
 	user.IsActive = true
 
 	// Crear el usuario
-	log.Printf("Intentando crear usuario: %s <%s>", user.Name, user.Email)
+	slog.Info("Creando nuevo usuario",
+		"name", user.Name,
+		"email", user.Email,
+	)
 	err = uc.repo.Create(ctx, user)
 	if err != nil {
-		log.Printf("ERROR al crear usuario en la base de datos: %v", err)
+		slog.Error("Error al crear usuario en la base de datos",
+			"email", user.Email,
+			"error", err,
+		)
 		return fmt.Errorf("error al crear usuario en la base de datos: %w", err)
 	}
-	log.Printf("Usuario creado exitosamente con ID: %d", user.ID)
+	slog.Info("Usuario creado exitosamente",
+		"user_id", user.ID,
+		"email", user.Email,
+	)
 
 	// Si se especificó un rol, asignar el rol al usuario
 	if user.RoleID != nil {
@@ -98,7 +112,11 @@ func (uc *UseCase) Create(ctx context.Context, user *User) error {
 		if err != nil {
 			// Si falla la obtención del rol, registrar el error pero continuar
 			// ya que el usuario ya fue creado
-			log.Printf("Error al obtener rol para el usuario %d: %v", user.ID, err)
+			slog.Warn("Error al obtener rol para el usuario",
+				"user_id", user.ID,
+				"role_id", user.RoleID,
+				"error", err,
+			)
 		} else {
 			assignedRole := &assigned_role.AssignedRole{
 				RoleID:     roleID,
@@ -111,7 +129,11 @@ func (uc *UseCase) Create(ctx context.Context, user *User) error {
 			if err != nil {
 				// Si falla la asignación del rol, registrar el error pero continuar
 				// ya que el usuario ya fue creado
-				log.Printf("Error al asignar rol al usuario %d: %v", user.ID, err)
+				slog.Warn("Error al asignar rol al usuario",
+					"user_id", user.ID,
+					"role_id", roleID,
+					"error", err,
+				)
 			}
 		}
 	}
@@ -261,41 +283,46 @@ func (uc *UseCase) HasAbility(ctx context.Context, userID string, abilityName st
 func (uc *UseCase) getRoleID(roleIDStr string) (int64, error) {
 	// Verificar si el repositorio está inicializado
 	if uc.roleRepo == nil {
-		log.Printf("ERROR CRÍTICO: Repositorio de roles no inicializado")
+		slog.Error("Repositorio de roles no inicializado")
 		return 0, errors.New("repositorio de roles no inicializado")
 	}
 
-	log.Printf("Intentando obtener rol con ID/nombre: '%s'", roleIDStr)
+	slog.Debug("Intentando obtener rol", "role_id_str", roleIDStr)
 
 	// Intentar obtener el rol por ID
 	roleID, err := parseRoleID(roleIDStr)
 	if err == nil {
-		log.Printf("Interpretado como ID numérico: %d", roleID)
 		role, err := uc.roleRepo.GetByID(context.Background(), roleID)
 		if err == nil && role != nil {
-			log.Printf("Rol encontrado por ID: %d, nombre: %s", role.ID, role.Name)
+			slog.Debug("Rol encontrado por ID",
+				"role_id", role.ID,
+				"role_name", role.Name,
+			)
 			return roleID, nil
 		}
-		// Si hay un error específico, registrarlo
 		if err != nil {
-			log.Printf("ERROR al obtener rol por ID %d: %v", roleID, err)
-		} else {
-			log.Printf("ERROR: Rol con ID %d no encontrado o es nil", roleID)
+			slog.Debug("Error al obtener rol por ID",
+				"role_id", roleID,
+				"error", err,
+			)
 		}
-	} else {
-		log.Printf("No se pudo interpretar '%s' como ID numérico: %v", roleIDStr, err)
 	}
 
 	// Si no se encontró por ID, intentar por nombre
-	log.Printf("Intentando obtener rol por nombre: '%s'", roleIDStr)
+	slog.Debug("Intentando obtener rol por nombre", "role_name", roleIDStr)
 	r, err := uc.roleRepo.GetByName(context.Background(), roleIDStr)
 	if err != nil {
-		// Registrar el error específico
-		log.Printf("ERROR al obtener rol por nombre '%s': %v", roleIDStr, err)
+		slog.Error("Error al obtener rol por nombre",
+			"role_name", roleIDStr,
+			"error", err,
+		)
 		return 0, fmt.Errorf("error al obtener rol por nombre '%s': %w", roleIDStr, err)
 	}
 
-	log.Printf("Rol encontrado por nombre: '%s', ID: %d", roleIDStr, r.ID)
+	slog.Debug("Rol encontrado por nombre",
+		"role_name", roleIDStr,
+		"role_id", r.ID,
+	)
 	return r.ID, nil
 }
 

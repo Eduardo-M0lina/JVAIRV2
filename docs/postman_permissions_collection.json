@@ -32,19 +32,19 @@
               "description": "Tamaño de página (por defecto: 10)"
             },
             {
-              "key": "ability_id",
+              "key": "abilityId",
               "value": "",
               "description": "Filtrar por ID de ability",
               "disabled": true
             },
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "",
               "description": "Filtrar por tipo de entidad",
               "disabled": true
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "",
               "description": "Filtrar por ID de entidad",
               "disabled": true
@@ -190,7 +190,7 @@
           "path": ["permissions", "ability", ":ability_id"],
           "variable": [
             {
-              "key": "ability_id",
+              "key": "abilityId",
               "value": "1",
               "description": "ID de la ability"
             }
@@ -216,17 +216,17 @@
           "path": ["permissions", "check", ":ability_id", ":entity_type", ":entity_id"],
           "variable": [
             {
-              "key": "ability_id",
+              "key": "abilityId",
               "value": "1",
               "description": "ID de la ability"
             },
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "user",
               "description": "Tipo de entidad"
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "1",
               "description": "ID de la entidad"
             }
@@ -252,12 +252,12 @@
           "path": ["permissions", "entity", ":entity_type", ":entity_id"],
           "variable": [
             {
-              "key": "entity_type",
+              "key": "entityType",
               "value": "user",
               "description": "Tipo de entidad"
             },
             {
-              "key": "entity_id",
+              "key": "entityId",
               "value": "1",
               "description": "ID de la entidad"
             }

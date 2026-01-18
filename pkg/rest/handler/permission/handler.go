@@ -28,18 +28,18 @@ func NewHandler(permissionUseCase *permission.UseCase) *Handler {
 
 // CreatePermissionRequest representa la solicitud para crear un permiso
 type CreatePermissionRequest struct {
-	AbilityID  int64   `json:"ability_id" validate:"required"`
-	EntityID   int64   `json:"entity_id" validate:"required"`
-	EntityType string  `json:"entity_type" validate:"required"`
+	AbilityID  int64   `json:"abilityId" validate:"required"`
+	EntityID   int64   `json:"entityId" validate:"required"`
+	EntityType string  `json:"entityType" validate:"required"`
 	Forbidden  bool    `json:"forbidden"`
 	Conditions *string `json:"conditions,omitempty"`
 }
 
 // UpdatePermissionRequest representa la solicitud para actualizar un permiso
 type UpdatePermissionRequest struct {
-	AbilityID  int64   `json:"ability_id" validate:"required"`
-	EntityID   int64   `json:"entity_id" validate:"required"`
-	EntityType string  `json:"entity_type" validate:"required"`
+	AbilityID  int64   `json:"abilityId" validate:"required"`
+	EntityID   int64   `json:"entityId" validate:"required"`
+	EntityType string  `json:"entityType" validate:"required"`
 	Forbidden  bool    `json:"forbidden"`
 	Conditions *string `json:"conditions,omitempty"`
 }
@@ -47,13 +47,13 @@ type UpdatePermissionRequest struct {
 // PermissionResponse representa la respuesta de un permiso
 type PermissionResponse struct {
 	ID         int64   `json:"id"`
-	AbilityID  int64   `json:"ability_id"`
-	EntityID   int64   `json:"entity_id"`
-	EntityType string  `json:"entity_type"`
+	AbilityID  int64   `json:"abilityId"`
+	EntityID   int64   `json:"entityId"`
+	EntityType string  `json:"entityType"`
 	Forbidden  bool    `json:"forbidden"`
 	Conditions *string `json:"conditions,omitempty"`
-	CreatedAt  string  `json:"created_at,omitempty"`
-	UpdatedAt  string  `json:"updated_at,omitempty"`
+	CreatedAt  string  `json:"createdAt,omitempty"`
+	UpdatedAt  string  `json:"updatedAt,omitempty"`
 }
 
 // Create maneja la solicitud de creación de un permiso

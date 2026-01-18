@@ -26,9 +26,9 @@ type AccessDetails struct {
 
 // RefreshResponse representa la respuesta de refresco de token
 type RefreshResponse struct {
-	AccessToken  string    `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	RefreshToken string    `json:"refresh_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	ExpiresAt    time.Time `json:"expires_at" example:"2023-01-01T00:00:00Z"`
+	AccessToken  string    `json:"accessToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	RefreshToken string    `json:"refreshToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	ExpiresAt    time.Time `json:"expiresAt" example:"2023-01-01T00:00:00Z"`
 }
 
 // LoginRequest representa la solicitud de inicio de sesión
@@ -39,9 +39,9 @@ type LoginRequest struct {
 
 // LoginResponse representa la respuesta de inicio de sesión
 type LoginResponse struct {
-	AccessToken  string     `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	RefreshToken string     `json:"refresh_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	ExpiresAt    time.Time  `json:"expires_at" example:"2023-01-01T00:00:00Z"`
+	AccessToken  string     `json:"accessToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	RefreshToken string     `json:"refreshToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	ExpiresAt    time.Time  `json:"expiresAt" example:"2023-01-01T00:00:00Z"`
 	User         *user.User `json:"user"`
 }
 

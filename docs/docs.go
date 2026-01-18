@@ -2589,13 +2589,13 @@ const docTemplate = `{
         "ability.AbilityResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "id": {
@@ -2604,7 +2604,7 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "only_owned": {
+                "onlyOwned": {
                     "type": "boolean"
                 },
                 "options": {
@@ -2616,7 +2616,7 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -2627,16 +2627,16 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "only_owned": {
+                "onlyOwned": {
                     "type": "boolean"
                 },
                 "options": {
@@ -2656,16 +2656,16 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "only_owned": {
+                "onlyOwned": {
                     "type": "boolean"
                 },
                 "options": {
@@ -2682,24 +2682,24 @@ const docTemplate = `{
         "assigned_role.AssignRoleRequest": {
             "type": "object",
             "required": [
-                "entity_id",
-                "entity_type",
-                "role_id"
+                "entityId",
+                "entityType",
+                "roleId"
             ],
             "properties": {
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
-                "restricted_to_id": {
+                "restrictedToId": {
                     "type": "integer"
                 },
-                "restricted_to_type": {
+                "restrictedToType": {
                     "type": "string"
                 },
-                "role_id": {
+                "roleId": {
                     "type": "integer"
                 },
                 "scope": {
@@ -2710,10 +2710,10 @@ const docTemplate = `{
         "assigned_role.AssignedRoleResponse": {
             "type": "object",
             "properties": {
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "id": {
@@ -2722,7 +2722,7 @@ const docTemplate = `{
                 "restricted": {
                     "type": "boolean"
                 },
-                "role_id": {
+                "roleId": {
                     "type": "integer"
                 },
                 "scope": {
@@ -2750,15 +2750,15 @@ const docTemplate = `{
         "auth.LoginResponse": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "accessToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string",
                     "example": "2023-01-01T00:00:00Z"
                 },
-                "refresh_token": {
+                "refreshToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
@@ -2770,15 +2770,15 @@ const docTemplate = `{
         "auth.RefreshResponse": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "accessToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string",
                     "example": "2023-01-01T00:00:00Z"
                 },
-                "refresh_token": {
+                "refreshToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 }
@@ -2787,21 +2787,21 @@ const docTemplate = `{
         "permission.CreatePermissionRequest": {
             "type": "object",
             "required": [
-                "ability_id",
-                "entity_id",
-                "entity_type"
+                "abilityId",
+                "entityId",
+                "entityType"
             ],
             "properties": {
-                "ability_id": {
+                "abilityId": {
                     "type": "integer"
                 },
                 "conditions": {
                     "type": "string"
                 },
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "forbidden": {
@@ -2812,19 +2812,19 @@ const docTemplate = `{
         "permission.PermissionResponse": {
             "type": "object",
             "properties": {
-                "ability_id": {
+                "abilityId": {
                     "type": "integer"
                 },
                 "conditions": {
                     "type": "string"
                 },
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "forbidden": {
@@ -2833,7 +2833,7 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -2841,21 +2841,21 @@ const docTemplate = `{
         "permission.UpdatePermissionRequest": {
             "type": "object",
             "required": [
-                "ability_id",
-                "entity_id",
-                "entity_type"
+                "abilityId",
+                "entityId",
+                "entityType"
             ],
             "properties": {
-                "ability_id": {
+                "abilityId": {
                     "type": "integer"
                 },
                 "conditions": {
                     "type": "string"
                 },
-                "entity_id": {
+                "entityId": {
                     "type": "integer"
                 },
-                "entity_type": {
+                "entityType": {
                     "type": "string"
                 },
                 "forbidden": {
@@ -2870,13 +2870,13 @@ const docTemplate = `{
                 "page": {
                     "type": "integer"
                 },
-                "page_size": {
+                "pageSize": {
                     "type": "integer"
                 },
-                "total_items": {
+                "totalItems": {
                     "type": "integer"
                 },
-                "total_pages": {
+                "totalPages": {
                     "type": "integer"
                 }
             }
@@ -2931,7 +2931,7 @@ const docTemplate = `{
         "role.RoleResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "id": {
@@ -2946,7 +2946,7 @@ const docTemplate = `{
                 "title": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -2974,37 +2974,37 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "is_enforce_routine_password_reset": {
+                "isEnforceRoutinePasswordReset": {
                     "type": "boolean"
                 },
-                "is_twilio_enabled": {
+                "isTwilioEnabled": {
                     "type": "boolean"
                 },
-                "password_age": {
+                "passwordAge": {
                     "type": "integer"
                 },
-                "password_expire_days": {
+                "passwordExpireDays": {
                     "type": "integer"
                 },
-                "password_history_count": {
+                "passwordHistoryCount": {
                     "type": "integer"
                 },
-                "password_include_numbers": {
+                "passwordIncludeNumbers": {
                     "type": "boolean"
                 },
-                "password_include_symbols": {
+                "passwordIncludeSymbols": {
                     "type": "boolean"
                 },
-                "password_minimum_length": {
+                "passwordMinimumLength": {
                     "type": "integer"
                 },
-                "twilio_auth_token": {
+                "twilioAuthToken": {
                     "type": "string"
                 },
-                "twilio_from_number": {
+                "twilioFromNumber": {
                     "type": "string"
                 },
-                "twilio_sid": {
+                "twilioSid": {
                     "type": "string"
                 }
             }
@@ -3012,47 +3012,47 @@ const docTemplate = `{
         "settings.UpdateSettingsRequest": {
             "type": "object",
             "required": [
-                "password_age",
-                "password_expire_days",
-                "password_history_count",
-                "password_minimum_length"
+                "passwordAge",
+                "passwordExpireDays",
+                "passwordHistoryCount",
+                "passwordMinimumLength"
             ],
             "properties": {
-                "is_enforce_routine_password_reset": {
+                "isEnforceRoutinePasswordReset": {
                     "type": "boolean"
                 },
-                "is_twilio_enabled": {
+                "isTwilioEnabled": {
                     "type": "boolean"
                 },
-                "password_age": {
+                "passwordAge": {
                     "type": "integer",
                     "minimum": 0
                 },
-                "password_expire_days": {
+                "passwordExpireDays": {
                     "type": "integer",
                     "minimum": 1
                 },
-                "password_history_count": {
+                "passwordHistoryCount": {
                     "type": "integer",
                     "minimum": 0
                 },
-                "password_include_numbers": {
+                "passwordIncludeNumbers": {
                     "type": "boolean"
                 },
-                "password_include_symbols": {
+                "passwordIncludeSymbols": {
                     "type": "boolean"
                 },
-                "password_minimum_length": {
+                "passwordMinimumLength": {
                     "type": "integer",
                     "minimum": 4
                 },
-                "twilio_auth_token": {
+                "twilioAuthToken": {
                     "type": "string"
                 },
-                "twilio_from_number": {
+                "twilioFromNumber": {
                     "type": "string"
                 },
-                "twilio_sid": {
+                "twilioSid": {
                     "type": "string"
                 }
             }
@@ -3075,7 +3075,18 @@ const docTemplate = `{
                     "type": "string",
                     "minLength": 6
                 },
-                "role_id": {
+                "roleId": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.RoleInfo": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
@@ -3090,7 +3101,7 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "is_active": {
+                "isActive": {
                     "type": "boolean"
                 },
                 "name": {
@@ -3100,7 +3111,7 @@ const docTemplate = `{
                     "type": "string",
                     "minLength": 6
                 },
-                "role_id": {
+                "roleId": {
                     "type": "string"
                 }
             }
@@ -3153,6 +3164,14 @@ const docTemplate = `{
                     "description": "varchar(191) DEFAULT NULL",
                     "type": "string"
                 },
+                "roleName": {
+                    "description": "Nombre del rol (campo virtual del JOIN)",
+                    "type": "string"
+                },
+                "roleTitle": {
+                    "description": "Título del rol (campo virtual del JOIN)",
+                    "type": "string"
+                },
                 "updatedAt": {
                     "description": "timestamp NULL DEFAULT NULL",
                     "type": "string"
@@ -3162,7 +3181,7 @@ const docTemplate = `{
         "user.UserResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "email": {
@@ -3171,16 +3190,102 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "is_active": {
+                "isActive": {
                     "type": "boolean"
                 },
                 "name": {
                     "type": "string"
                 },
-                "role_id": {
+                "role": {
+                    "$ref": "#/definitions/user.RoleInfo"
+                },
+                "roleId": {
                     "type": "string"
                 },
-                "updated_at": {
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "workflow.CreateWorkflowRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "statuses": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "workflow.UpdateWorkflowRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "statuses": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "workflow.WorkflowResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "statuses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
+                    }
+                }
+            }
+        },
+        "workflow.WorkflowStatusResponse": {
+            "type": "object",
+            "properties": {
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "statusName": {
                     "type": "string"
                 }
             }
