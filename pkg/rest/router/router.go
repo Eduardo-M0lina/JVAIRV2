@@ -12,6 +12,7 @@ import (
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
+	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
@@ -31,6 +32,7 @@ func New(
 	settingsHandler *settingsHandler.Handler,
 	workflowHandler *workflowHandler.Handler,
 	customerHandler *customerHandler.Handler,
+	propertyHandler *propertyHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -76,6 +78,8 @@ func New(
 			SetupWorkflowRoutes(r, workflowHandler, authMiddleware)
 			// Rutas de customers
 			RegisterCustomerRoutes(r, customerHandler)
+			// Rutas de properties
+			RegisterPropertyRoutes(r, propertyHandler)
 		})
 	})
 	return r

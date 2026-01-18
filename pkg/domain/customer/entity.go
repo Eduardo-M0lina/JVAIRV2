@@ -1,6 +1,10 @@
 package customer
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 type Customer struct {
 	ID                   int64      `json:"id"`
@@ -44,4 +48,17 @@ func (c *Customer) GetBillingAddress() *BillingAddress {
 		State:  c.BillingAddressState,
 		Zip:    c.BillingAddressZip,
 	}
+}
+
+// Validate valida los campos requeridos del customer
+func (c *Customer) Validate() error {
+	if strings.TrimSpace(c.Name) == "" {
+		return fmt.Errorf("name is required")
+	}
+
+	if c.WorkflowID == 0 {
+		return fmt.Errorf("workflow_id is required")
+	}
+
+	return nil
 }

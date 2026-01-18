@@ -17,7 +17,7 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/users?page=1&page_size=10",
+          "raw": "{{baseUrl}}/users?page=1&pageSize=10",
           "host": ["{{baseUrl}}"],
           "path": ["users"],
           "query": [
@@ -27,7 +27,7 @@
               "description": "Número de página (por defecto: 1)"
             },
             {
-              "key": "page_size",
+              "key": "pageSize",
               "value": "10",
               "description": "Tamaño de página (por defecto: 10)"
             },

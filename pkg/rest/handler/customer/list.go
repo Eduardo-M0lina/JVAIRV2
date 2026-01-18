@@ -16,7 +16,7 @@ import (
 // @Param page query int false "Page number" default(1)
 // @Param pageSize query int false "Page size" default(10)
 // @Param search query string false "Search term"
-// @Param workflow_id query int false "Filter by workflow ID"
+// @Param workflowId query int false "Filter by workflow ID"
 // @Success 200 {object} response.PaginatedResponse{items=[]CustomerResponse}
 // @Failure 500 {object} response.ErrorResponse
 // @Router /customers [get]

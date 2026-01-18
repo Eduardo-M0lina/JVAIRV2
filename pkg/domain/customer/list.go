@@ -35,14 +35,14 @@ func (uc *UseCase) List(ctx context.Context, filters map[string]interface{}, pag
 		slog.ErrorContext(ctx, "Failed to list customers",
 			slog.String("error", err.Error()),
 			slog.Int("page", page),
-			slog.Int("page_size", pageSize))
+			slog.Int("pageSize", pageSize))
 		return nil, 0, err
 	}
 
 	slog.InfoContext(ctx, "Customers listed successfully",
 		slog.Int("total", total),
 		slog.Int("page", page),
-		slog.Int("page_size", pageSize))
+		slog.Int("pageSize", pageSize))
 
 	return customers, total, nil
 }

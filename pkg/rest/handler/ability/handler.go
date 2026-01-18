@@ -344,9 +344,9 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param page query int false "Número de página (por defecto: 1)"
-// @Param page_size query int false "Tamaño de página (por defecto: 10)"
+// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
 // @Param name query string false "Filtrar por nombre"
-// @Param entity_type query string false "Filtrar por tipo de entidad"
+// @Param entityType query string false "Filtrar por tipo de entidad"
 // @Param scope query int false "Filtrar por scope"
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
@@ -366,7 +366,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	pageSize, err := strconv.Atoi(r.URL.Query().Get("page_size"))
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
 	if err != nil || pageSize < 1 {
 		pageSize = 10
 	}
@@ -378,7 +378,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		filters["name"] = name
 	}
 
-	if entityType := r.URL.Query().Get("entity_type"); entityType != "" {
+	if entityType := r.URL.Query().Get("entityType"); entityType != "" {
 		filters["entity_type"] = entityType
 	}
 

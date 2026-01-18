@@ -35,7 +35,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		slog.ErrorContext(r.Context(), "Failed to get customer",
 			slog.String("error", err.Error()),
-			slog.Int64("customer_id", id))
+			slog.Int64("customerId", id))
 		response.Error(w, http.StatusNotFound, "Customer not found")
 		return
 	}

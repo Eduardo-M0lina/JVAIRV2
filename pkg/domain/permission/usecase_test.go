@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/your-org/jvairv2/pkg/domain/ability"
@@ -24,8 +23,7 @@ func TestUseCase_GetByID(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
-	now := time.Now()
+	scope := 1
 
 	expectedPermission := &Permission{
 		ID:         permissionID,
@@ -33,9 +31,7 @@ func TestUseCase_GetByID(t *testing.T) {
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
-		CreatedAt:  &now,
-		UpdatedAt:  &now,
+		Scope:      &scope,
 	}
 
 	// Configurar el comportamiento esperado del mock
@@ -92,8 +88,7 @@ func TestUseCase_GetByEntity(t *testing.T) {
 	ctx := context.Background()
 	entityType := "App\\Models\\User"
 	entityID := int64(10)
-	now := time.Now()
-	conditions1 := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope1 := 1
 
 	expectedPermissions := []*Permission{
 		{
@@ -102,9 +97,7 @@ func TestUseCase_GetByEntity(t *testing.T) {
 			EntityID:   entityID,
 			EntityType: entityType,
 			Forbidden:  false,
-			Conditions: &conditions1,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
+			Scope:      &scope1,
 		},
 		{
 			ID:         2,
@@ -112,9 +105,7 @@ func TestUseCase_GetByEntity(t *testing.T) {
 			EntityID:   entityID,
 			EntityType: entityType,
 			Forbidden:  true,
-			Conditions: nil,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
+			Scope:      nil,
 		},
 	}
 
@@ -143,8 +134,7 @@ func TestUseCase_GetByAbility(t *testing.T) {
 	// Datos de prueba
 	ctx := context.Background()
 	abilityID := int64(2)
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	expectedPermissions := []*Permission{
 		{
@@ -153,9 +143,7 @@ func TestUseCase_GetByAbility(t *testing.T) {
 			EntityID:   10,
 			EntityType: "App\\Models\\User",
 			Forbidden:  false,
-			Conditions: &conditions,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
+			Scope:      &scope,
 		},
 		{
 			ID:         2,
@@ -163,9 +151,7 @@ func TestUseCase_GetByAbility(t *testing.T) {
 			EntityID:   5,
 			EntityType: "App\\Models\\Role",
 			Forbidden:  true,
-			Conditions: nil,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
+			Scope:      nil,
 		},
 	}
 
@@ -196,14 +182,14 @@ func TestUseCase_Create_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	permission := &Permission{
 		AbilityID:  abilityID,
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar el comportamiento esperado de los mocks
@@ -234,7 +220,7 @@ func TestUseCase_Create_AbilityNotFound(t *testing.T) {
 	abilityID := int64(999)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 	expectedError := errors.New("ability no encontrada")
 
 	permission := &Permission{
@@ -242,7 +228,7 @@ func TestUseCase_Create_AbilityNotFound(t *testing.T) {
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar el comportamiento esperado de los mocks
@@ -274,7 +260,7 @@ func TestUseCase_Update_Success(t *testing.T) {
 	abilityID := int64(2)
 	entityID := int64(10)
 	entityType := "App\\Models\\User"
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	permission := &Permission{
 		ID:         permissionID,
@@ -282,7 +268,7 @@ func TestUseCase_Update_Success(t *testing.T) {
 		EntityID:   entityID,
 		EntityType: entityType,
 		Forbidden:  false,
-		Conditions: &conditions,
+		Scope:      &scope,
 	}
 
 	// Configurar el comportamiento esperado de los mocks
@@ -367,8 +353,7 @@ func TestUseCase_List(t *testing.T) {
 	page := 1
 	pageSize := 10
 
-	now := time.Now()
-	conditions := "{\"field\":\"user_id\",\"operator\":\"=\",\"value\":10}"
+	scope := 1
 
 	expectedPermissions := []*Permission{
 		{
@@ -377,9 +362,7 @@ func TestUseCase_List(t *testing.T) {
 			EntityID:   10,
 			EntityType: "App\\Models\\User",
 			Forbidden:  false,
-			Conditions: &conditions,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
+			Scope:      &scope,
 		},
 		{
 			ID:         2,
@@ -387,9 +370,7 @@ func TestUseCase_List(t *testing.T) {
 			EntityID:   20,
 			EntityType: "App\\Models\\User",
 			Forbidden:  true,
-			Conditions: nil,
-			CreatedAt:  &now,
-			UpdatedAt:  &now,
+			Scope:      nil,
 		},
 	}
 	expectedTotal := 2

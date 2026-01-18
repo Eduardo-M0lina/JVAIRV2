@@ -17,9 +17,9 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/v1/permissions?page=1&page_size=10",
+          "raw": "{{baseUrl}}/permissions?page=1&pageSize=10",
           "host": ["{{baseUrl}}"],
-          "path": ["api", "v1", "permissions"],
+          "path": ["permissions"],
           "query": [
             {
               "key": "page",
@@ -27,7 +27,7 @@
               "description": "Número de página (por defecto: 1)"
             },
             {
-              "key": "page_size",
+              "key": "pageSize",
               "value": "10",
               "description": "Tamaño de página (por defecto: 10)"
             },
@@ -77,7 +77,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"ability_id\": 1,\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"forbidden\": false,\n    \"conditions\": \"{}\"\n}"
+          "raw": "{\n    \"abilityId\": 1,\n    \"entityType\": \"user\",\n    \"entityId\": 1,\n    \"forbidden\": false,\n    \"conditions\": \"{}\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/permissions",
@@ -130,7 +130,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"ability_id\": 1,\n    \"entity_type\": \"user\",\n    \"entity_id\": 1,\n    \"forbidden\": true,\n    \"conditions\": \"{}\"\n}"
+          "raw": "{\n    \"abilityId\": 1,\n    \"entityType\": \"user\",\n    \"entityId\": 1,\n    \"forbidden\": true,\n    \"conditions\": \"{}\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/permissions/:id",
@@ -185,9 +185,9 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/permissions/ability/:ability_id",
+          "raw": "{{baseUrl}}/permissions/ability/:abilityId",
           "host": ["{{baseUrl}}"],
-          "path": ["permissions", "ability", ":ability_id"],
+          "path": ["permissions", "ability", ":abilityId"],
           "variable": [
             {
               "key": "abilityId",
@@ -211,9 +211,9 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/permissions/check/:ability_id/:entity_type/:entity_id",
+          "raw": "{{baseUrl}}/permissions/check/:abilityId/:entityType/:entityId",
           "host": ["{{baseUrl}}"],
-          "path": ["permissions", "check", ":ability_id", ":entity_type", ":entity_id"],
+          "path": ["permissions", "check", ":abilityId", ":entityType", ":entityId"],
           "variable": [
             {
               "key": "abilityId",
@@ -247,9 +247,9 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/permissions/entity/:entity_type/:entity_id",
+          "raw": "{{baseUrl}}/permissions/entity/:entityType/:entityId",
           "host": ["{{baseUrl}}"],
-          "path": ["permissions", "entity", ":entity_type", ":entity_id"],
+          "path": ["permissions", "entity", ":entityType", ":entityId"],
           "variable": [
             {
               "key": "entityType",
@@ -266,6 +266,18 @@
         "description": "Obtiene todos los permisos para una entidad específica"
       },
       "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example",
+      "type": "string"
     }
   ]
 }

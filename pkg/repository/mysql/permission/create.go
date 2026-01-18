@@ -2,7 +2,6 @@ package permission
 
 import (
 	"context"
-	"time"
 
 	"github.com/your-org/jvairv2/pkg/domain/permission"
 )
@@ -18,15 +17,10 @@ func (r *Repository) Create(ctx context.Context, permission *permission.Permissi
 		return ErrDuplicatePermission
 	}
 
-	// Establecer timestamps
-	now := time.Now()
-	permission.CreatedAt = &now
-	permission.UpdatedAt = &now
-
 	// Preparar la consulta
 	query := `
-		INSERT INTO permissions (ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
+		INSERT INTO permissions (ability_id, entity_id, entity_type, forbidden, scope)
+		VALUES (?, ?, ?, ?, ?)
 	`
 
 	// Preparar los argumentos
@@ -34,13 +28,11 @@ func (r *Repository) Create(ctx context.Context, permission *permission.Permissi
 	args = append(args, permission.AbilityID, permission.EntityID, permission.EntityType, permission.Forbidden)
 
 	// Manejar campos opcionales
-	if permission.Conditions != nil {
-		args = append(args, *permission.Conditions)
+	if permission.Scope != nil {
+		args = append(args, *permission.Scope)
 	} else {
 		args = append(args, nil)
 	}
-
-	args = append(args, now, now)
 
 	// Ejecutar la consulta
 	result, err := r.db.ExecContext(ctx, query, args...)

@@ -66,7 +66,7 @@ type WorkflowStatusResponse struct {
 // @Accept json
 // @Produce json
 // @Param page query int false "Número de página" default(1)
-// @Param page_size query int false "Tamaño de página" default(10)
+// @Param pageSize query int false "Tamaño de página" default(10)
 // @Param name query string false "Filtrar por nombre"
 // @Param is_active query bool false "Filtrar por estado activo"
 // @Param search query string false "Búsqueda en nombre y notas"
@@ -88,7 +88,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	pageSize, _ := strconv.Atoi(r.URL.Query().Get("page_size"))
+	pageSize, _ := strconv.Atoi(r.URL.Query().Get("pageSize"))
 	if pageSize < 1 {
 		pageSize = 10
 	}
@@ -110,7 +110,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		slog.Error("Error al listar workflows",
 			"error", err,
 			"page", page,
-			"page_size", pageSize,
+			"pageSize", pageSize,
 		)
 		response.Error(w, http.StatusInternalServerError, "Error al listar workflows")
 		return

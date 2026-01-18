@@ -5,12 +5,9 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/your-org/jvairv2/pkg/domain/customer"
 	"github.com/your-org/jvairv2/pkg/rest/response"
 )
-
-var validate = validator.New()
 
 // Create godoc
 // @Summary Create a new customer
@@ -33,13 +30,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := validate.Struct(req); err != nil {
-		slog.WarnContext(r.Context(), "Validation failed",
-			slog.String("error", err.Error()))
-		response.Error(w, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	c := &customer.Customer{
 		Name:                 req.Name,
 		Email:                req.Email,
@@ -57,6 +47,14 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		BillingAddressZip:    req.BillingAddressZip,
 		WorkflowID:           req.WorkflowID,
 		Notes:                req.Notes,
+	}
+
+	// Validar campos requeridos usando el método de la entidad
+	if err := c.Validate(); err != nil {
+		slog.WarnContext(r.Context(), "Validation failed",
+			slog.String("error", err.Error()))
+		response.Error(w, http.StatusBadRequest, err.Error())
+		return
 	}
 
 	if err := h.useCase.Create(r.Context(), c); err != nil {

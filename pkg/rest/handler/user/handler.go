@@ -359,11 +359,11 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Param page query int false "Número de página (por defecto: 1)"
-// @Param page_size query int false "Tamaño de página (por defecto: 10)"
+// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
 // @Param name query string false "Filtrar por nombre"
 // @Param email query string false "Filtrar por email"
-// @Param role_id query string false "Filtrar por rol"
-// @Param is_active query bool false "Filtrar por estado (activo/inactivo)"
+// @Param roleId query string false "Filtrar por rol"
+// @Param isActive query bool false "Filtrar por estado (activo/inactivo)"
 // @Success 200 {object} response.PaginatedResponse
 // @Failure 400 {string} string "Parámetros de consulta inválidos"
 // @Failure 500 {string} string "Error interno del servidor"
@@ -382,7 +382,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		page = 1
 	}
 
-	pageSize, err := strconv.Atoi(r.URL.Query().Get("page_size"))
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
 	if err != nil || pageSize < 1 {
 		pageSize = 10
 	}
@@ -398,11 +398,11 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		filters["email"] = email
 	}
 
-	if roleID := r.URL.Query().Get("role_id"); roleID != "" {
+	if roleID := r.URL.Query().Get("roleId"); roleID != "" {
 		filters["role_id"] = roleID
 	}
 
-	if isActive := r.URL.Query().Get("is_active"); isActive != "" {
+	if isActive := r.URL.Query().Get("isActive"); isActive != "" {
 		switch isActive {
 		case "true":
 			filters["is_active"] = true
@@ -427,10 +427,10 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	var items []UserResponse
 	for _, u := range users {
 		slog.Debug("Procesando usuario para respuesta",
-			"user_id", u.ID,
+			"userId", u.ID,
 			"email", u.Email,
-			"role_name", u.RoleName,
-			"role_title", u.RoleTitle,
+			"roleName", u.RoleName,
+			"roleTitle", u.RoleTitle,
 		)
 		item := UserResponse{
 			ID:       u.ID,
@@ -447,12 +447,12 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 				Title: u.RoleTitle,
 			}
 			slog.Debug("Rol agregado a la respuesta",
-				"user_id", u.ID,
-				"role_name", *u.RoleName,
+				"userId", u.ID,
+				"roleName", *u.RoleName,
 			)
 		} else {
 			slog.Debug("Usuario sin rol en la respuesta",
-				"user_id", u.ID,
+				"userId", u.ID,
 				"email", u.Email,
 			)
 		}

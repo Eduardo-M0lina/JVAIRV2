@@ -6,15 +6,18 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/your-org/jvairv2/pkg/domain/property"
 )
 
 type Handler struct {
-	useCase customer.Service
+	useCase    customer.Service
+	propertyUC *property.UseCase
 }
 
-func NewHandler(useCase customer.Service) *Handler {
+func NewHandler(useCase customer.Service, propertyUC *property.UseCase) *Handler {
 	return &Handler{
-		useCase: useCase,
+		useCase:    useCase,
+		propertyUC: propertyUC,
 	}
 }
 
@@ -25,6 +28,7 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 		r.Get("/{id}", h.Get)
 		r.Put("/{id}", h.Update)
 		r.Delete("/{id}", h.Delete)
+		r.Get("/{id}/properties", h.GetProperties)
 	})
 }
 
@@ -55,8 +59,8 @@ type BillingAddress struct {
 }
 
 type CreateCustomerRequest struct {
-	Name                 string  `json:"name" validate:"required" example:"ACME Corporation"`
-	Email                *string `json:"email,omitempty" validate:"omitempty,email" example:"contact@acme.com"`
+	Name                 string  `json:"name" example:"ACME Corporation"`
+	Email                *string `json:"email,omitempty" example:"contact@acme.com"`
 	Phone                *string `json:"phone,omitempty" example:"+1-555-0100"`
 	Mobile               *string `json:"mobile,omitempty" example:"+1-555-0101"`
 	Fax                  *string `json:"fax,omitempty" example:"+1-555-0102"`
@@ -69,13 +73,13 @@ type CreateCustomerRequest struct {
 	BillingAddressCity   *string `json:"billingAddressCity,omitempty" example:"New York"`
 	BillingAddressState  *string `json:"billingAddressState,omitempty" example:"NY"`
 	BillingAddressZip    *string `json:"billingAddressZip,omitempty" example:"10001"`
-	WorkflowID           int64   `json:"workflowId" validate:"required,gt=0" example:"5"`
+	WorkflowID           int64   `json:"workflowId" example:"5"`
 	Notes                *string `json:"notes,omitempty" example:"Important client notes"`
 }
 
 type UpdateCustomerRequest struct {
-	Name                 string  `json:"name" validate:"required" example:"ACME Corporation"`
-	Email                *string `json:"email,omitempty" validate:"omitempty,email" example:"contact@acme.com"`
+	Name                 string  `json:"name" example:"ACME Corporation"`
+	Email                *string `json:"email,omitempty" example:"contact@acme.com"`
 	Phone                *string `json:"phone,omitempty" example:"+1-555-0100"`
 	Mobile               *string `json:"mobile,omitempty" example:"+1-555-0101"`
 	Fax                  *string `json:"fax,omitempty" example:"+1-555-0102"`
@@ -88,7 +92,7 @@ type UpdateCustomerRequest struct {
 	BillingAddressCity   *string `json:"billingAddressCity,omitempty" example:"New York"`
 	BillingAddressState  *string `json:"billingAddressState,omitempty" example:"NY"`
 	BillingAddressZip    *string `json:"billingAddressZip,omitempty" example:"10001"`
-	WorkflowID           int64   `json:"workflowId" validate:"required,gt=0" example:"5"`
+	WorkflowID           int64   `json:"workflowId" example:"5"`
 	Notes                *string `json:"notes,omitempty" example:"Important client notes"`
 }
 
@@ -136,7 +140,7 @@ func parseFilters(r *http.Request) map[string]interface{} {
 		filters["search"] = search
 	}
 
-	if workflowIDStr := r.URL.Query().Get("workflow_id"); workflowIDStr != "" {
+	if workflowIDStr := r.URL.Query().Get("workflowId"); workflowIDStr != "" {
 		if workflowID, err := strconv.ParseInt(workflowIDStr, 10, 64); err == nil {
 			filters["workflow_id"] = workflowID
 		}

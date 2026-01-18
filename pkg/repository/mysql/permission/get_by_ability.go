@@ -10,7 +10,7 @@ import (
 // GetByAbility obtiene todos los permisos para una ability específica
 func (r *Repository) GetByAbility(ctx context.Context, abilityID int64) ([]*permission.Permission, error) {
 	query := `
-		SELECT id, ability_id, entity_id, entity_type, forbidden, conditions, created_at, updated_at
+		SELECT id, ability_id, entity_id, entity_type, forbidden, scope
 		FROM permissions
 		WHERE ability_id = ?
 	`
@@ -24,27 +24,19 @@ func (r *Repository) GetByAbility(ctx context.Context, abilityID int64) ([]*perm
 	var permissions []*permission.Permission
 	for rows.Next() {
 		var p permission.Permission
-		var conditions sql.NullString
-		var createdAt, updatedAt sql.NullTime
+		var scope sql.NullInt32
 
 		err := rows.Scan(
-			&p.ID, &p.AbilityID, &p.EntityID, &p.EntityType, &p.Forbidden, &conditions, &createdAt, &updatedAt,
+			&p.ID, &p.AbilityID, &p.EntityID, &p.EntityType, &p.Forbidden, &scope,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		if conditions.Valid {
-			p.Conditions = &conditions.String
-		}
-
-		if createdAt.Valid {
-			p.CreatedAt = &createdAt.Time
-		}
-
-		if updatedAt.Valid {
-			p.UpdatedAt = &updatedAt.Time
+		if scope.Valid {
+			scopeInt := int(scope.Int32)
+			p.Scope = &scopeInt
 		}
 
 		permissions = append(permissions, &p)

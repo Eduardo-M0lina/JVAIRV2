@@ -43,7 +43,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -55,7 +55,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Filtrar por tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "query"
                     },
                     {
@@ -69,7 +69,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -110,7 +110,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.CreateAbilityRequest"
+                            "$ref": "#/definitions/ability.CreateAbilityRequest"
                         }
                     }
                 ],
@@ -118,7 +118,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
+                            "$ref": "#/definitions/ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -173,7 +173,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
+                            "$ref": "#/definitions/ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -227,7 +227,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.UpdateAbilityRequest"
+                            "$ref": "#/definitions/ability.UpdateAbilityRequest"
                         }
                     }
                 ],
@@ -235,7 +235,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
+                            "$ref": "#/definitions/ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -343,25 +343,25 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Filtrar por tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "query"
                     },
                     {
@@ -375,7 +375,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -416,7 +416,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignRoleRequest"
+                            "$ref": "#/definitions/assigned_role.AssignRoleRequest"
                         }
                     }
                 ],
@@ -424,7 +424,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Rol asignado exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -454,7 +454,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/check/{roleId}/{entityType}/{entityId}": {
             "get": {
                 "security": [
                     {
@@ -476,21 +476,21 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID del rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -560,7 +560,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
+                                "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                             }
                         }
                     },
@@ -579,7 +579,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}": {
+        "/api/v1/assigned-roles/revoke/{roleId}/{entityType}/{entityId}": {
             "delete": {
                 "security": [
                     {
@@ -601,21 +601,21 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID del rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -676,7 +676,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -728,25 +728,25 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de ability",
-                        "name": "ability_id",
+                        "name": "abilityId",
                         "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "Filtrar por tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Filtrar por ID de entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "query"
                     },
                     {
@@ -760,7 +760,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -801,7 +801,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.CreatePermissionRequest"
+                            "$ref": "#/definitions/permission.CreatePermissionRequest"
                         }
                     }
                 ],
@@ -809,7 +809,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                            "$ref": "#/definitions/permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -833,7 +833,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/permissions/ability/{ability_id}": {
+        "/api/v1/permissions/ability/{abilityId}": {
             "get": {
                 "security": [
                     {
@@ -855,7 +855,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID de la ability",
-                        "name": "ability_id",
+                        "name": "abilityId",
                         "in": "path",
                         "required": true
                     }
@@ -866,7 +866,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                                "$ref": "#/definitions/permission.PermissionResponse"
                             }
                         }
                     },
@@ -885,7 +885,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}": {
+        "/api/v1/permissions/check/{abilityId}/{entityType}/{entityId}": {
             "get": {
                 "security": [
                     {
@@ -907,21 +907,21 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "ID de la ability",
-                        "name": "ability_id",
+                        "name": "abilityId",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -951,7 +951,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/permissions/entity/{entity_type}/{entity_id}": {
+        "/api/v1/permissions/entity/{entityType}/{entityId}": {
             "get": {
                 "security": [
                     {
@@ -973,14 +973,14 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Tipo de entidad",
-                        "name": "entity_type",
+                        "name": "entityType",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
                         "description": "ID de la entidad",
-                        "name": "entity_id",
+                        "name": "entityId",
                         "in": "path",
                         "required": true
                     }
@@ -991,7 +991,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                                "$ref": "#/definitions/permission.PermissionResponse"
                             }
                         }
                     },
@@ -1041,7 +1041,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                            "$ref": "#/definitions/permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -1095,7 +1095,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.UpdatePermissionRequest"
+                            "$ref": "#/definitions/permission.UpdatePermissionRequest"
                         }
                     }
                 ],
@@ -1103,7 +1103,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                            "$ref": "#/definitions/permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -1211,7 +1211,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1231,7 +1231,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -1272,7 +1272,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.CreateRoleRequest"
+                            "$ref": "#/definitions/role.CreateRoleRequest"
                         }
                     }
                 ],
@@ -1280,7 +1280,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
+                            "$ref": "#/definitions/role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1335,7 +1335,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
+                            "$ref": "#/definitions/role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1389,7 +1389,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.UpdateRoleRequest"
+                            "$ref": "#/definitions/role.UpdateRoleRequest"
                         }
                     }
                 ],
@@ -1397,7 +1397,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
+                            "$ref": "#/definitions/role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1499,7 +1499,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones obtenidas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
+                            "$ref": "#/definitions/settings.SettingsResponse"
                         }
                     },
                     "403": {
@@ -1546,7 +1546,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_settings.UpdateSettingsRequest"
+                            "$ref": "#/definitions/settings.UpdateSettingsRequest"
                         }
                     }
                 ],
@@ -1554,7 +1554,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones actualizadas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
+                            "$ref": "#/definitions/settings.SettingsResponse"
                         }
                     },
                     "400": {
@@ -1612,7 +1612,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Tamaño de página (por defecto: 10)",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -1630,13 +1630,13 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Filtrar por rol",
-                        "name": "role_id",
+                        "name": "roleId",
                         "in": "query"
                     },
                     {
                         "type": "boolean",
                         "description": "Filtrar por estado (activo/inactivo)",
-                        "name": "is_active",
+                        "name": "isActive",
                         "in": "query"
                     }
                 ],
@@ -1644,7 +1644,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -1685,7 +1685,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.CreateUserRequest"
+                            "$ref": "#/definitions/user.CreateUserRequest"
                         }
                     }
                 ],
@@ -1693,7 +1693,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
+                            "$ref": "#/definitions/user.UserResponse"
                         }
                     },
                     "400": {
@@ -1748,7 +1748,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
+                            "$ref": "#/definitions/user.UserResponse"
                         }
                     },
                     "400": {
@@ -1802,7 +1802,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UpdateUserRequest"
+                            "$ref": "#/definitions/user.UpdateUserRequest"
                         }
                     }
                 ],
@@ -1810,7 +1810,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
+                            "$ref": "#/definitions/user.UserResponse"
                         }
                     },
                     "400": {
@@ -1930,19 +1930,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1988,19 +1988,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2036,7 +2036,7 @@ const docTemplate = `{
                         "type": "integer",
                         "default": 10,
                         "description": "Tamaño de página",
-                        "name": "page_size",
+                        "name": "pageSize",
                         "in": "query"
                     },
                     {
@@ -2062,7 +2062,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "403": {
@@ -2103,7 +2103,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.CreateWorkflowRequest"
+                            "$ref": "#/definitions/workflow.CreateWorkflowRequest"
                         }
                     }
                 ],
@@ -2111,7 +2111,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2166,7 +2166,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2226,7 +2226,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.UpdateWorkflowRequest"
+                            "$ref": "#/definitions/workflow.UpdateWorkflowRequest"
                         }
                     }
                 ],
@@ -2234,7 +2234,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2354,7 +2354,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2404,7 +2404,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest"
+                            "$ref": "#/definitions/auth.LoginRequest"
                         }
                     }
                 ],
@@ -2412,7 +2412,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse"
+                            "$ref": "#/definitions/auth.LoginResponse"
                         }
                     },
                     "400": {
@@ -2513,7 +2513,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse"
+                            "$ref": "#/definitions/auth.RefreshResponse"
                         }
                     },
                     "400": {
@@ -2576,7 +2576,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Filter by workflow ID",
-                        "name": "workflow_id",
+                        "name": "workflowId",
                         "in": "query"
                     }
                 ],
@@ -2586,7 +2586,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                                    "$ref": "#/definitions/response.PaginatedResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2594,7 +2594,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                                                "$ref": "#/definitions/customer.CustomerResponse"
                                             }
                                         }
                                     }
@@ -2605,7 +2605,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2634,7 +2634,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CreateCustomerRequest"
+                            "$ref": "#/definitions/customer.CreateCustomerRequest"
                         }
                     }
                 ],
@@ -2642,19 +2642,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                            "$ref": "#/definitions/customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2688,25 +2688,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                            "$ref": "#/definitions/customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2742,7 +2742,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.UpdateCustomerRequest"
+                            "$ref": "#/definitions/customer.UpdateCustomerRequest"
                         }
                     }
                 ],
@@ -2750,25 +2750,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                            "$ref": "#/definitions/customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2803,19 +2803,378 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{id}/properties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all properties for a specific customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "summary": "Get customer properties",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/properties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of properties with optional filters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "List properties",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by customer ID",
+                        "name": "customerId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/property.PropertyResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new property",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Create property",
+                "parameters": [
+                    {
+                        "description": "Property data",
+                        "name": "property",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/property.CreatePropertyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/property.PropertyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/properties/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a property by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Get property by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Property ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/property.PropertyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update an existing property",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Update property",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Property ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Property data",
+                        "name": "property",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/property.UpdatePropertyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/property.PropertyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a property (soft delete)",
+                "tags": [
+                    "properties"
+                ],
+                "summary": "Delete property",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Property ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2823,149 +3182,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "admin@example.com"
-                },
-                "password": {
-                    "type": "string",
-                    "example": "admin123"
-                }
-            }
-        },
-        "github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                },
-                "expiresAt": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "refreshToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                },
-                "user": {
-                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_user.User"
-                }
-            }
-        },
-        "github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                },
-                "expiresAt": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "refreshToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                }
-            }
-        },
-        "github_com_your-org_jvairv2_pkg_domain_user.User": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "email": {
-                    "description": "varchar(255) NOT NULL",
-                    "type": "string"
-                },
-                "emailVerifiedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "isActive": {
-                    "description": "tinyint(1) NOT NULL DEFAULT '1'",
-                    "type": "boolean"
-                },
-                "isChangePassword": {
-                    "description": "tinyint(1) NOT NULL DEFAULT '0'",
-                    "type": "boolean"
-                },
-                "name": {
-                    "description": "varchar(255) NOT NULL",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "varchar(255) NOT NULL",
-                    "type": "string"
-                },
-                "rememberToken": {
-                    "description": "varchar(100) DEFAULT NULL",
-                    "type": "string"
-                },
-                "roleID": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "roleName": {
-                    "description": "Nombre del rol (campo virtual del JOIN)",
-                    "type": "string"
-                },
-                "roleTitle": {
-                    "description": "Título del rol (campo virtual del JOIN)",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse": {
-            "type": "object",
-            "properties": {
-                "items": {},
-                "page": {
-                    "type": "integer"
-                },
-                "pageSize": {
-                    "type": "integer"
-                },
-                "totalItems": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
-        "pkg_rest_handler_ability.AbilityResponse": {
+        "ability.AbilityResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3000,7 +3217,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_ability.CreateAbilityRequest": {
+        "ability.CreateAbilityRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3029,7 +3246,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_ability.UpdateAbilityRequest": {
+        "ability.UpdateAbilityRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3058,7 +3275,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_assigned_role.AssignRoleRequest": {
+        "assigned_role.AssignRoleRequest": {
             "type": "object",
             "required": [
                 "entityId",
@@ -3086,7 +3303,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_assigned_role.AssignedRoleResponse": {
+        "assigned_role.AssignedRoleResponse": {
             "type": "object",
             "properties": {
                 "entityId": {
@@ -3109,33 +3326,62 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.BillingAddress": {
+        "auth.LoginRequest": {
             "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
-                "city": {
+                "email": {
                     "type": "string",
-                    "example": "New York"
+                    "example": "admin@example.com"
                 },
-                "state": {
+                "password": {
                     "type": "string",
-                    "example": "NY"
-                },
-                "street": {
-                    "type": "string",
-                    "example": "123 Main St"
-                },
-                "zip": {
-                    "type": "string",
-                    "example": "10001"
+                    "example": "admin123"
                 }
             }
         },
-        "pkg_rest_handler_customer.CreateCustomerRequest": {
+        "auth.LoginResponse": {
             "type": "object",
-            "required": [
-                "name",
-                "workflowId"
-            ],
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "user": {
+                    "$ref": "#/definitions/user.User"
+                }
+            }
+        },
+        "auth.RefreshResponse": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+            }
+        },
+        "customer.CreateCustomerRequest": {
+            "type": "object",
             "properties": {
                 "billingAddressCity": {
                     "type": "string",
@@ -3203,7 +3449,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.CustomerResponse": {
+        "customer.CustomerResponse": {
             "type": "object",
             "properties": {
                 "billingAddress": {
@@ -3271,12 +3517,8 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.UpdateCustomerRequest": {
+        "customer.UpdateCustomerRequest": {
             "type": "object",
-            "required": [
-                "name",
-                "workflowId"
-            ],
             "properties": {
                 "billingAddressCity": {
                     "type": "string",
@@ -3344,7 +3586,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_permission.CreatePermissionRequest": {
+        "permission.CreatePermissionRequest": {
             "type": "object",
             "required": [
                 "abilityId",
@@ -3355,9 +3597,6 @@ const docTemplate = `{
                 "abilityId": {
                     "type": "integer"
                 },
-                "conditions": {
-                    "type": "string"
-                },
                 "entityId": {
                     "type": "integer"
                 },
@@ -3366,20 +3605,17 @@ const docTemplate = `{
                 },
                 "forbidden": {
                     "type": "boolean"
+                },
+                "scope": {
+                    "type": "integer"
                 }
             }
         },
-        "pkg_rest_handler_permission.PermissionResponse": {
+        "permission.PermissionResponse": {
             "type": "object",
             "properties": {
                 "abilityId": {
                     "type": "integer"
-                },
-                "conditions": {
-                    "type": "string"
-                },
-                "createdAt": {
-                    "type": "string"
                 },
                 "entityId": {
                     "type": "integer"
@@ -3393,12 +3629,12 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "updatedAt": {
-                    "type": "string"
+                "scope": {
+                    "type": "integer"
                 }
             }
         },
-        "pkg_rest_handler_permission.UpdatePermissionRequest": {
+        "permission.UpdatePermissionRequest": {
             "type": "object",
             "required": [
                 "abilityId",
@@ -3409,9 +3645,6 @@ const docTemplate = `{
                 "abilityId": {
                     "type": "integer"
                 },
-                "conditions": {
-                    "type": "string"
-                },
                 "entityId": {
                     "type": "integer"
                 },
@@ -3420,10 +3653,153 @@ const docTemplate = `{
                 },
                 "forbidden": {
                     "type": "boolean"
+                },
+                "scope": {
+                    "type": "integer"
                 }
             }
         },
-        "pkg_rest_handler_role.CreateRoleRequest": {
+        "pkg_rest_handler_customer.BillingAddress": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string",
+                    "example": "New York"
+                },
+                "state": {
+                    "type": "string",
+                    "example": "NY"
+                },
+                "street": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "zip": {
+                    "type": "string",
+                    "example": "10001"
+                }
+            }
+        },
+        "property.CreatePropertyRequest": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "property.PropertyResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "property.UpdatePropertyRequest": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "customerId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.PaginatedResponse": {
+            "type": "object",
+            "properties": {
+                "items": {},
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "totalItems": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "role.CreateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3440,7 +3816,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_role.RoleResponse": {
+        "role.RoleResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3463,7 +3839,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_role.UpdateRoleRequest": {
+        "role.UpdateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3480,7 +3856,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_settings.SettingsResponse": {
+        "settings.SettingsResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -3521,7 +3897,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_settings.UpdateSettingsRequest": {
+        "settings.UpdateSettingsRequest": {
             "type": "object",
             "required": [
                 "passwordAge",
@@ -3569,7 +3945,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.CreateUserRequest": {
+        "user.CreateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -3592,7 +3968,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.RoleInfo": {
+        "user.RoleInfo": {
             "type": "object",
             "properties": {
                 "name": {
@@ -3603,7 +3979,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.UpdateUserRequest": {
+        "user.UpdateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -3628,7 +4004,69 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.UserResponse": {
+        "user.User": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "description": "timestamp NULL DEFAULT NULL",
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "description": "timestamp NULL DEFAULT NULL",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "varchar(255) NOT NULL",
+                    "type": "string"
+                },
+                "emailVerifiedAt": {
+                    "description": "timestamp NULL DEFAULT NULL",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "isActive": {
+                    "description": "tinyint(1) NOT NULL DEFAULT '1'",
+                    "type": "boolean"
+                },
+                "isChangePassword": {
+                    "description": "tinyint(1) NOT NULL DEFAULT '0'",
+                    "type": "boolean"
+                },
+                "name": {
+                    "description": "varchar(255) NOT NULL",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "varchar(255) NOT NULL",
+                    "type": "string"
+                },
+                "rememberToken": {
+                    "description": "varchar(100) DEFAULT NULL",
+                    "type": "string"
+                },
+                "roleID": {
+                    "description": "varchar(191) DEFAULT NULL",
+                    "type": "string"
+                },
+                "roleName": {
+                    "description": "Nombre del rol (campo virtual del JOIN)",
+                    "type": "string"
+                },
+                "roleTitle": {
+                    "description": "Título del rol (campo virtual del JOIN)",
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "description": "timestamp NULL DEFAULT NULL",
+                    "type": "string"
+                }
+            }
+        },
+        "user.UserResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3647,7 +4085,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/pkg_rest_handler_user.RoleInfo"
+                    "$ref": "#/definitions/user.RoleInfo"
                 },
                 "roleId": {
                     "type": "string"
@@ -3657,7 +4095,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_workflow.CreateWorkflowRequest": {
+        "workflow.CreateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3680,7 +4118,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_workflow.UpdateWorkflowRequest": {
+        "workflow.UpdateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3703,7 +4141,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_workflow.WorkflowResponse": {
+        "workflow.WorkflowResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -3721,12 +4159,12 @@ const docTemplate = `{
                 "statuses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowStatusResponse"
+                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
                     }
                 }
             }
         },
-        "pkg_rest_handler_workflow.WorkflowStatusResponse": {
+        "workflow.WorkflowStatusResponse": {
             "type": "object",
             "properties": {
                 "jobStatusId": {

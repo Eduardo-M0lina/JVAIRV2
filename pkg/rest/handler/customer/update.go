@@ -43,13 +43,6 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := validate.Struct(req); err != nil {
-		slog.WarnContext(r.Context(), "Validation failed",
-			slog.String("error", err.Error()))
-		response.Error(w, http.StatusBadRequest, err.Error())
-		return
-	}
-
 	c := &customer.Customer{
 		ID:                   id,
 		Name:                 req.Name,
@@ -70,10 +63,18 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		Notes:                req.Notes,
 	}
 
+	// Validar campos requeridos usando el método de la entidad
+	if err := c.Validate(); err != nil {
+		slog.WarnContext(r.Context(), "Validation failed",
+			slog.String("error", err.Error()))
+		response.Error(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	if err := h.useCase.Update(r.Context(), c); err != nil {
 		slog.ErrorContext(r.Context(), "Failed to update customer",
 			slog.String("error", err.Error()),
-			slog.Int64("customer_id", id))
+			slog.Int64("customerId", id))
 		response.Error(w, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -82,7 +83,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		slog.ErrorContext(r.Context(), "Failed to get updated customer",
 			slog.String("error", err.Error()),
-			slog.Int64("customer_id", id))
+			slog.Int64("customerId", id))
 		response.Error(w, http.StatusInternalServerError, "Failed to get updated customer")
 		return
 	}

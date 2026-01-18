@@ -1,106 +1,5 @@
 definitions:
-  github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest:
-    properties:
-      email:
-        example: admin@example.com
-        type: string
-      password:
-        example: admin123
-        type: string
-    required:
-    - email
-    - password
-    type: object
-  github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse:
-    properties:
-      accessToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        type: string
-      expiresAt:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      refreshToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        type: string
-      user:
-        $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_user.User'
-    type: object
-  github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse:
-    properties:
-      accessToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        type: string
-      expiresAt:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      refreshToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        type: string
-    type: object
-  github_com_your-org_jvairv2_pkg_domain_user.User:
-    properties:
-      createdAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      deletedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      email:
-        description: varchar(255) NOT NULL
-        type: string
-      emailVerifiedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      id:
-        description: bigint unsigned NOT NULL AUTO_INCREMENT
-        format: int64
-        type: integer
-      isActive:
-        description: tinyint(1) NOT NULL DEFAULT '1'
-        type: boolean
-      isChangePassword:
-        description: tinyint(1) NOT NULL DEFAULT '0'
-        type: boolean
-      name:
-        description: varchar(255) NOT NULL
-        type: string
-      password:
-        description: varchar(255) NOT NULL
-        type: string
-      rememberToken:
-        description: varchar(100) DEFAULT NULL
-        type: string
-      roleID:
-        description: varchar(191) DEFAULT NULL
-        type: string
-      roleName:
-        description: Nombre del rol (campo virtual del JOIN)
-        type: string
-      roleTitle:
-        description: Título del rol (campo virtual del JOIN)
-        type: string
-      updatedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-    type: object
-  github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse:
-    properties:
-      error:
-        type: string
-    type: object
-  github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse:
-    properties:
-      items: {}
-      page:
-        type: integer
-      pageSize:
-        type: integer
-      totalItems:
-        type: integer
-      totalPages:
-        type: integer
-    type: object
-  pkg_rest_handler_ability.AbilityResponse:
+  ability.AbilityResponse:
     properties:
       createdAt:
         type: string
@@ -123,7 +22,7 @@ definitions:
       updatedAt:
         type: string
     type: object
-  pkg_rest_handler_ability.CreateAbilityRequest:
+  ability.CreateAbilityRequest:
     properties:
       entityId:
         type: integer
@@ -142,7 +41,7 @@ definitions:
     required:
     - name
     type: object
-  pkg_rest_handler_ability.UpdateAbilityRequest:
+  ability.UpdateAbilityRequest:
     properties:
       entityId:
         type: integer
@@ -161,7 +60,7 @@ definitions:
     required:
     - name
     type: object
-  pkg_rest_handler_assigned_role.AssignRoleRequest:
+  assigned_role.AssignRoleRequest:
     properties:
       entityId:
         type: integer
@@ -180,7 +79,7 @@ definitions:
     - entityType
     - roleId
     type: object
-  pkg_rest_handler_assigned_role.AssignedRoleResponse:
+  assigned_role.AssignedRoleResponse:
     properties:
       entityId:
         type: integer
@@ -195,22 +94,45 @@ definitions:
       scope:
         type: integer
     type: object
-  pkg_rest_handler_customer.BillingAddress:
+  auth.LoginRequest:
     properties:
-      city:
-        example: New York
+      email:
+        example: admin@example.com
         type: string
-      state:
-        example: NY
+      password:
+        example: admin123
         type: string
-      street:
-        example: 123 Main St
+    required:
+    - email
+    - password
+    type: object
+  auth.LoginResponse:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
-      zip:
-        example: "10001"
+      expiresAt:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refreshToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/user.User'
+    type: object
+  auth.RefreshResponse:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expiresAt:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refreshToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
     type: object
-  pkg_rest_handler_customer.CreateCustomerRequest:
+  customer.CreateCustomerRequest:
     properties:
       billingAddressCity:
         example: New York
@@ -260,11 +182,8 @@ definitions:
       workflowId:
         example: 5
         type: integer
-    required:
-    - name
-    - workflowId
     type: object
-  pkg_rest_handler_customer.CustomerResponse:
+  customer.CustomerResponse:
     properties:
       billingAddress:
         $ref: '#/definitions/pkg_rest_handler_customer.BillingAddress'
@@ -314,7 +233,7 @@ definitions:
         example: 5
         type: integer
     type: object
-  pkg_rest_handler_customer.UpdateCustomerRequest:
+  customer.UpdateCustomerRequest:
     properties:
       billingAddressCity:
         example: New York
@@ -364,35 +283,28 @@ definitions:
       workflowId:
         example: 5
         type: integer
-    required:
-    - name
-    - workflowId
     type: object
-  pkg_rest_handler_permission.CreatePermissionRequest:
+  permission.CreatePermissionRequest:
     properties:
       abilityId:
         type: integer
-      conditions:
-        type: string
       entityId:
         type: integer
       entityType:
         type: string
       forbidden:
         type: boolean
+      scope:
+        type: integer
     required:
     - abilityId
     - entityId
     - entityType
     type: object
-  pkg_rest_handler_permission.PermissionResponse:
+  permission.PermissionResponse:
     properties:
       abilityId:
         type: integer
-      conditions:
-        type: string
-      createdAt:
-        type: string
       entityId:
         type: integer
       entityType:
@@ -401,27 +313,120 @@ definitions:
         type: boolean
       id:
         type: integer
-      updatedAt:
-        type: string
+      scope:
+        type: integer
     type: object
-  pkg_rest_handler_permission.UpdatePermissionRequest:
+  permission.UpdatePermissionRequest:
     properties:
       abilityId:
         type: integer
-      conditions:
-        type: string
       entityId:
         type: integer
       entityType:
         type: string
       forbidden:
         type: boolean
+      scope:
+        type: integer
     required:
     - abilityId
     - entityId
     - entityType
     type: object
-  pkg_rest_handler_role.CreateRoleRequest:
+  pkg_rest_handler_customer.BillingAddress:
+    properties:
+      city:
+        example: New York
+        type: string
+      state:
+        example: NY
+        type: string
+      street:
+        example: 123 Main St
+        type: string
+      zip:
+        example: "10001"
+        type: string
+    type: object
+  property.CreatePropertyRequest:
+    properties:
+      city:
+        type: string
+      customerId:
+        type: integer
+      notes:
+        type: string
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      zip:
+        type: string
+    type: object
+  property.PropertyResponse:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      createdAt:
+        type: string
+      customerId:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      notes:
+        type: string
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      updatedAt:
+        type: string
+      zip:
+        type: string
+    type: object
+  property.UpdatePropertyRequest:
+    properties:
+      city:
+        type: string
+      customerId:
+        type: integer
+      notes:
+        type: string
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      zip:
+        type: string
+    type: object
+  response.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  response.PaginatedResponse:
+    properties:
+      items: {}
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      totalItems:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  role.CreateRoleRequest:
     properties:
       name:
         type: string
@@ -432,7 +437,7 @@ definitions:
     required:
     - name
     type: object
-  pkg_rest_handler_role.RoleResponse:
+  role.RoleResponse:
     properties:
       createdAt:
         type: string
@@ -447,7 +452,7 @@ definitions:
       updatedAt:
         type: string
     type: object
-  pkg_rest_handler_role.UpdateRoleRequest:
+  role.UpdateRoleRequest:
     properties:
       name:
         type: string
@@ -458,7 +463,7 @@ definitions:
     required:
     - name
     type: object
-  pkg_rest_handler_settings.SettingsResponse:
+  settings.SettingsResponse:
     properties:
       id:
         type: integer
@@ -485,7 +490,7 @@ definitions:
       twilioSid:
         type: string
     type: object
-  pkg_rest_handler_settings.UpdateSettingsRequest:
+  settings.UpdateSettingsRequest:
     properties:
       isEnforceRoutinePasswordReset:
         type: boolean
@@ -519,7 +524,7 @@ definitions:
     - passwordHistoryCount
     - passwordMinimumLength
     type: object
-  pkg_rest_handler_user.CreateUserRequest:
+  user.CreateUserRequest:
     properties:
       email:
         type: string
@@ -535,14 +540,14 @@ definitions:
     - name
     - password
     type: object
-  pkg_rest_handler_user.RoleInfo:
+  user.RoleInfo:
     properties:
       name:
         type: string
       title:
         type: string
     type: object
-  pkg_rest_handler_user.UpdateUserRequest:
+  user.UpdateUserRequest:
     properties:
       email:
         type: string
@@ -559,7 +564,53 @@ definitions:
     - email
     - name
     type: object
-  pkg_rest_handler_user.UserResponse:
+  user.User:
+    properties:
+      createdAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      deletedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      email:
+        description: varchar(255) NOT NULL
+        type: string
+      emailVerifiedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+      id:
+        description: bigint unsigned NOT NULL AUTO_INCREMENT
+        format: int64
+        type: integer
+      isActive:
+        description: tinyint(1) NOT NULL DEFAULT '1'
+        type: boolean
+      isChangePassword:
+        description: tinyint(1) NOT NULL DEFAULT '0'
+        type: boolean
+      name:
+        description: varchar(255) NOT NULL
+        type: string
+      password:
+        description: varchar(255) NOT NULL
+        type: string
+      rememberToken:
+        description: varchar(100) DEFAULT NULL
+        type: string
+      roleID:
+        description: varchar(191) DEFAULT NULL
+        type: string
+      roleName:
+        description: Nombre del rol (campo virtual del JOIN)
+        type: string
+      roleTitle:
+        description: Título del rol (campo virtual del JOIN)
+        type: string
+      updatedAt:
+        description: timestamp NULL DEFAULT NULL
+        type: string
+    type: object
+  user.UserResponse:
     properties:
       createdAt:
         type: string
@@ -572,13 +623,13 @@ definitions:
       name:
         type: string
       role:
-        $ref: '#/definitions/pkg_rest_handler_user.RoleInfo'
+        $ref: '#/definitions/user.RoleInfo'
       roleId:
         type: string
       updatedAt:
         type: string
     type: object
-  pkg_rest_handler_workflow.CreateWorkflowRequest:
+  workflow.CreateWorkflowRequest:
     properties:
       isActive:
         type: boolean
@@ -593,7 +644,7 @@ definitions:
     required:
     - name
     type: object
-  pkg_rest_handler_workflow.UpdateWorkflowRequest:
+  workflow.UpdateWorkflowRequest:
     properties:
       isActive:
         type: boolean
@@ -608,7 +659,7 @@ definitions:
     required:
     - name
     type: object
-  pkg_rest_handler_workflow.WorkflowResponse:
+  workflow.WorkflowResponse:
     properties:
       id:
         type: integer
@@ -620,10 +671,10 @@ definitions:
         type: string
       statuses:
         items:
-          $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowStatusResponse'
+          $ref: '#/definitions/workflow.WorkflowStatusResponse'
         type: array
     type: object
-  pkg_rest_handler_workflow.WorkflowStatusResponse:
+  workflow.WorkflowStatusResponse:
     properties:
       jobStatusId:
         type: integer
@@ -647,7 +698,7 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -655,7 +706,7 @@ paths:
         type: string
       - description: Filtrar por tipo de entidad
         in: query
-        name: entity_type
+        name: entityType
         type: string
       - description: Filtrar por scope
         in: query
@@ -667,7 +718,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            $ref: '#/definitions/response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -691,14 +742,14 @@ paths:
         name: ability
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_ability.CreateAbilityRequest'
+          $ref: '#/definitions/ability.CreateAbilityRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_ability.AbilityResponse'
+            $ref: '#/definitions/ability.AbilityResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -765,7 +816,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_ability.AbilityResponse'
+            $ref: '#/definitions/ability.AbilityResponse'
         "400":
           description: ID de ability inválido
           schema:
@@ -798,14 +849,14 @@ paths:
         name: ability
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_ability.UpdateAbilityRequest'
+          $ref: '#/definitions/ability.UpdateAbilityRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_ability.AbilityResponse'
+            $ref: '#/definitions/ability.AbilityResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -839,19 +890,19 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por ID de rol
         in: query
-        name: role_id
+        name: roleId
         type: integer
       - description: Filtrar por tipo de entidad
         in: query
-        name: entity_type
+        name: entityType
         type: string
       - description: Filtrar por ID de entidad
         in: query
-        name: entity_id
+        name: entityId
         type: integer
       - description: Filtrar por restricción
         in: query
@@ -863,7 +914,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            $ref: '#/definitions/response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -889,14 +940,14 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignRoleRequest'
+          $ref: '#/definitions/assigned_role.AssignRoleRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Rol asignado exitosamente
           schema:
-            $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse'
+            $ref: '#/definitions/assigned_role.AssignedRoleResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -935,7 +986,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse'
+            $ref: '#/definitions/assigned_role.AssignedRoleResponse'
         "400":
           description: ID de asignación de rol inválido
           schema:
@@ -953,7 +1004,7 @@ paths:
       summary: Obtener asignación de rol
       tags:
       - AssignedRoles
-  /api/v1/assigned-roles/check/{role_id}/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/check/{roleId}/{entityType}/{entityId}:
     get:
       consumes:
       - application/json
@@ -961,17 +1012,17 @@ paths:
       parameters:
       - description: ID del rol
         in: path
-        name: role_id
+        name: roleId
         required: true
         type: integer
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1019,7 +1070,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse'
+              $ref: '#/definitions/assigned_role.AssignedRoleResponse'
             type: array
         "400":
           description: Parámetros inválidos
@@ -1034,7 +1085,7 @@ paths:
       summary: Obtener asignaciones de roles por entidad
       tags:
       - AssignedRoles
-  /api/v1/assigned-roles/revoke/{role_id}/{entity_type}/{entity_id}:
+  /api/v1/assigned-roles/revoke/{roleId}/{entityType}/{entityId}:
     delete:
       consumes:
       - application/json
@@ -1042,17 +1093,17 @@ paths:
       parameters:
       - description: ID del rol
         in: path
-        name: role_id
+        name: roleId
         required: true
         type: integer
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1089,19 +1140,19 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por ID de ability
         in: query
-        name: ability_id
+        name: abilityId
         type: integer
       - description: Filtrar por tipo de entidad
         in: query
-        name: entity_type
+        name: entityType
         type: string
       - description: Filtrar por ID de entidad
         in: query
-        name: entity_id
+        name: entityId
         type: integer
       - description: Filtrar por prohibición
         in: query
@@ -1113,7 +1164,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            $ref: '#/definitions/response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -1137,14 +1188,14 @@ paths:
         name: permission
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_permission.CreatePermissionRequest'
+          $ref: '#/definitions/permission.CreatePermissionRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
+            $ref: '#/definitions/permission.PermissionResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1211,7 +1262,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
+            $ref: '#/definitions/permission.PermissionResponse'
         "400":
           description: ID de permiso inválido
           schema:
@@ -1244,14 +1295,14 @@ paths:
         name: permission
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_permission.UpdatePermissionRequest'
+          $ref: '#/definitions/permission.UpdatePermissionRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
+            $ref: '#/definitions/permission.PermissionResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1273,7 +1324,7 @@ paths:
       summary: Actualizar permiso
       tags:
       - Permissions
-  /api/v1/permissions/ability/{ability_id}:
+  /api/v1/permissions/ability/{abilityId}:
     get:
       consumes:
       - application/json
@@ -1281,7 +1332,7 @@ paths:
       parameters:
       - description: ID de la ability
         in: path
-        name: ability_id
+        name: abilityId
         required: true
         type: integer
       produces:
@@ -1291,7 +1342,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
+              $ref: '#/definitions/permission.PermissionResponse'
             type: array
         "400":
           description: ID de ability inválido
@@ -1306,7 +1357,7 @@ paths:
       summary: Obtener permisos por ability
       tags:
       - Permissions
-  /api/v1/permissions/check/{ability_id}/{entity_type}/{entity_id}:
+  /api/v1/permissions/check/{abilityId}/{entityType}/{entityId}:
     get:
       consumes:
       - application/json
@@ -1314,17 +1365,17 @@ paths:
       parameters:
       - description: ID de la ability
         in: path
-        name: ability_id
+        name: abilityId
         required: true
         type: integer
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1349,7 +1400,7 @@ paths:
       summary: Verificar permiso
       tags:
       - Permissions
-  /api/v1/permissions/entity/{entity_type}/{entity_id}:
+  /api/v1/permissions/entity/{entityType}/{entityId}:
     get:
       consumes:
       - application/json
@@ -1357,12 +1408,12 @@ paths:
       parameters:
       - description: Tipo de entidad
         in: path
-        name: entity_type
+        name: entityType
         required: true
         type: string
       - description: ID de la entidad
         in: path
-        name: entity_id
+        name: entityId
         required: true
         type: integer
       produces:
@@ -1372,7 +1423,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
+              $ref: '#/definitions/permission.PermissionResponse'
             type: array
         "400":
           description: Parámetros inválidos
@@ -1399,7 +1450,7 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -1415,7 +1466,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            $ref: '#/definitions/response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -1439,14 +1490,14 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_role.CreateRoleRequest'
+          $ref: '#/definitions/role.CreateRoleRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_role.RoleResponse'
+            $ref: '#/definitions/role.RoleResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1513,7 +1564,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_role.RoleResponse'
+            $ref: '#/definitions/role.RoleResponse'
         "400":
           description: ID de rol inválido
           schema:
@@ -1546,14 +1597,14 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_role.UpdateRoleRequest'
+          $ref: '#/definitions/role.UpdateRoleRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_role.RoleResponse'
+            $ref: '#/definitions/role.RoleResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1587,7 +1638,7 @@ paths:
         "200":
           description: Configuraciones obtenidas exitosamente
           schema:
-            $ref: '#/definitions/pkg_rest_handler_settings.SettingsResponse'
+            $ref: '#/definitions/settings.SettingsResponse'
         "403":
           description: No tiene permisos para ver configuraciones
           schema:
@@ -1619,14 +1670,14 @@ paths:
         name: settings
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_settings.UpdateSettingsRequest'
+          $ref: '#/definitions/settings.UpdateSettingsRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Configuraciones actualizadas exitosamente
           schema:
-            $ref: '#/definitions/pkg_rest_handler_settings.SettingsResponse'
+            $ref: '#/definitions/settings.SettingsResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1660,7 +1711,7 @@ paths:
         type: integer
       - description: 'Tamaño de página (por defecto: 10)'
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -1672,11 +1723,11 @@ paths:
         type: string
       - description: Filtrar por rol
         in: query
-        name: role_id
+        name: roleId
         type: string
       - description: Filtrar por estado (activo/inactivo)
         in: query
-        name: is_active
+        name: isActive
         type: boolean
       produces:
       - application/json
@@ -1684,7 +1735,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            $ref: '#/definitions/response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -1708,14 +1759,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_user.CreateUserRequest'
+          $ref: '#/definitions/user.CreateUserRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_user.UserResponse'
+            $ref: '#/definitions/user.UserResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1782,7 +1833,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_user.UserResponse'
+            $ref: '#/definitions/user.UserResponse'
         "400":
           description: ID de usuario inválido
           schema:
@@ -1815,14 +1866,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_user.UpdateUserRequest'
+          $ref: '#/definitions/user.UpdateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_user.UserResponse'
+            $ref: '#/definitions/user.UserResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1867,15 +1918,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Obtener habilidades de usuario
@@ -1904,15 +1955,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Obtener roles de usuario
@@ -1932,7 +1983,7 @@ paths:
       - default: 10
         description: Tamaño de página
         in: query
-        name: page_size
+        name: pageSize
         type: integer
       - description: Filtrar por nombre
         in: query
@@ -1952,7 +2003,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            $ref: '#/definitions/response.PaginatedResponse'
         "403":
           description: No tiene permisos para listar workflows
           schema:
@@ -1978,14 +2029,14 @@ paths:
         name: workflow
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_workflow.CreateWorkflowRequest'
+          $ref: '#/definitions/workflow.CreateWorkflowRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
+            $ref: '#/definitions/workflow.WorkflowResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -2058,7 +2109,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
+            $ref: '#/definitions/workflow.WorkflowResponse'
         "400":
           description: ID de workflow inválido
           schema:
@@ -2095,14 +2146,14 @@ paths:
         name: workflow
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_workflow.UpdateWorkflowRequest'
+          $ref: '#/definitions/workflow.UpdateWorkflowRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
+            $ref: '#/definitions/workflow.WorkflowResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -2141,7 +2192,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
+            $ref: '#/definitions/workflow.WorkflowResponse'
         "400":
           description: ID de workflow inválido
           schema:
@@ -2174,14 +2225,14 @@ paths:
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest'
+          $ref: '#/definitions/auth.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse'
+            $ref: '#/definitions/auth.LoginResponse'
         "400":
           description: Error al decodificar la solicitud
           schema:
@@ -2246,7 +2297,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse'
+            $ref: '#/definitions/auth.RefreshResponse'
         "400":
           description: Error al decodificar la solicitud
           schema:
@@ -2282,7 +2333,7 @@ paths:
         type: string
       - description: Filter by workflow ID
         in: query
-        name: workflow_id
+        name: workflowId
         type: integer
       produces:
       - application/json
@@ -2291,17 +2342,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+            - $ref: '#/definitions/response.PaginatedResponse'
             - properties:
                 items:
                   items:
-                    $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
+                    $ref: '#/definitions/customer.CustomerResponse'
                   type: array
               type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: List customers
@@ -2317,22 +2368,22 @@ paths:
         name: customer
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_customer.CreateCustomerRequest'
+          $ref: '#/definitions/customer.CreateCustomerRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
+            $ref: '#/definitions/customer.CustomerResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Create a new customer
@@ -2355,15 +2406,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Delete a customer
@@ -2383,19 +2434,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
+            $ref: '#/definitions/customer.CustomerResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get customer by ID
@@ -2416,29 +2467,257 @@ paths:
         name: customer
         required: true
         schema:
-          $ref: '#/definitions/pkg_rest_handler_customer.UpdateCustomerRequest'
+          $ref: '#/definitions/customer.UpdateCustomerRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
+            $ref: '#/definitions/customer.CustomerResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+            $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Update a customer
       tags:
       - customers
+  /customers/{id}/properties:
+    get:
+      description: Get all properties for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer properties
+      tags:
+      - customers
+  /properties:
+    get:
+      description: Get a paginated list of properties with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by customer ID
+        in: query
+        name: customerId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/property.PropertyResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List properties
+      tags:
+      - properties
+    post:
+      consumes:
+      - application/json
+      description: Create a new property
+      parameters:
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.CreatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create property
+      tags:
+      - properties
+  /properties/{id}:
+    delete:
+      description: Delete a property (soft delete)
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete property
+      tags:
+      - properties
+    get:
+      description: Get a property by its ID
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get property by ID
+      tags:
+      - properties
+    put:
+      consumes:
+      - application/json
+      description: Update an existing property
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.UpdatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update property
+      tags:
+      - properties
 swagger: "2.0"
