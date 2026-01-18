@@ -18,4 +18,6 @@ type User struct {
 	CreatedAt        *time.Time // timestamp NULL DEFAULT NULL
 	UpdatedAt        *time.Time // timestamp NULL DEFAULT NULL
 	DeletedAt        *time.Time // timestamp NULL DEFAULT NULL
+	RoleName         *string    // Nombre del rol (campo virtual del JOIN)
+	RoleTitle        *string    // Título del rol (campo virtual del JOIN)
 }

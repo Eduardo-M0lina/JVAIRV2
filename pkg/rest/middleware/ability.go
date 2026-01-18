@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -15,9 +16,17 @@ type abilityKey struct{}
 func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			slog.Debug("Iniciando carga de habilidades",
+				"method", r.Method,
+				"path", r.URL.Path,
+			)
+
 			// Obtener el usuario del contexto
 			userCtx := r.Context().Value(UserContextKey)
 			if userCtx == nil {
+				slog.Warn("No hay usuario en el contexto",
+					"path", r.URL.Path,
+				)
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -25,6 +34,9 @@ func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 			// Convertir el usuario a un objeto User
 			u, ok := userCtx.(*user.User)
 			if !ok {
+				slog.Error("No se pudo convertir el usuario del contexto",
+					"type", userCtx,
+				)
 				next.ServeHTTP(w, r)
 				return
 			}
@@ -32,9 +44,20 @@ func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 			// Obtener las habilidades del usuario desde la base de datos
 			abilities, err := userUseCase.GetUserAbilities(r.Context(), strconv.FormatInt(u.ID, 10))
 			if err != nil {
+				slog.Error("Error al obtener habilidades del usuario",
+					"user_id", u.ID,
+					"email", u.Email,
+					"error", err,
+				)
 				next.ServeHTTP(w, r)
 				return
 			}
+
+			slog.Info("Habilidades cargadas correctamente",
+				"user_id", u.ID,
+				"email", u.Email,
+				"abilities_count", len(abilities),
+			)
 
 			// Convertir las habilidades a un slice de strings
 			abilityNames := make([]string, len(abilities))
@@ -53,15 +76,21 @@ func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 
 // HasAbility verifica si el usuario tiene una habilidad específica
 func HasAbility(ctx context.Context, ability string) bool {
+	slog.Debug("Verificando permiso", "ability", ability)
+
 	// Obtener las habilidades del contexto
 	abilities, ok := ctx.Value(abilityKey{}).([]string)
 	if !ok {
+		slog.Warn("No se encontraron habilidades en el contexto")
 		return false
 	}
 
 	// Verificar si el usuario tiene la habilidad "*" (superadmin)
 	for _, a := range abilities {
 		if a == "*" {
+			slog.Info("Acceso concedido por habilidad wildcard",
+				"requested_ability", ability,
+			)
 			return true
 		}
 	}
@@ -69,10 +98,17 @@ func HasAbility(ctx context.Context, ability string) bool {
 	// Verificar si el usuario tiene la habilidad específica
 	for _, a := range abilities {
 		if a == ability {
+			slog.Info("Acceso concedido",
+				"ability", ability,
+			)
 			return true
 		}
 	}
 
+	slog.Warn("Acceso denegado - habilidad no encontrada",
+		"ability", ability,
+		"available_abilities", abilities,
+	)
 	return false
 }
 

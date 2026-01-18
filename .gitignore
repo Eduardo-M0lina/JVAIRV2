@@ -35,3 +35,4 @@ go.work.sum
 tmp/
 .DS_Store
 scripts/Data_prd.sql
+*.csv

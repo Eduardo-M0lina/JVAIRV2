@@ -9,9 +9,15 @@ import (
 
 // Config almacena toda la configuración de la aplicación
 type Config struct {
+	App    AppConfig
 	Server ServerConfig
 	DB     DBConfig
 	JWT    JWTConfig
+}
+
+// AppConfig almacena la configuración general de la aplicación
+type AppConfig struct {
+	Environment string // development, production, staging
 }
 
 // ServerConfig almacena la configuración del servidor HTTP
@@ -57,6 +63,12 @@ func LoadConfig(path string) (*Config, error) {
 	}
 
 	var config Config
+
+	// Configuración de la aplicación
+	config.App.Environment = viper.GetString("APP_ENV")
+	if config.App.Environment == "" {
+		config.App.Environment = "development" // Valor por defecto
+	}
 
 	// Configuración del servidor
 	config.Server.Port = viper.GetString("SERVER_PORT")

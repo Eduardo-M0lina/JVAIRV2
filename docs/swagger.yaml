@@ -143,13 +143,13 @@ definitions:
     type: object
   auth.LoginResponse:
     properties:
-      access_token:
+      accessToken:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
-      expires_at:
+      expiresAt:
         example: "2023-01-01T00:00:00Z"
         type: string
-      refresh_token:
+      refreshToken:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
       user:
@@ -157,13 +157,13 @@ definitions:
     type: object
   auth.RefreshResponse:
     properties:
-      access_token:
+      accessToken:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
-      expires_at:
+      expiresAt:
         example: "2023-01-01T00:00:00Z"
         type: string
-      refresh_token:
+      refreshToken:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
     type: object
@@ -225,11 +225,11 @@ definitions:
       items: {}
       page:
         type: integer
-      page_size:
+      pageSize:
         type: integer
-      total_items:
+      totalItems:
         type: integer
-      total_pages:
+      totalPages:
         type: integer
     type: object
   role.CreateRoleRequest:
@@ -368,6 +368,13 @@ definitions:
     - name
     - password
     type: object
+  user.RoleInfo:
+    properties:
+      name:
+        type: string
+      title:
+        type: string
+    type: object
   user.UpdateUserRequest:
     properties:
       email:
@@ -421,6 +428,12 @@ definitions:
       roleID:
         description: varchar(191) DEFAULT NULL
         type: string
+      roleName:
+        description: Nombre del rol (campo virtual del JOIN)
+        type: string
+      roleTitle:
+        description: Título del rol (campo virtual del JOIN)
+        type: string
       updatedAt:
         description: timestamp NULL DEFAULT NULL
         type: string
@@ -437,6 +450,8 @@ definitions:
         type: boolean
       name:
         type: string
+      role:
+        $ref: '#/definitions/user.RoleInfo'
       roleId:
         type: string
       updatedAt:

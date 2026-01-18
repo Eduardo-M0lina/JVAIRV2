@@ -2,7 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 )
@@ -52,7 +52,9 @@ func (h *HealthHandler) Check(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(response); err != nil {
-		log.Printf("Error al codificar la respuesta: %v", err)
+		slog.Error("Error al codificar respuesta de health check",
+			"error", err,
+		)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}

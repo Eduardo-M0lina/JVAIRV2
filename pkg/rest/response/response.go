@@ -14,9 +14,9 @@ type ErrorResponse struct {
 type PaginatedResponse struct {
 	Items      interface{} `json:"items"`
 	Page       int         `json:"page"`
-	PageSize   int         `json:"page_size"`
-	TotalItems int         `json:"total_items"`
-	TotalPages int         `json:"total_pages"`
+	PageSize   int         `json:"pageSize"`
+	TotalItems int         `json:"totalItems"`
+	TotalPages int         `json:"totalPages"`
 }
 
 // JSON envía una respuesta JSON

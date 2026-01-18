@@ -2,7 +2,7 @@ package workflow
 
 import (
 	"encoding/json"
-	"log"
+	"log/slog"
 	"net/http"
 	"strconv"
 
@@ -107,7 +107,11 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Obtener workflows
 	workflows, total, err := h.workflowUseCase.List(r.Context(), filters, page, pageSize)
 	if err != nil {
-		log.Printf("ERROR al listar workflows: %v", err)
+		slog.Error("Error al listar workflows",
+			"error", err,
+			"page", page,
+			"page_size", pageSize,
+		)
 		response.Error(w, http.StatusInternalServerError, "Error al listar workflows")
 		return
 	}
@@ -170,7 +174,10 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 			response.Error(w, http.StatusNotFound, "Workflow no encontrado")
 			return
 		}
-		log.Printf("ERROR al obtener workflow por ID %d: %v", id, err)
+		slog.Error("Error al obtener workflow por ID",
+			"workflow_id", id,
+			"error", err,
+		)
 		response.Error(w, http.StatusInternalServerError, "Error al obtener el workflow: "+err.Error())
 		return
 	}

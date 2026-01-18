@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"strings"
 
@@ -38,12 +39,19 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 
 	// Decodificar el cuerpo de la solicitud
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		slog.Warn("Error al decodificar solicitud de login",
+			"error", err,
+			"remote_addr", r.RemoteAddr,
+		)
 		http.Error(w, "Error al decodificar la solicitud", http.StatusBadRequest)
 		return
 	}
 
 	// Validar la solicitud
 	if req.Email == "" || req.Password == "" {
+		slog.Warn("Intento de login con credenciales vacías",
+			"remote_addr", r.RemoteAddr,
+		)
 		http.Error(w, "Email y contraseña son requeridos", http.StatusBadRequest)
 		return
 	}
@@ -52,21 +60,41 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	resp, err := h.authUseCase.Login(r.Context(), &req)
 	if err != nil {
 		if err == auth.ErrInvalidCredentials {
+			slog.Warn("Intento de login fallido - credenciales inválidas",
+				"email", req.Email,
+				"remote_addr", r.RemoteAddr,
+			)
 			http.Error(w, "Credenciales inválidas", http.StatusUnauthorized)
 			return
 		}
 		if err == auth.ErrUserInactive {
+			slog.Warn("Intento de login con usuario inactivo",
+				"email", req.Email,
+				"remote_addr", r.RemoteAddr,
+			)
 			http.Error(w, "Usuario inactivo", http.StatusForbidden)
 			return
 		}
+		slog.Error("Error al procesar login",
+			"email", req.Email,
+			"error", err,
+		)
 		http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
 		return
 	}
+
+	slog.Info("Login exitoso",
+		"email", req.Email,
+		"remote_addr", r.RemoteAddr,
+	)
 
 	// Responder con los tokens
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
+		slog.Error("Error al codificar respuesta de login",
+			"error", err,
+		)
 		http.Error(w, "Error al codificar la respuesta", http.StatusInternalServerError)
 		return
 	}

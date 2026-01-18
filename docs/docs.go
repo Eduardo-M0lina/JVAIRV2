@@ -2750,15 +2750,15 @@ const docTemplate = `{
         "auth.LoginResponse": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "accessToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string",
                     "example": "2023-01-01T00:00:00Z"
                 },
-                "refresh_token": {
+                "refreshToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
@@ -2770,15 +2770,15 @@ const docTemplate = `{
         "auth.RefreshResponse": {
             "type": "object",
             "properties": {
-                "access_token": {
+                "accessToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
-                "expires_at": {
+                "expiresAt": {
                     "type": "string",
                     "example": "2023-01-01T00:00:00Z"
                 },
-                "refresh_token": {
+                "refreshToken": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 }
@@ -2870,13 +2870,13 @@ const docTemplate = `{
                 "page": {
                     "type": "integer"
                 },
-                "page_size": {
+                "pageSize": {
                     "type": "integer"
                 },
-                "total_items": {
+                "totalItems": {
                     "type": "integer"
                 },
-                "total_pages": {
+                "totalPages": {
                     "type": "integer"
                 }
             }
@@ -3080,6 +3080,17 @@ const docTemplate = `{
                 }
             }
         },
+        "user.RoleInfo": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "user.UpdateUserRequest": {
             "type": "object",
             "required": [
@@ -3153,6 +3164,14 @@ const docTemplate = `{
                     "description": "varchar(191) DEFAULT NULL",
                     "type": "string"
                 },
+                "roleName": {
+                    "description": "Nombre del rol (campo virtual del JOIN)",
+                    "type": "string"
+                },
+                "roleTitle": {
+                    "description": "Título del rol (campo virtual del JOIN)",
+                    "type": "string"
+                },
                 "updatedAt": {
                     "description": "timestamp NULL DEFAULT NULL",
                     "type": "string"
@@ -3176,6 +3195,9 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "role": {
+                    "$ref": "#/definitions/user.RoleInfo"
                 },
                 "roleId": {
                     "type": "string"
