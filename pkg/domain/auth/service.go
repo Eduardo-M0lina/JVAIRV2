@@ -37,12 +37,28 @@ type LoginRequest struct {
 	Password string `json:"password" validate:"required" example:"admin123"`
 }
 
+// UserResponse representa la respuesta de usuario en el login
+type UserResponse struct {
+	ID               int64      `json:"id"`
+	RoleID           *string    `json:"roleId,omitempty"`
+	Name             string     `json:"name"`
+	Email            string     `json:"email"`
+	EmailVerifiedAt  *time.Time `json:"emailVerifiedAt,omitempty"`
+	IsChangePassword bool       `json:"isChangePassword"`
+	IsActive         bool       `json:"isActive"`
+	CreatedAt        *time.Time `json:"createdAt,omitempty"`
+	UpdatedAt        *time.Time `json:"updatedAt,omitempty"`
+	DeletedAt        *time.Time `json:"deletedAt,omitempty"`
+	RoleName         *string    `json:"roleName,omitempty"`
+	RoleTitle        *string    `json:"roleTitle,omitempty"`
+}
+
 // LoginResponse representa la respuesta de inicio de sesión
 type LoginResponse struct {
-	AccessToken  string     `json:"accessToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	RefreshToken string     `json:"refreshToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	ExpiresAt    time.Time  `json:"expiresAt" example:"2023-01-01T00:00:00Z"`
-	User         *user.User `json:"user"`
+	AccessToken  string        `json:"accessToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	RefreshToken string        `json:"refreshToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	ExpiresAt    time.Time     `json:"expiresAt" example:"2023-01-01T00:00:00Z"`
+	User         *UserResponse `json:"user"`
 }
 
 // Service define las operaciones relacionadas con la autenticación
