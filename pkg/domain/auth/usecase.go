@@ -47,12 +47,28 @@ func (uc *UseCase) Login(ctx context.Context, req *LoginRequest) (*LoginResponse
 		return nil, err
 	}
 
+	// Convertir User a UserResponse
+	userResp := &UserResponse{
+		ID:               u.ID,
+		RoleID:           u.RoleID,
+		Name:             u.Name,
+		Email:            u.Email,
+		EmailVerifiedAt:  u.EmailVerifiedAt,
+		IsChangePassword: u.IsChangePassword,
+		IsActive:         u.IsActive,
+		CreatedAt:        u.CreatedAt,
+		UpdatedAt:        u.UpdatedAt,
+		DeletedAt:        u.DeletedAt,
+		RoleName:         u.RoleName,
+		RoleTitle:        u.RoleTitle,
+	}
+
 	// Crear respuesta
 	resp := &LoginResponse{
 		AccessToken:  td.AccessToken,
 		RefreshToken: td.RefreshToken,
 		ExpiresAt:    time.Unix(td.AtExpires, 0),
-		User:         u,
+		User:         userResp,
 	}
 
 	return resp, nil
