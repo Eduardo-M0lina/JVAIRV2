@@ -9,20 +9,30 @@ import (
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	jobCategory "github.com/your-org/jvairv2/pkg/domain/job_category"
+	jobPriority "github.com/your-org/jvairv2/pkg/domain/job_priority"
+	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
+	taskStatus "github.com/your-org/jvairv2/pkg/domain/task_status"
+	techJobStatus "github.com/your-org/jvairv2/pkg/domain/technician_job_status"
 	user "github.com/your-org/jvairv2/pkg/domain/user"
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
+	mysqlJobCategory "github.com/your-org/jvairv2/pkg/repository/mysql/job_category"
+	mysqlJobPriority "github.com/your-org/jvairv2/pkg/repository/mysql/job_priority"
+	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
+	mysqlTaskStatus "github.com/your-org/jvairv2/pkg/repository/mysql/task_status"
+	mysqlTechJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/technician_job_status"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
 	mysqlWorkflow "github.com/your-org/jvairv2/pkg/repository/mysql/workflow"
 	handler "github.com/your-org/jvairv2/pkg/rest/handler"
@@ -30,10 +40,15 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
+	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
+	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
+	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
 	workflowHandler "github.com/your-org/jvairv2/pkg/rest/handler/workflow"
 	middleware "github.com/your-org/jvairv2/pkg/rest/middleware"
@@ -42,21 +57,26 @@ import (
 
 // Container contiene todas las dependencias de la aplicación
 type Container struct {
-	Config              *configs.Config
-	DBConnection        *mysql.Connection
-	HealthHandler       *handler.HealthHandler
-	AuthHandler         *authHandler.Handler
-	UserHandler         *userHandler.Handler
-	RoleHandler         *roleHandler.Handler
-	AbilityHandler      *abilityHandler.Handler
-	AssignedRoleHandler *assignedRoleHandler.Handler
-	PermissionHandler   *permissionHandler.Handler
-	SettingsHandler     *settingsHandler.Handler
-	WorkflowHandler     *workflowHandler.Handler
-	CustomerHandler     *customerHandler.Handler
-	PropertyHandler     *propertyHandler.Handler
-	AuthMiddleware      *middleware.AuthMiddleware
-	Router              http.Handler
+	Config               *configs.Config
+	DBConnection         *mysql.Connection
+	HealthHandler        *handler.HealthHandler
+	AuthHandler          *authHandler.Handler
+	UserHandler          *userHandler.Handler
+	RoleHandler          *roleHandler.Handler
+	AbilityHandler       *abilityHandler.Handler
+	AssignedRoleHandler  *assignedRoleHandler.Handler
+	PermissionHandler    *permissionHandler.Handler
+	SettingsHandler      *settingsHandler.Handler
+	WorkflowHandler      *workflowHandler.Handler
+	CustomerHandler      *customerHandler.Handler
+	PropertyHandler      *propertyHandler.Handler
+	JobCategoryHandler   *jobCategoryHandler.Handler
+	JobStatusHandler     *jobStatusHandler.Handler
+	JobPriorityHandler   *jobPriorityHandler.Handler
+	TechJobStatusHandler *techJobStatusHandler.Handler
+	TaskStatusHandler    *taskStatusHandler.Handler
+	AuthMiddleware       *middleware.AuthMiddleware
+	Router               http.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -105,6 +125,16 @@ func NewContainer(configPath string) (*Container, error) {
 	customerUC := customer.NewUseCase(customerRepo, workflowRepo)
 	propertyRepo := mysqlProperty.NewRepository(dbConn.DB)
 	propertyUC := property.NewUseCase(propertyRepo, customerRepo)
+	jobCategoryRepo := mysqlJobCategory.NewRepository(dbConn.GetDB())
+	jobStatusRepo := mysqlJobStatus.NewRepository(dbConn.GetDB())
+	jobPriorityRepo := mysqlJobPriority.NewRepository(dbConn.GetDB())
+	techJobStatusRepo := mysqlTechJobStatus.NewRepository(dbConn.GetDB())
+	taskStatusRepo := mysqlTaskStatus.NewRepository(dbConn.GetDB())
+	jobCategoryUC := jobCategory.NewUseCase(jobCategoryRepo)
+	jobStatusUC := jobStatus.NewUseCase(jobStatusRepo)
+	jobPriorityUC := jobPriority.NewUseCase(jobPriorityRepo)
+	techJobStatusUC := techJobStatus.NewUseCase(techJobStatusRepo, jobStatusRepo)
+	taskStatusUC := taskStatus.NewUseCase(taskStatusRepo)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -120,6 +150,11 @@ func NewContainer(configPath string) (*Container, error) {
 	workflowHandler := workflowHandler.NewHandler(workflowUC)
 	customerHandler := customerHandler.NewHandler(customerUC, propertyUC)
 	propHandler := propertyHandler.NewHandler(propertyUC)
+	jobCatHandler := jobCategoryHandler.NewHandler(jobCategoryUC)
+	jobStatHandler := jobStatusHandler.NewHandler(jobStatusUC)
+	jobPrioHandler := jobPriorityHandler.NewHandler(jobPriorityUC)
+	techJobStatHandler := techJobStatusHandler.NewHandler(techJobStatusUC)
+	taskStatHandler := taskStatusHandler.NewHandler(taskStatusUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -137,26 +172,36 @@ func NewContainer(configPath string) (*Container, error) {
 		workflowHandler,
 		customerHandler,
 		propHandler,
+		jobCatHandler,
+		jobStatHandler,
+		jobPrioHandler,
+		techJobStatHandler,
+		taskStatHandler,
 		authMiddleware,
 		userUC,
 	)
 
 	return &Container{
-		Config:              config,
-		DBConnection:        dbConn,
-		HealthHandler:       healthHandler,
-		AuthHandler:         authHandler,
-		UserHandler:         userHandler,
-		RoleHandler:         roleHandler,
-		AbilityHandler:      abilityHandler,
-		AssignedRoleHandler: assignedRoleHandler,
-		PermissionHandler:   permissionHandler,
-		SettingsHandler:     settingsHandler,
-		WorkflowHandler:     workflowHandler,
-		CustomerHandler:     customerHandler,
-		PropertyHandler:     propHandler,
-		AuthMiddleware:      authMiddleware,
-		Router:              r,
+		Config:               config,
+		DBConnection:         dbConn,
+		HealthHandler:        healthHandler,
+		AuthHandler:          authHandler,
+		UserHandler:          userHandler,
+		RoleHandler:          roleHandler,
+		AbilityHandler:       abilityHandler,
+		AssignedRoleHandler:  assignedRoleHandler,
+		PermissionHandler:    permissionHandler,
+		SettingsHandler:      settingsHandler,
+		WorkflowHandler:      workflowHandler,
+		CustomerHandler:      customerHandler,
+		PropertyHandler:      propHandler,
+		JobCategoryHandler:   jobCatHandler,
+		JobStatusHandler:     jobStatHandler,
+		JobPriorityHandler:   jobPrioHandler,
+		TechJobStatusHandler: techJobStatHandler,
+		TaskStatusHandler:    taskStatHandler,
+		AuthMiddleware:       authMiddleware,
+		Router:               r,
 	}, nil
 }
 

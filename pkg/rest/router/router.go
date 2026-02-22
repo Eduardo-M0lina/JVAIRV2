@@ -11,10 +11,15 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
+	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
+	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
+	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
 	workflowHandler "github.com/your-org/jvairv2/pkg/rest/handler/workflow"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
@@ -33,6 +38,11 @@ func New(
 	workflowHandler *workflowHandler.Handler,
 	customerHandler *customerHandler.Handler,
 	propertyHandler *propertyHandler.Handler,
+	jobCategoryHandler *jobCategoryHandler.Handler,
+	jobStatusHandler *jobStatusHandler.Handler,
+	jobPriorityHandler *jobPriorityHandler.Handler,
+	techJobStatusHandler *techJobStatusHandler.Handler,
+	taskStatusHandler *taskStatusHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -80,6 +90,12 @@ func New(
 			RegisterCustomerRoutes(r, customerHandler)
 			// Rutas de properties
 			RegisterPropertyRoutes(r, propertyHandler)
+			// Rutas de catálogos de trabajos
+			jobCategoryHandler.RegisterRoutes(r)
+			jobStatusHandler.RegisterRoutes(r)
+			jobPriorityHandler.RegisterRoutes(r)
+			techJobStatusHandler.RegisterRoutes(r)
+			taskStatusHandler.RegisterRoutes(r)
 		})
 	})
 	return r
