@@ -11,6 +11,7 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
@@ -38,6 +39,7 @@ func New(
 	workflowHandler *workflowHandler.Handler,
 	customerHandler *customerHandler.Handler,
 	propertyHandler *propertyHandler.Handler,
+	jobHandler *jobHandler.Handler,
 	jobCategoryHandler *jobCategoryHandler.Handler,
 	jobStatusHandler *jobStatusHandler.Handler,
 	jobPriorityHandler *jobPriorityHandler.Handler,
@@ -90,6 +92,8 @@ func New(
 			RegisterCustomerRoutes(r, customerHandler)
 			// Rutas de properties
 			RegisterPropertyRoutes(r, propertyHandler)
+			// Rutas de trabajos
+			jobHandler.RegisterRoutes(r)
 			// Rutas de catálogos de trabajos
 			jobCategoryHandler.RegisterRoutes(r)
 			jobStatusHandler.RegisterRoutes(r)

@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "jobs-collection-001",
+		"name": "JVAIR Jobs",
+		"description": "Collection for testing Jobs CRUD endpoints including list, create, get, update, delete, and close operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Jobs (Open - Default)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "search",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "closed",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "jobCategoryId",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "jobStatusId",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "jobPriorityId",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "userId",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "propertyId",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "workflowId",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "sort",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "direction",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Jobs (All - Open & Closed)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10&closed=all",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "closed",
+							"value": "all"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Jobs (Closed Only)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10&closed=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "closed",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Jobs (By Category)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10&jobCategoryId=1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "jobCategoryId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Jobs (Unassigned)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10&userId=unassigned",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "userId",
+							"value": "unassigned"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Jobs (Search)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10&search=WO-001",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "search",
+							"value": "WO-001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Jobs (Sort by Status)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs?page=1&pageSize=10&sort=status&direction=asc",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "sort",
+							"value": "status"
+						},
+						{
+							"key": "direction",
+							"value": "asc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"workOrder\": \"WO-2026-001\",\n    \"dateReceived\": \"2026-02-22\",\n    \"jobCategoryId\": 1,\n    \"jobPriorityId\": 1,\n    \"propertyId\": 1,\n    \"userId\": 1,\n    \"dispatchNotes\": \"Test dispatch notes\",\n    \"quickNotes\": \"Test quick notes\",\n    \"weekNumber\": 8,\n    \"cageRequired\": false,\n    \"warrantyClaim\": false,\n    \"warrantyRegistration\": false\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job (Minimal)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jobCategoryId\": 1,\n    \"jobPriorityId\": 1,\n    \"propertyId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quickNotes\": \"Updated quick notes\",\n    \"jobPriorityId\": 2,\n    \"weekNumber\": 9,\n    \"dispatchDate\": \"2026-02-25\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job (Change Tech Status)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"technicianJobStatusId\": 1\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job (Change Status)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jobStatusId\": 2\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Close Job",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"jobStatusId\": 5\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/1/close",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"1",
+						"close"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Job",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"jobs",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

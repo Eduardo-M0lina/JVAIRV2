@@ -343,6 +343,184 @@ definitions:
         example: 5
         type: integer
     type: object
+  pkg_rest_handler_job.CloseJobRequest:
+    properties:
+      jobStatusId:
+        type: integer
+    type: object
+  pkg_rest_handler_job.CreateJobRequest:
+    properties:
+      cageRequired:
+        type: boolean
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dispatchNotes:
+        type: string
+      dueDate:
+        type: string
+      internalJobNotes:
+        type: string
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobSalesPrice:
+        type: number
+      propertyId:
+        type: integer
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      scheduledTimeType:
+        type: string
+      supervisorIds:
+        type: string
+      userId:
+        type: integer
+      warrantyClaim:
+        type: boolean
+      warrantyRegistration:
+        type: boolean
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+    type: object
+  pkg_rest_handler_job.JobResponse:
+    properties:
+      cageRequired:
+        type: boolean
+      callAttempted:
+        type: boolean
+      callLogs:
+        type: string
+      closed:
+        type: boolean
+      completionDate:
+        type: string
+      createdAt:
+        type: string
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dispatchNotes:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      installationDueDate:
+        type: string
+      internalJobNotes:
+        type: string
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobReport:
+        type: string
+      jobSalesPrice:
+        type: number
+      jobStatusId:
+        type: integer
+      moneyTurnedIn:
+        type: number
+      propertyId:
+        type: integer
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      scheduledTimeType:
+        type: string
+      supervisorIds:
+        type: string
+      technicianJobStatusId:
+        type: integer
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+      warrantyClaim:
+        type: boolean
+      warrantyRegistration:
+        type: boolean
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+      workflowId:
+        type: integer
+    type: object
+  pkg_rest_handler_job.UpdateJobRequest:
+    properties:
+      cageRequired:
+        type: boolean
+      callAttempted:
+        type: boolean
+      callLogs:
+        type: string
+      closed:
+        type: boolean
+      completionDate:
+        type: string
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dispatchNotes:
+        type: string
+      dueDate:
+        type: string
+      installationDueDate:
+        type: string
+      internalJobNotes:
+        type: string
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobReport:
+        type: string
+      jobSalesPrice:
+        type: number
+      jobStatusId:
+        type: integer
+      moneyTurnedIn:
+        type: number
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      scheduledTimeType:
+        type: string
+      supervisorIds:
+        type: string
+      technicianJobStatusId:
+        type: integer
+      userId:
+        type: integer
+      warrantyClaim:
+        type: boolean
+      warrantyRegistration:
+        type: boolean
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+      workflowId:
+        type: integer
+    type: object
   pkg_rest_handler_job_category.CreateJobCategoryRequest:
     properties:
       isActive:
@@ -1876,6 +2054,267 @@ paths:
       summary: Actualizar estado de trabajo
       tags:
       - JobStatuses
+  /api/v1/jobs:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de trabajos con filtros opcionales.
+        Por defecto muestra solo trabajos abiertos (closed=0)
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda en work_order, property, customer
+        in: query
+        name: search
+        type: string
+      - default: "0"
+        description: 'Filtrar por cerrado: 0, 1, all'
+        in: query
+        name: closed
+        type: string
+      - description: Filtrar por categoría de trabajo
+        in: query
+        name: jobCategoryId
+        type: integer
+      - description: Filtrar por estado de trabajo
+        in: query
+        name: jobStatusId
+        type: integer
+      - description: Filtrar por prioridad de trabajo
+        in: query
+        name: jobPriorityId
+        type: integer
+      - description: Filtrar por usuario asignado (ID o 'unassigned')
+        in: query
+        name: userId
+        type: string
+      - description: Filtrar por propiedad
+        in: query
+        name: propertyId
+        type: integer
+      - description: Filtrar por workflow
+        in: query
+        name: workflowId
+        type: integer
+      - description: 'Campo de ordenamiento: work_order, date_received, created_at,
+          due_date, status'
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: 'Dirección de ordenamiento: asc, desc'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar trabajos
+      tags:
+      - Jobs
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo trabajo. El workflow y status inicial se asignan
+        automáticamente desde el customer de la propiedad
+      parameters:
+      - description: Datos del trabajo
+        in: body
+        name: job
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job.CreateJobRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear trabajo
+      tags:
+      - Jobs
+  /api/v1/jobs/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un trabajo (soft delete)
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar trabajo
+      tags:
+      - Jobs
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un trabajo por su ID
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener trabajo
+      tags:
+      - Jobs
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un trabajo existente. Si se cambia el technician_job_status_id
+        y este tiene un job_status_id vinculado, el job_status_id se actualiza automáticamente
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del trabajo
+        in: body
+        name: job
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job.UpdateJobRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar trabajo
+      tags:
+      - Jobs
+  /api/v1/jobs/{id}/close:
+    put:
+      consumes:
+      - application/json
+      description: Cierra un trabajo estableciendo closed=true y actualizando el job_status_id
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos para cerrar el trabajo
+        in: body
+        name: close
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job.CloseJobRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Cerrar trabajo
+      tags:
+      - Jobs
   /api/v1/permissions:
     get:
       consumes:
