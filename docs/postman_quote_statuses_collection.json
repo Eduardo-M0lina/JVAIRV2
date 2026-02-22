@@ -1,0 +1,165 @@
+{
+  "info": {
+    "name": "JVAIRV2 - Quote Statuses",
+    "description": "Colección de endpoints para el catálogo de Estados de Cotización (Quote Statuses)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Listar estados de cotización",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/quote-statuses?page=1&pageSize=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["quote-statuses"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Número de página"
+            },
+            {
+              "key": "pageSize",
+              "value": "10",
+              "description": "Tamaño de página"
+            },
+            {
+              "key": "search",
+              "value": "",
+              "description": "Búsqueda por label",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Obtiene una lista paginada de estados de cotización"
+      },
+      "response": []
+    },
+    {
+      "name": "Crear estado de cotización",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"label\": \"Pendiente de Revisión\",\n    \"class\": \"warning\",\n    \"order\": 5\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/quote-statuses",
+          "host": ["{{baseUrl}}"],
+          "path": ["quote-statuses"]
+        },
+        "description": "Crea un nuevo estado de cotización"
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener estado de cotización por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/quote-statuses/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["quote-statuses", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del estado de cotización"
+            }
+          ]
+        },
+        "description": "Obtiene un estado de cotización por su ID"
+      },
+      "response": []
+    },
+    {
+      "name": "Actualizar estado de cotización",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"label\": \"Need to Send\",\n    \"class\": \"info\",\n    \"order\": 0\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/quote-statuses/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["quote-statuses", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del estado de cotización a actualizar"
+            }
+          ]
+        },
+        "description": "Actualiza un estado de cotización existente"
+      },
+      "response": []
+    },
+    {
+      "name": "Eliminar estado de cotización",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{accessToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/quote-statuses/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["quote-statuses", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1",
+              "description": "ID del estado de cotización a eliminar"
+            }
+          ]
+        },
+        "description": "Elimina un estado de cotización. No se puede eliminar si tiene cotizaciones asociadas"
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ]
+}

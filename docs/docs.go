@@ -69,7 +69,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -110,7 +110,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ability.CreateAbilityRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.CreateAbilityRequest"
                         }
                     }
                 ],
@@ -118,7 +118,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/ability.AbilityResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -173,7 +173,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ability.AbilityResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -227,7 +227,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ability.UpdateAbilityRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.UpdateAbilityRequest"
                         }
                     }
                 ],
@@ -235,7 +235,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ability.AbilityResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -375,7 +375,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -416,7 +416,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/assigned_role.AssignRoleRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignRoleRequest"
                         }
                     }
                 ],
@@ -424,7 +424,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Rol asignado exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -560,7 +560,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
+                                "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
                             }
                         }
                     },
@@ -676,7 +676,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -695,6 +695,1256 @@ const docTemplate = `{
                         "description": "Error interno del servidor",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/job-categories": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de categorías de trabajo con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobCategories"
+                ],
+                "summary": "Listar categorías de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label o tipo",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filtrar por estado activo",
+                        "name": "isActive",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtrar por tipo",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea una nueva categoría de trabajo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobCategories"
+                ],
+                "summary": "Crear categoría de trabajo",
+                "parameters": [
+                    {
+                        "description": "Datos de la categoría de trabajo",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_category.CreateJobCategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_category.JobCategoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/job-categories/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una categoría de trabajo por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobCategories"
+                ],
+                "summary": "Obtener categoría de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la categoría de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_category.JobCategoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza una categoría de trabajo existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobCategories"
+                ],
+                "summary": "Actualizar categoría de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la categoría de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos de la categoría de trabajo",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_category.UpdateJobCategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_category.JobCategoryResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina una categoría de trabajo. No se puede eliminar si tiene trabajos asociados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobCategories"
+                ],
+                "summary": "Eliminar categoría de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la categoría de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/job-priorities": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de prioridades de trabajo con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobPriorities"
+                ],
+                "summary": "Listar prioridades de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label o class",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filtrar por estado activo",
+                        "name": "isActive",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea una nueva prioridad de trabajo. El campo class acepta colores Bootstrap: blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan, dark, light",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobPriorities"
+                ],
+                "summary": "Crear prioridad de trabajo",
+                "parameters": [
+                    {
+                        "description": "Datos de la prioridad de trabajo",
+                        "name": "priority",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_priority.CreateJobPriorityRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/job-priorities/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una prioridad de trabajo por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobPriorities"
+                ],
+                "summary": "Obtener prioridad de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la prioridad de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza una prioridad de trabajo existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobPriorities"
+                ],
+                "summary": "Actualizar prioridad de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la prioridad de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos de la prioridad de trabajo",
+                        "name": "priority",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_priority.UpdateJobPriorityRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina una prioridad de trabajo. No se puede eliminar si tiene trabajos asociados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobPriorities"
+                ],
+                "summary": "Eliminar prioridad de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la prioridad de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/job-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de trabajo con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobStatuses"
+                ],
+                "summary": "Listar estados de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label o class",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filtrar por estado activo",
+                        "name": "isActive",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de trabajo. El campo class acepta colores Bootstrap: blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan, dark, light",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobStatuses"
+                ],
+                "summary": "Crear estado de trabajo",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de trabajo",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_status.CreateJobStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_status.JobStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/job-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de trabajo por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobStatuses"
+                ],
+                "summary": "Obtener estado de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_status.JobStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de trabajo existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobStatuses"
+                ],
+                "summary": "Actualizar estado de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de trabajo",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_status.UpdateJobStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job_status.JobStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de trabajo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobStatuses"
+                ],
+                "summary": "Eliminar estado de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/jobs": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de trabajos con filtros opcionales. Por defecto muestra solo trabajos abiertos (closed=0)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Listar trabajos",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda en work_order, property, customer",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "0",
+                        "description": "Filtrar por cerrado: 0, 1, all",
+                        "name": "closed",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por categoría de trabajo",
+                        "name": "jobCategoryId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por estado de trabajo",
+                        "name": "jobStatusId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por prioridad de trabajo",
+                        "name": "jobPriorityId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtrar por usuario asignado (ID o 'unassigned')",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por propiedad",
+                        "name": "propertyId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por workflow",
+                        "name": "workflowId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Campo de ordenamiento: work_order, date_received, created_at, due_date, status",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "desc",
+                        "description": "Dirección de ordenamiento: asc, desc",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo trabajo. El workflow y status inicial se asignan automáticamente desde el customer de la propiedad",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Crear trabajo",
+                "parameters": [
+                    {
+                        "description": "Datos del trabajo",
+                        "name": "job",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.CreateJobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/jobs/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un trabajo por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Obtener trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un trabajo existente. Si se cambia el technician_job_status_id y este tiene un job_status_id vinculado, el job_status_id se actualiza automáticamente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Actualizar trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del trabajo",
+                        "name": "job",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.UpdateJobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un trabajo (soft delete)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Eliminar trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/jobs/{id}/close": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Cierra un trabajo estableciendo closed=true y actualizando el job_status_id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jobs"
+                ],
+                "summary": "Cerrar trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos para cerrar el trabajo",
+                        "name": "close",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.CloseJobRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -760,7 +2010,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -801,7 +2051,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/permission.CreatePermissionRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.CreatePermissionRequest"
                         }
                     }
                 ],
@@ -809,7 +2059,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/permission.PermissionResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -866,7 +2116,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/permission.PermissionResponse"
+                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                             }
                         }
                     },
@@ -991,7 +2241,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/permission.PermissionResponse"
+                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                             }
                         }
                     },
@@ -1041,7 +2291,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/permission.PermissionResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -1095,7 +2345,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/permission.UpdatePermissionRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.UpdatePermissionRequest"
                         }
                     }
                 ],
@@ -1103,7 +2353,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/permission.PermissionResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -1183,6 +2433,580 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/quote-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de cotización",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Listar estados de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de cotización",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Crear estado de cotización",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de cotización",
+                        "name": "quoteStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.CreateQuoteStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/quote-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de cotización por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Obtener estado de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de cotización existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Actualizar estado de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de cotización",
+                        "name": "quoteStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.UpdateQuoteStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de cotización. No se puede eliminar si tiene cotizaciones asociadas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Eliminar estado de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/quotes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de cotizaciones con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Listar cotizaciones",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 15,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por número de cotización",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por trabajo",
+                        "name": "jobId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por estado de cotización",
+                        "name": "quoteStatusId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Campo de ordenamiento (quote_number, amount, created_at)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Dirección de ordenamiento (ASC, DESC)",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea una nueva cotización para un trabajo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Crear cotización",
+                "parameters": [
+                    {
+                        "description": "Datos de la cotización",
+                        "name": "quote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.CreateQuoteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/quotes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una cotización por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Obtener cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza una cotización existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Actualizar cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos de la cotización",
+                        "name": "quote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.UpdateQuoteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina una cotización (soft delete)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Eliminar cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/roles": {
             "get": {
                 "security": [
@@ -1231,7 +3055,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -1272,7 +3096,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/role.CreateRoleRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_role.CreateRoleRequest"
                         }
                     }
                 ],
@@ -1280,7 +3104,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/role.RoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1335,7 +3159,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/role.RoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1389,7 +3213,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/role.UpdateRoleRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_role.UpdateRoleRequest"
                         }
                     }
                 ],
@@ -1397,7 +3221,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/role.RoleResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
                         }
                     },
                     "400": {
@@ -1499,7 +3323,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones obtenidas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/settings.SettingsResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
                         }
                     },
                     "403": {
@@ -1546,7 +3370,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/settings.UpdateSettingsRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_settings.UpdateSettingsRequest"
                         }
                     }
                 ],
@@ -1554,7 +3378,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones actualizadas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/settings.SettingsResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
                         }
                     },
                     "400": {
@@ -1579,6 +3403,574 @@ const docTemplate = `{
                         "description": "Error interno del servidor",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de tarea con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TaskStatuses"
+                ],
+                "summary": "Listar estados de tarea",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label o class",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filtrar por estado activo",
+                        "name": "isActive",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de tarea. El campo class acepta colores Bootstrap: blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan, dark, light",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TaskStatuses"
+                ],
+                "summary": "Crear estado de tarea",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de tarea",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_task_status.CreateTaskStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_task_status.TaskStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de tarea por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TaskStatuses"
+                ],
+                "summary": "Obtener estado de tarea",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de tarea",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_task_status.TaskStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de tarea existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TaskStatuses"
+                ],
+                "summary": "Actualizar estado de tarea",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de tarea",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de tarea",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_task_status.UpdateTaskStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_task_status.TaskStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de tarea. No se puede eliminar si tiene tareas asociadas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TaskStatuses"
+                ],
+                "summary": "Eliminar estado de tarea",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de tarea",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/technician-job-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de técnico de trabajo con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TechnicianJobStatuses"
+                ],
+                "summary": "Listar estados de técnico de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label o class",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Filtrar por estado activo",
+                        "name": "isActive",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por ID de estado de trabajo",
+                        "name": "jobStatusId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de técnico de trabajo. El campo class acepta colores Bootstrap. El campo jobStatusId es opcional y referencia un job_status existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TechnicianJobStatuses"
+                ],
+                "summary": "Crear estado de técnico de trabajo",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de técnico de trabajo",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.CreateTechnicianJobStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/technician-job-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de técnico de trabajo por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TechnicianJobStatuses"
+                ],
+                "summary": "Obtener estado de técnico de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de técnico de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de técnico de trabajo existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TechnicianJobStatuses"
+                ],
+                "summary": "Actualizar estado de técnico de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de técnico de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de técnico de trabajo",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.UpdateTechnicianJobStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de técnico de trabajo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TechnicianJobStatuses"
+                ],
+                "summary": "Eliminar estado de técnico de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de técnico de trabajo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -1644,7 +4036,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -1685,7 +4077,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.CreateUserRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_user.CreateUserRequest"
                         }
                     }
                 ],
@@ -1693,7 +4085,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
                         }
                     },
                     "400": {
@@ -1748,7 +4140,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
                         }
                     },
                     "400": {
@@ -1802,7 +4194,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.UpdateUserRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UpdateUserRequest"
                         }
                     }
                 ],
@@ -1810,7 +4202,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user.UserResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
                         }
                     },
                     "400": {
@@ -1930,19 +4322,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -1988,19 +4380,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2062,7 +4454,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "403": {
@@ -2103,7 +4495,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/workflow.CreateWorkflowRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.CreateWorkflowRequest"
                         }
                     }
                 ],
@@ -2111,7 +4503,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2166,7 +4558,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2226,7 +4618,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/workflow.UpdateWorkflowRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.UpdateWorkflowRequest"
                         }
                     }
                 ],
@@ -2234,7 +4626,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2354,7 +4746,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/workflow.WorkflowResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -2404,7 +4796,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/auth.LoginRequest"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest"
                         }
                     }
                 ],
@@ -2412,7 +4804,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.LoginResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse"
                         }
                     },
                     "400": {
@@ -2513,7 +4905,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.RefreshResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse"
                         }
                     },
                     "400": {
@@ -2586,7 +4978,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2594,7 +4986,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/customer.CustomerResponse"
+                                                "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
                                             }
                                         }
                                     }
@@ -2605,7 +4997,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2634,7 +5026,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customer.CreateCustomerRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CreateCustomerRequest"
                         }
                     }
                 ],
@@ -2642,19 +5034,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/customer.CustomerResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2688,25 +5080,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customer.CustomerResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2742,7 +5134,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customer.UpdateCustomerRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_customer.UpdateCustomerRequest"
                         }
                     }
                 ],
@@ -2750,25 +5142,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customer.CustomerResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2803,19 +5195,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2869,25 +5261,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.PaginatedResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2942,7 +5334,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
                                 },
                                 {
                                     "type": "object",
@@ -2950,7 +5342,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/property.PropertyResponse"
+                                                "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
                                             }
                                         }
                                     }
@@ -2961,13 +5353,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -2996,7 +5388,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/property.CreatePropertyRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_property.CreatePropertyRequest"
                         }
                     }
                 ],
@@ -3004,19 +5396,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/property.PropertyResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -3050,25 +5442,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/property.PropertyResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -3104,7 +5496,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/property.UpdatePropertyRequest"
+                            "$ref": "#/definitions/pkg_rest_handler_property.UpdatePropertyRequest"
                         }
                     }
                 ],
@@ -3112,25 +5504,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/property.PropertyResponse"
+                            "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -3162,19 +5554,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/response.ErrorResponse"
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
                         }
                     }
                 }
@@ -3182,7 +5574,128 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "ability.AbilityResponse": {
+        "github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "admin@example.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "admin123"
+                }
+            }
+        },
+        "github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "user": {
+                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.UserResponse"
+                }
+            }
+        },
+        "github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "expiresAt": {
+                    "type": "string",
+                    "example": "2023-01-01T00:00:00Z"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+            }
+        },
+        "github_com_your-org_jvairv2_pkg_domain_auth.UserResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "emailVerifiedAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "isChangePassword": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "roleId": {
+                    "type": "string"
+                },
+                "roleName": {
+                    "type": "string"
+                },
+                "roleTitle": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse": {
+            "type": "object",
+            "properties": {
+                "items": {},
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "totalItems": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_ability.AbilityResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3217,7 +5730,7 @@ const docTemplate = `{
                 }
             }
         },
-        "ability.CreateAbilityRequest": {
+        "pkg_rest_handler_ability.CreateAbilityRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3246,7 +5759,7 @@ const docTemplate = `{
                 }
             }
         },
-        "ability.UpdateAbilityRequest": {
+        "pkg_rest_handler_ability.UpdateAbilityRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3275,7 +5788,7 @@ const docTemplate = `{
                 }
             }
         },
-        "assigned_role.AssignRoleRequest": {
+        "pkg_rest_handler_assigned_role.AssignRoleRequest": {
             "type": "object",
             "required": [
                 "entityId",
@@ -3303,7 +5816,7 @@ const docTemplate = `{
                 }
             }
         },
-        "assigned_role.AssignedRoleResponse": {
+        "pkg_rest_handler_assigned_role.AssignedRoleResponse": {
             "type": "object",
             "properties": {
                 "entityId": {
@@ -3326,61 +5839,28 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.LoginRequest": {
+        "pkg_rest_handler_customer.BillingAddress": {
             "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
             "properties": {
-                "email": {
+                "city": {
                     "type": "string",
-                    "example": "admin@example.com"
+                    "example": "New York"
                 },
-                "password": {
+                "state": {
                     "type": "string",
-                    "example": "admin123"
+                    "example": "NY"
+                },
+                "street": {
+                    "type": "string",
+                    "example": "123 Main St"
+                },
+                "zip": {
+                    "type": "string",
+                    "example": "10001"
                 }
             }
         },
-        "auth.LoginResponse": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                },
-                "expiresAt": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "refreshToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                },
-                "user": {
-                    "$ref": "#/definitions/user.User"
-                }
-            }
-        },
-        "auth.RefreshResponse": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                },
-                "expiresAt": {
-                    "type": "string",
-                    "example": "2023-01-01T00:00:00Z"
-                },
-                "refreshToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                }
-            }
-        },
-        "customer.CreateCustomerRequest": {
+        "pkg_rest_handler_customer.CreateCustomerRequest": {
             "type": "object",
             "properties": {
                 "billingAddressCity": {
@@ -3449,7 +5929,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customer.CustomerResponse": {
+        "pkg_rest_handler_customer.CustomerResponse": {
             "type": "object",
             "properties": {
                 "billingAddress": {
@@ -3517,7 +5997,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customer.UpdateCustomerRequest": {
+        "pkg_rest_handler_customer.UpdateCustomerRequest": {
             "type": "object",
             "properties": {
                 "billingAddressCity": {
@@ -3586,7 +6066,469 @@ const docTemplate = `{
                 }
             }
         },
-        "permission.CreatePermissionRequest": {
+        "pkg_rest_handler_job.CloseJobRequest": {
+            "type": "object",
+            "properties": {
+                "jobStatusId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_job.CreateJobRequest": {
+            "type": "object",
+            "properties": {
+                "cageRequired": {
+                    "type": "boolean"
+                },
+                "dateReceived": {
+                    "type": "string"
+                },
+                "dispatchDate": {
+                    "type": "string"
+                },
+                "dispatchNotes": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "internalJobNotes": {
+                    "type": "string"
+                },
+                "jobCategoryId": {
+                    "type": "integer"
+                },
+                "jobPriorityId": {
+                    "type": "integer"
+                },
+                "jobSalesPrice": {
+                    "type": "number"
+                },
+                "propertyId": {
+                    "type": "integer"
+                },
+                "quickNotes": {
+                    "type": "string"
+                },
+                "routeNumber": {
+                    "type": "integer"
+                },
+                "scheduledTime": {
+                    "type": "string"
+                },
+                "scheduledTimeType": {
+                    "type": "string"
+                },
+                "supervisorIds": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "warrantyClaim": {
+                    "type": "boolean"
+                },
+                "warrantyRegistration": {
+                    "type": "boolean"
+                },
+                "weekNumber": {
+                    "type": "integer"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job.JobResponse": {
+            "type": "object",
+            "properties": {
+                "cageRequired": {
+                    "type": "boolean"
+                },
+                "callAttempted": {
+                    "type": "boolean"
+                },
+                "callLogs": {
+                    "type": "string"
+                },
+                "closed": {
+                    "type": "boolean"
+                },
+                "completionDate": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "dateReceived": {
+                    "type": "string"
+                },
+                "dispatchDate": {
+                    "type": "string"
+                },
+                "dispatchNotes": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "installationDueDate": {
+                    "type": "string"
+                },
+                "internalJobNotes": {
+                    "type": "string"
+                },
+                "jobCategoryId": {
+                    "type": "integer"
+                },
+                "jobPriorityId": {
+                    "type": "integer"
+                },
+                "jobReport": {
+                    "type": "string"
+                },
+                "jobSalesPrice": {
+                    "type": "number"
+                },
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "moneyTurnedIn": {
+                    "type": "number"
+                },
+                "propertyId": {
+                    "type": "integer"
+                },
+                "quickNotes": {
+                    "type": "string"
+                },
+                "routeNumber": {
+                    "type": "integer"
+                },
+                "scheduledTime": {
+                    "type": "string"
+                },
+                "scheduledTimeType": {
+                    "type": "string"
+                },
+                "supervisorIds": {
+                    "type": "string"
+                },
+                "technicianJobStatusId": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "warrantyClaim": {
+                    "type": "boolean"
+                },
+                "warrantyRegistration": {
+                    "type": "boolean"
+                },
+                "weekNumber": {
+                    "type": "integer"
+                },
+                "workOrder": {
+                    "type": "string"
+                },
+                "workflowId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_job.UpdateJobRequest": {
+            "type": "object",
+            "properties": {
+                "cageRequired": {
+                    "type": "boolean"
+                },
+                "callAttempted": {
+                    "type": "boolean"
+                },
+                "callLogs": {
+                    "type": "string"
+                },
+                "closed": {
+                    "type": "boolean"
+                },
+                "completionDate": {
+                    "type": "string"
+                },
+                "dateReceived": {
+                    "type": "string"
+                },
+                "dispatchDate": {
+                    "type": "string"
+                },
+                "dispatchNotes": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "installationDueDate": {
+                    "type": "string"
+                },
+                "internalJobNotes": {
+                    "type": "string"
+                },
+                "jobCategoryId": {
+                    "type": "integer"
+                },
+                "jobPriorityId": {
+                    "type": "integer"
+                },
+                "jobReport": {
+                    "type": "string"
+                },
+                "jobSalesPrice": {
+                    "type": "number"
+                },
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "moneyTurnedIn": {
+                    "type": "number"
+                },
+                "quickNotes": {
+                    "type": "string"
+                },
+                "routeNumber": {
+                    "type": "integer"
+                },
+                "scheduledTime": {
+                    "type": "string"
+                },
+                "scheduledTimeType": {
+                    "type": "string"
+                },
+                "supervisorIds": {
+                    "type": "string"
+                },
+                "technicianJobStatusId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "warrantyClaim": {
+                    "type": "boolean"
+                },
+                "warrantyRegistration": {
+                    "type": "boolean"
+                },
+                "weekNumber": {
+                    "type": "integer"
+                },
+                "workOrder": {
+                    "type": "string"
+                },
+                "workflowId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_job_category.CreateJobCategoryRequest": {
+            "type": "object",
+            "required": [
+                "label",
+                "labelPlural",
+                "type"
+            ],
+            "properties": {
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "labelPlural": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job_category.JobCategoryResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "labelPlural": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job_category.UpdateJobCategoryRequest": {
+            "type": "object",
+            "required": [
+                "label",
+                "labelPlural",
+                "type"
+            ],
+            "properties": {
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "labelPlural": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job_priority.CreateJobPriorityRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_job_priority.JobPriorityResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job_priority.UpdateJobPriorityRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_job_status.CreateJobStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job_status.JobStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_job_status.UpdateJobStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_permission.CreatePermissionRequest": {
             "type": "object",
             "required": [
                 "abilityId",
@@ -3611,7 +6553,7 @@ const docTemplate = `{
                 }
             }
         },
-        "permission.PermissionResponse": {
+        "pkg_rest_handler_permission.PermissionResponse": {
             "type": "object",
             "properties": {
                 "abilityId": {
@@ -3634,7 +6576,7 @@ const docTemplate = `{
                 }
             }
         },
-        "permission.UpdatePermissionRequest": {
+        "pkg_rest_handler_permission.UpdatePermissionRequest": {
             "type": "object",
             "required": [
                 "abilityId",
@@ -3659,28 +6601,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.BillingAddress": {
-            "type": "object",
-            "properties": {
-                "city": {
-                    "type": "string",
-                    "example": "New York"
-                },
-                "state": {
-                    "type": "string",
-                    "example": "NY"
-                },
-                "street": {
-                    "type": "string",
-                    "example": "123 Main St"
-                },
-                "zip": {
-                    "type": "string",
-                    "example": "10001"
-                }
-            }
-        },
-        "property.CreatePropertyRequest": {
+        "pkg_rest_handler_property.CreatePropertyRequest": {
             "type": "object",
             "properties": {
                 "city": {
@@ -3706,7 +6627,7 @@ const docTemplate = `{
                 }
             }
         },
-        "property.PropertyResponse": {
+        "pkg_rest_handler_property.PropertyResponse": {
             "type": "object",
             "properties": {
                 "address": {
@@ -3747,7 +6668,7 @@ const docTemplate = `{
                 }
             }
         },
-        "property.UpdatePropertyRequest": {
+        "pkg_rest_handler_property.UpdatePropertyRequest": {
             "type": "object",
             "properties": {
                 "city": {
@@ -3773,33 +6694,142 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ErrorResponse": {
+        "pkg_rest_handler_quote.CreateQuoteRequest": {
             "type": "object",
             "properties": {
-                "error": {
+                "amount": {
+                    "type": "number"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "quoteStatusId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_quote.QuoteResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "quoteStatusId": {
+                    "type": "integer"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }
         },
-        "response.PaginatedResponse": {
+        "pkg_rest_handler_quote.UpdateQuoteRequest": {
             "type": "object",
             "properties": {
-                "items": {},
-                "page": {
+                "amount": {
+                    "type": "number"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "jobId": {
                     "type": "integer"
                 },
-                "pageSize": {
-                    "type": "integer"
+                "notes": {
+                    "type": "string"
                 },
-                "totalItems": {
-                    "type": "integer"
+                "quoteNumber": {
+                    "type": "string"
                 },
-                "totalPages": {
+                "quoteStatusId": {
                     "type": "integer"
                 }
             }
         },
-        "role.CreateRoleRequest": {
+        "pkg_rest_handler_quote_status.CreateQuoteStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_quote_status.QuoteStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_quote_status.UpdateQuoteStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_role.CreateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3816,7 +6846,7 @@ const docTemplate = `{
                 }
             }
         },
-        "role.RoleResponse": {
+        "pkg_rest_handler_role.RoleResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -3839,7 +6869,7 @@ const docTemplate = `{
                 }
             }
         },
-        "role.UpdateRoleRequest": {
+        "pkg_rest_handler_role.UpdateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3856,7 +6886,7 @@ const docTemplate = `{
                 }
             }
         },
-        "settings.SettingsResponse": {
+        "pkg_rest_handler_settings.SettingsResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -3897,7 +6927,7 @@ const docTemplate = `{
                 }
             }
         },
-        "settings.UpdateSettingsRequest": {
+        "pkg_rest_handler_settings.UpdateSettingsRequest": {
             "type": "object",
             "required": [
                 "passwordAge",
@@ -3945,7 +6975,139 @@ const docTemplate = `{
                 }
             }
         },
-        "user.CreateUserRequest": {
+        "pkg_rest_handler_task_status.CreateTaskStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_task_status.TaskStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_task_status.UpdateTaskStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_technician_job_status.CreateTechnicianJobStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_technician_job_status.UpdateTechnicianJobStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_user.CreateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -3968,7 +7130,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.RoleInfo": {
+        "pkg_rest_handler_user.RoleInfo": {
             "type": "object",
             "properties": {
                 "name": {
@@ -3979,7 +7141,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.UpdateUserRequest": {
+        "pkg_rest_handler_user.UpdateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -4004,69 +7166,7 @@ const docTemplate = `{
                 }
             }
         },
-        "user.User": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "deletedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "email": {
-                    "description": "varchar(255) NOT NULL",
-                    "type": "string"
-                },
-                "emailVerifiedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "bigint unsigned NOT NULL AUTO_INCREMENT",
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "isActive": {
-                    "description": "tinyint(1) NOT NULL DEFAULT '1'",
-                    "type": "boolean"
-                },
-                "isChangePassword": {
-                    "description": "tinyint(1) NOT NULL DEFAULT '0'",
-                    "type": "boolean"
-                },
-                "name": {
-                    "description": "varchar(255) NOT NULL",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "varchar(255) NOT NULL",
-                    "type": "string"
-                },
-                "rememberToken": {
-                    "description": "varchar(100) DEFAULT NULL",
-                    "type": "string"
-                },
-                "roleID": {
-                    "description": "varchar(191) DEFAULT NULL",
-                    "type": "string"
-                },
-                "roleName": {
-                    "description": "Nombre del rol (campo virtual del JOIN)",
-                    "type": "string"
-                },
-                "roleTitle": {
-                    "description": "Título del rol (campo virtual del JOIN)",
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "description": "timestamp NULL DEFAULT NULL",
-                    "type": "string"
-                }
-            }
-        },
-        "user.UserResponse": {
+        "pkg_rest_handler_user.UserResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -4085,7 +7185,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/user.RoleInfo"
+                    "$ref": "#/definitions/pkg_rest_handler_user.RoleInfo"
                 },
                 "roleId": {
                     "type": "string"
@@ -4095,7 +7195,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.CreateWorkflowRequest": {
+        "pkg_rest_handler_workflow.CreateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -4118,7 +7218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.UpdateWorkflowRequest": {
+        "pkg_rest_handler_workflow.UpdateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -4141,7 +7241,7 @@ const docTemplate = `{
                 }
             }
         },
-        "workflow.WorkflowResponse": {
+        "pkg_rest_handler_workflow.WorkflowResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -4159,12 +7259,12 @@ const docTemplate = `{
                 "statuses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
+                        "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowStatusResponse"
                     }
                 }
             }
         },
-        "workflow.WorkflowStatusResponse": {
+        "pkg_rest_handler_workflow.WorkflowStatusResponse": {
             "type": "object",
             "properties": {
                 "jobStatusId": {
