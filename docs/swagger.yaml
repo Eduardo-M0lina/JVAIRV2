@@ -1,5 +1,87 @@
 definitions:
-  ability.AbilityResponse:
+  github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest:
+    properties:
+      email:
+        example: admin@example.com
+        type: string
+      password:
+        example: admin123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expiresAt:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refreshToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.UserResponse'
+    type: object
+  github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expiresAt:
+        example: "2023-01-01T00:00:00Z"
+        type: string
+      refreshToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    type: object
+  github_com_your-org_jvairv2_pkg_domain_auth.UserResponse:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      email:
+        type: string
+      emailVerifiedAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      isChangePassword:
+        type: boolean
+      name:
+        type: string
+      roleId:
+        type: string
+      roleName:
+        type: string
+      roleTitle:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse:
+    properties:
+      items: {}
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      totalItems:
+        type: integer
+      totalPages:
+        type: integer
+    type: object
+  pkg_rest_handler_ability.AbilityResponse:
     properties:
       createdAt:
         type: string
@@ -22,7 +104,7 @@ definitions:
       updatedAt:
         type: string
     type: object
-  ability.CreateAbilityRequest:
+  pkg_rest_handler_ability.CreateAbilityRequest:
     properties:
       entityId:
         type: integer
@@ -41,7 +123,7 @@ definitions:
     required:
     - name
     type: object
-  ability.UpdateAbilityRequest:
+  pkg_rest_handler_ability.UpdateAbilityRequest:
     properties:
       entityId:
         type: integer
@@ -60,7 +142,7 @@ definitions:
     required:
     - name
     type: object
-  assigned_role.AssignRoleRequest:
+  pkg_rest_handler_assigned_role.AssignRoleRequest:
     properties:
       entityId:
         type: integer
@@ -79,7 +161,7 @@ definitions:
     - entityType
     - roleId
     type: object
-  assigned_role.AssignedRoleResponse:
+  pkg_rest_handler_assigned_role.AssignedRoleResponse:
     properties:
       entityId:
         type: integer
@@ -94,45 +176,22 @@ definitions:
       scope:
         type: integer
     type: object
-  auth.LoginRequest:
+  pkg_rest_handler_customer.BillingAddress:
     properties:
-      email:
-        example: admin@example.com
+      city:
+        example: New York
         type: string
-      password:
-        example: admin123
+      state:
+        example: NY
         type: string
-    required:
-    - email
-    - password
-    type: object
-  auth.LoginResponse:
-    properties:
-      accessToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      street:
+        example: 123 Main St
         type: string
-      expiresAt:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      refreshToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        type: string
-      user:
-        $ref: '#/definitions/user.User'
-    type: object
-  auth.RefreshResponse:
-    properties:
-      accessToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        type: string
-      expiresAt:
-        example: "2023-01-01T00:00:00Z"
-        type: string
-      refreshToken:
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      zip:
+        example: "10001"
         type: string
     type: object
-  customer.CreateCustomerRequest:
+  pkg_rest_handler_customer.CreateCustomerRequest:
     properties:
       billingAddressCity:
         example: New York
@@ -183,7 +242,7 @@ definitions:
         example: 5
         type: integer
     type: object
-  customer.CustomerResponse:
+  pkg_rest_handler_customer.CustomerResponse:
     properties:
       billingAddress:
         $ref: '#/definitions/pkg_rest_handler_customer.BillingAddress'
@@ -233,7 +292,7 @@ definitions:
         example: 5
         type: integer
     type: object
-  customer.UpdateCustomerRequest:
+  pkg_rest_handler_customer.UpdateCustomerRequest:
     properties:
       billingAddressCity:
         example: New York
@@ -284,7 +343,312 @@ definitions:
         example: 5
         type: integer
     type: object
-  permission.CreatePermissionRequest:
+  pkg_rest_handler_job.CloseJobRequest:
+    properties:
+      jobStatusId:
+        type: integer
+    type: object
+  pkg_rest_handler_job.CreateJobRequest:
+    properties:
+      cageRequired:
+        type: boolean
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dispatchNotes:
+        type: string
+      dueDate:
+        type: string
+      internalJobNotes:
+        type: string
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobSalesPrice:
+        type: number
+      propertyId:
+        type: integer
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      scheduledTimeType:
+        type: string
+      supervisorIds:
+        type: string
+      userId:
+        type: integer
+      warrantyClaim:
+        type: boolean
+      warrantyRegistration:
+        type: boolean
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+    type: object
+  pkg_rest_handler_job.JobResponse:
+    properties:
+      cageRequired:
+        type: boolean
+      callAttempted:
+        type: boolean
+      callLogs:
+        type: string
+      closed:
+        type: boolean
+      completionDate:
+        type: string
+      createdAt:
+        type: string
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dispatchNotes:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      installationDueDate:
+        type: string
+      internalJobNotes:
+        type: string
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobReport:
+        type: string
+      jobSalesPrice:
+        type: number
+      jobStatusId:
+        type: integer
+      moneyTurnedIn:
+        type: number
+      propertyId:
+        type: integer
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      scheduledTimeType:
+        type: string
+      supervisorIds:
+        type: string
+      technicianJobStatusId:
+        type: integer
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+      warrantyClaim:
+        type: boolean
+      warrantyRegistration:
+        type: boolean
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+      workflowId:
+        type: integer
+    type: object
+  pkg_rest_handler_job.UpdateJobRequest:
+    properties:
+      cageRequired:
+        type: boolean
+      callAttempted:
+        type: boolean
+      callLogs:
+        type: string
+      closed:
+        type: boolean
+      completionDate:
+        type: string
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dispatchNotes:
+        type: string
+      dueDate:
+        type: string
+      installationDueDate:
+        type: string
+      internalJobNotes:
+        type: string
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobReport:
+        type: string
+      jobSalesPrice:
+        type: number
+      jobStatusId:
+        type: integer
+      moneyTurnedIn:
+        type: number
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      scheduledTimeType:
+        type: string
+      supervisorIds:
+        type: string
+      technicianJobStatusId:
+        type: integer
+      userId:
+        type: integer
+      warrantyClaim:
+        type: boolean
+      warrantyRegistration:
+        type: boolean
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+      workflowId:
+        type: integer
+    type: object
+  pkg_rest_handler_job_category.CreateJobCategoryRequest:
+    properties:
+      isActive:
+        type: boolean
+      label:
+        type: string
+      labelPlural:
+        type: string
+      type:
+        type: string
+    required:
+    - label
+    - labelPlural
+    - type
+    type: object
+  pkg_rest_handler_job_category.JobCategoryResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      label:
+        type: string
+      labelPlural:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  pkg_rest_handler_job_category.UpdateJobCategoryRequest:
+    properties:
+      isActive:
+        type: boolean
+      label:
+        type: string
+      labelPlural:
+        type: string
+      type:
+        type: string
+    required:
+    - label
+    - labelPlural
+    - type
+    type: object
+  pkg_rest_handler_job_priority.CreateJobPriorityRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+      order:
+        type: integer
+    required:
+    - label
+    type: object
+  pkg_rest_handler_job_priority.JobPriorityResponse:
+    properties:
+      class:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      label:
+        type: string
+      order:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  pkg_rest_handler_job_priority.UpdateJobPriorityRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+      order:
+        type: integer
+    required:
+    - label
+    type: object
+  pkg_rest_handler_job_status.CreateJobStatusRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+    required:
+    - label
+    type: object
+  pkg_rest_handler_job_status.JobStatusResponse:
+    properties:
+      class:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      label:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  pkg_rest_handler_job_status.UpdateJobStatusRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+    required:
+    - label
+    type: object
+  pkg_rest_handler_permission.CreatePermissionRequest:
     properties:
       abilityId:
         type: integer
@@ -301,7 +665,7 @@ definitions:
     - entityId
     - entityType
     type: object
-  permission.PermissionResponse:
+  pkg_rest_handler_permission.PermissionResponse:
     properties:
       abilityId:
         type: integer
@@ -316,7 +680,7 @@ definitions:
       scope:
         type: integer
     type: object
-  permission.UpdatePermissionRequest:
+  pkg_rest_handler_permission.UpdatePermissionRequest:
     properties:
       abilityId:
         type: integer
@@ -333,22 +697,7 @@ definitions:
     - entityId
     - entityType
     type: object
-  pkg_rest_handler_customer.BillingAddress:
-    properties:
-      city:
-        example: New York
-        type: string
-      state:
-        example: NY
-        type: string
-      street:
-        example: 123 Main St
-        type: string
-      zip:
-        example: "10001"
-        type: string
-    type: object
-  property.CreatePropertyRequest:
+  pkg_rest_handler_property.CreatePropertyRequest:
     properties:
       city:
         type: string
@@ -365,7 +714,7 @@ definitions:
       zip:
         type: string
     type: object
-  property.PropertyResponse:
+  pkg_rest_handler_property.PropertyResponse:
     properties:
       address:
         type: string
@@ -392,7 +741,7 @@ definitions:
       zip:
         type: string
     type: object
-  property.UpdatePropertyRequest:
+  pkg_rest_handler_property.UpdatePropertyRequest:
     properties:
       city:
         type: string
@@ -409,24 +758,95 @@ definitions:
       zip:
         type: string
     type: object
-  response.ErrorResponse:
+  pkg_rest_handler_quote.CreateQuoteRequest:
     properties:
-      error:
+      amount:
+        type: number
+      description:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      quoteNumber:
+        type: string
+      quoteStatusId:
+        type: integer
+    type: object
+  pkg_rest_handler_quote.QuoteResponse:
+    properties:
+      amount:
+        type: number
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      notes:
+        type: string
+      quoteNumber:
+        type: string
+      quoteStatusId:
+        type: integer
+      updatedAt:
         type: string
     type: object
-  response.PaginatedResponse:
+  pkg_rest_handler_quote.UpdateQuoteRequest:
     properties:
-      items: {}
-      page:
+      amount:
+        type: number
+      description:
+        type: string
+      jobId:
         type: integer
-      pageSize:
-        type: integer
-      totalItems:
-        type: integer
-      totalPages:
+      notes:
+        type: string
+      quoteNumber:
+        type: string
+      quoteStatusId:
         type: integer
     type: object
-  role.CreateRoleRequest:
+  pkg_rest_handler_quote_status.CreateQuoteStatusRequest:
+    properties:
+      class:
+        type: string
+      label:
+        type: string
+      order:
+        type: integer
+    required:
+    - label
+    type: object
+  pkg_rest_handler_quote_status.QuoteStatusResponse:
+    properties:
+      class:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      label:
+        type: string
+      order:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  pkg_rest_handler_quote_status.UpdateQuoteStatusRequest:
+    properties:
+      class:
+        type: string
+      label:
+        type: string
+      order:
+        type: integer
+    required:
+    - label
+    type: object
+  pkg_rest_handler_role.CreateRoleRequest:
     properties:
       name:
         type: string
@@ -437,7 +857,7 @@ definitions:
     required:
     - name
     type: object
-  role.RoleResponse:
+  pkg_rest_handler_role.RoleResponse:
     properties:
       createdAt:
         type: string
@@ -452,7 +872,7 @@ definitions:
       updatedAt:
         type: string
     type: object
-  role.UpdateRoleRequest:
+  pkg_rest_handler_role.UpdateRoleRequest:
     properties:
       name:
         type: string
@@ -463,7 +883,7 @@ definitions:
     required:
     - name
     type: object
-  settings.SettingsResponse:
+  pkg_rest_handler_settings.SettingsResponse:
     properties:
       id:
         type: integer
@@ -490,7 +910,7 @@ definitions:
       twilioSid:
         type: string
     type: object
-  settings.UpdateSettingsRequest:
+  pkg_rest_handler_settings.UpdateSettingsRequest:
     properties:
       isEnforceRoutinePasswordReset:
         type: boolean
@@ -524,7 +944,93 @@ definitions:
     - passwordHistoryCount
     - passwordMinimumLength
     type: object
-  user.CreateUserRequest:
+  pkg_rest_handler_task_status.CreateTaskStatusRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+      order:
+        type: integer
+    required:
+    - label
+    type: object
+  pkg_rest_handler_task_status.TaskStatusResponse:
+    properties:
+      class:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      label:
+        type: string
+      order:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  pkg_rest_handler_task_status.UpdateTaskStatusRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+      order:
+        type: integer
+    required:
+    - label
+    type: object
+  pkg_rest_handler_technician_job_status.CreateTechnicianJobStatusRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      jobStatusId:
+        type: integer
+      label:
+        type: string
+    required:
+    - label
+    type: object
+  pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse:
+    properties:
+      class:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      jobStatusId:
+        type: integer
+      label:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  pkg_rest_handler_technician_job_status.UpdateTechnicianJobStatusRequest:
+    properties:
+      class:
+        type: string
+      isActive:
+        type: boolean
+      jobStatusId:
+        type: integer
+      label:
+        type: string
+    required:
+    - label
+    type: object
+  pkg_rest_handler_user.CreateUserRequest:
     properties:
       email:
         type: string
@@ -540,14 +1046,14 @@ definitions:
     - name
     - password
     type: object
-  user.RoleInfo:
+  pkg_rest_handler_user.RoleInfo:
     properties:
       name:
         type: string
       title:
         type: string
     type: object
-  user.UpdateUserRequest:
+  pkg_rest_handler_user.UpdateUserRequest:
     properties:
       email:
         type: string
@@ -564,53 +1070,7 @@ definitions:
     - email
     - name
     type: object
-  user.User:
-    properties:
-      createdAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      deletedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      email:
-        description: varchar(255) NOT NULL
-        type: string
-      emailVerifiedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-      id:
-        description: bigint unsigned NOT NULL AUTO_INCREMENT
-        format: int64
-        type: integer
-      isActive:
-        description: tinyint(1) NOT NULL DEFAULT '1'
-        type: boolean
-      isChangePassword:
-        description: tinyint(1) NOT NULL DEFAULT '0'
-        type: boolean
-      name:
-        description: varchar(255) NOT NULL
-        type: string
-      password:
-        description: varchar(255) NOT NULL
-        type: string
-      rememberToken:
-        description: varchar(100) DEFAULT NULL
-        type: string
-      roleID:
-        description: varchar(191) DEFAULT NULL
-        type: string
-      roleName:
-        description: Nombre del rol (campo virtual del JOIN)
-        type: string
-      roleTitle:
-        description: Título del rol (campo virtual del JOIN)
-        type: string
-      updatedAt:
-        description: timestamp NULL DEFAULT NULL
-        type: string
-    type: object
-  user.UserResponse:
+  pkg_rest_handler_user.UserResponse:
     properties:
       createdAt:
         type: string
@@ -623,13 +1083,13 @@ definitions:
       name:
         type: string
       role:
-        $ref: '#/definitions/user.RoleInfo'
+        $ref: '#/definitions/pkg_rest_handler_user.RoleInfo'
       roleId:
         type: string
       updatedAt:
         type: string
     type: object
-  workflow.CreateWorkflowRequest:
+  pkg_rest_handler_workflow.CreateWorkflowRequest:
     properties:
       isActive:
         type: boolean
@@ -644,7 +1104,7 @@ definitions:
     required:
     - name
     type: object
-  workflow.UpdateWorkflowRequest:
+  pkg_rest_handler_workflow.UpdateWorkflowRequest:
     properties:
       isActive:
         type: boolean
@@ -659,7 +1119,7 @@ definitions:
     required:
     - name
     type: object
-  workflow.WorkflowResponse:
+  pkg_rest_handler_workflow.WorkflowResponse:
     properties:
       id:
         type: integer
@@ -671,10 +1131,10 @@ definitions:
         type: string
       statuses:
         items:
-          $ref: '#/definitions/workflow.WorkflowStatusResponse'
+          $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowStatusResponse'
         type: array
     type: object
-  workflow.WorkflowStatusResponse:
+  pkg_rest_handler_workflow.WorkflowStatusResponse:
     properties:
       jobStatusId:
         type: integer
@@ -718,7 +1178,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -742,14 +1202,14 @@ paths:
         name: ability
         required: true
         schema:
-          $ref: '#/definitions/ability.CreateAbilityRequest'
+          $ref: '#/definitions/pkg_rest_handler_ability.CreateAbilityRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/ability.AbilityResponse'
+            $ref: '#/definitions/pkg_rest_handler_ability.AbilityResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -816,7 +1276,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ability.AbilityResponse'
+            $ref: '#/definitions/pkg_rest_handler_ability.AbilityResponse'
         "400":
           description: ID de ability inválido
           schema:
@@ -849,14 +1309,14 @@ paths:
         name: ability
         required: true
         schema:
-          $ref: '#/definitions/ability.UpdateAbilityRequest'
+          $ref: '#/definitions/pkg_rest_handler_ability.UpdateAbilityRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ability.AbilityResponse'
+            $ref: '#/definitions/pkg_rest_handler_ability.AbilityResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -914,7 +1374,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -940,14 +1400,14 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/assigned_role.AssignRoleRequest'
+          $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignRoleRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Rol asignado exitosamente
           schema:
-            $ref: '#/definitions/assigned_role.AssignedRoleResponse'
+            $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -986,7 +1446,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/assigned_role.AssignedRoleResponse'
+            $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse'
         "400":
           description: ID de asignación de rol inválido
           schema:
@@ -1070,7 +1530,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/assigned_role.AssignedRoleResponse'
+              $ref: '#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse'
             type: array
         "400":
           description: Parámetros inválidos
@@ -1128,6 +1588,821 @@ paths:
       summary: Revocar rol
       tags:
       - AssignedRoles
+  /api/v1/job-categories:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de categorías de trabajo con filtros
+        opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label o tipo
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      - description: Filtrar por tipo
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar categorías de trabajo
+      tags:
+      - JobCategories
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva categoría de trabajo
+      parameters:
+      - description: Datos de la categoría de trabajo
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job_category.CreateJobCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_category.JobCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear categoría de trabajo
+      tags:
+      - JobCategories
+  /api/v1/job-categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una categoría de trabajo. No se puede eliminar si tiene
+        trabajos asociados
+      parameters:
+      - description: ID de la categoría de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar categoría de trabajo
+      tags:
+      - JobCategories
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una categoría de trabajo por su ID
+      parameters:
+      - description: ID de la categoría de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_category.JobCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener categoría de trabajo
+      tags:
+      - JobCategories
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una categoría de trabajo existente
+      parameters:
+      - description: ID de la categoría de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la categoría de trabajo
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job_category.UpdateJobCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_category.JobCategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar categoría de trabajo
+      tags:
+      - JobCategories
+  /api/v1/job-priorities:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de prioridades de trabajo con filtros
+        opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label o class
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar prioridades de trabajo
+      tags:
+      - JobPriorities
+    post:
+      consumes:
+      - application/json
+      description: 'Crea una nueva prioridad de trabajo. El campo class acepta colores
+        Bootstrap: blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan,
+        dark, light'
+      parameters:
+      - description: Datos de la prioridad de trabajo
+        in: body
+        name: priority
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job_priority.CreateJobPriorityRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear prioridad de trabajo
+      tags:
+      - JobPriorities
+  /api/v1/job-priorities/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una prioridad de trabajo. No se puede eliminar si tiene
+        trabajos asociados
+      parameters:
+      - description: ID de la prioridad de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar prioridad de trabajo
+      tags:
+      - JobPriorities
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una prioridad de trabajo por su ID
+      parameters:
+      - description: ID de la prioridad de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener prioridad de trabajo
+      tags:
+      - JobPriorities
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una prioridad de trabajo existente
+      parameters:
+      - description: ID de la prioridad de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la prioridad de trabajo
+        in: body
+        name: priority
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job_priority.UpdateJobPriorityRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar prioridad de trabajo
+      tags:
+      - JobPriorities
+  /api/v1/job-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de trabajo con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label o class
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de trabajo
+      tags:
+      - JobStatuses
+    post:
+      consumes:
+      - application/json
+      description: 'Crea un nuevo estado de trabajo. El campo class acepta colores
+        Bootstrap: blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan,
+        dark, light'
+      parameters:
+      - description: Datos del estado de trabajo
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job_status.CreateJobStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_status.JobStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de trabajo
+      tags:
+      - JobStatuses
+  /api/v1/job-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de trabajo
+      parameters:
+      - description: ID del estado de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de trabajo
+      tags:
+      - JobStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de trabajo por su ID
+      parameters:
+      - description: ID del estado de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_status.JobStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de trabajo
+      tags:
+      - JobStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de trabajo existente
+      parameters:
+      - description: ID del estado de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de trabajo
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job_status.UpdateJobStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job_status.JobStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de trabajo
+      tags:
+      - JobStatuses
+  /api/v1/jobs:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de trabajos con filtros opcionales.
+        Por defecto muestra solo trabajos abiertos (closed=0)
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda en work_order, property, customer
+        in: query
+        name: search
+        type: string
+      - default: "0"
+        description: 'Filtrar por cerrado: 0, 1, all'
+        in: query
+        name: closed
+        type: string
+      - description: Filtrar por categoría de trabajo
+        in: query
+        name: jobCategoryId
+        type: integer
+      - description: Filtrar por estado de trabajo
+        in: query
+        name: jobStatusId
+        type: integer
+      - description: Filtrar por prioridad de trabajo
+        in: query
+        name: jobPriorityId
+        type: integer
+      - description: Filtrar por usuario asignado (ID o 'unassigned')
+        in: query
+        name: userId
+        type: string
+      - description: Filtrar por propiedad
+        in: query
+        name: propertyId
+        type: integer
+      - description: Filtrar por workflow
+        in: query
+        name: workflowId
+        type: integer
+      - description: 'Campo de ordenamiento: work_order, date_received, created_at,
+          due_date, status'
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: 'Dirección de ordenamiento: asc, desc'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar trabajos
+      tags:
+      - Jobs
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo trabajo. El workflow y status inicial se asignan
+        automáticamente desde el customer de la propiedad
+      parameters:
+      - description: Datos del trabajo
+        in: body
+        name: job
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job.CreateJobRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear trabajo
+      tags:
+      - Jobs
+  /api/v1/jobs/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un trabajo (soft delete)
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar trabajo
+      tags:
+      - Jobs
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un trabajo por su ID
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener trabajo
+      tags:
+      - Jobs
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un trabajo existente. Si se cambia el technician_job_status_id
+        y este tiene un job_status_id vinculado, el job_status_id se actualiza automáticamente
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del trabajo
+        in: body
+        name: job
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job.UpdateJobRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar trabajo
+      tags:
+      - Jobs
+  /api/v1/jobs/{id}/close:
+    put:
+      consumes:
+      - application/json
+      description: Cierra un trabajo estableciendo closed=true y actualizando el job_status_id
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos para cerrar el trabajo
+        in: body
+        name: close
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_job.CloseJobRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_job.JobResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Cerrar trabajo
+      tags:
+      - Jobs
   /api/v1/permissions:
     get:
       consumes:
@@ -1164,7 +2439,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -1188,14 +2463,14 @@ paths:
         name: permission
         required: true
         schema:
-          $ref: '#/definitions/permission.CreatePermissionRequest'
+          $ref: '#/definitions/pkg_rest_handler_permission.CreatePermissionRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/permission.PermissionResponse'
+            $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1262,7 +2537,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/permission.PermissionResponse'
+            $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
         "400":
           description: ID de permiso inválido
           schema:
@@ -1295,14 +2570,14 @@ paths:
         name: permission
         required: true
         schema:
-          $ref: '#/definitions/permission.UpdatePermissionRequest'
+          $ref: '#/definitions/pkg_rest_handler_permission.UpdatePermissionRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/permission.PermissionResponse'
+            $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1342,7 +2617,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/permission.PermissionResponse'
+              $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
             type: array
         "400":
           description: ID de ability inválido
@@ -1423,7 +2698,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/permission.PermissionResponse'
+              $ref: '#/definitions/pkg_rest_handler_permission.PermissionResponse'
             type: array
         "400":
           description: Parámetros inválidos
@@ -1438,6 +2713,375 @@ paths:
       summary: Obtener permisos por entidad
       tags:
       - Permissions
+  /api/v1/quote-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de cotización
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de cotización
+      tags:
+      - QuoteStatuses
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo estado de cotización
+      parameters:
+      - description: Datos del estado de cotización
+        in: body
+        name: quoteStatus
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_quote_status.CreateQuoteStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de cotización
+      tags:
+      - QuoteStatuses
+  /api/v1/quote-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de cotización. No se puede eliminar si tiene
+        cotizaciones asociadas
+      parameters:
+      - description: ID del estado de cotización
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de cotización
+      tags:
+      - QuoteStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de cotización por su ID
+      parameters:
+      - description: ID del estado de cotización
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de cotización
+      tags:
+      - QuoteStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de cotización existente
+      parameters:
+      - description: ID del estado de cotización
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de cotización
+        in: body
+        name: quoteStatus
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_quote_status.UpdateQuoteStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de cotización
+      tags:
+      - QuoteStatuses
+  /api/v1/quotes:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de cotizaciones con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 15
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por número de cotización
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por trabajo
+        in: query
+        name: jobId
+        type: integer
+      - description: Filtrar por estado de cotización
+        in: query
+        name: quoteStatusId
+        type: integer
+      - description: Campo de ordenamiento (quote_number, amount, created_at)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (ASC, DESC)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar cotizaciones
+      tags:
+      - Quotes
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva cotización para un trabajo
+      parameters:
+      - description: Datos de la cotización
+        in: body
+        name: quote
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_quote.CreateQuoteRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_quote.QuoteResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear cotización
+      tags:
+      - Quotes
+  /api/v1/quotes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una cotización (soft delete)
+      parameters:
+      - description: ID de la cotización
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar cotización
+      tags:
+      - Quotes
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una cotización por su ID
+      parameters:
+      - description: ID de la cotización
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_quote.QuoteResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener cotización
+      tags:
+      - Quotes
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una cotización existente
+      parameters:
+      - description: ID de la cotización
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la cotización
+        in: body
+        name: quote
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_quote.UpdateQuoteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_quote.QuoteResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar cotización
+      tags:
+      - Quotes
   /api/v1/roles:
     get:
       consumes:
@@ -1466,7 +3110,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -1490,14 +3134,14 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/role.CreateRoleRequest'
+          $ref: '#/definitions/pkg_rest_handler_role.CreateRoleRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/role.RoleResponse'
+            $ref: '#/definitions/pkg_rest_handler_role.RoleResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1564,7 +3208,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/role.RoleResponse'
+            $ref: '#/definitions/pkg_rest_handler_role.RoleResponse'
         "400":
           description: ID de rol inválido
           schema:
@@ -1597,14 +3241,14 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/role.UpdateRoleRequest'
+          $ref: '#/definitions/pkg_rest_handler_role.UpdateRoleRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/role.RoleResponse'
+            $ref: '#/definitions/pkg_rest_handler_role.RoleResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1638,7 +3282,7 @@ paths:
         "200":
           description: Configuraciones obtenidas exitosamente
           schema:
-            $ref: '#/definitions/settings.SettingsResponse'
+            $ref: '#/definitions/pkg_rest_handler_settings.SettingsResponse'
         "403":
           description: No tiene permisos para ver configuraciones
           schema:
@@ -1670,14 +3314,14 @@ paths:
         name: settings
         required: true
         schema:
-          $ref: '#/definitions/settings.UpdateSettingsRequest'
+          $ref: '#/definitions/pkg_rest_handler_settings.UpdateSettingsRequest'
       produces:
       - application/json
       responses:
         "200":
           description: Configuraciones actualizadas exitosamente
           schema:
-            $ref: '#/definitions/settings.SettingsResponse'
+            $ref: '#/definitions/pkg_rest_handler_settings.SettingsResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1699,6 +3343,376 @@ paths:
       summary: Actualizar configuraciones del sistema
       tags:
       - Settings
+  /api/v1/task-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de tarea con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label o class
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de tarea
+      tags:
+      - TaskStatuses
+    post:
+      consumes:
+      - application/json
+      description: 'Crea un nuevo estado de tarea. El campo class acepta colores Bootstrap:
+        blue, indigo, purple, pink, red, orange, yellow, green, teal, cyan, dark,
+        light'
+      parameters:
+      - description: Datos del estado de tarea
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_task_status.CreateTaskStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_task_status.TaskStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de tarea
+      tags:
+      - TaskStatuses
+  /api/v1/task-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de tarea. No se puede eliminar si tiene tareas
+        asociadas
+      parameters:
+      - description: ID del estado de tarea
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de tarea
+      tags:
+      - TaskStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de tarea por su ID
+      parameters:
+      - description: ID del estado de tarea
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_task_status.TaskStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de tarea
+      tags:
+      - TaskStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de tarea existente
+      parameters:
+      - description: ID del estado de tarea
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de tarea
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_task_status.UpdateTaskStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_task_status.TaskStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de tarea
+      tags:
+      - TaskStatuses
+  /api/v1/technician-job-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de técnico de trabajo con
+        filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label o class
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      - description: Filtrar por ID de estado de trabajo
+        in: query
+        name: jobStatusId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de técnico de trabajo
+      tags:
+      - TechnicianJobStatuses
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo estado de técnico de trabajo. El campo class acepta
+        colores Bootstrap. El campo jobStatusId es opcional y referencia un job_status
+        existente
+      parameters:
+      - description: Datos del estado de técnico de trabajo
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_technician_job_status.CreateTechnicianJobStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de técnico de trabajo
+      tags:
+      - TechnicianJobStatuses
+  /api/v1/technician-job-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de técnico de trabajo
+      parameters:
+      - description: ID del estado de técnico de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de técnico de trabajo
+      tags:
+      - TechnicianJobStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de técnico de trabajo por su ID
+      parameters:
+      - description: ID del estado de técnico de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de técnico de trabajo
+      tags:
+      - TechnicianJobStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de técnico de trabajo existente
+      parameters:
+      - description: ID del estado de técnico de trabajo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de técnico de trabajo
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_technician_job_status.UpdateTechnicianJobStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de técnico de trabajo
+      tags:
+      - TechnicianJobStatuses
   /api/v1/users:
     get:
       consumes:
@@ -1735,7 +3749,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "400":
           description: Parámetros de consulta inválidos
           schema:
@@ -1759,14 +3773,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/user.CreateUserRequest'
+          $ref: '#/definitions/pkg_rest_handler_user.CreateUserRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/user.UserResponse'
+            $ref: '#/definitions/pkg_rest_handler_user.UserResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1833,7 +3847,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.UserResponse'
+            $ref: '#/definitions/pkg_rest_handler_user.UserResponse'
         "400":
           description: ID de usuario inválido
           schema:
@@ -1866,14 +3880,14 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/user.UpdateUserRequest'
+          $ref: '#/definitions/pkg_rest_handler_user.UpdateUserRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.UserResponse'
+            $ref: '#/definitions/pkg_rest_handler_user.UserResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -1918,15 +3932,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Obtener habilidades de usuario
@@ -1955,15 +3969,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Obtener roles de usuario
@@ -2003,7 +4017,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "403":
           description: No tiene permisos para listar workflows
           schema:
@@ -2029,14 +4043,14 @@ paths:
         name: workflow
         required: true
         schema:
-          $ref: '#/definitions/workflow.CreateWorkflowRequest'
+          $ref: '#/definitions/pkg_rest_handler_workflow.CreateWorkflowRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/workflow.WorkflowResponse'
+            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -2109,7 +4123,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/workflow.WorkflowResponse'
+            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
         "400":
           description: ID de workflow inválido
           schema:
@@ -2146,14 +4160,14 @@ paths:
         name: workflow
         required: true
         schema:
-          $ref: '#/definitions/workflow.UpdateWorkflowRequest'
+          $ref: '#/definitions/pkg_rest_handler_workflow.UpdateWorkflowRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/workflow.WorkflowResponse'
+            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
           schema:
@@ -2192,7 +4206,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/workflow.WorkflowResponse'
+            $ref: '#/definitions/pkg_rest_handler_workflow.WorkflowResponse'
         "400":
           description: ID de workflow inválido
           schema:
@@ -2225,14 +4239,14 @@ paths:
         name: credentials
         required: true
         schema:
-          $ref: '#/definitions/auth.LoginRequest'
+          $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.LoginResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse'
         "400":
           description: Error al decodificar la solicitud
           schema:
@@ -2297,7 +4311,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth.RefreshResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse'
         "400":
           description: Error al decodificar la solicitud
           schema:
@@ -2342,17 +4356,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
+            - $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
             - properties:
                 items:
                   items:
-                    $ref: '#/definitions/customer.CustomerResponse'
+                    $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
                   type: array
               type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: List customers
@@ -2368,22 +4382,22 @@ paths:
         name: customer
         required: true
         schema:
-          $ref: '#/definitions/customer.CreateCustomerRequest'
+          $ref: '#/definitions/pkg_rest_handler_customer.CreateCustomerRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/customer.CustomerResponse'
+            $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Create a new customer
@@ -2406,15 +4420,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Delete a customer
@@ -2434,19 +4448,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/customer.CustomerResponse'
+            $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get customer by ID
@@ -2467,26 +4481,26 @@ paths:
         name: customer
         required: true
         schema:
-          $ref: '#/definitions/customer.UpdateCustomerRequest'
+          $ref: '#/definitions/pkg_rest_handler_customer.UpdateCustomerRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/customer.CustomerResponse'
+            $ref: '#/definitions/pkg_rest_handler_customer.CustomerResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Update a customer
@@ -2521,19 +4535,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.PaginatedResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get customer properties
@@ -2568,21 +4582,21 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
+            - $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
             - properties:
                 items:
                   items:
-                    $ref: '#/definitions/property.PropertyResponse'
+                    $ref: '#/definitions/pkg_rest_handler_property.PropertyResponse'
                   type: array
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: List properties
@@ -2598,22 +4612,22 @@ paths:
         name: property
         required: true
         schema:
-          $ref: '#/definitions/property.CreatePropertyRequest'
+          $ref: '#/definitions/pkg_rest_handler_property.CreatePropertyRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/property.PropertyResponse'
+            $ref: '#/definitions/pkg_rest_handler_property.PropertyResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Create property
@@ -2634,15 +4648,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Delete property
@@ -2662,19 +4676,19 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/property.PropertyResponse'
+            $ref: '#/definitions/pkg_rest_handler_property.PropertyResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Get property by ID
@@ -2695,26 +4709,26 @@ paths:
         name: property
         required: true
         schema:
-          $ref: '#/definitions/property.UpdatePropertyRequest'
+          $ref: '#/definitions/pkg_rest_handler_property.UpdatePropertyRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/property.PropertyResponse'
+            $ref: '#/definitions/pkg_rest_handler_property.PropertyResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/response.ErrorResponse'
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
       security:
       - BearerAuth: []
       summary: Update property

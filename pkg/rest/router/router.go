@@ -17,6 +17,8 @@ import (
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
+	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
+	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
@@ -45,6 +47,8 @@ func New(
 	jobPriorityHandler *jobPriorityHandler.Handler,
 	techJobStatusHandler *techJobStatusHandler.Handler,
 	taskStatusHandler *taskStatusHandler.Handler,
+	quoteHandler *quoteHandler.Handler,
+	quoteStatusHandler *quoteStatusHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -100,6 +104,9 @@ func New(
 			jobPriorityHandler.RegisterRoutes(r)
 			techJobStatusHandler.RegisterRoutes(r)
 			taskStatusHandler.RegisterRoutes(r)
+			// Rutas de cotizaciones
+			quoteHandler.RegisterRoutes(r)
+			quoteStatusHandler.RegisterRoutes(r)
 		})
 	})
 	return r

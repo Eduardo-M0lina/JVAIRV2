@@ -2433,6 +2433,580 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/quote-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de cotización",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Listar estados de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de cotización",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Crear estado de cotización",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de cotización",
+                        "name": "quoteStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.CreateQuoteStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/quote-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de cotización por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Obtener estado de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de cotización existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Actualizar estado de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de cotización",
+                        "name": "quoteStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.UpdateQuoteStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de cotización. No se puede eliminar si tiene cotizaciones asociadas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "QuoteStatuses"
+                ],
+                "summary": "Eliminar estado de cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/quotes": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de cotizaciones con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Listar cotizaciones",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 15,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por número de cotización",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por trabajo",
+                        "name": "jobId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por estado de cotización",
+                        "name": "quoteStatusId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Campo de ordenamiento (quote_number, amount, created_at)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Dirección de ordenamiento (ASC, DESC)",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea una nueva cotización para un trabajo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Crear cotización",
+                "parameters": [
+                    {
+                        "description": "Datos de la cotización",
+                        "name": "quote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.CreateQuoteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/quotes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una cotización por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Obtener cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza una cotización existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Actualizar cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos de la cotización",
+                        "name": "quote",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.UpdateQuoteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina una cotización (soft delete)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Eliminar cotización",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la cotización",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/roles": {
             "get": {
                 "security": [
@@ -6117,6 +6691,141 @@ const docTemplate = `{
                 },
                 "zip": {
                     "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_quote.CreateQuoteRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "quoteStatusId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_quote.QuoteResponse": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "quoteStatusId": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_quote.UpdateQuoteRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "quoteStatusId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_quote_status.CreateQuoteStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg_rest_handler_quote_status.QuoteStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg_rest_handler_quote_status.UpdateQuoteStatusRequest": {
+            "type": "object",
+            "required": [
+                "label"
+            ],
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
                 }
             }
         },

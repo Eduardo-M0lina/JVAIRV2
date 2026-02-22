@@ -15,6 +15,8 @@ import (
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
+	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
+	quoteStatus "github.com/your-org/jvairv2/pkg/domain/quote_status"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
 	taskStatus "github.com/your-org/jvairv2/pkg/domain/task_status"
@@ -31,6 +33,8 @@ import (
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
+	mysqlQuote "github.com/your-org/jvairv2/pkg/repository/mysql/quote"
+	mysqlQuoteStatus "github.com/your-org/jvairv2/pkg/repository/mysql/quote_status"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
 	mysqlTaskStatus "github.com/your-org/jvairv2/pkg/repository/mysql/task_status"
@@ -48,6 +52,8 @@ import (
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
+	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
+	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
@@ -79,6 +85,8 @@ type Container struct {
 	JobPriorityHandler   *jobPriorityHandler.Handler
 	TechJobStatusHandler *techJobStatusHandler.Handler
 	TaskStatusHandler    *taskStatusHandler.Handler
+	QuoteHandler         *quoteHandler.Handler
+	QuoteStatusHandler   *quoteStatusHandler.Handler
 	AuthMiddleware       *middleware.AuthMiddleware
 	Router               http.Handler
 }
@@ -148,6 +156,12 @@ func NewContainer(configPath string) (*Container, error) {
 	userChecker := mysqlJob.NewUserCheckerAdapter(dbConn.GetDB())
 	techJobStatusChecker := mysqlJob.NewTechnicianJobStatusCheckerAdapter(dbConn.GetDB())
 	jobUC := domainJob.NewUseCase(jobRepo, jobCategoryChecker, jobPriorityChecker, jobStatusChecker, workflowChecker, propertyChecker, userChecker, techJobStatusChecker)
+	quoteStatusRepo := mysqlQuoteStatus.NewRepository(dbConn.GetDB())
+	quoteStatusUC := quoteStatus.NewUseCase(quoteStatusRepo)
+	quoteRepo := mysqlQuote.NewRepository(dbConn.GetDB())
+	quoteJobChecker := mysqlQuote.NewJobCheckerAdapter(dbConn.GetDB())
+	quoteQSChecker := mysqlQuote.NewQuoteStatusCheckerAdapter(dbConn.GetDB())
+	quoteUC := domainQuote.NewUseCase(quoteRepo, quoteJobChecker, quoteQSChecker)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -169,6 +183,8 @@ func NewContainer(configPath string) (*Container, error) {
 	techJobStatHandler := techJobStatusHandler.NewHandler(techJobStatusUC)
 	taskStatHandler := taskStatusHandler.NewHandler(taskStatusUC)
 	jobHdlr := jobHandler.NewHandler(jobUC)
+	quoteHdlr := quoteHandler.NewHandler(quoteUC)
+	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -192,6 +208,8 @@ func NewContainer(configPath string) (*Container, error) {
 		jobPrioHandler,
 		techJobStatHandler,
 		taskStatHandler,
+		quoteHdlr,
+		quoteStatHandler,
 		authMiddleware,
 		userUC,
 	)
@@ -216,6 +234,8 @@ func NewContainer(configPath string) (*Container, error) {
 		JobPriorityHandler:   jobPrioHandler,
 		TechJobStatusHandler: techJobStatHandler,
 		TaskStatusHandler:    taskStatHandler,
+		QuoteHandler:         quoteHdlr,
+		QuoteStatusHandler:   quoteStatHandler,
 		AuthMiddleware:       authMiddleware,
 		Router:               r,
 	}, nil
