@@ -9,6 +9,7 @@ import (
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
 	jobCategory "github.com/your-org/jvairv2/pkg/domain/job_category"
 	jobPriority "github.com/your-org/jvairv2/pkg/domain/job_priority"
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
@@ -24,6 +25,7 @@ import (
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
+	mysqlJob "github.com/your-org/jvairv2/pkg/repository/mysql/job"
 	mysqlJobCategory "github.com/your-org/jvairv2/pkg/repository/mysql/job_category"
 	mysqlJobPriority "github.com/your-org/jvairv2/pkg/repository/mysql/job_priority"
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
@@ -40,6 +42,7 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
@@ -70,6 +73,7 @@ type Container struct {
 	WorkflowHandler      *workflowHandler.Handler
 	CustomerHandler      *customerHandler.Handler
 	PropertyHandler      *propertyHandler.Handler
+	JobHandler           *jobHandler.Handler
 	JobCategoryHandler   *jobCategoryHandler.Handler
 	JobStatusHandler     *jobStatusHandler.Handler
 	JobPriorityHandler   *jobPriorityHandler.Handler
@@ -135,6 +139,15 @@ func NewContainer(configPath string) (*Container, error) {
 	jobPriorityUC := jobPriority.NewUseCase(jobPriorityRepo)
 	techJobStatusUC := techJobStatus.NewUseCase(techJobStatusRepo, jobStatusRepo)
 	taskStatusUC := taskStatus.NewUseCase(taskStatusRepo)
+	jobRepo := mysqlJob.NewRepository(dbConn.GetDB())
+	jobCategoryChecker := mysqlJob.NewJobCategoryCheckerAdapter(dbConn.GetDB())
+	jobPriorityChecker := mysqlJob.NewJobPriorityCheckerAdapter(dbConn.GetDB())
+	jobStatusChecker := mysqlJob.NewJobStatusCheckerAdapter(dbConn.GetDB())
+	workflowChecker := mysqlJob.NewWorkflowCheckerAdapter(dbConn.GetDB())
+	propertyChecker := mysqlJob.NewPropertyCheckerAdapter(dbConn.GetDB())
+	userChecker := mysqlJob.NewUserCheckerAdapter(dbConn.GetDB())
+	techJobStatusChecker := mysqlJob.NewTechnicianJobStatusCheckerAdapter(dbConn.GetDB())
+	jobUC := domainJob.NewUseCase(jobRepo, jobCategoryChecker, jobPriorityChecker, jobStatusChecker, workflowChecker, propertyChecker, userChecker, techJobStatusChecker)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -155,6 +168,7 @@ func NewContainer(configPath string) (*Container, error) {
 	jobPrioHandler := jobPriorityHandler.NewHandler(jobPriorityUC)
 	techJobStatHandler := techJobStatusHandler.NewHandler(techJobStatusUC)
 	taskStatHandler := taskStatusHandler.NewHandler(taskStatusUC)
+	jobHdlr := jobHandler.NewHandler(jobUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -172,6 +186,7 @@ func NewContainer(configPath string) (*Container, error) {
 		workflowHandler,
 		customerHandler,
 		propHandler,
+		jobHdlr,
 		jobCatHandler,
 		jobStatHandler,
 		jobPrioHandler,
@@ -195,6 +210,7 @@ func NewContainer(configPath string) (*Container, error) {
 		WorkflowHandler:      workflowHandler,
 		CustomerHandler:      customerHandler,
 		PropertyHandler:      propHandler,
+		JobHandler:           jobHdlr,
 		JobCategoryHandler:   jobCatHandler,
 		JobStatusHandler:     jobStatHandler,
 		JobPriorityHandler:   jobPrioHandler,
