@@ -1,0 +1,565 @@
+{
+  "info": {
+    "name": "JVAIRV2 - Invoices & Payments",
+    "description": "Colección de endpoints para el módulo de Facturas (Invoices) y Pagos (Invoice Payments)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Invoices",
+      "item": [
+        {
+          "name": "Listar facturas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Número de página"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Tamaño de página"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Búsqueda en invoice_number, work_order, property, customer",
+                  "disabled": true
+                },
+                {
+                  "key": "jobId",
+                  "value": "",
+                  "description": "Filtrar por ID de trabajo",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filtrar por status: paid, unpaid",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at",
+                  "description": "Campo de ordenamiento (invoice_number, total, balance, created_at)",
+                  "disabled": true
+                },
+                {
+                  "key": "direction",
+                  "value": "DESC",
+                  "description": "Dirección de ordenamiento (ASC, DESC)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Obtiene una lista paginada de facturas con filtros opcionales"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar facturas por trabajo",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices?jobId=1&page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"],
+              "query": [
+                {
+                  "key": "jobId",
+                  "value": "1",
+                  "description": "Filtrar por ID de trabajo"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene facturas filtradas por un trabajo específico"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar facturas pagadas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices?status=paid&page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "paid",
+                  "description": "Solo facturas pagadas (balance <= 0)"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene facturas con status pagado (balance <= 0)"
+          },
+          "response": []
+        },
+        {
+          "name": "Listar facturas pendientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices?status=unpaid&page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "unpaid",
+                  "description": "Solo facturas pendientes (balance > 0)"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Obtiene facturas con status pendiente (balance > 0)"
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar facturas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices?search=INV-001&page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "INV-001",
+                  "description": "Busca en invoice_number, work_order, property, customer"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Busca facturas por múltiples campos (invoice_number, work_order, property, customer)"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear factura",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"jobId\": 1,\n    \"invoiceNumber\": \"INV-2025-001\",\n    \"total\": 2500.00,\n    \"description\": \"Servicio de instalación de sistema HVAC\",\n    \"allowOnlinePayments\": true,\n    \"notes\": \"Factura generada por trabajo completado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"]
+            },
+            "description": "Crea una nueva factura asociada a un trabajo"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener factura por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "ID de la factura"
+                }
+              ]
+            },
+            "description": "Obtiene una factura por su ID, incluyendo balance calculado (total - pagos)"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar factura",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"invoiceNumber\": \"INV-2025-001-REV\",\n    \"total\": 2750.00,\n    \"description\": \"Servicio de instalación de sistema HVAC (revisado)\",\n    \"allowOnlinePayments\": true,\n    \"notes\": \"Monto actualizado por materiales adicionales\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "ID de la factura a actualizar"
+                }
+              ]
+            },
+            "description": "Actualiza una factura existente. Solo se envían los campos a modificar."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar factura",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "ID de la factura a eliminar"
+                }
+              ]
+            },
+            "description": "Elimina una factura (soft delete)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Invoice Payments",
+      "item": [
+        {
+          "name": "Listar pagos de factura",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:invoiceId/payments?page=1&pageSize=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":invoiceId", "payments"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Número de página"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10",
+                  "description": "Tamaño de página"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Búsqueda por payment_id",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at",
+                  "description": "Campo de ordenamiento (amount, created_at, payment_processor)",
+                  "disabled": true
+                },
+                {
+                  "key": "direction",
+                  "value": "DESC",
+                  "description": "Dirección de ordenamiento (ASC, DESC)",
+                  "disabled": true
+                }
+              ],
+              "variable": [
+                {
+                  "key": "invoiceId",
+                  "value": "1",
+                  "description": "ID de la factura"
+                }
+              ]
+            },
+            "description": "Obtiene una lista paginada de pagos de una factura"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear pago de factura",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"paymentProcessor\": \"manual\",\n    \"paymentId\": \"PAY-2025-001\",\n    \"amount\": 1000.00,\n    \"notes\": \"Primer pago parcial del cliente\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:invoiceId/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":invoiceId", "payments"],
+              "variable": [
+                {
+                  "key": "invoiceId",
+                  "value": "1",
+                  "description": "ID de la factura"
+                }
+              ]
+            },
+            "description": "Registra un nuevo pago para una factura"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear pago con Stripe",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"paymentProcessor\": \"stripe\",\n    \"paymentId\": \"pi_1234567890abcdef\",\n    \"amount\": 1500.00,\n    \"notes\": \"Pago online via Stripe\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:invoiceId/payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":invoiceId", "payments"],
+              "variable": [
+                {
+                  "key": "invoiceId",
+                  "value": "1",
+                  "description": "ID de la factura"
+                }
+              ]
+            },
+            "description": "Registra un pago procesado por Stripe"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener pago por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:invoiceId/payments/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":invoiceId", "payments", ":id"],
+              "variable": [
+                {
+                  "key": "invoiceId",
+                  "value": "1",
+                  "description": "ID de la factura"
+                },
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "ID del pago"
+                }
+              ]
+            },
+            "description": "Obtiene un pago por su ID, verificando que pertenezca a la factura indicada"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar pago",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"amount\": 1200.00,\n    \"notes\": \"Monto corregido del pago parcial\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:invoiceId/payments/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":invoiceId", "payments", ":id"],
+              "variable": [
+                {
+                  "key": "invoiceId",
+                  "value": "1",
+                  "description": "ID de la factura"
+                },
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "ID del pago a actualizar"
+                }
+              ]
+            },
+            "description": "Actualiza un pago existente. Solo se envían los campos a modificar."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar pago",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/invoices/:invoiceId/payments/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", ":invoiceId", "payments", ":id"],
+              "variable": [
+                {
+                  "key": "invoiceId",
+                  "value": "1",
+                  "description": "ID de la factura"
+                },
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "ID del pago a eliminar"
+                }
+              ]
+            },
+            "description": "Elimina un pago (soft delete)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

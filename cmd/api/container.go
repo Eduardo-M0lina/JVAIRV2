@@ -9,6 +9,8 @@ import (
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
+	domainInvoicePayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
 	jobCategory "github.com/your-org/jvairv2/pkg/domain/job_category"
 	domainJobEquip "github.com/your-org/jvairv2/pkg/domain/job_equipment"
@@ -30,6 +32,8 @@ import (
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
+	mysqlInvoice "github.com/your-org/jvairv2/pkg/repository/mysql/invoice"
+	mysqlInvoicePayment "github.com/your-org/jvairv2/pkg/repository/mysql/invoice_payment"
 	mysqlJob "github.com/your-org/jvairv2/pkg/repository/mysql/job"
 	mysqlJobCategory "github.com/your-org/jvairv2/pkg/repository/mysql/job_category"
 	mysqlJobEquip "github.com/your-org/jvairv2/pkg/repository/mysql/job_equipment"
@@ -52,6 +56,8 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
+	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
 	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
@@ -75,32 +81,34 @@ import (
 
 // Container contiene todas las dependencias de la aplicación
 type Container struct {
-	Config               *configs.Config
-	DBConnection         *mysql.Connection
-	HealthHandler        *handler.HealthHandler
-	AuthHandler          *authHandler.Handler
-	UserHandler          *userHandler.Handler
-	RoleHandler          *roleHandler.Handler
-	AbilityHandler       *abilityHandler.Handler
-	AssignedRoleHandler  *assignedRoleHandler.Handler
-	PermissionHandler    *permissionHandler.Handler
-	SettingsHandler      *settingsHandler.Handler
-	WorkflowHandler      *workflowHandler.Handler
-	CustomerHandler      *customerHandler.Handler
-	PropertyHandler      *propertyHandler.Handler
-	JobHandler           *jobHandler.Handler
-	JobCategoryHandler   *jobCategoryHandler.Handler
-	JobStatusHandler     *jobStatusHandler.Handler
-	JobPriorityHandler   *jobPriorityHandler.Handler
-	TechJobStatusHandler *techJobStatusHandler.Handler
-	TaskStatusHandler    *taskStatusHandler.Handler
-	QuoteHandler         *quoteHandler.Handler
-	QuoteStatusHandler   *quoteStatusHandler.Handler
-	SupervisorHandler    *supervisorHandler.Handler
-	PropEquipHandler     *propEquipHandler.Handler
-	JobEquipHandler      *jobEquipHandler.Handler
-	AuthMiddleware       *middleware.AuthMiddleware
-	Router               http.Handler
+	Config                *configs.Config
+	DBConnection          *mysql.Connection
+	HealthHandler         *handler.HealthHandler
+	AuthHandler           *authHandler.Handler
+	UserHandler           *userHandler.Handler
+	RoleHandler           *roleHandler.Handler
+	AbilityHandler        *abilityHandler.Handler
+	AssignedRoleHandler   *assignedRoleHandler.Handler
+	PermissionHandler     *permissionHandler.Handler
+	SettingsHandler       *settingsHandler.Handler
+	WorkflowHandler       *workflowHandler.Handler
+	CustomerHandler       *customerHandler.Handler
+	PropertyHandler       *propertyHandler.Handler
+	JobHandler            *jobHandler.Handler
+	JobCategoryHandler    *jobCategoryHandler.Handler
+	JobStatusHandler      *jobStatusHandler.Handler
+	JobPriorityHandler    *jobPriorityHandler.Handler
+	TechJobStatusHandler  *techJobStatusHandler.Handler
+	TaskStatusHandler     *taskStatusHandler.Handler
+	QuoteHandler          *quoteHandler.Handler
+	QuoteStatusHandler    *quoteStatusHandler.Handler
+	SupervisorHandler     *supervisorHandler.Handler
+	PropEquipHandler      *propEquipHandler.Handler
+	JobEquipHandler       *jobEquipHandler.Handler
+	AuthMiddleware        *middleware.AuthMiddleware
+	Router                http.Handler
+	InvoiceHandler        *invoiceHandler.Handler
+	InvoicePaymentHandler *invoicePaymentHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -181,6 +189,12 @@ func NewContainer(configPath string) (*Container, error) {
 	jobEquipRepo := mysqlJobEquip.NewRepository(dbConn.GetDB())
 	jobEquipJobChecker := mysqlJobEquip.NewJobCheckerAdapter(dbConn.GetDB())
 	jobEquipUC := domainJobEquip.NewUseCase(jobEquipRepo, jobEquipJobChecker)
+	invoiceRepo := mysqlInvoice.NewRepository(dbConn.GetDB())
+	invoiceJobChecker := mysqlInvoice.NewJobCheckerAdapter(dbConn.GetDB())
+	invoiceUC := domainInvoice.NewUseCase(invoiceRepo, invoiceJobChecker)
+	invoicePaymentRepo := mysqlInvoicePayment.NewRepository(dbConn.GetDB())
+	invoiceChecker := mysqlInvoice.NewInvoiceCheckerAdapter(dbConn.GetDB())
+	invoicePaymentUC := domainInvoicePayment.NewUseCase(invoicePaymentRepo, invoiceChecker)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -207,6 +221,8 @@ func NewContainer(configPath string) (*Container, error) {
 	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
 	propEquipHdlr := propEquipHandler.NewHandler(propEquipUC)
 	jobEquipHdlr := jobEquipHandler.NewHandler(jobEquipUC)
+	invHdlr := invoiceHandler.NewHandler(invoiceUC)
+	invPayHdlr := invoicePaymentHandler.NewHandler(invoicePaymentUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -235,37 +251,41 @@ func NewContainer(configPath string) (*Container, error) {
 		supervisorHdlr,
 		propEquipHdlr,
 		jobEquipHdlr,
+		invHdlr,
+		invPayHdlr,
 		authMiddleware,
 		userUC,
 	)
 
 	return &Container{
-		Config:               config,
-		DBConnection:         dbConn,
-		HealthHandler:        healthHandler,
-		AuthHandler:          authHandler,
-		UserHandler:          userHandler,
-		RoleHandler:          roleHandler,
-		AbilityHandler:       abilityHandler,
-		AssignedRoleHandler:  assignedRoleHandler,
-		PermissionHandler:    permissionHandler,
-		SettingsHandler:      settingsHandler,
-		WorkflowHandler:      workflowHandler,
-		CustomerHandler:      customerHandler,
-		PropertyHandler:      propHandler,
-		JobHandler:           jobHdlr,
-		JobCategoryHandler:   jobCatHandler,
-		JobStatusHandler:     jobStatHandler,
-		JobPriorityHandler:   jobPrioHandler,
-		TechJobStatusHandler: techJobStatHandler,
-		TaskStatusHandler:    taskStatHandler,
-		QuoteHandler:         quoteHdlr,
-		QuoteStatusHandler:   quoteStatHandler,
-		SupervisorHandler:    supervisorHdlr,
-		PropEquipHandler:     propEquipHdlr,
-		JobEquipHandler:      jobEquipHdlr,
-		AuthMiddleware:       authMiddleware,
-		Router:               r,
+		Config:                config,
+		DBConnection:          dbConn,
+		HealthHandler:         healthHandler,
+		AuthHandler:           authHandler,
+		UserHandler:           userHandler,
+		RoleHandler:           roleHandler,
+		AbilityHandler:        abilityHandler,
+		AssignedRoleHandler:   assignedRoleHandler,
+		PermissionHandler:     permissionHandler,
+		SettingsHandler:       settingsHandler,
+		WorkflowHandler:       workflowHandler,
+		CustomerHandler:       customerHandler,
+		PropertyHandler:       propHandler,
+		JobHandler:            jobHdlr,
+		JobCategoryHandler:    jobCatHandler,
+		JobStatusHandler:      jobStatHandler,
+		JobPriorityHandler:    jobPrioHandler,
+		TechJobStatusHandler:  techJobStatHandler,
+		TaskStatusHandler:     taskStatHandler,
+		QuoteHandler:          quoteHdlr,
+		QuoteStatusHandler:    quoteStatHandler,
+		SupervisorHandler:     supervisorHdlr,
+		PropEquipHandler:      propEquipHdlr,
+		JobEquipHandler:       jobEquipHdlr,
+		AuthMiddleware:        authMiddleware,
+		Router:                r,
+		InvoiceHandler:        invHdlr,
+		InvoicePaymentHandler: invPayHdlr,
 	}, nil
 }
 
