@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "job-equipment-collection-id",
+		"name": "JVAIR Job Equipment",
+		"description": "Endpoints de equipos de trabajo para JVAIR. Sub-recurso de jobs. Soporta filtro por type (current, new).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Job Equipment",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						}
+					]
+				},
+				"description": "Obtiene la lista de equipos HVAC asociados a un trabajo específico"
+			},
+			"response": []
+		},
+		{
+			"name": "List Job Equipment (filter by type=current)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment?type=current",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment"],
+					"query": [
+						{
+							"key": "type",
+							"value": "current",
+							"description": "Filtrar por tipo: current o new"
+						}
+					],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						}
+					]
+				},
+				"description": "Obtiene solo los equipos HVAC de tipo 'current' (existentes) de un trabajo"
+			},
+			"response": []
+		},
+		{
+			"name": "List Job Equipment (filter by type=new)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment?type=new",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment"],
+					"query": [
+						{
+							"key": "type",
+							"value": "new",
+							"description": "Filtrar por tipo: current o new"
+						}
+					],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						}
+					]
+				},
+				"description": "Obtiene solo los equipos HVAC de tipo 'new' (nuevos a instalar) de un trabajo"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job Equipment (current)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"current\",\n  \"area\": \"Main Floor\",\n  \"outdoorBrand\": \"Carrier\",\n  \"outdoorModel\": \"24ACC636A003\",\n  \"outdoorSerial\": \"1234567890\",\n  \"outdoorInstalled\": \"2020-03-15\",\n  \"furnaceBrand\": \"Lennox\",\n  \"furnaceModel\": \"SL280UHV\",\n  \"furnaceSerial\": \"0987654321\",\n  \"furnaceInstalled\": \"2020-03-15\",\n  \"evaporatorBrand\": \"Carrier\",\n  \"evaporatorModel\": \"CNPVP3617ALA\",\n  \"evaporatorSerial\": \"1122334455\",\n  \"evaporatorInstalled\": \"2020-03-15\",\n  \"airHandlerBrand\": \"Trane\",\n  \"airHandlerModel\": \"GAM5A0A36M21SA\",\n  \"airHandlerSerial\": \"5566778899\",\n  \"airHandlerInstalled\": \"2020-03-15\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						}
+					]
+				},
+				"description": "Crea un nuevo equipo HVAC existente (type=current) para un trabajo. Los campos 'area' y 'type' son requeridos."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job Equipment (new)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"new\",\n  \"area\": \"Main Floor\",\n  \"outdoorBrand\": \"Daikin\",\n  \"outdoorModel\": \"DX16SA0483\",\n  \"outdoorSerial\": \"NEW123456\",\n  \"furnaceBrand\": \"Daikin\",\n  \"furnaceModel\": \"DM97MC0803BNA\",\n  \"furnaceSerial\": \"NEW654321\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						}
+					]
+				},
+				"description": "Crea un nuevo equipo HVAC a instalar (type=new) para un trabajo. Los campos 'area' y 'type' son requeridos."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Job Equipment (minimal)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"current\",\n  \"area\": \"Basement\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						}
+					]
+				},
+				"description": "Crea un equipo HVAC con solo los campos requeridos (type y area). Todos los campos de marca/modelo/serial son opcionales."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job Equipment by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment", ":id"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del equipo"
+						}
+					]
+				},
+				"description": "Obtiene los detalles de un equipo HVAC específico de un trabajo. Incluye el campo calculado 'outdoorUnit'."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Job Equipment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"type\": \"current\",\n  \"area\": \"Main Floor Updated\",\n  \"outdoorBrand\": \"Carrier\",\n  \"outdoorModel\": \"24ACC636A003\",\n  \"outdoorSerial\": \"1234567890\",\n  \"outdoorInstalled\": \"2024-01-10\",\n  \"furnaceBrand\": \"Lennox\",\n  \"furnaceModel\": \"SL280UHV\",\n  \"furnaceSerial\": \"0987654321\",\n  \"furnaceInstalled\": \"2024-01-10\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment", ":id"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del equipo"
+						}
+					]
+				},
+				"description": "Actualiza un equipo HVAC existente. El equipo debe pertenecer al trabajo indicado. El campo 'type' debe ser 'current' o 'new'."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Job Equipment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/:jobId/equipment/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", ":jobId", "equipment", ":id"],
+					"variable": [
+						{
+							"key": "jobId",
+							"value": "1",
+							"description": "ID del trabajo"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del equipo"
+						}
+					]
+				},
+				"description": "Elimina un equipo HVAC de un trabajo (hard delete). El equipo debe pertenecer al trabajo indicado."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
