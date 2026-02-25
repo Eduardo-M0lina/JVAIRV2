@@ -1143,6 +1143,107 @@ definitions:
       statusName:
         type: string
     type: object
+  pkg_rest_handler_invoice.CreateInvoiceRequest:
+    type: object
+    required:
+    - jobId
+    - invoiceNumber
+    properties:
+      jobId:
+        type: integer
+      invoiceNumber:
+        type: string
+      total:
+        type: number
+      description:
+        type: string
+      allowOnlinePayments:
+        type: boolean
+      notes:
+        type: string
+  pkg_rest_handler_invoice.UpdateInvoiceRequest:
+    type: object
+    properties:
+      jobId:
+        type: integer
+      invoiceNumber:
+        type: string
+      total:
+        type: number
+      description:
+        type: string
+      allowOnlinePayments:
+        type: boolean
+      notes:
+        type: string
+  pkg_rest_handler_invoice.InvoiceResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      jobId:
+        type: integer
+      invoiceNumber:
+        type: string
+      total:
+        type: number
+      description:
+        type: string
+      allowOnlinePayments:
+        type: boolean
+      notes:
+        type: string
+      balance:
+        type: number
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+  pkg_rest_handler_invoice_payment.CreatePaymentRequest:
+    type: object
+    required:
+    - paymentProcessor
+    - paymentId
+    - amount
+    properties:
+      paymentProcessor:
+        type: string
+      paymentId:
+        type: string
+      amount:
+        type: number
+      notes:
+        type: string
+  pkg_rest_handler_invoice_payment.UpdatePaymentRequest:
+    type: object
+    properties:
+      paymentProcessor:
+        type: string
+      paymentId:
+        type: string
+      amount:
+        type: number
+      notes:
+        type: string
+  pkg_rest_handler_invoice_payment.PaymentResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      invoiceId:
+        type: integer
+      paymentProcessor:
+        type: string
+      paymentId:
+        type: string
+      amount:
+        type: number
+      notes:
+        type: string
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
 info:
   contact: {}
 paths:
@@ -3082,6 +3183,415 @@ paths:
       summary: Actualizar cotización
       tags:
       - Quotes
+  /api/v1/invoices:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de facturas con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda en invoice_number, work_order, property, customer
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por job
+        in: query
+        name: jobId
+        type: integer
+      - description: 'Filtrar por status: paid, unpaid'
+        in: query
+        name: status
+        type: string
+      - description: Campo de ordenamiento (invoice_number, total, balance, created_at)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (ASC, DESC)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar facturas
+      tags:
+      - Invoices
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva factura asociada a un job
+      parameters:
+      - description: Datos de la factura
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_invoice.CreateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear factura
+      tags:
+      - Invoices
+  /api/v1/invoices/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una factura por su ID, incluyendo balance calculado
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener factura
+      tags:
+      - Invoices
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una factura existente
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos a actualizar
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_invoice.UpdateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar factura
+      tags:
+      - Invoices
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una factura (soft delete)
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar factura
+      tags:
+      - Invoices
+  /api/v1/invoices/{invoiceId}/payments:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de pagos de una factura
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por payment_id
+        in: query
+        name: search
+        type: string
+      - description: Campo de ordenamiento (amount, created_at, payment_processor)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (ASC, DESC)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar pagos de factura
+      tags:
+      - Invoice Payments
+    post:
+      consumes:
+      - application/json
+      description: Registra un nuevo pago para una factura
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: Datos del pago
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_invoice_payment.CreatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear pago de factura
+      tags:
+      - Invoice Payments
+  /api/v1/invoices/{invoiceId}/payments/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un pago por su ID
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener pago de factura
+      tags:
+      - Invoice Payments
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un pago existente
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos a actualizar
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/pkg_rest_handler_invoice_payment.UpdatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg_rest_handler_invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar pago de factura
+      tags:
+      - Invoice Payments
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un pago (soft delete)
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar pago de factura
+      tags:
+      - Invoice Payments
   /api/v1/roles:
     get:
       consumes:

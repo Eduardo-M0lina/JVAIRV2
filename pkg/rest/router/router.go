@@ -11,6 +11,8 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
+	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
@@ -49,6 +51,8 @@ func New(
 	taskStatusHandler *taskStatusHandler.Handler,
 	quoteHandler *quoteHandler.Handler,
 	quoteStatusHandler *quoteStatusHandler.Handler,
+	invoiceHandler *invoiceHandler.Handler,
+	invoicePaymentHandler *invoicePaymentHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -107,6 +111,9 @@ func New(
 			// Rutas de cotizaciones
 			quoteHandler.RegisterRoutes(r)
 			quoteStatusHandler.RegisterRoutes(r)
+			// Rutas de facturas y pagos
+			invoiceHandler.RegisterRoutes(r)
+			invoicePaymentHandler.RegisterRoutes(r)
 		})
 	})
 	return r

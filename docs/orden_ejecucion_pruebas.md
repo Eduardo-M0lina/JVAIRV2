@@ -49,6 +49,29 @@ Este documento describe el orden recomendado para ejecutar las pruebas en Postma
   2. `GET /permissions/check/{ability_id}/{entity_type}/{entity_id}` - Verificar permiso
   3. `GET /permissions/entity/{entity_type}/{entity_id}` - Listar permisos de entidad
 
+### 7. Facturas (Invoices)
+- **Prioridad: Media** - Dependen de jobs
+- Endpoints a probar:
+  1. `GET /invoices` - Listar facturas
+  2. `POST /invoices` - Crear factura para un job existente
+  3. `GET /invoices/{id}` - Verificar factura creada (incluye balance)
+  4. `PUT /invoices/{id}` - Modificar factura
+  5. `GET /invoices?status=unpaid` - Filtrar facturas pendientes
+  6. `GET /invoices?status=paid` - Filtrar facturas pagadas
+  7. `GET /invoices?jobId=1` - Filtrar facturas por trabajo
+  8. `GET /invoices?search=INV` - Buscar facturas
+  9. `DELETE /invoices/{id}` - Eliminar factura (soft delete)
+
+### 8. Pagos de Facturas (Invoice Payments)
+- **Prioridad: Media** - Dependen de invoices
+- Endpoints a probar:
+  1. `GET /invoices/{invoiceId}/payments` - Listar pagos de factura
+  2. `POST /invoices/{invoiceId}/payments` - Crear pago para factura
+  3. `GET /invoices/{invoiceId}/payments/{id}` - Verificar pago creado
+  4. `PUT /invoices/{invoiceId}/payments/{id}` - Modificar pago
+  5. `GET /invoices/{id}` - Verificar balance actualizado tras pago
+  6. `DELETE /invoices/{invoiceId}/payments/{id}` - Eliminar pago (soft delete)
+
 ## Flujo de Prueba Completo
 
 1. **Preparación Inicial**
