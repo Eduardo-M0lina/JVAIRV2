@@ -9,7 +9,16 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.jvair.com/support",
+            "email": "support@jvair.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -69,7 +78,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -110,7 +119,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.CreateAbilityRequest"
+                            "$ref": "#/definitions/ability.CreateAbilityRequest"
                         }
                     }
                 ],
@@ -118,7 +127,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
+                            "$ref": "#/definitions/ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -173,7 +182,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
+                            "$ref": "#/definitions/ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -227,7 +236,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.UpdateAbilityRequest"
+                            "$ref": "#/definitions/ability.UpdateAbilityRequest"
                         }
                     }
                 ],
@@ -235,7 +244,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_ability.AbilityResponse"
+                            "$ref": "#/definitions/ability.AbilityResponse"
                         }
                     },
                     "400": {
@@ -375,7 +384,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -416,7 +425,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignRoleRequest"
+                            "$ref": "#/definitions/assigned_role.AssignRoleRequest"
                         }
                     }
                 ],
@@ -424,7 +433,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Rol asignado exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -560,7 +569,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
+                                "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                             }
                         }
                     },
@@ -676,7 +685,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_assigned_role.AssignedRoleResponse"
+                            "$ref": "#/definitions/assigned_role.AssignedRoleResponse"
                         }
                     },
                     "400": {
@@ -756,13 +765,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -791,7 +800,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_category.CreateJobCategoryRequest"
+                            "$ref": "#/definitions/job_category.CreateJobCategoryRequest"
                         }
                     }
                 ],
@@ -799,19 +808,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_category.JobCategoryResponse"
+                            "$ref": "#/definitions/job_category.JobCategoryResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -848,25 +857,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_category.JobCategoryResponse"
+                            "$ref": "#/definitions/job_category.JobCategoryResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -902,7 +911,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_category.UpdateJobCategoryRequest"
+                            "$ref": "#/definitions/job_category.UpdateJobCategoryRequest"
                         }
                     }
                 ],
@@ -910,25 +919,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_category.JobCategoryResponse"
+                            "$ref": "#/definitions/job_category.JobCategoryResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -966,25 +975,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1040,13 +1049,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1075,7 +1084,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_priority.CreateJobPriorityRequest"
+                            "$ref": "#/definitions/job_priority.CreateJobPriorityRequest"
                         }
                     }
                 ],
@@ -1083,19 +1092,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse"
+                            "$ref": "#/definitions/job_priority.JobPriorityResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1132,25 +1141,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse"
+                            "$ref": "#/definitions/job_priority.JobPriorityResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1186,7 +1195,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_priority.UpdateJobPriorityRequest"
+                            "$ref": "#/definitions/job_priority.UpdateJobPriorityRequest"
                         }
                     }
                 ],
@@ -1194,25 +1203,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_priority.JobPriorityResponse"
+                            "$ref": "#/definitions/job_priority.JobPriorityResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1250,25 +1259,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1324,13 +1333,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1359,7 +1368,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_status.CreateJobStatusRequest"
+                            "$ref": "#/definitions/job_status.CreateJobStatusRequest"
                         }
                     }
                 ],
@@ -1367,19 +1376,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_status.JobStatusResponse"
+                            "$ref": "#/definitions/job_status.JobStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1416,25 +1425,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_status.JobStatusResponse"
+                            "$ref": "#/definitions/job_status.JobStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1470,7 +1479,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_status.UpdateJobStatusRequest"
+                            "$ref": "#/definitions/job_status.UpdateJobStatusRequest"
                         }
                     }
                 ],
@@ -1478,25 +1487,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job_status.JobStatusResponse"
+                            "$ref": "#/definitions/job_status.JobStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1534,19 +1543,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1652,13 +1661,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1687,7 +1696,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.CreateJobRequest"
+                            "$ref": "#/definitions/job.CreateJobRequest"
                         }
                     }
                 ],
@@ -1695,19 +1704,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                            "$ref": "#/definitions/job.JobResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1744,25 +1753,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                            "$ref": "#/definitions/job.JobResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1798,7 +1807,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.UpdateJobRequest"
+                            "$ref": "#/definitions/job.UpdateJobRequest"
                         }
                     }
                 ],
@@ -1806,25 +1815,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                            "$ref": "#/definitions/job.JobResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1862,19 +1871,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -1912,7 +1921,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.CloseJobRequest"
+                            "$ref": "#/definitions/job.CloseJobRequest"
                         }
                     }
                 ],
@@ -1920,31 +1929,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_job.JobResponse"
+                            "$ref": "#/definitions/job.JobResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2010,7 +2019,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -2051,7 +2060,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.CreatePermissionRequest"
+                            "$ref": "#/definitions/permission.CreatePermissionRequest"
                         }
                     }
                 ],
@@ -2059,7 +2068,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                            "$ref": "#/definitions/permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -2116,7 +2125,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                                "$ref": "#/definitions/permission.PermissionResponse"
                             }
                         }
                     },
@@ -2241,7 +2250,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                                "$ref": "#/definitions/permission.PermissionResponse"
                             }
                         }
                     },
@@ -2291,7 +2300,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                            "$ref": "#/definitions/permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -2345,7 +2354,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.UpdatePermissionRequest"
+                            "$ref": "#/definitions/permission.UpdatePermissionRequest"
                         }
                     }
                 ],
@@ -2353,7 +2362,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_permission.PermissionResponse"
+                            "$ref": "#/definitions/permission.PermissionResponse"
                         }
                     },
                     "400": {
@@ -2477,13 +2486,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2512,7 +2521,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote_status.CreateQuoteStatusRequest"
+                            "$ref": "#/definitions/quote_status.CreateQuoteStatusRequest"
                         }
                     }
                 ],
@@ -2520,19 +2529,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                            "$ref": "#/definitions/quote_status.QuoteStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2569,25 +2578,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                            "$ref": "#/definitions/quote_status.QuoteStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2623,7 +2632,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote_status.UpdateQuoteStatusRequest"
+                            "$ref": "#/definitions/quote_status.UpdateQuoteStatusRequest"
                         }
                     }
                 ],
@@ -2631,25 +2640,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote_status.QuoteStatusResponse"
+                            "$ref": "#/definitions/quote_status.QuoteStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2687,25 +2696,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2779,13 +2788,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2814,7 +2823,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote.CreateQuoteRequest"
+                            "$ref": "#/definitions/quote.CreateQuoteRequest"
                         }
                     }
                 ],
@@ -2822,19 +2831,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                            "$ref": "#/definitions/quote.QuoteResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2871,25 +2880,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                            "$ref": "#/definitions/quote.QuoteResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2925,7 +2934,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote.UpdateQuoteRequest"
+                            "$ref": "#/definitions/quote.UpdateQuoteRequest"
                         }
                     }
                 ],
@@ -2933,25 +2942,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_quote.QuoteResponse"
+                            "$ref": "#/definitions/quote.QuoteResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -2989,19 +2998,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3055,7 +3064,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -3096,7 +3105,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.CreateRoleRequest"
+                            "$ref": "#/definitions/role.CreateRoleRequest"
                         }
                     }
                 ],
@@ -3104,7 +3113,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
+                            "$ref": "#/definitions/role.RoleResponse"
                         }
                     },
                     "400": {
@@ -3159,7 +3168,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
+                            "$ref": "#/definitions/role.RoleResponse"
                         }
                     },
                     "400": {
@@ -3213,7 +3222,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.UpdateRoleRequest"
+                            "$ref": "#/definitions/role.UpdateRoleRequest"
                         }
                     }
                 ],
@@ -3221,7 +3230,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_role.RoleResponse"
+                            "$ref": "#/definitions/role.RoleResponse"
                         }
                     },
                     "400": {
@@ -3323,7 +3332,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones obtenidas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
+                            "$ref": "#/definitions/settings.SettingsResponse"
                         }
                     },
                     "403": {
@@ -3370,7 +3379,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_settings.UpdateSettingsRequest"
+                            "$ref": "#/definitions/settings.UpdateSettingsRequest"
                         }
                     }
                 ],
@@ -3378,7 +3387,7 @@ const docTemplate = `{
                     "200": {
                         "description": "Configuraciones actualizadas exitosamente",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_settings.SettingsResponse"
+                            "$ref": "#/definitions/settings.SettingsResponse"
                         }
                     },
                     "400": {
@@ -3458,13 +3467,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3493,7 +3502,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_task_status.CreateTaskStatusRequest"
+                            "$ref": "#/definitions/task_status.CreateTaskStatusRequest"
                         }
                     }
                 ],
@@ -3501,19 +3510,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_task_status.TaskStatusResponse"
+                            "$ref": "#/definitions/task_status.TaskStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3550,25 +3559,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_task_status.TaskStatusResponse"
+                            "$ref": "#/definitions/task_status.TaskStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3604,7 +3613,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_task_status.UpdateTaskStatusRequest"
+                            "$ref": "#/definitions/task_status.UpdateTaskStatusRequest"
                         }
                     }
                 ],
@@ -3612,25 +3621,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_task_status.TaskStatusResponse"
+                            "$ref": "#/definitions/task_status.TaskStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3668,25 +3677,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3748,13 +3757,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3783,7 +3792,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.CreateTechnicianJobStatusRequest"
+                            "$ref": "#/definitions/technician_job_status.CreateTechnicianJobStatusRequest"
                         }
                     }
                 ],
@@ -3791,19 +3800,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse"
+                            "$ref": "#/definitions/technician_job_status.TechnicianJobStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3840,25 +3849,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse"
+                            "$ref": "#/definitions/technician_job_status.TechnicianJobStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3894,7 +3903,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.UpdateTechnicianJobStatusRequest"
+                            "$ref": "#/definitions/technician_job_status.UpdateTechnicianJobStatusRequest"
                         }
                     }
                 ],
@@ -3902,25 +3911,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse"
+                            "$ref": "#/definitions/technician_job_status.TechnicianJobStatusResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -3958,19 +3967,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -4036,7 +4045,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
@@ -4077,7 +4086,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.CreateUserRequest"
+                            "$ref": "#/definitions/user.CreateUserRequest"
                         }
                     }
                 ],
@@ -4085,7 +4094,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
+                            "$ref": "#/definitions/user.UserResponse"
                         }
                     },
                     "400": {
@@ -4140,7 +4149,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
+                            "$ref": "#/definitions/user.UserResponse"
                         }
                     },
                     "400": {
@@ -4194,7 +4203,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UpdateUserRequest"
+                            "$ref": "#/definitions/user.UpdateUserRequest"
                         }
                     }
                 ],
@@ -4202,7 +4211,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_user.UserResponse"
+                            "$ref": "#/definitions/user.UserResponse"
                         }
                     },
                     "400": {
@@ -4322,19 +4331,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -4380,19 +4389,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -4454,7 +4463,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "403": {
@@ -4495,7 +4504,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.CreateWorkflowRequest"
+                            "$ref": "#/definitions/workflow.CreateWorkflowRequest"
                         }
                     }
                 ],
@@ -4503,7 +4512,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -4558,7 +4567,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -4618,7 +4627,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.UpdateWorkflowRequest"
+                            "$ref": "#/definitions/workflow.UpdateWorkflowRequest"
                         }
                     }
                 ],
@@ -4626,7 +4635,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -4746,7 +4755,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowResponse"
+                            "$ref": "#/definitions/workflow.WorkflowResponse"
                         }
                     },
                     "400": {
@@ -4796,7 +4805,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest"
+                            "$ref": "#/definitions/auth.LoginRequest"
                         }
                     }
                 ],
@@ -4804,7 +4813,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse"
+                            "$ref": "#/definitions/auth.LoginResponse"
                         }
                     },
                     "400": {
@@ -4905,7 +4914,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse"
+                            "$ref": "#/definitions/auth.RefreshResponse"
                         }
                     },
                     "400": {
@@ -4978,7 +4987,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                                    "$ref": "#/definitions/response.PaginatedResponse"
                                 },
                                 {
                                     "type": "object",
@@ -4986,7 +4995,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                                                "$ref": "#/definitions/customer.CustomerResponse"
                                             }
                                         }
                                     }
@@ -4997,7 +5006,7 @@ const docTemplate = `{
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5026,7 +5035,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CreateCustomerRequest"
+                            "$ref": "#/definitions/customer.CreateCustomerRequest"
                         }
                     }
                 ],
@@ -5034,19 +5043,107 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                            "$ref": "#/definitions/customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/{customerId}/supervisors": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of supervisors for a specific customer",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "supervisors",
+                    "customers"
+                ],
+                "summary": "List supervisors by customer",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Customer ID",
+                        "name": "customerId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term (name, phone, email)",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/supervisor.SupervisorResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5080,25 +5177,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                            "$ref": "#/definitions/customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5134,7 +5231,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.UpdateCustomerRequest"
+                            "$ref": "#/definitions/customer.UpdateCustomerRequest"
                         }
                     }
                 ],
@@ -5142,25 +5239,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_customer.CustomerResponse"
+                            "$ref": "#/definitions/customer.CustomerResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5195,19 +5292,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5261,25 +5358,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                            "$ref": "#/definitions/response.PaginatedResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5334,7 +5431,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse"
+                                    "$ref": "#/definitions/response.PaginatedResponse"
                                 },
                                 {
                                     "type": "object",
@@ -5342,7 +5439,7 @@ const docTemplate = `{
                                         "items": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
+                                                "$ref": "#/definitions/property.PropertyResponse"
                                             }
                                         }
                                     }
@@ -5353,13 +5450,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5388,7 +5485,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_property.CreatePropertyRequest"
+                            "$ref": "#/definitions/property.CreatePropertyRequest"
                         }
                     }
                 ],
@@ -5396,19 +5493,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
+                            "$ref": "#/definitions/property.PropertyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5442,25 +5539,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
+                            "$ref": "#/definitions/property.PropertyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5496,7 +5593,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_property.UpdatePropertyRequest"
+                            "$ref": "#/definitions/property.UpdatePropertyRequest"
                         }
                     }
                 ],
@@ -5504,25 +5601,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/pkg_rest_handler_property.PropertyResponse"
+                            "$ref": "#/definitions/property.PropertyResponse"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5554,19 +5651,309 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse"
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/supervisors": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a paginated list of supervisors with optional filters",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "supervisors"
+                ],
+                "summary": "List supervisors",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Page size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term (name, phone, email)",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filter by customer ID",
+                        "name": "customerId",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.PaginatedResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/supervisor.SupervisorResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Create a new supervisor associated with a customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "supervisors"
+                ],
+                "summary": "Create a new supervisor",
+                "parameters": [
+                    {
+                        "description": "Supervisor information",
+                        "name": "supervisor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/supervisor.CreateSupervisorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/supervisor.SupervisorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/supervisors/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get a supervisor by its ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "supervisors"
+                ],
+                "summary": "Get supervisor by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Supervisor ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/supervisor.SupervisorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update an existing supervisor with the provided information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "supervisors"
+                ],
+                "summary": "Update a supervisor",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Supervisor ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Supervisor information",
+                        "name": "supervisor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/supervisor.UpdateSupervisorRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/supervisor.SupervisorResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Soft delete a supervisor by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "supervisors"
+                ],
+                "summary": "Delete a supervisor",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Supervisor ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -5574,7 +5961,151 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_your-org_jvairv2_pkg_domain_auth.LoginRequest": {
+        "ability.AbilityResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "onlyOwned": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "ability.CreateAbilityRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "onlyOwned": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "ability.UpdateAbilityRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "onlyOwned": {
+                    "type": "boolean"
+                },
+                "options": {
+                    "type": "string"
+                },
+                "scope": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "assigned_role.AssignRoleRequest": {
+            "type": "object",
+            "required": [
+                "entityId",
+                "entityType",
+                "roleId"
+            ],
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "restrictedToId": {
+                    "type": "integer"
+                },
+                "restrictedToType": {
+                    "type": "string"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "scope": {
+                    "type": "integer"
+                }
+            }
+        },
+        "assigned_role.AssignedRoleResponse": {
+            "type": "object",
+            "properties": {
+                "entityId": {
+                    "type": "integer"
+                },
+                "entityType": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "restricted": {
+                    "type": "boolean"
+                },
+                "roleId": {
+                    "type": "integer"
+                },
+                "scope": {
+                    "type": "integer"
+                }
+            }
+        },
+        "auth.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -5591,7 +6122,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_your-org_jvairv2_pkg_domain_auth.LoginResponse": {
+        "auth.LoginResponse": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -5607,11 +6138,11 @@ const docTemplate = `{
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
                 },
                 "user": {
-                    "$ref": "#/definitions/github_com_your-org_jvairv2_pkg_domain_auth.UserResponse"
+                    "$ref": "#/definitions/auth.UserResponse"
                 }
             }
         },
-        "github_com_your-org_jvairv2_pkg_domain_auth.RefreshResponse": {
+        "auth.RefreshResponse": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -5628,7 +6159,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_your-org_jvairv2_pkg_domain_auth.UserResponse": {
+        "auth.UserResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -5669,177 +6200,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_your-org_jvairv2_pkg_rest_response.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_your-org_jvairv2_pkg_rest_response.PaginatedResponse": {
-            "type": "object",
-            "properties": {
-                "items": {},
-                "page": {
-                    "type": "integer"
-                },
-                "pageSize": {
-                    "type": "integer"
-                },
-                "totalItems": {
-                    "type": "integer"
-                },
-                "totalPages": {
-                    "type": "integer"
-                }
-            }
-        },
-        "pkg_rest_handler_ability.AbilityResponse": {
-            "type": "object",
-            "properties": {
-                "createdAt": {
-                    "type": "string"
-                },
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "pkg_rest_handler_ability.CreateAbilityRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "pkg_rest_handler_ability.UpdateAbilityRequest": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "onlyOwned": {
-                    "type": "boolean"
-                },
-                "options": {
-                    "type": "string"
-                },
-                "scope": {
-                    "type": "integer"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "pkg_rest_handler_assigned_role.AssignRoleRequest": {
-            "type": "object",
-            "required": [
-                "entityId",
-                "entityType",
-                "roleId"
-            ],
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "restrictedToId": {
-                    "type": "integer"
-                },
-                "restrictedToType": {
-                    "type": "string"
-                },
-                "roleId": {
-                    "type": "integer"
-                },
-                "scope": {
-                    "type": "integer"
-                }
-            }
-        },
-        "pkg_rest_handler_assigned_role.AssignedRoleResponse": {
-            "type": "object",
-            "properties": {
-                "entityId": {
-                    "type": "integer"
-                },
-                "entityType": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "restricted": {
-                    "type": "boolean"
-                },
-                "roleId": {
-                    "type": "integer"
-                },
-                "scope": {
-                    "type": "integer"
-                }
-            }
-        },
-        "pkg_rest_handler_customer.BillingAddress": {
+        "customer.BillingAddress": {
             "type": "object",
             "properties": {
                 "city": {
@@ -5860,7 +6221,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.CreateCustomerRequest": {
+        "customer.CreateCustomerRequest": {
             "type": "object",
             "properties": {
                 "billingAddressCity": {
@@ -5929,11 +6290,11 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.CustomerResponse": {
+        "customer.CustomerResponse": {
             "type": "object",
             "properties": {
                 "billingAddress": {
-                    "$ref": "#/definitions/pkg_rest_handler_customer.BillingAddress"
+                    "$ref": "#/definitions/customer.BillingAddress"
                 },
                 "contactEmail": {
                     "type": "string",
@@ -5997,7 +6358,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_customer.UpdateCustomerRequest": {
+        "customer.UpdateCustomerRequest": {
             "type": "object",
             "properties": {
                 "billingAddressCity": {
@@ -6066,7 +6427,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job.CloseJobRequest": {
+        "job.CloseJobRequest": {
             "type": "object",
             "properties": {
                 "jobStatusId": {
@@ -6074,7 +6435,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job.CreateJobRequest": {
+        "job.CreateJobRequest": {
             "type": "object",
             "properties": {
                 "cageRequired": {
@@ -6139,7 +6500,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job.JobResponse": {
+        "job.JobResponse": {
             "type": "object",
             "properties": {
                 "cageRequired": {
@@ -6243,7 +6604,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job.UpdateJobRequest": {
+        "job.UpdateJobRequest": {
             "type": "object",
             "properties": {
                 "cageRequired": {
@@ -6335,7 +6696,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_category.CreateJobCategoryRequest": {
+        "job_category.CreateJobCategoryRequest": {
             "type": "object",
             "required": [
                 "label",
@@ -6357,7 +6718,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_category.JobCategoryResponse": {
+        "job_category.JobCategoryResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -6383,7 +6744,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_category.UpdateJobCategoryRequest": {
+        "job_category.UpdateJobCategoryRequest": {
             "type": "object",
             "required": [
                 "label",
@@ -6405,7 +6766,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_priority.CreateJobPriorityRequest": {
+        "job_priority.CreateJobPriorityRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6425,7 +6786,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_priority.JobPriorityResponse": {
+        "job_priority.JobPriorityResponse": {
             "type": "object",
             "properties": {
                 "class": {
@@ -6451,7 +6812,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_priority.UpdateJobPriorityRequest": {
+        "job_priority.UpdateJobPriorityRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6471,7 +6832,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_status.CreateJobStatusRequest": {
+        "job_status.CreateJobStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6488,7 +6849,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_status.JobStatusResponse": {
+        "job_status.JobStatusResponse": {
             "type": "object",
             "properties": {
                 "class": {
@@ -6511,7 +6872,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_job_status.UpdateJobStatusRequest": {
+        "job_status.UpdateJobStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6528,7 +6889,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_permission.CreatePermissionRequest": {
+        "permission.CreatePermissionRequest": {
             "type": "object",
             "required": [
                 "abilityId",
@@ -6553,7 +6914,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_permission.PermissionResponse": {
+        "permission.PermissionResponse": {
             "type": "object",
             "properties": {
                 "abilityId": {
@@ -6576,7 +6937,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_permission.UpdatePermissionRequest": {
+        "permission.UpdatePermissionRequest": {
             "type": "object",
             "required": [
                 "abilityId",
@@ -6601,7 +6962,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_property.CreatePropertyRequest": {
+        "property.CreatePropertyRequest": {
             "type": "object",
             "properties": {
                 "city": {
@@ -6627,7 +6988,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_property.PropertyResponse": {
+        "property.PropertyResponse": {
             "type": "object",
             "properties": {
                 "address": {
@@ -6668,7 +7029,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_property.UpdatePropertyRequest": {
+        "property.UpdatePropertyRequest": {
             "type": "object",
             "properties": {
                 "city": {
@@ -6694,7 +7055,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_quote.CreateQuoteRequest": {
+        "quote.CreateQuoteRequest": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -6717,7 +7078,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_quote.QuoteResponse": {
+        "quote.QuoteResponse": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -6749,7 +7110,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_quote.UpdateQuoteRequest": {
+        "quote.UpdateQuoteRequest": {
             "type": "object",
             "properties": {
                 "amount": {
@@ -6772,7 +7133,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_quote_status.CreateQuoteStatusRequest": {
+        "quote_status.CreateQuoteStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6789,7 +7150,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_quote_status.QuoteStatusResponse": {
+        "quote_status.QuoteStatusResponse": {
             "type": "object",
             "properties": {
                 "class": {
@@ -6812,7 +7173,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_quote_status.UpdateQuoteStatusRequest": {
+        "quote_status.UpdateQuoteStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6829,7 +7190,33 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_role.CreateRoleRequest": {
+        "response.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.PaginatedResponse": {
+            "type": "object",
+            "properties": {
+                "items": {},
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "totalItems": {
+                    "type": "integer"
+                },
+                "totalPages": {
+                    "type": "integer"
+                }
+            }
+        },
+        "role.CreateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -6846,7 +7233,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_role.RoleResponse": {
+        "role.RoleResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -6869,7 +7256,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_role.UpdateRoleRequest": {
+        "role.UpdateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -6886,7 +7273,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_settings.SettingsResponse": {
+        "settings.SettingsResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -6927,7 +7314,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_settings.UpdateSettingsRequest": {
+        "settings.UpdateSettingsRequest": {
             "type": "object",
             "required": [
                 "passwordAge",
@@ -6975,7 +7362,82 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_task_status.CreateTaskStatusRequest": {
+        "supervisor.CreateSupervisorRequest": {
+            "type": "object",
+            "properties": {
+                "customerId": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                }
+            }
+        },
+        "supervisor.SupervisorResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "customerId": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-18T14:20:00Z"
+                }
+            }
+        },
+        "supervisor.UpdateSupervisorRequest": {
+            "type": "object",
+            "properties": {
+                "customerId": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "email": {
+                    "type": "string",
+                    "example": "john@example.com"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+1-555-0100"
+                }
+            }
+        },
+        "task_status.CreateTaskStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -6995,7 +7457,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_task_status.TaskStatusResponse": {
+        "task_status.TaskStatusResponse": {
             "type": "object",
             "properties": {
                 "class": {
@@ -7021,7 +7483,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_task_status.UpdateTaskStatusRequest": {
+        "task_status.UpdateTaskStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -7041,7 +7503,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_technician_job_status.CreateTechnicianJobStatusRequest": {
+        "technician_job_status.CreateTechnicianJobStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -7061,7 +7523,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_technician_job_status.TechnicianJobStatusResponse": {
+        "technician_job_status.TechnicianJobStatusResponse": {
             "type": "object",
             "properties": {
                 "class": {
@@ -7087,7 +7549,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_technician_job_status.UpdateTechnicianJobStatusRequest": {
+        "technician_job_status.UpdateTechnicianJobStatusRequest": {
             "type": "object",
             "required": [
                 "label"
@@ -7107,7 +7569,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.CreateUserRequest": {
+        "user.CreateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -7130,7 +7592,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.RoleInfo": {
+        "user.RoleInfo": {
             "type": "object",
             "properties": {
                 "name": {
@@ -7141,7 +7603,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.UpdateUserRequest": {
+        "user.UpdateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -7166,7 +7628,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_user.UserResponse": {
+        "user.UserResponse": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -7185,7 +7647,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
-                    "$ref": "#/definitions/pkg_rest_handler_user.RoleInfo"
+                    "$ref": "#/definitions/user.RoleInfo"
                 },
                 "roleId": {
                     "type": "string"
@@ -7195,7 +7657,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_workflow.CreateWorkflowRequest": {
+        "workflow.CreateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -7218,7 +7680,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_workflow.UpdateWorkflowRequest": {
+        "workflow.UpdateWorkflowRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -7241,7 +7703,7 @@ const docTemplate = `{
                 }
             }
         },
-        "pkg_rest_handler_workflow.WorkflowResponse": {
+        "workflow.WorkflowResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -7259,12 +7721,12 @@ const docTemplate = `{
                 "statuses": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/pkg_rest_handler_workflow.WorkflowStatusResponse"
+                        "$ref": "#/definitions/workflow.WorkflowStatusResponse"
                     }
                 }
             }
         },
-        "pkg_rest_handler_workflow.WorkflowStatusResponse": {
+        "workflow.WorkflowStatusResponse": {
             "type": "object",
             "properties": {
                 "jobStatusId": {
@@ -7278,17 +7740,35 @@ const docTemplate = `{
                 }
             }
         }
-    }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "Ingrese el token con el prefijo 'Bearer '",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "Operaciones de autenticación",
+            "name": "Auth"
+        },
+        {
+            "description": "Operaciones de usuarios",
+            "name": "Users"
+        }
+    ]
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "localhost:8080",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "JVAIR API",
+	Description:      "API para el sistema JVAIR",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

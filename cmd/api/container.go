@@ -11,14 +11,17 @@ import (
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
 	jobCategory "github.com/your-org/jvairv2/pkg/domain/job_category"
+	domainJobEquip "github.com/your-org/jvairv2/pkg/domain/job_equipment"
 	jobPriority "github.com/your-org/jvairv2/pkg/domain/job_priority"
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
+	domainPropEquip "github.com/your-org/jvairv2/pkg/domain/property_equipment"
 	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
 	quoteStatus "github.com/your-org/jvairv2/pkg/domain/quote_status"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSupervisor "github.com/your-org/jvairv2/pkg/domain/supervisor"
 	taskStatus "github.com/your-org/jvairv2/pkg/domain/task_status"
 	techJobStatus "github.com/your-org/jvairv2/pkg/domain/technician_job_status"
 	user "github.com/your-org/jvairv2/pkg/domain/user"
@@ -29,14 +32,17 @@ import (
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
 	mysqlJob "github.com/your-org/jvairv2/pkg/repository/mysql/job"
 	mysqlJobCategory "github.com/your-org/jvairv2/pkg/repository/mysql/job_category"
+	mysqlJobEquip "github.com/your-org/jvairv2/pkg/repository/mysql/job_equipment"
 	mysqlJobPriority "github.com/your-org/jvairv2/pkg/repository/mysql/job_priority"
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
+	mysqlPropEquip "github.com/your-org/jvairv2/pkg/repository/mysql/property_equipment"
 	mysqlQuote "github.com/your-org/jvairv2/pkg/repository/mysql/quote"
 	mysqlQuoteStatus "github.com/your-org/jvairv2/pkg/repository/mysql/quote_status"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
+	mysqlSupervisor "github.com/your-org/jvairv2/pkg/repository/mysql/supervisor"
 	mysqlTaskStatus "github.com/your-org/jvairv2/pkg/repository/mysql/task_status"
 	mysqlTechJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/technician_job_status"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
@@ -48,14 +54,17 @@ import (
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
+	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
+	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
 	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
@@ -87,6 +96,9 @@ type Container struct {
 	TaskStatusHandler    *taskStatusHandler.Handler
 	QuoteHandler         *quoteHandler.Handler
 	QuoteStatusHandler   *quoteStatusHandler.Handler
+	SupervisorHandler    *supervisorHandler.Handler
+	PropEquipHandler     *propEquipHandler.Handler
+	JobEquipHandler      *jobEquipHandler.Handler
 	AuthMiddleware       *middleware.AuthMiddleware
 	Router               http.Handler
 }
@@ -162,6 +174,13 @@ func NewContainer(configPath string) (*Container, error) {
 	quoteJobChecker := mysqlQuote.NewJobCheckerAdapter(dbConn.GetDB())
 	quoteQSChecker := mysqlQuote.NewQuoteStatusCheckerAdapter(dbConn.GetDB())
 	quoteUC := domainQuote.NewUseCase(quoteRepo, quoteJobChecker, quoteQSChecker)
+	supervisorRepo := mysqlSupervisor.NewRepository(dbConn.GetDB())
+	supervisorUC := domainSupervisor.NewUseCase(supervisorRepo, customerRepo)
+	propEquipRepo := mysqlPropEquip.NewRepository(dbConn.GetDB())
+	propEquipUC := domainPropEquip.NewUseCase(propEquipRepo, propertyRepo)
+	jobEquipRepo := mysqlJobEquip.NewRepository(dbConn.GetDB())
+	jobEquipJobChecker := mysqlJobEquip.NewJobCheckerAdapter(dbConn.GetDB())
+	jobEquipUC := domainJobEquip.NewUseCase(jobEquipRepo, jobEquipJobChecker)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -185,6 +204,9 @@ func NewContainer(configPath string) (*Container, error) {
 	jobHdlr := jobHandler.NewHandler(jobUC)
 	quoteHdlr := quoteHandler.NewHandler(quoteUC)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
+	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
+	propEquipHdlr := propEquipHandler.NewHandler(propEquipUC)
+	jobEquipHdlr := jobEquipHandler.NewHandler(jobEquipUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -210,6 +232,9 @@ func NewContainer(configPath string) (*Container, error) {
 		taskStatHandler,
 		quoteHdlr,
 		quoteStatHandler,
+		supervisorHdlr,
+		propEquipHdlr,
+		jobEquipHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -236,6 +261,9 @@ func NewContainer(configPath string) (*Container, error) {
 		TaskStatusHandler:    taskStatHandler,
 		QuoteHandler:         quoteHdlr,
 		QuoteStatusHandler:   quoteStatHandler,
+		SupervisorHandler:    supervisorHdlr,
+		PropEquipHandler:     propEquipHdlr,
+		JobEquipHandler:      jobEquipHdlr,
 		AuthMiddleware:       authMiddleware,
 		Router:               r,
 	}, nil

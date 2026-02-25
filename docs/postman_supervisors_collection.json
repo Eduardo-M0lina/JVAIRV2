@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "supervisors-collection-id",
+		"name": "JVAIR Supervisors",
+		"description": "Endpoints de supervisores para JVAIR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Supervisors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/supervisors?page=1&pageSize=10",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors"],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Número de página"
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"description": "Cantidad de items por página"
+						},
+						{
+							"key": "search",
+							"value": "",
+							"description": "Buscar por name, phone, email",
+							"disabled": true
+						},
+						{
+							"key": "customerId",
+							"value": "",
+							"description": "Filtrar por customer ID",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Obtiene una lista paginada de supervisores con opciones de búsqueda y filtrado por cliente"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Supervisor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": 1,\n  \"name\": \"John Doe\",\n  \"phone\": \"+1-555-0100\",\n  \"email\": \"john.doe@example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supervisors",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors"]
+				},
+				"description": "Crea un nuevo supervisor asociado a un cliente. El campo 'name' y 'customerId' son requeridos."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Supervisor by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/supervisors/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors", ":id"],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del supervisor"
+						}
+					]
+				},
+				"description": "Obtiene los detalles de un supervisor específico por su ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Supervisor",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": 1,\n  \"name\": \"John Doe Updated\",\n  \"phone\": \"+1-555-0200\",\n  \"email\": \"john.updated@example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supervisors/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors", ":id"],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del supervisor"
+						}
+					]
+				},
+				"description": "Actualiza la información de un supervisor existente. No se puede actualizar un supervisor eliminado (soft deleted)."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Supervisor",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/supervisors/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors", ":id"],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del supervisor"
+						}
+					]
+				},
+				"description": "Elimina un supervisor (soft delete)"
+			},
+			"response": []
+		},
+		{
+			"name": "Search Supervisors",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/supervisors?search=John&page=1&pageSize=10",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors"],
+					"query": [
+						{
+							"key": "search",
+							"value": "John",
+							"description": "Busca en name, phone, email"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Busca supervisores por nombre, teléfono o email"
+			},
+			"response": []
+		},
+		{
+			"name": "Filter Supervisors by Customer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/supervisors?customerId=1&page=1&pageSize=10",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors"],
+					"query": [
+						{
+							"key": "customerId",
+							"value": "1",
+							"description": "ID del cliente para filtrar"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Filtra supervisores por customer ID usando query param"
+			},
+			"response": []
+		},
+		{
+			"name": "List Supervisors by Customer (sub-route)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/customers/:customerId/supervisors?page=1&pageSize=10",
+					"host": ["{{baseUrl}}"],
+					"path": ["customers", ":customerId", "supervisors"],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Número de página"
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"description": "Cantidad de items por página"
+						},
+						{
+							"key": "search",
+							"value": "",
+							"description": "Buscar por name, phone, email",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "customerId",
+							"value": "1",
+							"description": "ID del cliente"
+						}
+					]
+				},
+				"description": "Obtiene todos los supervisores de un cliente específico usando la sub-ruta /customers/{customerId}/supervisors"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Supervisor (minimal)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"customerId\": 1,\n  \"name\": \"Jane Smith\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/supervisors",
+					"host": ["{{baseUrl}}"],
+					"path": ["supervisors"]
+				},
+				"description": "Crea un supervisor con solo los campos requeridos (customerId y name). Phone y email son opcionales."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

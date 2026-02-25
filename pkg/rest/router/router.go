@@ -13,14 +13,17 @@ import (
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
+	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
+	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
 	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
@@ -49,6 +52,9 @@ func New(
 	taskStatusHandler *taskStatusHandler.Handler,
 	quoteHandler *quoteHandler.Handler,
 	quoteStatusHandler *quoteStatusHandler.Handler,
+	supervisorHandler *supervisorHandler.Handler,
+	propEquipHandler *propEquipHandler.Handler,
+	jobEquipHandler *jobEquipHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -107,6 +113,12 @@ func New(
 			// Rutas de cotizaciones
 			quoteHandler.RegisterRoutes(r)
 			quoteStatusHandler.RegisterRoutes(r)
+			// Rutas de supervisores
+			supervisorHandler.RegisterRoutes(r)
+			// Rutas de equipos de propiedad
+			propEquipHandler.RegisterRoutes(r)
+			// Rutas de equipos de trabajo
+			jobEquipHandler.RegisterRoutes(r)
 		})
 	})
 	return r
