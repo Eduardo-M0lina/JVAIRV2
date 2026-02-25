@@ -21,6 +21,7 @@ import (
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
@@ -49,6 +50,7 @@ func New(
 	taskStatusHandler *taskStatusHandler.Handler,
 	quoteHandler *quoteHandler.Handler,
 	quoteStatusHandler *quoteStatusHandler.Handler,
+	supervisorHandler *supervisorHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -107,6 +109,8 @@ func New(
 			// Rutas de cotizaciones
 			quoteHandler.RegisterRoutes(r)
 			quoteStatusHandler.RegisterRoutes(r)
+			// Rutas de supervisores
+			supervisorHandler.RegisterRoutes(r)
 		})
 	})
 	return r

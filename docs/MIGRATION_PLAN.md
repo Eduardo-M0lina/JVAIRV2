@@ -25,15 +25,22 @@ Este documento describe el plan de migración para el proyecto JVAIR, organizado
 - **Tablas**: `customers`
 - **Dependencias**: `workflows`
 - **Descripción**: Gestión de clientes.
-- **Justificación**: Depende solo de workflows, pero es requerido por propiedades y trabajos.
+- **Justificación**: Depende solo de workflows, pero es requerido por propiedades, supervisores y trabajos.
 
-### 5. Propiedades (Properties)
+### 5. Supervisores (Supervisors)
+- **Tablas**: `supervisors`
+- **Dependencias**: `customers`
+- **Descripción**: Gestión de supervisores/contactos asociados a clientes. Los supervisores son personas de contacto del lado del cliente que supervisan los trabajos en sus propiedades.
+- **Justificación**: Depende de clientes. Es referenciado por trabajos (campo `supervisor_ids` en `jobs`) y usado en el flujo de despacho de emails a supervisores. Tiene scope de visibilidad basado en permisos del usuario (`job_view_user_only`).
+- **Nota de diseño**: En Laravel, la relación Job→Supervisor usa un campo CSV (`supervisor_ids`). En la migración a Go, evaluar si normalizar con una tabla pivot `job_supervisors` o mantener como string CSV por compatibilidad con datos existentes.
+
+### 6. Propiedades (Properties)
 - **Tablas**: `properties`
 - **Dependencias**: `customers`
 - **Descripción**: Gestión de propiedades de clientes.
 - **Justificación**: Depende de clientes y es requerido por trabajos.
 
-### 6. Categorías y Estados de Trabajos
+### 7. Categorías y Estados de Trabajos
 - **Tablas**: `job_categories`, `job_statuses`, `job_priorities`, `technician_job_statuses`, `task_statuses`
 - **Dependencias**: `workflows` (para job_status_workflow)
 - **Descripción**: Catálogos relacionados con trabajos.
@@ -41,33 +48,33 @@ Este documento describe el plan de migración para el proyecto JVAIR, organizado
 
 ## Nivel 3: Módulos con Dependencias Múltiples
 
-### 7. Trabajos (Jobs)
+### 8. Trabajos (Jobs)
 - **Tablas**: `jobs`, `job_status_workflow`
-- **Dependencias**: `properties`, `job_categories`, `job_statuses`, `job_priorities`, `technician_job_statuses`, `users`
+- **Dependencias**: `properties`, `supervisors`, `job_categories`, `job_statuses`, `job_priorities`, `technician_job_statuses`, `users`
 - **Descripción**: Gestión de trabajos/servicios.
 - **Justificación**: Depende de múltiples módulos previos y es requerido por varios módulos subsecuentes.
 
 ## Nivel 4: Módulos que Dependen de Trabajos
 
-### 8. Cotizaciones (Quotes)
+### 9. Cotizaciones (Quotes)
 - **Tablas**: `quotes`, `quote_statuses`
 - **Dependencias**: `jobs`
 - **Descripción**: Gestión de cotizaciones para trabajos.
 - **Justificación**: Depende de trabajos.
 
-### 9. Facturas (Invoices)
+### 10. Facturas (Invoices)
 - **Tablas**: `invoices`, `invoice_payments`
 - **Dependencias**: `jobs`
 - **Descripción**: Gestión de facturas para trabajos.
 - **Justificación**: Depende de trabajos.
 
-### 10. Equipos (Equipment)
+### 11. Equipos (Equipment)
 - **Tablas**: `property_equipment`, `job_equipment`
 - **Dependencias**: `properties`, `jobs`
 - **Descripción**: Gestión de equipos asociados a propiedades y trabajos.
 - **Justificación**: Depende de propiedades y trabajos.
 
-### 11. Garantías (Warranties)
+### 12. Garantías (Warranties)
 - **Tablas**: `warranties`, `warranty_claims`, `warranty_claim_types`, `warranty_claim_statuses`, `warranty_statuses`, `warranty_types`, `warranty_equipment`
 - **Dependencias**: `jobs`, `equipment`
 - **Descripción**: Gestión de garantías para trabajos y equipos.
@@ -75,19 +82,19 @@ Este documento describe el plan de migración para el proyecto JVAIR, organizado
 
 ## Nivel 5: Módulos Complementarios
 
-### 12. Actividades y Comunicaciones
+### 13. Actividades y Comunicaciones
 - **Tablas**: `job_activity_logs`, `job_visits`, `job_residents`, `job_tasks`, `job_rates`, `job_rate_statuses`
 - **Dependencias**: `jobs`, `users`, `task_statuses`
 - **Descripción**: Registro de actividades y comunicaciones relacionadas con trabajos.
 - **Justificación**: Complementa la funcionalidad de trabajos.
 
-### 13. Comunicaciones (Email/SMS)
+### 14. Comunicaciones (Email/SMS)
 - **Tablas**: `email_templates`, `sms_templates`, `job_emails`, `job_sms`
 - **Dependencias**: `jobs`
 - **Descripción**: Plantillas y registros de comunicaciones.
 - **Justificación**: Complementa varios módulos con funcionalidad de comunicación.
 
-### 14. Alertas (Alerts)
+### 15. Alertas (Alerts)
 - **Tablas**: `alerts`
 - **Dependencias**: `users` y varias entidades (mediante entity_id y entity_type)
 - **Descripción**: Sistema de alertas y notificaciones.

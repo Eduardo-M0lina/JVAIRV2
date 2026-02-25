@@ -19,6 +19,7 @@ import (
 	quoteStatus "github.com/your-org/jvairv2/pkg/domain/quote_status"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSupervisor "github.com/your-org/jvairv2/pkg/domain/supervisor"
 	taskStatus "github.com/your-org/jvairv2/pkg/domain/task_status"
 	techJobStatus "github.com/your-org/jvairv2/pkg/domain/technician_job_status"
 	user "github.com/your-org/jvairv2/pkg/domain/user"
@@ -37,6 +38,7 @@ import (
 	mysqlQuoteStatus "github.com/your-org/jvairv2/pkg/repository/mysql/quote_status"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
+	mysqlSupervisor "github.com/your-org/jvairv2/pkg/repository/mysql/supervisor"
 	mysqlTaskStatus "github.com/your-org/jvairv2/pkg/repository/mysql/task_status"
 	mysqlTechJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/technician_job_status"
 	mysqlUser "github.com/your-org/jvairv2/pkg/repository/mysql/user"
@@ -56,6 +58,7 @@ import (
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
@@ -87,6 +90,7 @@ type Container struct {
 	TaskStatusHandler    *taskStatusHandler.Handler
 	QuoteHandler         *quoteHandler.Handler
 	QuoteStatusHandler   *quoteStatusHandler.Handler
+	SupervisorHandler    *supervisorHandler.Handler
 	AuthMiddleware       *middleware.AuthMiddleware
 	Router               http.Handler
 }
@@ -162,6 +166,8 @@ func NewContainer(configPath string) (*Container, error) {
 	quoteJobChecker := mysqlQuote.NewJobCheckerAdapter(dbConn.GetDB())
 	quoteQSChecker := mysqlQuote.NewQuoteStatusCheckerAdapter(dbConn.GetDB())
 	quoteUC := domainQuote.NewUseCase(quoteRepo, quoteJobChecker, quoteQSChecker)
+	supervisorRepo := mysqlSupervisor.NewRepository(dbConn.GetDB())
+	supervisorUC := domainSupervisor.NewUseCase(supervisorRepo, customerRepo)
 
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
@@ -185,6 +191,7 @@ func NewContainer(configPath string) (*Container, error) {
 	jobHdlr := jobHandler.NewHandler(jobUC)
 	quoteHdlr := quoteHandler.NewHandler(quoteUC)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
+	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -210,6 +217,7 @@ func NewContainer(configPath string) (*Container, error) {
 		taskStatHandler,
 		quoteHdlr,
 		quoteStatHandler,
+		supervisorHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -236,6 +244,7 @@ func NewContainer(configPath string) (*Container, error) {
 		TaskStatusHandler:    taskStatHandler,
 		QuoteHandler:         quoteHdlr,
 		QuoteStatusHandler:   quoteStatHandler,
+		SupervisorHandler:    supervisorHdlr,
 		AuthMiddleware:       authMiddleware,
 		Router:               r,
 	}, nil
