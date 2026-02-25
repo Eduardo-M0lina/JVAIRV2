@@ -12,14 +12,14 @@ import (
 // Create godoc
 // @Summary Create a new customer
 // @Description Create a new customer with the provided information
-// @Tags customers
+// @Tags Customers
 // @Accept json
 // @Produce json
 // @Param customer body CreateCustomerRequest true "Customer information"
 // @Success 201 {object} CustomerResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers [post]
+// @Router /api/v1/customers [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateCustomerRequest

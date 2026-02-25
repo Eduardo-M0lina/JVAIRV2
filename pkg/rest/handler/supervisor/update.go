@@ -14,7 +14,7 @@ import (
 // Update godoc
 // @Summary Update a supervisor
 // @Description Update an existing supervisor with the provided information
-// @Tags supervisors
+// @Tags Supervisors
 // @Accept json
 // @Produce json
 // @Param id path int true "Supervisor ID"
@@ -23,7 +23,7 @@ import (
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /supervisors/{id} [put]
+// @Router /api/v1/supervisors/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

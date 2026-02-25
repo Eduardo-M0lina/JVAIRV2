@@ -1,3 +1,91 @@
+// @title           JVAIR API
+// @version         1.0
+// @description     API para el sistema JVAIR
+// @termsOfService  http://swagger.io/terms/
+
+// @contact.name   API Support
+// @contact.url    http://www.jvair.com/support
+// @contact.email  support@jvair.com
+
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host      localhost:8090
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Ingrese el token con el prefijo 'Bearer '
+
+// @tag.name Auth
+// @tag.description Operaciones de autenticación
+
+// @tag.name Users
+// @tag.description Operaciones de usuarios
+
+// @tag.name Roles
+// @tag.description Operaciones de roles
+
+// @tag.name Abilities
+// @tag.description Operaciones de abilities
+
+// @tag.name AssignedRoles
+// @tag.description Operaciones de asignación de roles
+
+// @tag.name Permissions
+// @tag.description Operaciones de permisos
+
+// @tag.name Settings
+// @tag.description Configuraciones del sistema
+
+// @tag.name Workflows
+// @tag.description Operaciones de workflows
+
+// @tag.name Customers
+// @tag.description Operaciones de clientes
+
+// @tag.name Properties
+// @tag.description Operaciones de propiedades
+
+// @tag.name PropertyEquipment
+// @tag.description Equipos HVAC de propiedades
+
+// @tag.name Supervisors
+// @tag.description Operaciones de supervisores
+
+// @tag.name Jobs
+// @tag.description Operaciones de trabajos
+
+// @tag.name JobEquipment
+// @tag.description Equipos HVAC de trabajos
+
+// @tag.name JobCategories
+// @tag.description Categorías de trabajos
+
+// @tag.name JobStatuses
+// @tag.description Estados de trabajos
+
+// @tag.name JobPriorities
+// @tag.description Prioridades de trabajos
+
+// @tag.name TechnicianJobStatuses
+// @tag.description Estados de técnico de trabajo
+
+// @tag.name TaskStatuses
+// @tag.description Estados de tareas
+
+// @tag.name Quotes
+// @tag.description Operaciones de cotizaciones
+
+// @tag.name QuoteStatuses
+// @tag.description Estados de cotizaciones
+
+// @tag.name Invoices
+// @tag.description Operaciones de facturas
+
+// @tag.name Invoice Payments
+// @tag.description Pagos de facturas
+
 package main
 
 import (

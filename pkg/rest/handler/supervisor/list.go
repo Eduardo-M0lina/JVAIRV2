@@ -12,7 +12,7 @@ import (
 // List godoc
 // @Summary List supervisors
 // @Description Get a paginated list of supervisors with optional filters
-// @Tags supervisors
+// @Tags Supervisors
 // @Produce json
 // @Param page query int false "Page number" default(1)
 // @Param pageSize query int false "Page size" default(10)
@@ -21,7 +21,7 @@ import (
 // @Success 200 {object} response.PaginatedResponse{items=[]SupervisorResponse}
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /supervisors [get]
+// @Router /api/v1/supervisors [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
@@ -70,7 +70,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // ListByCustomer godoc
 // @Summary List supervisors by customer
 // @Description Get a paginated list of supervisors for a specific customer
-// @Tags supervisors,customers
+// @Tags Supervisors,Customers
 // @Produce json
 // @Param customerId path int true "Customer ID"
 // @Param page query int false "Page number" default(1)
@@ -80,7 +80,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers/{customerId}/supervisors [get]
+// @Router /api/v1/customers/{customerId}/supervisors [get]
 // @Security BearerAuth
 func (h *Handler) ListByCustomer(w http.ResponseWriter, r *http.Request) {
 	customerIDStr := chi.URLParam(r, "customerId")

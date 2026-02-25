@@ -1,0 +1,144 @@
+package supervisor
+
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+	domain "github.com/your-org/jvairv2/pkg/domain/supervisor"
+)
+
+func setupRouter(h *Handler) *chi.Mux {
+	r := chi.NewRouter()
+	h.RegisterRoutes(r)
+	return r
+}
+
+func TestHandler_List_Success(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	now := time.Now()
+	mockSvc.On("List", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
+		Return([]*domain.Supervisor{{ID: 1, Name: "John Doe", CustomerID: 1, CreatedAt: &now}}, 1, nil)
+
+	req := httptest.NewRequest(http.MethodGet, "/supervisors?page=1&pageSize=10", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+	mockSvc.AssertExpectations(t)
+}
+
+func TestHandler_Create_Success(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	mockSvc.On("Create", mock.Anything, mock.AnythingOfType("*supervisor.Supervisor")).Return(nil)
+
+	body := `{"name":"John Doe","customerId":1}`
+	req := httptest.NewRequest(http.MethodPost, "/supervisors", bytes.NewBufferString(body))
+	req.Header.Set("Content-Type", "application/json")
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusCreated, rr.Code)
+	mockSvc.AssertExpectations(t)
+}
+
+func TestHandler_Create_InvalidBody(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	req := httptest.NewRequest(http.MethodPost, "/supervisors", bytes.NewBufferString("invalid"))
+	req.Header.Set("Content-Type", "application/json")
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusBadRequest, rr.Code)
+}
+
+func TestHandler_Get_Success(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	now := time.Now()
+	mockSvc.On("GetByID", mock.Anything, int64(1)).Return(&domain.Supervisor{
+		ID: 1, Name: "John Doe", CustomerID: 1, CreatedAt: &now,
+	}, nil)
+
+	req := httptest.NewRequest(http.MethodGet, "/supervisors/1", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+	var resp map[string]interface{}
+	err := json.NewDecoder(rr.Body).Decode(&resp)
+	assert.NoError(t, err)
+	assert.Equal(t, float64(1), resp["id"])
+	mockSvc.AssertExpectations(t)
+}
+
+func TestHandler_Get_InvalidID(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	req := httptest.NewRequest(http.MethodGet, "/supervisors/abc", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusBadRequest, rr.Code)
+}
+
+func TestHandler_Get_NotFound(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	mockSvc.On("GetByID", mock.Anything, int64(999)).Return(nil, assert.AnError)
+
+	req := httptest.NewRequest(http.MethodGet, "/supervisors/999", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Contains(t, []int{http.StatusNotFound, http.StatusInternalServerError}, rr.Code)
+	mockSvc.AssertExpectations(t)
+}
+
+func TestHandler_Delete_Success(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	mockSvc.On("Delete", mock.Anything, int64(1)).Return(nil)
+
+	req := httptest.NewRequest(http.MethodDelete, "/supervisors/1", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusNoContent, rr.Code)
+	mockSvc.AssertExpectations(t)
+}
+
+func TestHandler_Delete_InvalidID(t *testing.T) {
+	mockSvc := new(domain.MockService)
+	h := NewHandler(mockSvc)
+	router := setupRouter(h)
+
+	req := httptest.NewRequest(http.MethodDelete, "/supervisors/abc", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	assert.Equal(t, http.StatusBadRequest, rr.Code)
+}

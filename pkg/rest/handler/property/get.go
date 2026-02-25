@@ -12,14 +12,14 @@ import (
 // Get godoc
 // @Summary Get property by ID
 // @Description Get a property by its ID
-// @Tags properties
+// @Tags Properties
 // @Produce json
 // @Param id path int true "Property ID"
 // @Success 200 {object} PropertyResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties/{id} [get]
+// @Router /api/v1/properties/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

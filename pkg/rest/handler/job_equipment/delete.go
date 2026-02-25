@@ -12,14 +12,14 @@ import (
 // Delete godoc
 // @Summary Delete job equipment
 // @Description Delete a job equipment entry (hard delete)
-// @Tags job-equipment
+// @Tags JobEquipment
 // @Param jobId path int true "Job ID"
 // @Param id path int true "Equipment ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /jobs/{jobId}/equipment/{id} [delete]
+// @Router /api/v1/jobs/{jobId}/equipment/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	jobIDStr := chi.URLParam(r, "jobId")

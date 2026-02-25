@@ -12,13 +12,13 @@ import (
 // List godoc
 // @Summary List property equipment
 // @Description Get a list of equipment for a property
-// @Tags property-equipment
+// @Tags PropertyEquipment
 // @Produce json
 // @Param propertyId path int true "Property ID"
 // @Success 200 {array} PropertyEquipmentResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties/{propertyId}/equipment [get]
+// @Router /api/v1/properties/{propertyId}/equipment [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	propertyIDStr := chi.URLParam(r, "propertyId")

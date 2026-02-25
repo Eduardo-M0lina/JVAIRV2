@@ -12,14 +12,14 @@ import (
 // Get godoc
 // @Summary Get supervisor by ID
 // @Description Get a supervisor by its ID
-// @Tags supervisors
+// @Tags Supervisors
 // @Produce json
 // @Param id path int true "Supervisor ID"
 // @Success 200 {object} SupervisorResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /supervisors/{id} [get]
+// @Router /api/v1/supervisors/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

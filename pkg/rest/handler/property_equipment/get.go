@@ -12,7 +12,7 @@ import (
 // Get godoc
 // @Summary Get property equipment by ID
 // @Description Get a property equipment entry by its ID
-// @Tags property-equipment
+// @Tags PropertyEquipment
 // @Produce json
 // @Param propertyId path int true "Property ID"
 // @Param id path int true "Equipment ID"
@@ -20,7 +20,7 @@ import (
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties/{propertyId}/equipment/{id} [get]
+// @Router /api/v1/properties/{propertyId}/equipment/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

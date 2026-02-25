@@ -14,7 +14,7 @@ import (
 // Create godoc
 // @Summary Create job equipment
 // @Description Create a new equipment entry for a job
-// @Tags job-equipment
+// @Tags JobEquipment
 // @Accept json
 // @Produce json
 // @Param jobId path int true "Job ID"
@@ -22,7 +22,7 @@ import (
 // @Success 201 {object} JobEquipmentResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /jobs/{jobId}/equipment [post]
+// @Router /api/v1/jobs/{jobId}/equipment [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	jobIDStr := chi.URLParam(r, "jobId")

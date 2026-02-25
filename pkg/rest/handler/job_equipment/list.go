@@ -12,14 +12,14 @@ import (
 // List godoc
 // @Summary List job equipment
 // @Description Get a list of equipment for a job with optional type filter
-// @Tags job-equipment
+// @Tags JobEquipment
 // @Produce json
 // @Param jobId path int true "Job ID"
 // @Param type query string false "Filter by type (current, new)"
 // @Success 200 {array} JobEquipmentResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /jobs/{jobId}/equipment [get]
+// @Router /api/v1/jobs/{jobId}/equipment [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	jobIDStr := chi.URLParam(r, "jobId")

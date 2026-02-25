@@ -12,7 +12,7 @@ import (
 // GetProperties godoc
 // @Summary Get customer properties
 // @Description Get all properties for a specific customer
-// @Tags customers
+// @Tags Customers
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Param page query int false "Page number" default(1)
@@ -22,7 +22,7 @@ import (
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers/{id}/properties [get]
+// @Router /api/v1/customers/{id}/properties [get]
 // @Security BearerAuth
 func (h *Handler) GetProperties(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

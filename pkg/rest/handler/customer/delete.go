@@ -12,14 +12,14 @@ import (
 // Delete godoc
 // @Summary Delete a customer
 // @Description Soft delete a customer by ID
-// @Tags customers
+// @Tags Customers
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers/{id} [delete]
+// @Router /api/v1/customers/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

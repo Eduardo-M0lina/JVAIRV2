@@ -12,14 +12,14 @@ import (
 // Create godoc
 // @Summary Create property
 // @Description Create a new property
-// @Tags properties
+// @Tags Properties
 // @Accept json
 // @Produce json
 // @Param property body CreatePropertyRequest true "Property data"
 // @Success 201 {object} PropertyResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties [post]
+// @Router /api/v1/properties [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreatePropertyRequest

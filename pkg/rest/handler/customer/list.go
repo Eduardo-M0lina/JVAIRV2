@@ -11,7 +11,7 @@ import (
 // List godoc
 // @Summary List customers
 // @Description Get a paginated list of customers with optional filters
-// @Tags customers
+// @Tags Customers
 // @Produce json
 // @Param page query int false "Page number" default(1)
 // @Param pageSize query int false "Page size" default(10)
@@ -19,7 +19,7 @@ import (
 // @Param workflowId query int false "Filter by workflow ID"
 // @Success 200 {object} response.PaginatedResponse{items=[]CustomerResponse}
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers [get]
+// @Router /api/v1/customers [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
