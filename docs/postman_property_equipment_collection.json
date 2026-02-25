@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "property-equipment-collection-id",
+		"name": "JVAIR Property Equipment",
+		"description": "Endpoints de equipos de propiedad para JVAIR. Sub-recurso de properties.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List Property Equipment",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/properties/:propertyId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["properties", ":propertyId", "equipment"],
+					"variable": [
+						{
+							"key": "propertyId",
+							"value": "1",
+							"description": "ID de la propiedad"
+						}
+					]
+				},
+				"description": "Obtiene la lista de equipos HVAC asociados a una propiedad específica"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Property Equipment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"area\": \"Main Floor\",\n  \"outdoorBrand\": \"Carrier\",\n  \"outdoorModel\": \"24ACC636A003\",\n  \"outdoorSerial\": \"1234567890\",\n  \"outdoorInstalled\": \"2023-06-15\",\n  \"furnaceBrand\": \"Lennox\",\n  \"furnaceModel\": \"SL280UHV\",\n  \"furnaceSerial\": \"0987654321\",\n  \"furnaceInstalled\": \"2023-06-15\",\n  \"evaporatorBrand\": \"Carrier\",\n  \"evaporatorModel\": \"CNPVP3617ALA\",\n  \"evaporatorSerial\": \"1122334455\",\n  \"evaporatorInstalled\": \"2023-06-15\",\n  \"airHandlerBrand\": \"Trane\",\n  \"airHandlerModel\": \"GAM5A0A36M21SA\",\n  \"airHandlerSerial\": \"5566778899\",\n  \"airHandlerInstalled\": \"2023-06-15\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/properties/:propertyId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["properties", ":propertyId", "equipment"],
+					"variable": [
+						{
+							"key": "propertyId",
+							"value": "1",
+							"description": "ID de la propiedad"
+						}
+					]
+				},
+				"description": "Crea un nuevo equipo HVAC para una propiedad. El campo 'area' es requerido."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Property Equipment (minimal)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"area\": \"Second Floor\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/properties/:propertyId/equipment",
+					"host": ["{{baseUrl}}"],
+					"path": ["properties", ":propertyId", "equipment"],
+					"variable": [
+						{
+							"key": "propertyId",
+							"value": "1",
+							"description": "ID de la propiedad"
+						}
+					]
+				},
+				"description": "Crea un equipo HVAC con solo el campo requerido (area). Todos los campos de marca/modelo/serial son opcionales."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Property Equipment by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/properties/:propertyId/equipment/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["properties", ":propertyId", "equipment", ":id"],
+					"variable": [
+						{
+							"key": "propertyId",
+							"value": "1",
+							"description": "ID de la propiedad"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del equipo"
+						}
+					]
+				},
+				"description": "Obtiene los detalles de un equipo HVAC específico de una propiedad. Incluye el campo calculado 'outdoorUnit'."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Property Equipment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"area\": \"Main Floor Updated\",\n  \"outdoorBrand\": \"Carrier\",\n  \"outdoorModel\": \"24ACC636A003\",\n  \"outdoorSerial\": \"1234567890\",\n  \"outdoorInstalled\": \"2024-01-10\",\n  \"furnaceBrand\": \"Lennox\",\n  \"furnaceModel\": \"SL280UHV\",\n  \"furnaceSerial\": \"0987654321\",\n  \"furnaceInstalled\": \"2024-01-10\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/properties/:propertyId/equipment/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["properties", ":propertyId", "equipment", ":id"],
+					"variable": [
+						{
+							"key": "propertyId",
+							"value": "1",
+							"description": "ID de la propiedad"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del equipo"
+						}
+					]
+				},
+				"description": "Actualiza un equipo HVAC existente. El equipo debe pertenecer a la propiedad indicada."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Property Equipment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/properties/:propertyId/equipment/:id",
+					"host": ["{{baseUrl}}"],
+					"path": ["properties", ":propertyId", "equipment", ":id"],
+					"variable": [
+						{
+							"key": "propertyId",
+							"value": "1",
+							"description": "ID de la propiedad"
+						},
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del equipo"
+						}
+					]
+				},
+				"description": "Elimina un equipo HVAC de una propiedad (hard delete). El equipo debe pertenecer a la propiedad indicada."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
