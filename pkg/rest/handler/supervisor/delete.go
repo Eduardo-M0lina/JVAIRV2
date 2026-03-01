@@ -12,14 +12,14 @@ import (
 // Delete godoc
 // @Summary Delete a supervisor
 // @Description Soft delete a supervisor by ID
-// @Tags supervisors
+// @Tags Supervisors
 // @Produce json
 // @Param id path int true "Supervisor ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /supervisors/{id} [delete]
+// @Router /api/v1/supervisors/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

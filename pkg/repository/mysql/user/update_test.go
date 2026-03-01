@@ -20,10 +20,12 @@ func TestUpdate_Success(t *testing.T) {
 	// Datos de prueba
 	roleID := "2"
 	testUser := &domainUser.User{
-		ID:     123,
-		Name:   "Updated User",
-		Email:  "updated@example.com",
-		RoleID: &roleID,
+		ID:       123,
+		Name:     "Updated User",
+		Email:    "updated@example.com",
+		Password: "new_password",
+		RoleID:   &roleID,
+		IsActive: true,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
@@ -56,12 +58,12 @@ func TestUpdate_Success(t *testing.T) {
 	// Configurar la expectativa para la consulta UPDATE
 	mock.ExpectExec(regexp.QuoteMeta(`
 		UPDATE users
-		SET name = ?, email = ?, role_id = ?,
-		    email_verified_at = ?, updated_at = ?
+		SET name = ?, email = ?, password = ?, role_id = ?,
+		    email_verified_at = ?, updated_at = ?, is_active = ?
 		WHERE id = ? AND deleted_at IS NULL
 	`)).WithArgs(
-		testUser.Name, testUser.Email, roleID,
-		nil, sqlmock.AnyArg(), testUser.ID,
+		testUser.Name, testUser.Email, testUser.Password, roleID,
+		nil, sqlmock.AnyArg(), testUser.IsActive, testUser.ID,
 	).WillReturnResult(sqlmock.NewResult(0, 1))
 
 	// Ejecutar la función que estamos probando
@@ -83,10 +85,12 @@ func TestUpdate_UserNotFound(t *testing.T) {
 	// Datos de prueba
 	roleID := "1"
 	testUser := &domainUser.User{
-		ID:     999,
-		Name:   "Non-existent User",
-		Email:  "nonexistent@example.com",
-		RoleID: &roleID,
+		ID:       999,
+		Name:     "Non-existent User",
+		Email:    "nonexistent@example.com",
+		Password: "password",
+		RoleID:   &roleID,
+		IsActive: true,
 	}
 
 	// Configurar la expectativa para la consulta GetByID que no encuentra al usuario
@@ -124,10 +128,12 @@ func TestUpdate_DatabaseError(t *testing.T) {
 	// Datos de prueba
 	roleID := "1"
 	testUser := &domainUser.User{
-		ID:     123,
-		Name:   "Error User",
-		Email:  "error@example.com",
-		RoleID: &roleID,
+		ID:       123,
+		Name:     "Error User",
+		Email:    "error@example.com",
+		Password: "password",
+		RoleID:   &roleID,
+		IsActive: true,
 	}
 
 	// Configurar la expectativa para la consulta GetByID
@@ -160,12 +166,12 @@ func TestUpdate_DatabaseError(t *testing.T) {
 	// Configurar la expectativa para la consulta UPDATE que falla
 	mock.ExpectExec(regexp.QuoteMeta(`
 		UPDATE users
-		SET name = ?, email = ?, role_id = ?,
-		    email_verified_at = ?, updated_at = ?
+		SET name = ?, email = ?, password = ?, role_id = ?,
+		    email_verified_at = ?, updated_at = ?, is_active = ?
 		WHERE id = ? AND deleted_at IS NULL
 	`)).WithArgs(
-		testUser.Name, testUser.Email, roleID,
-		nil, sqlmock.AnyArg(), testUser.ID,
+		testUser.Name, testUser.Email, testUser.Password, roleID,
+		nil, sqlmock.AnyArg(), testUser.IsActive, testUser.ID,
 	).WillReturnError(sql.ErrConnDone)
 
 	// Ejecutar la función que estamos probando

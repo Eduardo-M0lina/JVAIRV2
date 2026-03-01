@@ -12,7 +12,7 @@ import (
 // Get godoc
 // @Summary Get job equipment by ID
 // @Description Get a job equipment entry by its ID
-// @Tags job-equipment
+// @Tags JobEquipment
 // @Produce json
 // @Param jobId path int true "Job ID"
 // @Param id path int true "Equipment ID"
@@ -20,7 +20,7 @@ import (
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /jobs/{jobId}/equipment/{id} [get]
+// @Router /api/v1/jobs/{jobId}/equipment/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

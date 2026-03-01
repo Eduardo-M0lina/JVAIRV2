@@ -311,6 +311,100 @@ definitions:
         example: 5
         type: integer
     type: object
+  invoice.CreateInvoiceRequest:
+    properties:
+      allowOnlinePayments:
+        type: boolean
+      description:
+        type: string
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      total:
+        type: number
+    type: object
+  invoice.InvoiceResponse:
+    properties:
+      allowOnlinePayments:
+        type: boolean
+      balance:
+        type: number
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      total:
+        type: number
+      updatedAt:
+        type: string
+    type: object
+  invoice.UpdateInvoiceRequest:
+    properties:
+      allowOnlinePayments:
+        type: boolean
+      description:
+        type: string
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      total:
+        type: number
+    type: object
+  invoice_payment.CreatePaymentRequest:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      paymentId:
+        type: string
+      paymentProcessor:
+        type: string
+    type: object
+  invoice_payment.PaymentResponse:
+    properties:
+      amount:
+        type: number
+      createdAt:
+        type: string
+      id:
+        type: integer
+      invoiceId:
+        type: integer
+      notes:
+        type: string
+      paymentId:
+        type: string
+      paymentProcessor:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  invoice_payment.UpdatePaymentRequest:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      paymentId:
+        type: string
+      paymentProcessor:
+        type: string
+    type: object
   job.CloseJobRequest:
     properties:
       jobStatusId:
@@ -2005,6 +2099,698 @@ paths:
       summary: Revocar rol
       tags:
       - AssignedRoles
+  /api/v1/customers:
+    get:
+      description: Get a paginated list of customers with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by workflow ID
+        in: query
+        name: workflowId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/customer.CustomerResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List customers
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer with the provided information
+      parameters:
+      - description: Customer information
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customer.CreateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new customer
+      tags:
+      - customers
+  /api/v1/customers/{customerId}/supervisors:
+    get:
+      description: Get a paginated list of supervisors for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerId
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term (name, phone, email)
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/supervisor.SupervisorResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List supervisors by customer
+      tags:
+      - supervisors
+      - customers
+  /api/v1/customers/{id}:
+    delete:
+      description: Soft delete a customer by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a customer
+      tags:
+      - customers
+    get:
+      description: Get a customer by its ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer by ID
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing customer with the provided information
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer information
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customer.UpdateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a customer
+      tags:
+      - customers
+  /api/v1/customers/{id}/properties:
+    get:
+      description: Get all properties for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer properties
+      tags:
+      - customers
+  /api/v1/invoices:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de facturas con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda en invoice_number, work_order, property, customer
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por job
+        in: query
+        name: jobId
+        type: integer
+      - description: 'Filtrar por status: paid, unpaid'
+        in: query
+        name: status
+        type: string
+      - description: 'Campo de ordenamiento: invoice_number, total, balance, created_at'
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: 'Dirección de ordenamiento: asc, desc'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar facturas
+      tags:
+      - Invoices
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva factura asociada a un job
+      parameters:
+      - description: Datos de la factura
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoice.CreateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear factura
+      tags:
+      - Invoices
+  /api/v1/invoices/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una factura (soft delete)
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar factura
+      tags:
+      - Invoices
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una factura por su ID, incluyendo balance calculado
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener factura
+      tags:
+      - Invoices
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una factura existente
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos a actualizar
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoice.UpdateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar factura
+      tags:
+      - Invoices
+  /api/v1/invoices/{invoiceId}/payments:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de pagos de una factura
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por payment_id
+        in: query
+        name: search
+        type: string
+      - description: 'Campo de ordenamiento: amount, created_at, payment_processor'
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: 'Dirección de ordenamiento: asc, desc'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar pagos de factura
+      tags:
+      - Invoice Payments
+    post:
+      consumes:
+      - application/json
+      description: Registra un nuevo pago para una factura
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: Datos del pago
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/invoice_payment.CreatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear pago de factura
+      tags:
+      - Invoice Payments
+  /api/v1/invoices/{invoiceId}/payments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un pago (soft delete)
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar pago de factura
+      tags:
+      - Invoice Payments
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un pago por su ID
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener pago de factura
+      tags:
+      - Invoice Payments
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un pago existente
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos a actualizar
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/invoice_payment.UpdatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar pago de factura
+      tags:
+      - Invoice Payments
   /api/v1/job-categories:
     get:
       consumes:
@@ -2820,6 +3606,193 @@ paths:
       summary: Cerrar trabajo
       tags:
       - Jobs
+  /api/v1/jobs/{jobId}/equipment:
+    get:
+      description: Get a list of equipment for a job with optional type filter
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Filter by type (current, new)
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List job equipment
+      tags:
+      - job-equipment
+    post:
+      consumes:
+      - application/json
+      description: Create a new equipment entry for a job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/job_equipment.CreateJobEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create job equipment
+      tags:
+      - job-equipment
+  /api/v1/jobs/{jobId}/equipment/{id}:
+    delete:
+      description: Delete a job equipment entry (hard delete)
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete job equipment
+      tags:
+      - job-equipment
+    get:
+      description: Get a job equipment entry by its ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get job equipment by ID
+      tags:
+      - job-equipment
+    put:
+      consumes:
+      - application/json
+      description: Update an existing job equipment entry
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/job_equipment.UpdateJobEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update job equipment
+      tags:
+      - job-equipment
   /api/v1/permissions:
     get:
       consumes:
@@ -3130,6 +4103,370 @@ paths:
       summary: Obtener permisos por entidad
       tags:
       - Permissions
+  /api/v1/properties:
+    get:
+      description: Get a paginated list of properties with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by customer ID
+        in: query
+        name: customerId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/property.PropertyResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List properties
+      tags:
+      - properties
+    post:
+      consumes:
+      - application/json
+      description: Create a new property
+      parameters:
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.CreatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create property
+      tags:
+      - properties
+  /api/v1/properties/{id}:
+    delete:
+      description: Delete a property (soft delete)
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete property
+      tags:
+      - properties
+    get:
+      description: Get a property by its ID
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get property by ID
+      tags:
+      - properties
+    put:
+      consumes:
+      - application/json
+      description: Update an existing property
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.UpdatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update property
+      tags:
+      - properties
+  /api/v1/properties/{propertyId}/equipment:
+    get:
+      description: Get a list of equipment for a property
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List property equipment
+      tags:
+      - property-equipment
+    post:
+      consumes:
+      - application/json
+      description: Create a new equipment entry for a property
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/property_equipment.CreatePropertyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create property equipment
+      tags:
+      - property-equipment
+  /api/v1/properties/{propertyId}/equipment/{id}:
+    delete:
+      description: Delete a property equipment entry (hard delete)
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete property equipment
+      tags:
+      - property-equipment
+    get:
+      description: Get a property equipment entry by its ID
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get property equipment by ID
+      tags:
+      - property-equipment
+    put:
+      consumes:
+      - application/json
+      description: Update an existing property equipment entry
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/property_equipment.UpdatePropertyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update property equipment
+      tags:
+      - property-equipment
   /api/v1/quote-statuses:
     get:
       consumes:
@@ -3760,6 +5097,189 @@ paths:
       summary: Actualizar configuraciones del sistema
       tags:
       - Settings
+  /api/v1/supervisors:
+    get:
+      description: Get a paginated list of supervisors with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term (name, phone, email)
+        in: query
+        name: search
+        type: string
+      - description: Filter by customer ID
+        in: query
+        name: customerId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/supervisor.SupervisorResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List supervisors
+      tags:
+      - supervisors
+    post:
+      consumes:
+      - application/json
+      description: Create a new supervisor associated with a customer
+      parameters:
+      - description: Supervisor information
+        in: body
+        name: supervisor
+        required: true
+        schema:
+          $ref: '#/definitions/supervisor.CreateSupervisorRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/supervisor.SupervisorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new supervisor
+      tags:
+      - supervisors
+  /api/v1/supervisors/{id}:
+    delete:
+      description: Soft delete a supervisor by ID
+      parameters:
+      - description: Supervisor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a supervisor
+      tags:
+      - supervisors
+    get:
+      description: Get a supervisor by its ID
+      parameters:
+      - description: Supervisor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/supervisor.SupervisorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get supervisor by ID
+      tags:
+      - supervisors
+    put:
+      consumes:
+      - application/json
+      description: Update an existing supervisor with the provided information
+      parameters:
+      - description: Supervisor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Supervisor information
+        in: body
+        name: supervisor
+        required: true
+        schema:
+          $ref: '#/definitions/supervisor.UpdateSupervisorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/supervisor.SupervisorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a supervisor
+      tags:
+      - supervisors
   /api/v1/task-statuses:
     get:
       consumes:
@@ -4744,1019 +6264,4 @@ paths:
       summary: Refrescar token
       tags:
       - Auth
-  /customers:
-    get:
-      description: Get a paginated list of customers with optional filters
-      parameters:
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term
-        in: query
-        name: search
-        type: string
-      - description: Filter by workflow ID
-        in: query
-        name: workflowId
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/customer.CustomerResponse'
-                  type: array
-              type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List customers
-      tags:
-      - customers
-    post:
-      consumes:
-      - application/json
-      description: Create a new customer with the provided information
-      parameters:
-      - description: Customer information
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/customer.CreateCustomerRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/customer.CustomerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new customer
-      tags:
-      - customers
-  /customers/{customerId}/supervisors:
-    get:
-      description: Get a paginated list of supervisors for a specific customer
-      parameters:
-      - description: Customer ID
-        in: path
-        name: customerId
-        required: true
-        type: integer
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term (name, phone, email)
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/supervisor.SupervisorResponse'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List supervisors by customer
-      tags:
-      - supervisors
-      - customers
-  /customers/{id}:
-    delete:
-      description: Soft delete a customer by ID
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete a customer
-      tags:
-      - customers
-    get:
-      description: Get a customer by its ID
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/customer.CustomerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get customer by ID
-      tags:
-      - customers
-    put:
-      consumes:
-      - application/json
-      description: Update an existing customer with the provided information
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Customer information
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/customer.UpdateCustomerRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/customer.CustomerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a customer
-      tags:
-      - customers
-  /customers/{id}/properties:
-    get:
-      description: Get all properties for a specific customer
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term
-        in: query
-        name: search
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.PaginatedResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get customer properties
-      tags:
-      - customers
-  /jobs/{jobId}/equipment:
-    get:
-      description: Get a list of equipment for a job with optional type filter
-      parameters:
-      - description: Job ID
-        in: path
-        name: jobId
-        required: true
-        type: integer
-      - description: Filter by type (current, new)
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/job_equipment.JobEquipmentResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List job equipment
-      tags:
-      - job-equipment
-    post:
-      consumes:
-      - application/json
-      description: Create a new equipment entry for a job
-      parameters:
-      - description: Job ID
-        in: path
-        name: jobId
-        required: true
-        type: integer
-      - description: Equipment data
-        in: body
-        name: equipment
-        required: true
-        schema:
-          $ref: '#/definitions/job_equipment.CreateJobEquipmentRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create job equipment
-      tags:
-      - job-equipment
-  /jobs/{jobId}/equipment/{id}:
-    delete:
-      description: Delete a job equipment entry (hard delete)
-      parameters:
-      - description: Job ID
-        in: path
-        name: jobId
-        required: true
-        type: integer
-      - description: Equipment ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete job equipment
-      tags:
-      - job-equipment
-    get:
-      description: Get a job equipment entry by its ID
-      parameters:
-      - description: Job ID
-        in: path
-        name: jobId
-        required: true
-        type: integer
-      - description: Equipment ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get job equipment by ID
-      tags:
-      - job-equipment
-    put:
-      consumes:
-      - application/json
-      description: Update an existing job equipment entry
-      parameters:
-      - description: Job ID
-        in: path
-        name: jobId
-        required: true
-        type: integer
-      - description: Equipment ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Equipment data
-        in: body
-        name: equipment
-        required: true
-        schema:
-          $ref: '#/definitions/job_equipment.UpdateJobEquipmentRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update job equipment
-      tags:
-      - job-equipment
-  /properties:
-    get:
-      description: Get a paginated list of properties with optional filters
-      parameters:
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term
-        in: query
-        name: search
-        type: string
-      - description: Filter by customer ID
-        in: query
-        name: customerId
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/property.PropertyResponse'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List properties
-      tags:
-      - properties
-    post:
-      consumes:
-      - application/json
-      description: Create a new property
-      parameters:
-      - description: Property data
-        in: body
-        name: property
-        required: true
-        schema:
-          $ref: '#/definitions/property.CreatePropertyRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/property.PropertyResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create property
-      tags:
-      - properties
-  /properties/{id}:
-    delete:
-      description: Delete a property (soft delete)
-      parameters:
-      - description: Property ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete property
-      tags:
-      - properties
-    get:
-      description: Get a property by its ID
-      parameters:
-      - description: Property ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/property.PropertyResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get property by ID
-      tags:
-      - properties
-    put:
-      consumes:
-      - application/json
-      description: Update an existing property
-      parameters:
-      - description: Property ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Property data
-        in: body
-        name: property
-        required: true
-        schema:
-          $ref: '#/definitions/property.UpdatePropertyRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/property.PropertyResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update property
-      tags:
-      - properties
-  /properties/{propertyId}/equipment:
-    get:
-      description: Get a list of equipment for a property
-      parameters:
-      - description: Property ID
-        in: path
-        name: propertyId
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List property equipment
-      tags:
-      - property-equipment
-    post:
-      consumes:
-      - application/json
-      description: Create a new equipment entry for a property
-      parameters:
-      - description: Property ID
-        in: path
-        name: propertyId
-        required: true
-        type: integer
-      - description: Equipment data
-        in: body
-        name: equipment
-        required: true
-        schema:
-          $ref: '#/definitions/property_equipment.CreatePropertyEquipmentRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create property equipment
-      tags:
-      - property-equipment
-  /properties/{propertyId}/equipment/{id}:
-    delete:
-      description: Delete a property equipment entry (hard delete)
-      parameters:
-      - description: Property ID
-        in: path
-        name: propertyId
-        required: true
-        type: integer
-      - description: Equipment ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete property equipment
-      tags:
-      - property-equipment
-    get:
-      description: Get a property equipment entry by its ID
-      parameters:
-      - description: Property ID
-        in: path
-        name: propertyId
-        required: true
-        type: integer
-      - description: Equipment ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get property equipment by ID
-      tags:
-      - property-equipment
-    put:
-      consumes:
-      - application/json
-      description: Update an existing property equipment entry
-      parameters:
-      - description: Property ID
-        in: path
-        name: propertyId
-        required: true
-        type: integer
-      - description: Equipment ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Equipment data
-        in: body
-        name: equipment
-        required: true
-        schema:
-          $ref: '#/definitions/property_equipment.UpdatePropertyEquipmentRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update property equipment
-      tags:
-      - property-equipment
-  /supervisors:
-    get:
-      description: Get a paginated list of supervisors with optional filters
-      parameters:
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term (name, phone, email)
-        in: query
-        name: search
-        type: string
-      - description: Filter by customer ID
-        in: query
-        name: customerId
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/supervisor.SupervisorResponse'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List supervisors
-      tags:
-      - supervisors
-    post:
-      consumes:
-      - application/json
-      description: Create a new supervisor associated with a customer
-      parameters:
-      - description: Supervisor information
-        in: body
-        name: supervisor
-        required: true
-        schema:
-          $ref: '#/definitions/supervisor.CreateSupervisorRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/supervisor.SupervisorResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new supervisor
-      tags:
-      - supervisors
-  /supervisors/{id}:
-    delete:
-      description: Soft delete a supervisor by ID
-      parameters:
-      - description: Supervisor ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete a supervisor
-      tags:
-      - supervisors
-    get:
-      description: Get a supervisor by its ID
-      parameters:
-      - description: Supervisor ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/supervisor.SupervisorResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get supervisor by ID
-      tags:
-      - supervisors
-    put:
-      consumes:
-      - application/json
-      description: Update an existing supervisor with the provided information
-      parameters:
-      - description: Supervisor ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Supervisor information
-        in: body
-        name: supervisor
-        required: true
-        schema:
-          $ref: '#/definitions/supervisor.UpdateSupervisorRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/supervisor.SupervisorResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a supervisor
-      tags:
-      - supervisors
 swagger: "2.0"

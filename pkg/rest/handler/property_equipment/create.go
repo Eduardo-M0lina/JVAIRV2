@@ -14,7 +14,7 @@ import (
 // Create godoc
 // @Summary Create property equipment
 // @Description Create a new equipment entry for a property
-// @Tags property-equipment
+// @Tags PropertyEquipment
 // @Accept json
 // @Produce json
 // @Param propertyId path int true "Property ID"
@@ -22,7 +22,7 @@ import (
 // @Success 201 {object} PropertyEquipmentResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties/{propertyId}/equipment [post]
+// @Router /api/v1/properties/{propertyId}/equipment [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	propertyIDStr := chi.URLParam(r, "propertyId")

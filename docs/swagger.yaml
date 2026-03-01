@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   ability.AbilityResponse:
     properties:
@@ -160,21 +159,6 @@ definitions:
       updatedAt:
         type: string
     type: object
-  customer.BillingAddress:
-    properties:
-      city:
-        example: New York
-        type: string
-      state:
-        example: NY
-        type: string
-      street:
-        example: 123 Main St
-        type: string
-      zip:
-        example: "10001"
-        type: string
-    type: object
   customer.CreateCustomerRequest:
     properties:
       billingAddressCity:
@@ -229,7 +213,7 @@ definitions:
   customer.CustomerResponse:
     properties:
       billingAddress:
-        $ref: '#/definitions/customer.BillingAddress'
+        $ref: '#/definitions/pkg_rest_handler_customer.BillingAddress'
       contactEmail:
         example: john@acme.com
         type: string
@@ -326,6 +310,100 @@ definitions:
       workflowId:
         example: 5
         type: integer
+    type: object
+  invoice.CreateInvoiceRequest:
+    properties:
+      allowOnlinePayments:
+        type: boolean
+      description:
+        type: string
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      total:
+        type: number
+    type: object
+  invoice.InvoiceResponse:
+    properties:
+      allowOnlinePayments:
+        type: boolean
+      balance:
+        type: number
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      total:
+        type: number
+      updatedAt:
+        type: string
+    type: object
+  invoice.UpdateInvoiceRequest:
+    properties:
+      allowOnlinePayments:
+        type: boolean
+      description:
+        type: string
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      notes:
+        type: string
+      total:
+        type: number
+    type: object
+  invoice_payment.CreatePaymentRequest:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      paymentId:
+        type: string
+      paymentProcessor:
+        type: string
+    type: object
+  invoice_payment.PaymentResponse:
+    properties:
+      amount:
+        type: number
+      createdAt:
+        type: string
+      id:
+        type: integer
+      invoiceId:
+        type: integer
+      notes:
+        type: string
+      paymentId:
+        type: string
+      paymentProcessor:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  invoice_payment.UpdatePaymentRequest:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      paymentId:
+        type: string
+      paymentProcessor:
+        type: string
     type: object
   job.CloseJobRequest:
     properties:
@@ -552,6 +630,192 @@ definitions:
     - labelPlural
     - type
     type: object
+  job_equipment.CreateJobEquipmentRequest:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      airHandlerModel:
+        example: GAM5A0A36M21SA
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      evaporatorBrand:
+        example: Carrier
+        type: string
+      evaporatorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      evaporatorModel:
+        example: CNPVP3617ALA
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      furnaceModel:
+        example: SL280UHV
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+      type:
+        example: current
+        type: string
+    type: object
+  job_equipment.JobEquipmentResponse:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2023-06-15"
+        type: string
+      airHandlerModel:
+        example: GAM5A0A36M21SA
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      evaporatorBrand:
+        example: Carrier
+        type: string
+      evaporatorInstalled:
+        example: "2023-06-15"
+        type: string
+      evaporatorModel:
+        example: CNPVP3617ALA
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2023-06-15"
+        type: string
+      furnaceModel:
+        example: SL280UHV
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      id:
+        example: 1
+        type: integer
+      jobId:
+        example: 100
+        type: integer
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2023-06-15"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+      outdoorUnit:
+        example: Carrier 24ACC636A003 | S/N 1234567890
+        type: string
+      type:
+        example: current
+        type: string
+      updatedAt:
+        example: "2024-01-18T14:20:00Z"
+        type: string
+    type: object
+  job_equipment.UpdateJobEquipmentRequest:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      airHandlerModel:
+        example: GAM5A0A36M21SA
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      evaporatorBrand:
+        example: Carrier
+        type: string
+      evaporatorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      evaporatorModel:
+        example: CNPVP3617ALA
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      furnaceModel:
+        example: SL280UHV
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+      type:
+        example: current
+        type: string
+    type: object
   job_priority.CreateJobPriorityRequest:
     properties:
       class:
@@ -632,6 +896,77 @@ definitions:
     required:
     - label
     type: object
+  job_visit.CreateJobVisitRequest:
+    properties:
+      date:
+        example: 01-15-2024
+        type: string
+      report:
+        example: Technician visited the site and inspected the HVAC system.
+        type: string
+      userId:
+        example: 1
+        type: integer
+      viewableBy:
+        example: '["1","2"]'
+        type: string
+    type: object
+  job_visit.FileResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        example: 1
+        type: integer
+      type:
+        example: image
+        type: string
+      url:
+        example: https://bucket.s3.amazonaws.com/uploads/1234_photo.jpg
+        type: string
+    type: object
+  job_visit.JobVisitResponse:
+    properties:
+      createdAt:
+        type: string
+      date:
+        example: 01-15-2024
+        type: string
+      files:
+        items:
+          $ref: '#/definitions/job_visit.FileResponse'
+        type: array
+      id:
+        example: 1
+        type: integer
+      jobId:
+        example: 1
+        type: integer
+      report:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        example: 1
+        type: integer
+      viewableBy:
+        type: string
+    type: object
+  job_visit.UpdateJobVisitRequest:
+    properties:
+      date:
+        example: 01-15-2024
+        type: string
+      report:
+        example: Updated report after follow-up visit.
+        type: string
+      userId:
+        example: 1
+        type: integer
+      viewableBy:
+        example: '["1","2"]'
+        type: string
+    type: object
   permission.CreatePermissionRequest:
     properties:
       abilityId:
@@ -680,6 +1015,21 @@ definitions:
     - abilityId
     - entityId
     - entityType
+    type: object
+  pkg_rest_handler_customer.BillingAddress:
+    properties:
+      city:
+        example: New York
+        type: string
+      state:
+        example: NY
+        type: string
+      street:
+        example: 123 Main St
+        type: string
+      zip:
+        example: "10001"
+        type: string
     type: object
   property.CreatePropertyRequest:
     properties:
@@ -740,6 +1090,183 @@ definitions:
       street:
         type: string
       zip:
+        type: string
+    type: object
+  property_equipment.CreatePropertyEquipmentRequest:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      airHandlerModel:
+        example: GAM5A0A36M21SA
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      evaporatorBrand:
+        example: Carrier
+        type: string
+      evaporatorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      evaporatorModel:
+        example: CNPVP3617ALA
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      furnaceModel:
+        example: SL280UHV
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+    type: object
+  property_equipment.PropertyEquipmentResponse:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2023-06-15"
+        type: string
+      airHandlerModel:
+        example: GAM5A0A36M21SA
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      evaporatorBrand:
+        example: Carrier
+        type: string
+      evaporatorInstalled:
+        example: "2023-06-15"
+        type: string
+      evaporatorModel:
+        example: CNPVP3617ALA
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2023-06-15"
+        type: string
+      furnaceModel:
+        example: SL280UHV
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      id:
+        example: 1
+        type: integer
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2023-06-15"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+      outdoorUnit:
+        example: Carrier 24ACC636A003 | S/N 1234567890
+        type: string
+      propertyId:
+        example: 10
+        type: integer
+      updatedAt:
+        example: "2024-01-18T14:20:00Z"
+        type: string
+    type: object
+  property_equipment.UpdatePropertyEquipmentRequest:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      airHandlerModel:
+        example: GAM5A0A36M21SA
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      evaporatorBrand:
+        example: Carrier
+        type: string
+      evaporatorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      evaporatorModel:
+        example: CNPVP3617ALA
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      furnaceModel:
+        example: SL280UHV
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2023-06-15T00:00:00Z"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
         type: string
     type: object
   quote.CreateQuoteRequest:
@@ -1144,6 +1671,581 @@ definitions:
       updatedAt:
         type: string
     type: object
+  warranty.CreateWarrantyRequest:
+    properties:
+      agreementNumber:
+        example: AGR-001
+        type: string
+      auditDone:
+        example: false
+        type: boolean
+      dateSubmitted:
+        example: 01-15-2024
+        type: string
+      jobId:
+        example: 1
+        type: integer
+      notes:
+        example: Warranty notes
+        type: string
+      warrantyNumber:
+        example: WRN-2024-001
+        type: string
+      warrantyStatusId:
+        example: 1
+        type: integer
+      warrantyTypeId:
+        example: 1
+        type: integer
+    type: object
+  warranty.UpdateWarrantyRequest:
+    properties:
+      agreementNumber:
+        example: AGR-001
+        type: string
+      auditDone:
+        example: false
+        type: boolean
+      dateSubmitted:
+        example: 01-15-2024
+        type: string
+      notes:
+        example: Warranty notes
+        type: string
+      warrantyNumber:
+        example: WRN-2024-001
+        type: string
+      warrantyStatusId:
+        example: 1
+        type: integer
+      warrantyTypeId:
+        example: 1
+        type: integer
+    type: object
+  warranty.WarrantyResponse:
+    properties:
+      agreementNumber:
+        example: AGR-001
+        type: string
+      auditDone:
+        example: false
+        type: boolean
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      dateSubmitted:
+        example: 01-15-2024
+        type: string
+      id:
+        example: 1
+        type: integer
+      jobId:
+        example: 1
+        type: integer
+      notes:
+        example: Warranty notes
+        type: string
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      warrantyNumber:
+        example: WRN-2024-001
+        type: string
+      warrantyStatusId:
+        example: 1
+        type: integer
+      warrantyTypeId:
+        example: 1
+        type: integer
+    type: object
+  warranty_claim.CreateWarrantyClaimRequest:
+    properties:
+      approved:
+        example: false
+        type: boolean
+      claimNumber:
+        example: CLM-001
+        type: string
+      esaNumber:
+        example: ESA-001
+        type: string
+      internalClaimNumber:
+        example: ICN-2024-001
+        type: string
+      invoiceNumber:
+        example: INV-001
+        type: string
+      jobId:
+        example: 1
+        type: integer
+      laborPaymentReceived:
+        example: false
+        type: boolean
+      manufacturer:
+        example: Carrier
+        type: string
+      modelNumber:
+        example: 24ACC636A003
+        type: string
+      newPartSerialNumber:
+        example: NEW-SN-001
+        type: string
+      notes:
+        example: Claim notes
+        type: string
+      oldPartSerialNumber:
+        example: OLD-SN-001
+        type: string
+      partDistributor:
+        example: Distributor
+        type: string
+      partInvoiceNumber:
+        example: PI-001
+        type: string
+      partNumber:
+        example: PN-12345
+        type: string
+      partsCreditReceived:
+        example: false
+        type: boolean
+      replacementPartNumber:
+        example: PN-67890
+        type: string
+      serial:
+        example: SER-001
+        type: string
+      warrantyClaimStatusId:
+        example: 1
+        type: integer
+      warrantyClaimTypeId:
+        example: 1
+        type: integer
+      warrantyPart:
+        example: Compressor
+        type: string
+      workDone:
+        example: false
+        type: boolean
+    type: object
+  warranty_claim.UpdateWarrantyClaimRequest:
+    properties:
+      approved:
+        example: false
+        type: boolean
+      claimNumber:
+        example: CLM-001
+        type: string
+      esaNumber:
+        example: ESA-001
+        type: string
+      internalClaimNumber:
+        example: ICN-2024-001
+        type: string
+      invoiceNumber:
+        example: INV-001
+        type: string
+      laborPaymentReceived:
+        example: false
+        type: boolean
+      manufacturer:
+        example: Carrier
+        type: string
+      modelNumber:
+        example: 24ACC636A003
+        type: string
+      newPartSerialNumber:
+        example: NEW-SN-001
+        type: string
+      notes:
+        example: Claim notes
+        type: string
+      oldPartSerialNumber:
+        example: OLD-SN-001
+        type: string
+      partDistributor:
+        example: Distributor
+        type: string
+      partInvoiceNumber:
+        example: PI-001
+        type: string
+      partNumber:
+        example: PN-12345
+        type: string
+      partsCreditReceived:
+        example: false
+        type: boolean
+      replacementPartNumber:
+        example: PN-67890
+        type: string
+      serial:
+        example: SER-001
+        type: string
+      warrantyClaimStatusId:
+        example: 1
+        type: integer
+      warrantyClaimTypeId:
+        example: 1
+        type: integer
+      warrantyPart:
+        example: Compressor
+        type: string
+      workDone:
+        example: false
+        type: boolean
+    type: object
+  warranty_claim.WarrantyClaimResponse:
+    properties:
+      approved:
+        example: false
+        type: boolean
+      claimNumber:
+        type: string
+      createdAt:
+        type: string
+      esaNumber:
+        type: string
+      id:
+        example: 1
+        type: integer
+      internalClaimNumber:
+        example: ICN-2024-001
+        type: string
+      invoiceNumber:
+        type: string
+      jobId:
+        example: 1
+        type: integer
+      laborPaymentReceived:
+        example: false
+        type: boolean
+      manufacturer:
+        type: string
+      modelNumber:
+        type: string
+      newPartSerialNumber:
+        type: string
+      notes:
+        type: string
+      oldPartSerialNumber:
+        type: string
+      partDistributor:
+        type: string
+      partInvoiceNumber:
+        type: string
+      partNumber:
+        type: string
+      partsCreditReceived:
+        example: false
+        type: boolean
+      replacementPartNumber:
+        type: string
+      serial:
+        type: string
+      updatedAt:
+        type: string
+      warrantyClaimStatusId:
+        example: 1
+        type: integer
+      warrantyClaimTypeId:
+        example: 1
+        type: integer
+      warrantyPart:
+        type: string
+      workDone:
+        example: false
+        type: boolean
+    type: object
+  warranty_claim_status.CreateWarrantyClaimStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_claim_status.UpdateWarrantyClaimStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_claim_status.WarrantyClaimStatusResponse:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  warranty_claim_type.CreateWarrantyClaimTypeRequest:
+    properties:
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_claim_type.UpdateWarrantyClaimTypeRequest:
+    properties:
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_claim_type.WarrantyClaimTypeResponse:
+    properties:
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  warranty_equipment.WarrantyEquipmentRequest:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2024-01-15"
+        type: string
+      airHandlerModel:
+        example: GAM5A0C48M41SB
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      evaporatorBrand:
+        example: Goodman
+        type: string
+      evaporatorInstalled:
+        example: "2024-01-15"
+        type: string
+      evaporatorModel:
+        example: CAPF4961D6
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2024-01-15"
+        type: string
+      furnaceModel:
+        example: ML180UH
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2024-01-15"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+    type: object
+  warranty_equipment.WarrantyEquipmentResponse:
+    properties:
+      airHandlerBrand:
+        type: string
+      airHandlerInstalled:
+        type: string
+      airHandlerModel:
+        type: string
+      airHandlerSerial:
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      createdAt:
+        type: string
+      evaporatorBrand:
+        type: string
+      evaporatorInstalled:
+        type: string
+      evaporatorModel:
+        type: string
+      evaporatorSerial:
+        type: string
+      furnaceBrand:
+        type: string
+      furnaceInstalled:
+        type: string
+      furnaceModel:
+        type: string
+      furnaceSerial:
+        type: string
+      id:
+        example: 1
+        type: integer
+      outdoorBrand:
+        type: string
+      outdoorInstalled:
+        type: string
+      outdoorModel:
+        type: string
+      outdoorSerial:
+        type: string
+      updatedAt:
+        type: string
+      warrantyId:
+        example: 1
+        type: integer
+    type: object
+  warranty_status.CreateWarrantyStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_status.UpdateWarrantyStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_status.WarrantyStatusResponse:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  warranty_type.CreateWarrantyTypeRequest:
+    properties:
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_type.UpdateWarrantyTypeRequest:
+    properties:
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_type.WarrantyTypeResponse:
+    properties:
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
   workflow.CreateWorkflowRequest:
     properties:
       isActive:
@@ -1198,7 +2300,7 @@ definitions:
       statusName:
         type: string
     type: object
-host: localhost:8080
+host: localhost:8090
 info:
   contact:
     email: support@jvair.com
@@ -1654,6 +2756,698 @@ paths:
       summary: Revocar rol
       tags:
       - AssignedRoles
+  /api/v1/customers:
+    get:
+      description: Get a paginated list of customers with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by workflow ID
+        in: query
+        name: workflowId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/customer.CustomerResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List customers
+      tags:
+      - Customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer with the provided information
+      parameters:
+      - description: Customer information
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customer.CreateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new customer
+      tags:
+      - Customers
+  /api/v1/customers/{customerId}/supervisors:
+    get:
+      description: Get a paginated list of supervisors for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerId
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term (name, phone, email)
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/supervisor.SupervisorResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List supervisors by customer
+      tags:
+      - Supervisors
+      - Customers
+  /api/v1/customers/{id}:
+    delete:
+      description: Soft delete a customer by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a customer
+      tags:
+      - Customers
+    get:
+      description: Get a customer by its ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer by ID
+      tags:
+      - Customers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing customer with the provided information
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer information
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/customer.UpdateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customer.CustomerResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a customer
+      tags:
+      - Customers
+  /api/v1/customers/{id}/properties:
+    get:
+      description: Get all properties for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer properties
+      tags:
+      - Customers
+  /api/v1/invoices:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de facturas con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda en invoice_number, work_order, property, customer
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por job
+        in: query
+        name: jobId
+        type: integer
+      - description: 'Filtrar por status: paid, unpaid'
+        in: query
+        name: status
+        type: string
+      - description: 'Campo de ordenamiento: invoice_number, total, balance, created_at'
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: 'Dirección de ordenamiento: asc, desc'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar facturas
+      tags:
+      - Invoices
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva factura asociada a un job
+      parameters:
+      - description: Datos de la factura
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoice.CreateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear factura
+      tags:
+      - Invoices
+  /api/v1/invoices/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una factura (soft delete)
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar factura
+      tags:
+      - Invoices
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una factura por su ID, incluyendo balance calculado
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener factura
+      tags:
+      - Invoices
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una factura existente
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos a actualizar
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/invoice.UpdateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice.InvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar factura
+      tags:
+      - Invoices
+  /api/v1/invoices/{invoiceId}/payments:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de pagos de una factura
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por payment_id
+        in: query
+        name: search
+        type: string
+      - description: 'Campo de ordenamiento: amount, created_at, payment_processor'
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: 'Dirección de ordenamiento: asc, desc'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar pagos de factura
+      tags:
+      - Invoice Payments
+    post:
+      consumes:
+      - application/json
+      description: Registra un nuevo pago para una factura
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: Datos del pago
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/invoice_payment.CreatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear pago de factura
+      tags:
+      - Invoice Payments
+  /api/v1/invoices/{invoiceId}/payments/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un pago (soft delete)
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar pago de factura
+      tags:
+      - Invoice Payments
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un pago por su ID
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener pago de factura
+      tags:
+      - Invoice Payments
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un pago existente
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: invoiceId
+        required: true
+        type: integer
+      - description: ID del pago
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos a actualizar
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/invoice_payment.UpdatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/invoice_payment.PaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar pago de factura
+      tags:
+      - Invoice Payments
   /api/v1/job-categories:
     get:
       consumes:
@@ -2469,6 +4263,193 @@ paths:
       summary: Cerrar trabajo
       tags:
       - Jobs
+  /api/v1/jobs/{jobId}/equipment:
+    get:
+      description: Get a list of equipment for a job with optional type filter
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Filter by type (current, new)
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List job equipment
+      tags:
+      - JobEquipment
+    post:
+      consumes:
+      - application/json
+      description: Create a new equipment entry for a job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/job_equipment.CreateJobEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create job equipment
+      tags:
+      - JobEquipment
+  /api/v1/jobs/{jobId}/equipment/{id}:
+    delete:
+      description: Delete a job equipment entry (hard delete)
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete job equipment
+      tags:
+      - JobEquipment
+    get:
+      description: Get a job equipment entry by its ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get job equipment by ID
+      tags:
+      - JobEquipment
+    put:
+      consumes:
+      - application/json
+      description: Update an existing job equipment entry
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/job_equipment.UpdateJobEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_equipment.JobEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update job equipment
+      tags:
+      - JobEquipment
   /api/v1/permissions:
     get:
       consumes:
@@ -2779,6 +4760,370 @@ paths:
       summary: Obtener permisos por entidad
       tags:
       - Permissions
+  /api/v1/properties:
+    get:
+      description: Get a paginated list of properties with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Filter by customer ID
+        in: query
+        name: customerId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/property.PropertyResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List properties
+      tags:
+      - Properties
+    post:
+      consumes:
+      - application/json
+      description: Create a new property
+      parameters:
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.CreatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create property
+      tags:
+      - Properties
+  /api/v1/properties/{id}:
+    delete:
+      description: Delete a property (soft delete)
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete property
+      tags:
+      - Properties
+    get:
+      description: Get a property by its ID
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get property by ID
+      tags:
+      - Properties
+    put:
+      consumes:
+      - application/json
+      description: Update an existing property
+      parameters:
+      - description: Property ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Property data
+        in: body
+        name: property
+        required: true
+        schema:
+          $ref: '#/definitions/property.UpdatePropertyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property.PropertyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update property
+      tags:
+      - Properties
+  /api/v1/properties/{propertyId}/equipment:
+    get:
+      description: Get a list of equipment for a property
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List property equipment
+      tags:
+      - PropertyEquipment
+    post:
+      consumes:
+      - application/json
+      description: Create a new equipment entry for a property
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/property_equipment.CreatePropertyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create property equipment
+      tags:
+      - PropertyEquipment
+  /api/v1/properties/{propertyId}/equipment/{id}:
+    delete:
+      description: Delete a property equipment entry (hard delete)
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete property equipment
+      tags:
+      - PropertyEquipment
+    get:
+      description: Get a property equipment entry by its ID
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get property equipment by ID
+      tags:
+      - PropertyEquipment
+    put:
+      consumes:
+      - application/json
+      description: Update an existing property equipment entry
+      parameters:
+      - description: Property ID
+        in: path
+        name: propertyId
+        required: true
+        type: integer
+      - description: Equipment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Equipment data
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/property_equipment.UpdatePropertyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/property_equipment.PropertyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update property equipment
+      tags:
+      - PropertyEquipment
   /api/v1/quote-statuses:
     get:
       consumes:
@@ -3409,6 +5754,189 @@ paths:
       summary: Actualizar configuraciones del sistema
       tags:
       - Settings
+  /api/v1/supervisors:
+    get:
+      description: Get a paginated list of supervisors with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term (name, phone, email)
+        in: query
+        name: search
+        type: string
+      - description: Filter by customer ID
+        in: query
+        name: customerId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.PaginatedResponse'
+            - properties:
+                items:
+                  items:
+                    $ref: '#/definitions/supervisor.SupervisorResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List supervisors
+      tags:
+      - Supervisors
+    post:
+      consumes:
+      - application/json
+      description: Create a new supervisor associated with a customer
+      parameters:
+      - description: Supervisor information
+        in: body
+        name: supervisor
+        required: true
+        schema:
+          $ref: '#/definitions/supervisor.CreateSupervisorRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/supervisor.SupervisorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new supervisor
+      tags:
+      - Supervisors
+  /api/v1/supervisors/{id}:
+    delete:
+      description: Soft delete a supervisor by ID
+      parameters:
+      - description: Supervisor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a supervisor
+      tags:
+      - Supervisors
+    get:
+      description: Get a supervisor by its ID
+      parameters:
+      - description: Supervisor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/supervisor.SupervisorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get supervisor by ID
+      tags:
+      - Supervisors
+    put:
+      consumes:
+      - application/json
+      description: Update an existing supervisor with the provided information
+      parameters:
+      - description: Supervisor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Supervisor information
+        in: body
+        name: supervisor
+        required: true
+        schema:
+          $ref: '#/definitions/supervisor.UpdateSupervisorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/supervisor.SupervisorResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a supervisor
+      tags:
+      - Supervisors
   /api/v1/task-statuses:
     get:
       consumes:
@@ -4049,6 +6577,1281 @@ paths:
       summary: Obtener roles de usuario
       tags:
       - Users
+  /api/v1/warranties:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de garantías con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por número de garantía, número de acuerdo o notas
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por ID de trabajo
+        in: query
+        name: jobId
+        type: integer
+      - description: Filtrar por tipo de garantía
+        in: query
+        name: warrantyTypeId
+        type: integer
+      - description: Filtrar por estado de garantía
+        in: query
+        name: warrantyStatusId
+        type: integer
+      - description: Filtrar por número de semana del trabajo
+        in: query
+        name: weekNumber
+        type: string
+      - description: Campo de ordenamiento (warranty_number, date_submitted, created_at,
+          week_number)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (asc, desc)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar garantías
+      tags:
+      - Warranties
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva garantía
+      parameters:
+      - description: Datos de la garantía
+        in: body
+        name: warranty
+        required: true
+        schema:
+          $ref: '#/definitions/warranty.CreateWarrantyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty.WarrantyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear garantía
+      tags:
+      - Warranties
+  /api/v1/warranties/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una garantía (soft delete)
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar garantía
+      tags:
+      - Warranties
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una garantía por su ID
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty.WarrantyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener garantía
+      tags:
+      - Warranties
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una garantía existente
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la garantía
+        in: body
+        name: warranty
+        required: true
+        schema:
+          $ref: '#/definitions/warranty.UpdateWarrantyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty.WarrantyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar garantía
+      tags:
+      - Warranties
+  /api/v1/warranties/{warrantyId}/equipment:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene la lista de equipos de una garantía
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/warranty_equipment.WarrantyEquipmentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar equipos de garantía
+      tags:
+      - WarrantyEquipment
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo equipo de garantía
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      - description: Datos del equipo
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_equipment.WarrantyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_equipment.WarrantyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear equipo de garantía
+      tags:
+      - WarrantyEquipment
+  /api/v1/warranties/{warrantyId}/equipment/{equipmentId}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un equipo de garantía (hard delete)
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      - description: ID del equipo
+        in: path
+        name: equipmentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar equipo de garantía
+      tags:
+      - WarrantyEquipment
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un equipo de garantía existente
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      - description: ID del equipo
+        in: path
+        name: equipmentId
+        required: true
+        type: integer
+      - description: Datos del equipo
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_equipment.WarrantyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_equipment.WarrantyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar equipo de garantía
+      tags:
+      - WarrantyEquipment
+  /api/v1/warranty-claim-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de reclamo de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo estado de reclamo de garantía
+      parameters:
+      - description: Datos del estado de reclamo
+        in: body
+        name: warrantyClaimStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_status.CreateWarrantyClaimStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_claim_status.WarrantyClaimStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+  /api/v1/warranty-claim-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de reclamo de garantía. No se puede eliminar
+        si tiene reclamos asociados
+      parameters:
+      - description: ID del estado de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de reclamo de garantía por su ID
+      parameters:
+      - description: ID del estado de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_status.WarrantyClaimStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de reclamo de garantía existente
+      parameters:
+      - description: ID del estado de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de reclamo
+        in: body
+        name: warrantyClaimStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_status.UpdateWarrantyClaimStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_status.WarrantyClaimStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+  /api/v1/warranty-claim-types:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de tipos de reclamo de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar tipos de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo tipo de reclamo de garantía
+      parameters:
+      - description: Datos del tipo de reclamo
+        in: body
+        name: warrantyClaimType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_type.CreateWarrantyClaimTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_claim_type.WarrantyClaimTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+  /api/v1/warranty-claim-types/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un tipo de reclamo de garantía. No se puede eliminar si
+        tiene reclamos asociados
+      parameters:
+      - description: ID del tipo de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un tipo de reclamo de garantía por su ID
+      parameters:
+      - description: ID del tipo de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_type.WarrantyClaimTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un tipo de reclamo de garantía existente
+      parameters:
+      - description: ID del tipo de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del tipo de reclamo
+        in: body
+        name: warrantyClaimType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_type.UpdateWarrantyClaimTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_type.WarrantyClaimTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+  /api/v1/warranty-claims:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de reclamos de garantía con filtros
+        opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por número de reclamo interno, número de reclamo o notas
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por ID de trabajo
+        in: query
+        name: jobId
+        type: integer
+      - description: Filtrar por tipo de reclamo
+        in: query
+        name: warrantyClaimTypeId
+        type: integer
+      - description: Filtrar por estado de reclamo
+        in: query
+        name: warrantyClaimStatusId
+        type: integer
+      - description: Filtrar por número de semana del trabajo
+        in: query
+        name: weekNumber
+        type: string
+      - description: Campo de ordenamiento (internal_claim_number, claim_number, created_at,
+          week_number)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (asc, desc)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar reclamos de garantía
+      tags:
+      - WarrantyClaims
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo reclamo de garantía
+      parameters:
+      - description: Datos del reclamo
+        in: body
+        name: warrantyClaim
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim.CreateWarrantyClaimRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_claim.WarrantyClaimResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear reclamo de garantía
+      tags:
+      - WarrantyClaims
+  /api/v1/warranty-claims/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un reclamo de garantía (soft delete)
+      parameters:
+      - description: ID del reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar reclamo de garantía
+      tags:
+      - WarrantyClaims
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un reclamo de garantía por su ID
+      parameters:
+      - description: ID del reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim.WarrantyClaimResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener reclamo de garantía
+      tags:
+      - WarrantyClaims
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un reclamo de garantía existente
+      parameters:
+      - description: ID del reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del reclamo
+        in: body
+        name: warrantyClaim
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim.UpdateWarrantyClaimRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim.WarrantyClaimResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar reclamo de garantía
+      tags:
+      - WarrantyClaims
+  /api/v1/warranty-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de garantía
+      tags:
+      - WarrantyStatuses
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo estado de garantía
+      parameters:
+      - description: Datos del estado de garantía
+        in: body
+        name: warrantyStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_status.CreateWarrantyStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_status.WarrantyStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de garantía
+      tags:
+      - WarrantyStatuses
+  /api/v1/warranty-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de garantía. No se puede eliminar si tiene garantías
+        asociadas
+      parameters:
+      - description: ID del estado de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de garantía
+      tags:
+      - WarrantyStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de garantía por su ID
+      parameters:
+      - description: ID del estado de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_status.WarrantyStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de garantía
+      tags:
+      - WarrantyStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de garantía existente
+      parameters:
+      - description: ID del estado de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de garantía
+        in: body
+        name: warrantyStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_status.UpdateWarrantyStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_status.WarrantyStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de garantía
+      tags:
+      - WarrantyStatuses
+  /api/v1/warranty-types:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de tipos de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar tipos de garantía
+      tags:
+      - WarrantyTypes
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo tipo de garantía
+      parameters:
+      - description: Datos del tipo de garantía
+        in: body
+        name: warrantyType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_type.CreateWarrantyTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_type.WarrantyTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear tipo de garantía
+      tags:
+      - WarrantyTypes
+  /api/v1/warranty-types/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un tipo de garantía. No se puede eliminar si tiene garantías
+        asociadas
+      parameters:
+      - description: ID del tipo de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar tipo de garantía
+      tags:
+      - WarrantyTypes
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un tipo de garantía por su ID
+      parameters:
+      - description: ID del tipo de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_type.WarrantyTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener tipo de garantía
+      tags:
+      - WarrantyTypes
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un tipo de garantía existente
+      parameters:
+      - description: ID del tipo de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del tipo de garantía
+        in: body
+        name: warrantyType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_type.UpdateWarrantyTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_type.WarrantyTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar tipo de garantía
+      tags:
+      - WarrantyTypes
   /api/v1/workflows:
     get:
       consumes:
@@ -4393,262 +8196,44 @@ paths:
       summary: Refrescar token
       tags:
       - Auth
-  /customers:
+  /jobs/{jobId}/visits:
     get:
-      description: Get a paginated list of customers with optional filters
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de visitas de un trabajo específico
       parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
       - default: 1
-        description: Page number
+        description: Número de página
         in: query
         name: page
         type: integer
       - default: 10
-        description: Page size
+        description: Tamaño de página
         in: query
         name: pageSize
         type: integer
-      - description: Search term
+      - description: Búsqueda en reporte
         in: query
         name: search
         type: string
-      - description: Filter by workflow ID
+      - description: Filtrar por usuario
         in: query
-        name: workflowId
+        name: userId
         type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/customer.CustomerResponse'
-                  type: array
-              type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List customers
-      tags:
-      - customers
-    post:
-      consumes:
-      - application/json
-      description: Create a new customer with the provided information
-      parameters:
-      - description: Customer information
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/customer.CreateCustomerRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/customer.CustomerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new customer
-      tags:
-      - customers
-  /customers/{customerId}/supervisors:
-    get:
-      description: Get a paginated list of supervisors for a specific customer
-      parameters:
-      - description: Customer ID
-        in: path
-        name: customerId
-        required: true
-        type: integer
-      - default: 1
-        description: Page number
+      - default: created_at
+        description: Campo de ordenamiento (date, created_at)
         in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term (name, phone, email)
-        in: query
-        name: search
+        name: sort
         type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/supervisor.SupervisorResponse'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List supervisors by customer
-      tags:
-      - supervisors
-      - customers
-  /customers/{id}:
-    delete:
-      description: Soft delete a customer by ID
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete a customer
-      tags:
-      - customers
-    get:
-      description: Get a customer by its ID
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/customer.CustomerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get customer by ID
-      tags:
-      - customers
-    put:
-      consumes:
-      - application/json
-      description: Update an existing customer with the provided information
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Customer information
-        in: body
-        name: customer
-        required: true
-        schema:
-          $ref: '#/definitions/customer.UpdateCustomerRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/customer.CustomerResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a customer
-      tags:
-      - customers
-  /customers/{id}/properties:
-    get:
-      description: Get all properties for a specific customer
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - default: 1
-        description: Page number
+      - default: DESC
+        description: Dirección (ASC, DESC)
         in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term
-        in: query
-        name: search
+        name: direction
         type: string
       produces:
       - application/json
@@ -4661,8 +8246,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.ErrorResponse'
         "500":
@@ -4671,78 +8256,38 @@ paths:
             $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Get customer properties
+      summary: Listar visitas de un trabajo
       tags:
-      - customers
-  /properties:
-    get:
-      description: Get a paginated list of properties with optional filters
-      parameters:
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term
-        in: query
-        name: search
-        type: string
-      - description: Filter by customer ID
-        in: query
-        name: customerId
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/property.PropertyResponse'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List properties
-      tags:
-      - properties
+      - JobVisits
     post:
       consumes:
       - application/json
-      description: Create a new property
+      description: Crea una nueva visita para un trabajo específico
       parameters:
-      - description: Property data
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Datos de la visita
         in: body
-        name: property
+        name: request
         required: true
         schema:
-          $ref: '#/definitions/property.CreatePropertyRequest'
+          $ref: '#/definitions/job_visit.CreateJobVisitRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/property.PropertyResponse'
+            $ref: '#/definitions/job_visit.JobVisitResponse'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.ErrorResponse'
         "500":
@@ -4751,197 +8296,24 @@ paths:
             $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Create property
+      summary: Crear visita de trabajo
       tags:
-      - properties
-  /properties/{id}:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}:
     delete:
-      description: Delete a property (soft delete)
-      parameters:
-      - description: Property ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete property
-      tags:
-      - properties
-    get:
-      description: Get a property by its ID
-      parameters:
-      - description: Property ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/property.PropertyResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get property by ID
-      tags:
-      - properties
-    put:
       consumes:
       - application/json
-      description: Update an existing property
+      description: Elimina una visita de trabajo (soft delete). También elimina los
+        archivos asociados.
       parameters:
-      - description: Property ID
+      - description: ID del trabajo
         in: path
-        name: id
+        name: jobId
         required: true
         type: integer
-      - description: Property data
-        in: body
-        name: property
-        required: true
-        schema:
-          $ref: '#/definitions/property.UpdatePropertyRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/property.PropertyResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update property
-      tags:
-      - properties
-  /supervisors:
-    get:
-      description: Get a paginated list of supervisors with optional filters
-      parameters:
-      - default: 1
-        description: Page number
-        in: query
-        name: page
-        type: integer
-      - default: 10
-        description: Page size
-        in: query
-        name: pageSize
-        type: integer
-      - description: Search term (name, phone, email)
-        in: query
-        name: search
-        type: string
-      - description: Filter by customer ID
-        in: query
-        name: customerId
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/response.PaginatedResponse'
-            - properties:
-                items:
-                  items:
-                    $ref: '#/definitions/supervisor.SupervisorResponse'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: List supervisors
-      tags:
-      - supervisors
-    post:
-      consumes:
-      - application/json
-      description: Create a new supervisor associated with a customer
-      parameters:
-      - description: Supervisor information
-        in: body
-        name: supervisor
-        required: true
-        schema:
-          $ref: '#/definitions/supervisor.CreateSupervisorRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/supervisor.SupervisorResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/response.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new supervisor
-      tags:
-      - supervisors
-  /supervisors/{id}:
-    delete:
-      description: Soft delete a supervisor by ID
-      parameters:
-      - description: Supervisor ID
+      - description: ID de la visita
         in: path
-        name: id
+        name: visitId
         required: true
         type: integer
       produces:
@@ -4963,15 +8335,22 @@ paths:
             $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Delete a supervisor
+      summary: Eliminar visita de trabajo
       tags:
-      - supervisors
+      - JobVisits
     get:
-      description: Get a supervisor by its ID
+      consumes:
+      - application/json
+      description: Obtiene una visita de trabajo por su ID
       parameters:
-      - description: Supervisor ID
+      - description: ID del trabajo
         in: path
-        name: id
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
         required: true
         type: integer
       produces:
@@ -4980,7 +8359,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/supervisor.SupervisorResponse'
+            $ref: '#/definitions/job_visit.JobVisitResponse'
         "400":
           description: Bad Request
           schema:
@@ -4995,32 +8374,37 @@ paths:
             $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Get supervisor by ID
+      summary: Obtener visita por ID
       tags:
-      - supervisors
+      - JobVisits
     put:
       consumes:
       - application/json
-      description: Update an existing supervisor with the provided information
+      description: Actualiza una visita de trabajo existente
       parameters:
-      - description: Supervisor ID
+      - description: ID del trabajo
         in: path
-        name: id
+        name: jobId
         required: true
         type: integer
-      - description: Supervisor information
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: Datos actualizados
         in: body
-        name: supervisor
+        name: request
         required: true
         schema:
-          $ref: '#/definitions/supervisor.UpdateSupervisorRequest'
+          $ref: '#/definitions/job_visit.UpdateJobVisitRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/supervisor.SupervisorResponse'
+            $ref: '#/definitions/job_visit.JobVisitResponse'
         "400":
           description: Bad Request
           schema:
@@ -5035,9 +8419,178 @@ paths:
             $ref: '#/definitions/response.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Update a supervisor
+      summary: Actualizar visita de trabajo
       tags:
-      - supervisors
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}/files:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene los archivos asociados a una visita de trabajo
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/job_visit.FileResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar archivos de una visita
+      tags:
+      - JobVisits
+    post:
+      consumes:
+      - multipart/form-data
+      description: Sube uno o más archivos a una visita de trabajo (multipart/form-data,
+        campo 'files')
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: Archivos a subir (max 40MB c/u, max 20 archivos)
+        in: formData
+        name: files
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/job_visit.FileResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Subir archivo a una visita
+      tags:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}/files/{fileId}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un archivo de S3 y de la base de datos
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: ID del archivo
+        in: path
+        name: fileId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar archivo de una visita
+      tags:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}/files/{fileId}/download:
+    get:
+      description: Descarga un archivo de S3
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: ID del archivo
+        in: path
+        name: fileId
+        required: true
+        type: integer
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Descargar archivo de una visita
+      tags:
+      - JobVisits
 securityDefinitions:
   BearerAuth:
     description: Ingrese el token con el prefijo 'Bearer '
@@ -5050,3 +8603,61 @@ tags:
   name: Auth
 - description: Operaciones de usuarios
   name: Users
+- description: Operaciones de roles
+  name: Roles
+- description: Operaciones de abilities
+  name: Abilities
+- description: Operaciones de asignación de roles
+  name: AssignedRoles
+- description: Operaciones de permisos
+  name: Permissions
+- description: Configuraciones del sistema
+  name: Settings
+- description: Operaciones de workflows
+  name: Workflows
+- description: Operaciones de clientes
+  name: Customers
+- description: Operaciones de propiedades
+  name: Properties
+- description: Equipos HVAC de propiedades
+  name: PropertyEquipment
+- description: Operaciones de supervisores
+  name: Supervisors
+- description: Operaciones de trabajos
+  name: Jobs
+- description: Equipos HVAC de trabajos
+  name: JobEquipment
+- description: Categorías de trabajos
+  name: JobCategories
+- description: Estados de trabajos
+  name: JobStatuses
+- description: Prioridades de trabajos
+  name: JobPriorities
+- description: Estados de técnico de trabajo
+  name: TechnicianJobStatuses
+- description: Estados de tareas
+  name: TaskStatuses
+- description: Operaciones de cotizaciones
+  name: Quotes
+- description: Estados de cotizaciones
+  name: QuoteStatuses
+- description: Operaciones de facturas
+  name: Invoices
+- description: Pagos de facturas
+  name: Invoice Payments
+- description: Operaciones de garantías
+  name: Warranties
+- description: Equipos HVAC de garantías
+  name: WarrantyEquipment
+- description: Reclamos de garantías
+  name: WarrantyClaims
+- description: Tipos de garantías
+  name: WarrantyTypes
+- description: Estados de garantías
+  name: WarrantyStatuses
+- description: Tipos de reclamos de garantías
+  name: WarrantyClaimTypes
+- description: Estados de reclamos de garantías
+  name: WarrantyClaimStatuses
+- description: Visitas de trabajo con archivos adjuntos (fotos/documentos)
+  name: JobVisits

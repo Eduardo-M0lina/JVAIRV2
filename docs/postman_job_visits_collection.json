@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "job-visits-files-collection",
+		"name": "JVAIR V2 - Job Visits & Files",
+		"description": "Colección de endpoints para visitas de trabajo y archivos adjuntos (fotos/documentos) con almacenamiento en S3.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "jobId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "visitId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "fileId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Job Visits",
+			"item": [
+				{
+					"name": "Listar visitas de un trabajo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits?page=1&pageSize=10&sort=created_at&direction=DESC",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "pageSize", "value": "10" },
+								{ "key": "sort", "value": "created_at" },
+								{ "key": "direction", "value": "DESC" },
+								{ "key": "search", "value": "", "disabled": true },
+								{ "key": "userId", "value": "", "disabled": true }
+							]
+						}
+					}
+				},
+				{
+					"name": "Obtener visita por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}"]
+						}
+					}
+				},
+				{
+					"name": "Crear visita de trabajo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"viewableBy\": \"[\\\"1\\\",\\\"2\\\"]\",\n  \"date\": \"01-15-2024\",\n  \"report\": \"Technician visited the site and inspected the HVAC system. All units operational.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar visita de trabajo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": 1,\n  \"viewableBy\": \"[\\\"1\\\",\\\"2\\\",\\\"3\\\"]\",\n  \"date\": \"01-16-2024\",\n  \"report\": \"Updated report: Follow-up visit completed. Replaced air filter.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar visita de trabajo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Visit Files",
+			"item": [
+				{
+					"name": "Listar archivos de una visita",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files"]
+						}
+					}
+				},
+				{
+					"name": "Subir archivos a una visita",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [],
+									"description": "Seleccione uno o más archivos (max 40MB c/u, max 20 archivos)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files"]
+						}
+					}
+				},
+				{
+					"name": "Descargar archivo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files/{{fileId}}/download",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files", "{{fileId}}", "download"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar archivo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files/{{fileId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files", "{{fileId}}"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

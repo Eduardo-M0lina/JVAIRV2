@@ -18,6 +18,7 @@ import (
 	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
+	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
@@ -29,6 +30,13 @@ import (
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
 	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
+	warrantyHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty"
+	warrantyClaimHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty_claim"
+	warrantyClaimStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty_claim_status"
+	warrantyClaimTypeHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty_claim_type"
+	warrantyEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty_equipment"
+	warrantyStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty_status"
+	warrantyTypeHandler "github.com/your-org/jvairv2/pkg/rest/handler/warranty_type"
 	workflowHandler "github.com/your-org/jvairv2/pkg/rest/handler/workflow"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
@@ -59,6 +67,14 @@ func New(
 	jobEquipHandler *jobEquipHandler.Handler,
 	invoiceHandler *invoiceHandler.Handler,
 	invoicePaymentHandler *invoicePaymentHandler.Handler,
+	warrantyTypeHandler *warrantyTypeHandler.Handler,
+	warrantyStatusHandler *warrantyStatusHandler.Handler,
+	warrantyClaimTypeHandler *warrantyClaimTypeHandler.Handler,
+	warrantyClaimStatusHandler *warrantyClaimStatusHandler.Handler,
+	warrantyHandler *warrantyHandler.Handler,
+	warrantyEquipHandler *warrantyEquipHandler.Handler,
+	warrantyClaimHandler *warrantyClaimHandler.Handler,
+	jobVisitHandler *jobVisitHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -126,6 +142,16 @@ func New(
 			// Rutas de facturas y pagos
 			invoiceHandler.RegisterRoutes(r)
 			invoicePaymentHandler.RegisterRoutes(r)
+			// Rutas de garantías y catálogos
+			warrantyTypeHandler.RegisterRoutes(r)
+			warrantyStatusHandler.RegisterRoutes(r)
+			warrantyClaimTypeHandler.RegisterRoutes(r)
+			warrantyClaimStatusHandler.RegisterRoutes(r)
+			warrantyHandler.RegisterRoutes(r)
+			warrantyEquipHandler.RegisterRoutes(r)
+			warrantyClaimHandler.RegisterRoutes(r)
+			// Rutas de visitas de trabajo y archivos
+			jobVisitHandler.RegisterRoutes(r)
 		})
 	})
 	return r

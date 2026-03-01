@@ -12,14 +12,14 @@ import (
 // Get godoc
 // @Summary Get customer by ID
 // @Description Get a customer by its ID
-// @Tags customers
+// @Tags Customers
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 200 {object} CustomerResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers/{id} [get]
+// @Router /api/v1/customers/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

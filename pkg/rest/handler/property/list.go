@@ -11,7 +11,7 @@ import (
 // List godoc
 // @Summary List properties
 // @Description Get a paginated list of properties with optional filters
-// @Tags properties
+// @Tags Properties
 // @Produce json
 // @Param page query int false "Page number" default(1)
 // @Param pageSize query int false "Page size" default(10)
@@ -20,7 +20,7 @@ import (
 // @Success 200 {object} response.PaginatedResponse{items=[]PropertyResponse}
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties [get]
+// @Router /api/v1/properties [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))

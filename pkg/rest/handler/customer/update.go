@@ -14,7 +14,7 @@ import (
 // Update godoc
 // @Summary Update a customer
 // @Description Update an existing customer with the provided information
-// @Tags customers
+// @Tags Customers
 // @Accept json
 // @Produce json
 // @Param id path int true "Customer ID"
@@ -23,7 +23,7 @@ import (
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /customers/{id} [put]
+// @Router /api/v1/customers/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")

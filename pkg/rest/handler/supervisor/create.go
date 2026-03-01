@@ -12,14 +12,14 @@ import (
 // Create godoc
 // @Summary Create a new supervisor
 // @Description Create a new supervisor associated with a customer
-// @Tags supervisors
+// @Tags Supervisors
 // @Accept json
 // @Produce json
 // @Param supervisor body CreateSupervisorRequest true "Supervisor information"
 // @Success 201 {object} SupervisorResponse
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /supervisors [post]
+// @Router /api/v1/supervisors [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateSupervisorRequest

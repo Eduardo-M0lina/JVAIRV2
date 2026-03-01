@@ -161,7 +161,7 @@ func (uc *UseCase) Update(ctx context.Context, user *User) error {
 	}
 
 	// Si se proporciona una nueva contraseña, hashearla
-	if user.Password != "" && user.Password != existingUser.Password {
+	if user.Password != "" {
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 		if err != nil {
 			return err

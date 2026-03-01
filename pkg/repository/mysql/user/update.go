@@ -19,8 +19,8 @@ func (r *Repository) Update(ctx context.Context, u *user.User) error {
 
 	query := `
 		UPDATE users
-		SET name = ?, email = ?, role_id = ?,
-		    email_verified_at = ?, updated_at = ?
+		SET name = ?, email = ?, password = ?, role_id = ?,
+		    email_verified_at = ?, updated_at = ?, is_active = ?
 		WHERE id = ? AND deleted_at IS NULL
 	`
 
@@ -35,8 +35,8 @@ func (r *Repository) Update(ctx context.Context, u *user.User) error {
 	}
 
 	_, err = r.db.ExecContext(ctx, query,
-		u.Name, u.Email, u.RoleID,
-		emailVerifiedAtValue, now, u.ID,
+		u.Name, u.Email, u.Password, u.RoleID,
+		emailVerifiedAtValue, now, u.IsActive, u.ID,
 	)
 
 	return err

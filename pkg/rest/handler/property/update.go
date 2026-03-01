@@ -14,7 +14,7 @@ import (
 // Update godoc
 // @Summary Update property
 // @Description Update an existing property
-// @Tags properties
+// @Tags Properties
 // @Accept json
 // @Produce json
 // @Param id path int true "Property ID"
@@ -23,7 +23,7 @@ import (
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse
-// @Router /properties/{id} [put]
+// @Router /api/v1/properties/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
