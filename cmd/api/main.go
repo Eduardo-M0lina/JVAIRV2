@@ -86,6 +86,30 @@
 // @tag.name Invoice Payments
 // @tag.description Pagos de facturas
 
+// @tag.name Warranties
+// @tag.description Operaciones de garantías
+
+// @tag.name WarrantyEquipment
+// @tag.description Equipos HVAC de garantías
+
+// @tag.name WarrantyClaims
+// @tag.description Reclamos de garantías
+
+// @tag.name WarrantyTypes
+// @tag.description Tipos de garantías
+
+// @tag.name WarrantyStatuses
+// @tag.description Estados de garantías
+
+// @tag.name WarrantyClaimTypes
+// @tag.description Tipos de reclamos de garantías
+
+// @tag.name WarrantyClaimStatuses
+// @tag.description Estados de reclamos de garantías
+
+// @tag.name JobVisits
+// @tag.description Visitas de trabajo con archivos adjuntos (fotos/documentos)
+
 package main
 
 import (

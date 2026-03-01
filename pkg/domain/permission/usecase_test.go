@@ -149,7 +149,7 @@ func TestUseCase_GetByAbility(t *testing.T) {
 			ID:         2,
 			AbilityID:  abilityID,
 			EntityID:   5,
-			EntityType: "App\\Models\\Role",
+			EntityType: "roles",
 			Forbidden:  true,
 			Scope:      nil,
 		},

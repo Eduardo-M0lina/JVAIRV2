@@ -13,6 +13,7 @@ type Config struct {
 	Server ServerConfig
 	DB     DBConfig
 	JWT    JWTConfig
+	S3     S3Config
 }
 
 // AppConfig almacena la configuración general de la aplicación
@@ -47,6 +48,15 @@ type JWTConfig struct {
 	RefreshSecret     string
 	AccessExpiration  time.Duration
 	RefreshExpiration time.Duration
+}
+
+// S3Config almacena la configuración de AWS S3
+type S3Config struct {
+	Region    string
+	Bucket    string
+	AccessKey string
+	SecretKey string
+	Endpoint  string
 }
 
 // LoadConfig carga la configuración desde el archivo app.env
@@ -92,6 +102,13 @@ func LoadConfig(path string) (*Config, error) {
 	config.JWT.RefreshSecret = viper.GetString("JWT_REFRESH_SECRET")
 	config.JWT.AccessExpiration = viper.GetDuration("JWT_ACCESS_EXPIRATION")
 	config.JWT.RefreshExpiration = viper.GetDuration("JWT_REFRESH_EXPIRATION")
+
+	// Configuración de S3
+	config.S3.Region = viper.GetString("AWS_DEFAULT_REGION")
+	config.S3.Bucket = viper.GetString("AWS_BUCKET")
+	config.S3.AccessKey = viper.GetString("AWS_ACCESS_KEY_ID")
+	config.S3.SecretKey = viper.GetString("AWS_SECRET_ACCESS_KEY")
+	config.S3.Endpoint = viper.GetString("AWS_ENDPOINT")
 
 	return &config, nil
 }

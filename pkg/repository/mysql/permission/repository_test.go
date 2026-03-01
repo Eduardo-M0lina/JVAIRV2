@@ -225,7 +225,7 @@ func TestList_Success(t *testing.T) {
 	}).AddRow(
 		1, 2, 10, "App\\Models\\User", false, 1,
 	).AddRow(
-		2, 3, 5, "App\\Models\\Role", true, nil,
+		2, 3, 5, "roles", true, nil,
 	)
 
 	mock.ExpectQuery("SELECT id, ability_id, entity_id, entity_type, forbidden, scope FROM permissions ORDER BY id LIMIT \\? OFFSET \\?").

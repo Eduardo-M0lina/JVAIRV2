@@ -896,6 +896,77 @@ definitions:
     required:
     - label
     type: object
+  job_visit.CreateJobVisitRequest:
+    properties:
+      date:
+        example: 01-15-2024
+        type: string
+      report:
+        example: Technician visited the site and inspected the HVAC system.
+        type: string
+      userId:
+        example: 1
+        type: integer
+      viewableBy:
+        example: '["1","2"]'
+        type: string
+    type: object
+  job_visit.FileResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        example: 1
+        type: integer
+      type:
+        example: image
+        type: string
+      url:
+        example: https://bucket.s3.amazonaws.com/uploads/1234_photo.jpg
+        type: string
+    type: object
+  job_visit.JobVisitResponse:
+    properties:
+      createdAt:
+        type: string
+      date:
+        example: 01-15-2024
+        type: string
+      files:
+        items:
+          $ref: '#/definitions/job_visit.FileResponse'
+        type: array
+      id:
+        example: 1
+        type: integer
+      jobId:
+        example: 1
+        type: integer
+      report:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        example: 1
+        type: integer
+      viewableBy:
+        type: string
+    type: object
+  job_visit.UpdateJobVisitRequest:
+    properties:
+      date:
+        example: 01-15-2024
+        type: string
+      report:
+        example: Updated report after follow-up visit.
+        type: string
+      userId:
+        example: 1
+        type: integer
+      viewableBy:
+        example: '["1","2"]'
+        type: string
+    type: object
   permission.CreatePermissionRequest:
     properties:
       abilityId:
@@ -1598,6 +1669,581 @@ definitions:
       roleId:
         type: string
       updatedAt:
+        type: string
+    type: object
+  warranty.CreateWarrantyRequest:
+    properties:
+      agreementNumber:
+        example: AGR-001
+        type: string
+      auditDone:
+        example: false
+        type: boolean
+      dateSubmitted:
+        example: 01-15-2024
+        type: string
+      jobId:
+        example: 1
+        type: integer
+      notes:
+        example: Warranty notes
+        type: string
+      warrantyNumber:
+        example: WRN-2024-001
+        type: string
+      warrantyStatusId:
+        example: 1
+        type: integer
+      warrantyTypeId:
+        example: 1
+        type: integer
+    type: object
+  warranty.UpdateWarrantyRequest:
+    properties:
+      agreementNumber:
+        example: AGR-001
+        type: string
+      auditDone:
+        example: false
+        type: boolean
+      dateSubmitted:
+        example: 01-15-2024
+        type: string
+      notes:
+        example: Warranty notes
+        type: string
+      warrantyNumber:
+        example: WRN-2024-001
+        type: string
+      warrantyStatusId:
+        example: 1
+        type: integer
+      warrantyTypeId:
+        example: 1
+        type: integer
+    type: object
+  warranty.WarrantyResponse:
+    properties:
+      agreementNumber:
+        example: AGR-001
+        type: string
+      auditDone:
+        example: false
+        type: boolean
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      dateSubmitted:
+        example: 01-15-2024
+        type: string
+      id:
+        example: 1
+        type: integer
+      jobId:
+        example: 1
+        type: integer
+      notes:
+        example: Warranty notes
+        type: string
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      warrantyNumber:
+        example: WRN-2024-001
+        type: string
+      warrantyStatusId:
+        example: 1
+        type: integer
+      warrantyTypeId:
+        example: 1
+        type: integer
+    type: object
+  warranty_claim.CreateWarrantyClaimRequest:
+    properties:
+      approved:
+        example: false
+        type: boolean
+      claimNumber:
+        example: CLM-001
+        type: string
+      esaNumber:
+        example: ESA-001
+        type: string
+      internalClaimNumber:
+        example: ICN-2024-001
+        type: string
+      invoiceNumber:
+        example: INV-001
+        type: string
+      jobId:
+        example: 1
+        type: integer
+      laborPaymentReceived:
+        example: false
+        type: boolean
+      manufacturer:
+        example: Carrier
+        type: string
+      modelNumber:
+        example: 24ACC636A003
+        type: string
+      newPartSerialNumber:
+        example: NEW-SN-001
+        type: string
+      notes:
+        example: Claim notes
+        type: string
+      oldPartSerialNumber:
+        example: OLD-SN-001
+        type: string
+      partDistributor:
+        example: Distributor
+        type: string
+      partInvoiceNumber:
+        example: PI-001
+        type: string
+      partNumber:
+        example: PN-12345
+        type: string
+      partsCreditReceived:
+        example: false
+        type: boolean
+      replacementPartNumber:
+        example: PN-67890
+        type: string
+      serial:
+        example: SER-001
+        type: string
+      warrantyClaimStatusId:
+        example: 1
+        type: integer
+      warrantyClaimTypeId:
+        example: 1
+        type: integer
+      warrantyPart:
+        example: Compressor
+        type: string
+      workDone:
+        example: false
+        type: boolean
+    type: object
+  warranty_claim.UpdateWarrantyClaimRequest:
+    properties:
+      approved:
+        example: false
+        type: boolean
+      claimNumber:
+        example: CLM-001
+        type: string
+      esaNumber:
+        example: ESA-001
+        type: string
+      internalClaimNumber:
+        example: ICN-2024-001
+        type: string
+      invoiceNumber:
+        example: INV-001
+        type: string
+      laborPaymentReceived:
+        example: false
+        type: boolean
+      manufacturer:
+        example: Carrier
+        type: string
+      modelNumber:
+        example: 24ACC636A003
+        type: string
+      newPartSerialNumber:
+        example: NEW-SN-001
+        type: string
+      notes:
+        example: Claim notes
+        type: string
+      oldPartSerialNumber:
+        example: OLD-SN-001
+        type: string
+      partDistributor:
+        example: Distributor
+        type: string
+      partInvoiceNumber:
+        example: PI-001
+        type: string
+      partNumber:
+        example: PN-12345
+        type: string
+      partsCreditReceived:
+        example: false
+        type: boolean
+      replacementPartNumber:
+        example: PN-67890
+        type: string
+      serial:
+        example: SER-001
+        type: string
+      warrantyClaimStatusId:
+        example: 1
+        type: integer
+      warrantyClaimTypeId:
+        example: 1
+        type: integer
+      warrantyPart:
+        example: Compressor
+        type: string
+      workDone:
+        example: false
+        type: boolean
+    type: object
+  warranty_claim.WarrantyClaimResponse:
+    properties:
+      approved:
+        example: false
+        type: boolean
+      claimNumber:
+        type: string
+      createdAt:
+        type: string
+      esaNumber:
+        type: string
+      id:
+        example: 1
+        type: integer
+      internalClaimNumber:
+        example: ICN-2024-001
+        type: string
+      invoiceNumber:
+        type: string
+      jobId:
+        example: 1
+        type: integer
+      laborPaymentReceived:
+        example: false
+        type: boolean
+      manufacturer:
+        type: string
+      modelNumber:
+        type: string
+      newPartSerialNumber:
+        type: string
+      notes:
+        type: string
+      oldPartSerialNumber:
+        type: string
+      partDistributor:
+        type: string
+      partInvoiceNumber:
+        type: string
+      partNumber:
+        type: string
+      partsCreditReceived:
+        example: false
+        type: boolean
+      replacementPartNumber:
+        type: string
+      serial:
+        type: string
+      updatedAt:
+        type: string
+      warrantyClaimStatusId:
+        example: 1
+        type: integer
+      warrantyClaimTypeId:
+        example: 1
+        type: integer
+      warrantyPart:
+        type: string
+      workDone:
+        example: false
+        type: boolean
+    type: object
+  warranty_claim_status.CreateWarrantyClaimStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_claim_status.UpdateWarrantyClaimStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_claim_status.WarrantyClaimStatusResponse:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  warranty_claim_type.CreateWarrantyClaimTypeRequest:
+    properties:
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_claim_type.UpdateWarrantyClaimTypeRequest:
+    properties:
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_claim_type.WarrantyClaimTypeResponse:
+    properties:
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  warranty_equipment.WarrantyEquipmentRequest:
+    properties:
+      airHandlerBrand:
+        example: Trane
+        type: string
+      airHandlerInstalled:
+        example: "2024-01-15"
+        type: string
+      airHandlerModel:
+        example: GAM5A0C48M41SB
+        type: string
+      airHandlerSerial:
+        example: "5566778899"
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      evaporatorBrand:
+        example: Goodman
+        type: string
+      evaporatorInstalled:
+        example: "2024-01-15"
+        type: string
+      evaporatorModel:
+        example: CAPF4961D6
+        type: string
+      evaporatorSerial:
+        example: "1122334455"
+        type: string
+      furnaceBrand:
+        example: Lennox
+        type: string
+      furnaceInstalled:
+        example: "2024-01-15"
+        type: string
+      furnaceModel:
+        example: ML180UH
+        type: string
+      furnaceSerial:
+        example: "0987654321"
+        type: string
+      outdoorBrand:
+        example: Carrier
+        type: string
+      outdoorInstalled:
+        example: "2024-01-15"
+        type: string
+      outdoorModel:
+        example: 24ACC636A003
+        type: string
+      outdoorSerial:
+        example: "1234567890"
+        type: string
+    type: object
+  warranty_equipment.WarrantyEquipmentResponse:
+    properties:
+      airHandlerBrand:
+        type: string
+      airHandlerInstalled:
+        type: string
+      airHandlerModel:
+        type: string
+      airHandlerSerial:
+        type: string
+      area:
+        example: Main Floor
+        type: string
+      createdAt:
+        type: string
+      evaporatorBrand:
+        type: string
+      evaporatorInstalled:
+        type: string
+      evaporatorModel:
+        type: string
+      evaporatorSerial:
+        type: string
+      furnaceBrand:
+        type: string
+      furnaceInstalled:
+        type: string
+      furnaceModel:
+        type: string
+      furnaceSerial:
+        type: string
+      id:
+        example: 1
+        type: integer
+      outdoorBrand:
+        type: string
+      outdoorInstalled:
+        type: string
+      outdoorModel:
+        type: string
+      outdoorSerial:
+        type: string
+      updatedAt:
+        type: string
+      warrantyId:
+        example: 1
+        type: integer
+    type: object
+  warranty_status.CreateWarrantyStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_status.UpdateWarrantyStatusRequest:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+    type: object
+  warranty_status.WarrantyStatusResponse:
+    properties:
+      class:
+        example: badge-warning
+        type: string
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Pending
+        type: string
+      order:
+        example: 1
+        type: integer
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+    type: object
+  warranty_type.CreateWarrantyTypeRequest:
+    properties:
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_type.UpdateWarrantyTypeRequest:
+    properties:
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+    type: object
+  warranty_type.WarrantyTypeResponse:
+    properties:
+      createdAt:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      isActive:
+        example: true
+        type: boolean
+      label:
+        example: Parts
+        type: string
+      labelPlural:
+        example: Parts
+        type: string
+      updatedAt:
+        example: "2024-01-15T10:30:00Z"
         type: string
     type: object
   workflow.CreateWorkflowRequest:
@@ -5931,6 +6577,1281 @@ paths:
       summary: Obtener roles de usuario
       tags:
       - Users
+  /api/v1/warranties:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de garantías con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por número de garantía, número de acuerdo o notas
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por ID de trabajo
+        in: query
+        name: jobId
+        type: integer
+      - description: Filtrar por tipo de garantía
+        in: query
+        name: warrantyTypeId
+        type: integer
+      - description: Filtrar por estado de garantía
+        in: query
+        name: warrantyStatusId
+        type: integer
+      - description: Filtrar por número de semana del trabajo
+        in: query
+        name: weekNumber
+        type: string
+      - description: Campo de ordenamiento (warranty_number, date_submitted, created_at,
+          week_number)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (asc, desc)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar garantías
+      tags:
+      - Warranties
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva garantía
+      parameters:
+      - description: Datos de la garantía
+        in: body
+        name: warranty
+        required: true
+        schema:
+          $ref: '#/definitions/warranty.CreateWarrantyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty.WarrantyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear garantía
+      tags:
+      - Warranties
+  /api/v1/warranties/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una garantía (soft delete)
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar garantía
+      tags:
+      - Warranties
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una garantía por su ID
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty.WarrantyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener garantía
+      tags:
+      - Warranties
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una garantía existente
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la garantía
+        in: body
+        name: warranty
+        required: true
+        schema:
+          $ref: '#/definitions/warranty.UpdateWarrantyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty.WarrantyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar garantía
+      tags:
+      - Warranties
+  /api/v1/warranties/{warrantyId}/equipment:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene la lista de equipos de una garantía
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/warranty_equipment.WarrantyEquipmentResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar equipos de garantía
+      tags:
+      - WarrantyEquipment
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo equipo de garantía
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      - description: Datos del equipo
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_equipment.WarrantyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_equipment.WarrantyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear equipo de garantía
+      tags:
+      - WarrantyEquipment
+  /api/v1/warranties/{warrantyId}/equipment/{equipmentId}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un equipo de garantía (hard delete)
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      - description: ID del equipo
+        in: path
+        name: equipmentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar equipo de garantía
+      tags:
+      - WarrantyEquipment
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un equipo de garantía existente
+      parameters:
+      - description: ID de la garantía
+        in: path
+        name: warrantyId
+        required: true
+        type: integer
+      - description: ID del equipo
+        in: path
+        name: equipmentId
+        required: true
+        type: integer
+      - description: Datos del equipo
+        in: body
+        name: equipment
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_equipment.WarrantyEquipmentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_equipment.WarrantyEquipmentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar equipo de garantía
+      tags:
+      - WarrantyEquipment
+  /api/v1/warranty-claim-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de reclamo de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo estado de reclamo de garantía
+      parameters:
+      - description: Datos del estado de reclamo
+        in: body
+        name: warrantyClaimStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_status.CreateWarrantyClaimStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_claim_status.WarrantyClaimStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+  /api/v1/warranty-claim-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de reclamo de garantía. No se puede eliminar
+        si tiene reclamos asociados
+      parameters:
+      - description: ID del estado de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de reclamo de garantía por su ID
+      parameters:
+      - description: ID del estado de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_status.WarrantyClaimStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de reclamo de garantía existente
+      parameters:
+      - description: ID del estado de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de reclamo
+        in: body
+        name: warrantyClaimStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_status.UpdateWarrantyClaimStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_status.WarrantyClaimStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de reclamo de garantía
+      tags:
+      - WarrantyClaimStatuses
+  /api/v1/warranty-claim-types:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de tipos de reclamo de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar tipos de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo tipo de reclamo de garantía
+      parameters:
+      - description: Datos del tipo de reclamo
+        in: body
+        name: warrantyClaimType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_type.CreateWarrantyClaimTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_claim_type.WarrantyClaimTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+  /api/v1/warranty-claim-types/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un tipo de reclamo de garantía. No se puede eliminar si
+        tiene reclamos asociados
+      parameters:
+      - description: ID del tipo de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un tipo de reclamo de garantía por su ID
+      parameters:
+      - description: ID del tipo de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_type.WarrantyClaimTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un tipo de reclamo de garantía existente
+      parameters:
+      - description: ID del tipo de reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del tipo de reclamo
+        in: body
+        name: warrantyClaimType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim_type.UpdateWarrantyClaimTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim_type.WarrantyClaimTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar tipo de reclamo de garantía
+      tags:
+      - WarrantyClaimTypes
+  /api/v1/warranty-claims:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de reclamos de garantía con filtros
+        opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por número de reclamo interno, número de reclamo o notas
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por ID de trabajo
+        in: query
+        name: jobId
+        type: integer
+      - description: Filtrar por tipo de reclamo
+        in: query
+        name: warrantyClaimTypeId
+        type: integer
+      - description: Filtrar por estado de reclamo
+        in: query
+        name: warrantyClaimStatusId
+        type: integer
+      - description: Filtrar por número de semana del trabajo
+        in: query
+        name: weekNumber
+        type: string
+      - description: Campo de ordenamiento (internal_claim_number, claim_number, created_at,
+          week_number)
+        in: query
+        name: sort
+        type: string
+      - description: Dirección de ordenamiento (asc, desc)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar reclamos de garantía
+      tags:
+      - WarrantyClaims
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo reclamo de garantía
+      parameters:
+      - description: Datos del reclamo
+        in: body
+        name: warrantyClaim
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim.CreateWarrantyClaimRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_claim.WarrantyClaimResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear reclamo de garantía
+      tags:
+      - WarrantyClaims
+  /api/v1/warranty-claims/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un reclamo de garantía (soft delete)
+      parameters:
+      - description: ID del reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar reclamo de garantía
+      tags:
+      - WarrantyClaims
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un reclamo de garantía por su ID
+      parameters:
+      - description: ID del reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim.WarrantyClaimResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener reclamo de garantía
+      tags:
+      - WarrantyClaims
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un reclamo de garantía existente
+      parameters:
+      - description: ID del reclamo
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del reclamo
+        in: body
+        name: warrantyClaim
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_claim.UpdateWarrantyClaimRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_claim.WarrantyClaimResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar reclamo de garantía
+      tags:
+      - WarrantyClaims
+  /api/v1/warranty-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de estados de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar estados de garantía
+      tags:
+      - WarrantyStatuses
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo estado de garantía
+      parameters:
+      - description: Datos del estado de garantía
+        in: body
+        name: warrantyStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_status.CreateWarrantyStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_status.WarrantyStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear estado de garantía
+      tags:
+      - WarrantyStatuses
+  /api/v1/warranty-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un estado de garantía. No se puede eliminar si tiene garantías
+        asociadas
+      parameters:
+      - description: ID del estado de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar estado de garantía
+      tags:
+      - WarrantyStatuses
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un estado de garantía por su ID
+      parameters:
+      - description: ID del estado de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_status.WarrantyStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener estado de garantía
+      tags:
+      - WarrantyStatuses
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un estado de garantía existente
+      parameters:
+      - description: ID del estado de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del estado de garantía
+        in: body
+        name: warrantyStatus
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_status.UpdateWarrantyStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_status.WarrantyStatusResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar estado de garantía
+      tags:
+      - WarrantyStatuses
+  /api/v1/warranty-types:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de tipos de garantía
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar tipos de garantía
+      tags:
+      - WarrantyTypes
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo tipo de garantía
+      parameters:
+      - description: Datos del tipo de garantía
+        in: body
+        name: warrantyType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_type.CreateWarrantyTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/warranty_type.WarrantyTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear tipo de garantía
+      tags:
+      - WarrantyTypes
+  /api/v1/warranty-types/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un tipo de garantía. No se puede eliminar si tiene garantías
+        asociadas
+      parameters:
+      - description: ID del tipo de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar tipo de garantía
+      tags:
+      - WarrantyTypes
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un tipo de garantía por su ID
+      parameters:
+      - description: ID del tipo de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_type.WarrantyTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener tipo de garantía
+      tags:
+      - WarrantyTypes
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un tipo de garantía existente
+      parameters:
+      - description: ID del tipo de garantía
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos del tipo de garantía
+        in: body
+        name: warrantyType
+        required: true
+        schema:
+          $ref: '#/definitions/warranty_type.UpdateWarrantyTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/warranty_type.WarrantyTypeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar tipo de garantía
+      tags:
+      - WarrantyTypes
   /api/v1/workflows:
     get:
       consumes:
@@ -6275,6 +8196,401 @@ paths:
       summary: Refrescar token
       tags:
       - Auth
+  /jobs/{jobId}/visits:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de visitas de un trabajo específico
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda en reporte
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por usuario
+        in: query
+        name: userId
+        type: integer
+      - default: created_at
+        description: Campo de ordenamiento (date, created_at)
+        in: query
+        name: sort
+        type: string
+      - default: DESC
+        description: Dirección (ASC, DESC)
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar visitas de un trabajo
+      tags:
+      - JobVisits
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva visita para un trabajo específico
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Datos de la visita
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_visit.CreateJobVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_visit.JobVisitResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear visita de trabajo
+      tags:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una visita de trabajo (soft delete). También elimina los
+        archivos asociados.
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar visita de trabajo
+      tags:
+      - JobVisits
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una visita de trabajo por su ID
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_visit.JobVisitResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener visita por ID
+      tags:
+      - JobVisits
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una visita de trabajo existente
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: Datos actualizados
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_visit.UpdateJobVisitRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_visit.JobVisitResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar visita de trabajo
+      tags:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}/files:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene los archivos asociados a una visita de trabajo
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/job_visit.FileResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar archivos de una visita
+      tags:
+      - JobVisits
+    post:
+      consumes:
+      - multipart/form-data
+      description: Sube uno o más archivos a una visita de trabajo (multipart/form-data,
+        campo 'files')
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: Archivos a subir (max 40MB c/u, max 20 archivos)
+        in: formData
+        name: files
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/job_visit.FileResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Subir archivo a una visita
+      tags:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}/files/{fileId}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un archivo de S3 y de la base de datos
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: ID del archivo
+        in: path
+        name: fileId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar archivo de una visita
+      tags:
+      - JobVisits
+  /jobs/{jobId}/visits/{visitId}/files/{fileId}/download:
+    get:
+      description: Descarga un archivo de S3
+      parameters:
+      - description: ID del trabajo
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID de la visita
+        in: path
+        name: visitId
+        required: true
+        type: integer
+      - description: ID del archivo
+        in: path
+        name: fileId
+        required: true
+        type: integer
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Descargar archivo de una visita
+      tags:
+      - JobVisits
 securityDefinitions:
   BearerAuth:
     description: Ingrese el token con el prefijo 'Bearer '
@@ -6329,3 +8645,19 @@ tags:
   name: Invoices
 - description: Pagos de facturas
   name: Invoice Payments
+- description: Operaciones de garantías
+  name: Warranties
+- description: Equipos HVAC de garantías
+  name: WarrantyEquipment
+- description: Reclamos de garantías
+  name: WarrantyClaims
+- description: Tipos de garantías
+  name: WarrantyTypes
+- description: Estados de garantías
+  name: WarrantyStatuses
+- description: Tipos de reclamos de garantías
+  name: WarrantyClaimTypes
+- description: Estados de reclamos de garantías
+  name: WarrantyClaimStatuses
+- description: Visitas de trabajo con archivos adjuntos (fotos/documentos)
+  name: JobVisits

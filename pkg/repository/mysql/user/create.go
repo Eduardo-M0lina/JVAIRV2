@@ -6,8 +6,6 @@ import (
 	"log/slog"
 	"time"
 
-	"golang.org/x/crypto/bcrypt"
-
 	"github.com/your-org/jvairv2/pkg/domain/user"
 )
 
@@ -17,15 +15,6 @@ func (r *Repository) Create(ctx context.Context, u *user.User) error {
 		"name", u.Name,
 		"email", u.Email,
 	)
-
-	// Hash de la contraseña
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
-	if err != nil {
-		slog.Error("Error al generar hash de contraseña",
-			"error", err,
-		)
-		return fmt.Errorf("error al generar hash de contraseña: %w", err)
-	}
 
 	query := `
 		INSERT INTO users (name, email, password, role_id,
@@ -52,7 +41,7 @@ func (r *Repository) Create(ctx context.Context, u *user.User) error {
 	nowPtr := &now
 
 	result, err := r.db.ExecContext(ctx, query,
-		u.Name, u.Email, string(hashedPassword), roleIDValue,
+		u.Name, u.Email, u.Password, roleIDValue,
 		emailVerifiedAtValue, nowPtr, nowPtr,
 	)
 

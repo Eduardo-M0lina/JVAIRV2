@@ -6637,6 +6637,1982 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/warranties": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de garantías con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Warranties"
+                ],
+                "summary": "Listar garantías",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por número de garantía, número de acuerdo o notas",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por ID de trabajo",
+                        "name": "jobId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por tipo de garantía",
+                        "name": "warrantyTypeId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por estado de garantía",
+                        "name": "warrantyStatusId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtrar por número de semana del trabajo",
+                        "name": "weekNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Campo de ordenamiento (warranty_number, date_submitted, created_at, week_number)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Dirección de ordenamiento (asc, desc)",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea una nueva garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Warranties"
+                ],
+                "summary": "Crear garantía",
+                "parameters": [
+                    {
+                        "description": "Datos de la garantía",
+                        "name": "warranty",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty.CreateWarrantyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty.WarrantyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranties/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una garantía por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Warranties"
+                ],
+                "summary": "Obtener garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty.WarrantyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza una garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Warranties"
+                ],
+                "summary": "Actualizar garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos de la garantía",
+                        "name": "warranty",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty.UpdateWarrantyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty.WarrantyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina una garantía (soft delete)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Warranties"
+                ],
+                "summary": "Eliminar garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranties/{warrantyId}/equipment": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene la lista de equipos de una garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyEquipment"
+                ],
+                "summary": "Listar equipos de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "warrantyId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/warranty_equipment.WarrantyEquipmentResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo equipo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyEquipment"
+                ],
+                "summary": "Crear equipo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "warrantyId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del equipo",
+                        "name": "equipment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_equipment.WarrantyEquipmentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_equipment.WarrantyEquipmentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranties/{warrantyId}/equipment/{equipmentId}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un equipo de garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyEquipment"
+                ],
+                "summary": "Actualizar equipo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "warrantyId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID del equipo",
+                        "name": "equipmentId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del equipo",
+                        "name": "equipment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_equipment.WarrantyEquipmentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_equipment.WarrantyEquipmentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un equipo de garantía (hard delete)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyEquipment"
+                ],
+                "summary": "Eliminar equipo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la garantía",
+                        "name": "warrantyId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID del equipo",
+                        "name": "equipmentId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-claim-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de reclamo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimStatuses"
+                ],
+                "summary": "Listar estados de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de reclamo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimStatuses"
+                ],
+                "summary": "Crear estado de reclamo de garantía",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de reclamo",
+                        "name": "warrantyClaimStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_status.CreateWarrantyClaimStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_status.WarrantyClaimStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-claim-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de reclamo de garantía por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimStatuses"
+                ],
+                "summary": "Obtener estado de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_status.WarrantyClaimStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de reclamo de garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimStatuses"
+                ],
+                "summary": "Actualizar estado de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de reclamo",
+                        "name": "warrantyClaimStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_status.UpdateWarrantyClaimStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_status.WarrantyClaimStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de reclamo de garantía. No se puede eliminar si tiene reclamos asociados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimStatuses"
+                ],
+                "summary": "Eliminar estado de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-claim-types": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de tipos de reclamo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimTypes"
+                ],
+                "summary": "Listar tipos de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo tipo de reclamo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimTypes"
+                ],
+                "summary": "Crear tipo de reclamo de garantía",
+                "parameters": [
+                    {
+                        "description": "Datos del tipo de reclamo",
+                        "name": "warrantyClaimType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_type.CreateWarrantyClaimTypeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_type.WarrantyClaimTypeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-claim-types/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un tipo de reclamo de garantía por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimTypes"
+                ],
+                "summary": "Obtener tipo de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del tipo de reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_type.WarrantyClaimTypeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un tipo de reclamo de garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimTypes"
+                ],
+                "summary": "Actualizar tipo de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del tipo de reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del tipo de reclamo",
+                        "name": "warrantyClaimType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_type.UpdateWarrantyClaimTypeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim_type.WarrantyClaimTypeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un tipo de reclamo de garantía. No se puede eliminar si tiene reclamos asociados",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaimTypes"
+                ],
+                "summary": "Eliminar tipo de reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del tipo de reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-claims": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de reclamos de garantía con filtros opcionales",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaims"
+                ],
+                "summary": "Listar reclamos de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por número de reclamo interno, número de reclamo o notas",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por ID de trabajo",
+                        "name": "jobId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por tipo de reclamo",
+                        "name": "warrantyClaimTypeId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por estado de reclamo",
+                        "name": "warrantyClaimStatusId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtrar por número de semana del trabajo",
+                        "name": "weekNumber",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Campo de ordenamiento (internal_claim_number, claim_number, created_at, week_number)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Dirección de ordenamiento (asc, desc)",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo reclamo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaims"
+                ],
+                "summary": "Crear reclamo de garantía",
+                "parameters": [
+                    {
+                        "description": "Datos del reclamo",
+                        "name": "warrantyClaim",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim.CreateWarrantyClaimRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim.WarrantyClaimResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-claims/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un reclamo de garantía por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaims"
+                ],
+                "summary": "Obtener reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim.WarrantyClaimResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un reclamo de garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaims"
+                ],
+                "summary": "Actualizar reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del reclamo",
+                        "name": "warrantyClaim",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim.UpdateWarrantyClaimRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_claim.WarrantyClaimResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un reclamo de garantía (soft delete)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyClaims"
+                ],
+                "summary": "Eliminar reclamo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del reclamo",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-statuses": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de estados de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyStatuses"
+                ],
+                "summary": "Listar estados de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo estado de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyStatuses"
+                ],
+                "summary": "Crear estado de garantía",
+                "parameters": [
+                    {
+                        "description": "Datos del estado de garantía",
+                        "name": "warrantyStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_status.CreateWarrantyStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_status.WarrantyStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-statuses/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un estado de garantía por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyStatuses"
+                ],
+                "summary": "Obtener estado de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_status.WarrantyStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un estado de garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyStatuses"
+                ],
+                "summary": "Actualizar estado de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del estado de garantía",
+                        "name": "warrantyStatus",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_status.UpdateWarrantyStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_status.WarrantyStatusResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un estado de garantía. No se puede eliminar si tiene garantías asociadas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyStatuses"
+                ],
+                "summary": "Eliminar estado de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del estado de garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-types": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de tipos de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyTypes"
+                ],
+                "summary": "Listar tipos de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda por label",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea un nuevo tipo de garantía",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyTypes"
+                ],
+                "summary": "Crear tipo de garantía",
+                "parameters": [
+                    {
+                        "description": "Datos del tipo de garantía",
+                        "name": "warrantyType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_type.CreateWarrantyTypeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_type.WarrantyTypeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/warranty-types/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene un tipo de garantía por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyTypes"
+                ],
+                "summary": "Obtener tipo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del tipo de garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_type.WarrantyTypeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza un tipo de garantía existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyTypes"
+                ],
+                "summary": "Actualizar tipo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del tipo de garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos del tipo de garantía",
+                        "name": "warrantyType",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/warranty_type.UpdateWarrantyTypeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/warranty_type.WarrantyTypeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un tipo de garantía. No se puede eliminar si tiene garantías asociadas",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "WarrantyTypes"
+                ],
+                "summary": "Eliminar tipo de garantía",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del tipo de garantía",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/workflows": {
             "get": {
                 "security": [
@@ -7163,6 +9139,609 @@ const docTemplate = `{
                         "description": "Error interno del servidor",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{jobId}/visits": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una lista paginada de visitas de un trabajo específico",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Listar visitas de un trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Número de página",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Tamaño de página",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda en reporte",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por usuario",
+                        "name": "userId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "created_at",
+                        "description": "Campo de ordenamiento (date, created_at)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "default": "DESC",
+                        "description": "Dirección (ASC, DESC)",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.PaginatedResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Crea una nueva visita para un trabajo específico",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Crear visita de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos de la visita",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/job_visit.CreateJobVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/job_visit.JobVisitResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{jobId}/visits/{visitId}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene una visita de trabajo por su ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Obtener visita por ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/job_visit.JobVisitResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Actualiza una visita de trabajo existente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Actualizar visita de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Datos actualizados",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/job_visit.UpdateJobVisitRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/job_visit.JobVisitResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina una visita de trabajo (soft delete). También elimina los archivos asociados.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Eliminar visita de trabajo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{jobId}/visits/{visitId}/files": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Obtiene los archivos asociados a una visita de trabajo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Listar archivos de una visita",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/job_visit.FileResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Sube uno o más archivos a una visita de trabajo (multipart/form-data, campo 'files')",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Subir archivo a una visita",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Archivos a subir (max 40MB c/u, max 20 archivos)",
+                        "name": "files",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/job_visit.FileResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{jobId}/visits/{visitId}/files/{fileId}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Elimina un archivo de S3 y de la base de datos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Eliminar archivo de una visita",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID del archivo",
+                        "name": "fileId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/jobs/{jobId}/visits/{visitId}/files/{fileId}/download": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Descarga un archivo de S3",
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "JobVisits"
+                ],
+                "summary": "Descargar archivo de una visita",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID del trabajo",
+                        "name": "jobId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID de la visita",
+                        "name": "visitId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID del archivo",
+                        "name": "fileId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
                         }
                     }
                 }
@@ -8472,6 +11051,107 @@ const docTemplate = `{
                 }
             }
         },
+        "job_visit.CreateJobVisitRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "01-15-2024"
+                },
+                "report": {
+                    "type": "string",
+                    "example": "Technician visited the site and inspected the HVAC system."
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "viewableBy": {
+                    "type": "string",
+                    "example": "[\"1\",\"2\"]"
+                }
+            }
+        },
+        "job_visit.FileResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "type": {
+                    "type": "string",
+                    "example": "image"
+                },
+                "url": {
+                    "type": "string",
+                    "example": "https://bucket.s3.amazonaws.com/uploads/1234_photo.jpg"
+                }
+            }
+        },
+        "job_visit.JobVisitResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string",
+                    "example": "01-15-2024"
+                },
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/job_visit.FileResponse"
+                    }
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "jobId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "report": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "viewableBy": {
+                    "type": "string"
+                }
+            }
+        },
+        "job_visit.UpdateJobVisitRequest": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "example": "01-15-2024"
+                },
+                "report": {
+                    "type": "string",
+                    "example": "Updated report after follow-up visit."
+                },
+                "userId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "viewableBy": {
+                    "type": "string",
+                    "example": "[\"1\",\"2\"]"
+                }
+            }
+        },
         "permission.CreatePermissionRequest": {
             "type": "object",
             "required": [
@@ -9500,6 +12180,804 @@ const docTemplate = `{
                 }
             }
         },
+        "warranty.CreateWarrantyRequest": {
+            "type": "object",
+            "properties": {
+                "agreementNumber": {
+                    "type": "string",
+                    "example": "AGR-001"
+                },
+                "auditDone": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "dateSubmitted": {
+                    "type": "string",
+                    "example": "01-15-2024"
+                },
+                "jobId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Warranty notes"
+                },
+                "warrantyNumber": {
+                    "type": "string",
+                    "example": "WRN-2024-001"
+                },
+                "warrantyStatusId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyTypeId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty.UpdateWarrantyRequest": {
+            "type": "object",
+            "properties": {
+                "agreementNumber": {
+                    "type": "string",
+                    "example": "AGR-001"
+                },
+                "auditDone": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "dateSubmitted": {
+                    "type": "string",
+                    "example": "01-15-2024"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Warranty notes"
+                },
+                "warrantyNumber": {
+                    "type": "string",
+                    "example": "WRN-2024-001"
+                },
+                "warrantyStatusId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyTypeId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty.WarrantyResponse": {
+            "type": "object",
+            "properties": {
+                "agreementNumber": {
+                    "type": "string",
+                    "example": "AGR-001"
+                },
+                "auditDone": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "dateSubmitted": {
+                    "type": "string",
+                    "example": "01-15-2024"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "jobId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Warranty notes"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "warrantyNumber": {
+                    "type": "string",
+                    "example": "WRN-2024-001"
+                },
+                "warrantyStatusId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyTypeId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty_claim.CreateWarrantyClaimRequest": {
+            "type": "object",
+            "properties": {
+                "approved": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "claimNumber": {
+                    "type": "string",
+                    "example": "CLM-001"
+                },
+                "esaNumber": {
+                    "type": "string",
+                    "example": "ESA-001"
+                },
+                "internalClaimNumber": {
+                    "type": "string",
+                    "example": "ICN-2024-001"
+                },
+                "invoiceNumber": {
+                    "type": "string",
+                    "example": "INV-001"
+                },
+                "jobId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "laborPaymentReceived": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "manufacturer": {
+                    "type": "string",
+                    "example": "Carrier"
+                },
+                "modelNumber": {
+                    "type": "string",
+                    "example": "24ACC636A003"
+                },
+                "newPartSerialNumber": {
+                    "type": "string",
+                    "example": "NEW-SN-001"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Claim notes"
+                },
+                "oldPartSerialNumber": {
+                    "type": "string",
+                    "example": "OLD-SN-001"
+                },
+                "partDistributor": {
+                    "type": "string",
+                    "example": "Distributor"
+                },
+                "partInvoiceNumber": {
+                    "type": "string",
+                    "example": "PI-001"
+                },
+                "partNumber": {
+                    "type": "string",
+                    "example": "PN-12345"
+                },
+                "partsCreditReceived": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "replacementPartNumber": {
+                    "type": "string",
+                    "example": "PN-67890"
+                },
+                "serial": {
+                    "type": "string",
+                    "example": "SER-001"
+                },
+                "warrantyClaimStatusId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyClaimTypeId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyPart": {
+                    "type": "string",
+                    "example": "Compressor"
+                },
+                "workDone": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "warranty_claim.UpdateWarrantyClaimRequest": {
+            "type": "object",
+            "properties": {
+                "approved": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "claimNumber": {
+                    "type": "string",
+                    "example": "CLM-001"
+                },
+                "esaNumber": {
+                    "type": "string",
+                    "example": "ESA-001"
+                },
+                "internalClaimNumber": {
+                    "type": "string",
+                    "example": "ICN-2024-001"
+                },
+                "invoiceNumber": {
+                    "type": "string",
+                    "example": "INV-001"
+                },
+                "laborPaymentReceived": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "manufacturer": {
+                    "type": "string",
+                    "example": "Carrier"
+                },
+                "modelNumber": {
+                    "type": "string",
+                    "example": "24ACC636A003"
+                },
+                "newPartSerialNumber": {
+                    "type": "string",
+                    "example": "NEW-SN-001"
+                },
+                "notes": {
+                    "type": "string",
+                    "example": "Claim notes"
+                },
+                "oldPartSerialNumber": {
+                    "type": "string",
+                    "example": "OLD-SN-001"
+                },
+                "partDistributor": {
+                    "type": "string",
+                    "example": "Distributor"
+                },
+                "partInvoiceNumber": {
+                    "type": "string",
+                    "example": "PI-001"
+                },
+                "partNumber": {
+                    "type": "string",
+                    "example": "PN-12345"
+                },
+                "partsCreditReceived": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "replacementPartNumber": {
+                    "type": "string",
+                    "example": "PN-67890"
+                },
+                "serial": {
+                    "type": "string",
+                    "example": "SER-001"
+                },
+                "warrantyClaimStatusId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyClaimTypeId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyPart": {
+                    "type": "string",
+                    "example": "Compressor"
+                },
+                "workDone": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "warranty_claim.WarrantyClaimResponse": {
+            "type": "object",
+            "properties": {
+                "approved": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "claimNumber": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "esaNumber": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "internalClaimNumber": {
+                    "type": "string",
+                    "example": "ICN-2024-001"
+                },
+                "invoiceNumber": {
+                    "type": "string"
+                },
+                "jobId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "laborPaymentReceived": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "manufacturer": {
+                    "type": "string"
+                },
+                "modelNumber": {
+                    "type": "string"
+                },
+                "newPartSerialNumber": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "oldPartSerialNumber": {
+                    "type": "string"
+                },
+                "partDistributor": {
+                    "type": "string"
+                },
+                "partInvoiceNumber": {
+                    "type": "string"
+                },
+                "partNumber": {
+                    "type": "string"
+                },
+                "partsCreditReceived": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "replacementPartNumber": {
+                    "type": "string"
+                },
+                "serial": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "warrantyClaimStatusId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyClaimTypeId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "warrantyPart": {
+                    "type": "string"
+                },
+                "workDone": {
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "warranty_claim_status.CreateWarrantyClaimStatusRequest": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "example": "badge-warning"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Pending"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty_claim_status.UpdateWarrantyClaimStatusRequest": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "example": "badge-warning"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Pending"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty_claim_status.WarrantyClaimStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "example": "badge-warning"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Pending"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
+        "warranty_claim_type.CreateWarrantyClaimTypeRequest": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "labelPlural": {
+                    "type": "string",
+                    "example": "Parts"
+                }
+            }
+        },
+        "warranty_claim_type.UpdateWarrantyClaimTypeRequest": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "labelPlural": {
+                    "type": "string",
+                    "example": "Parts"
+                }
+            }
+        },
+        "warranty_claim_type.WarrantyClaimTypeResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "labelPlural": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
+        "warranty_equipment.WarrantyEquipmentRequest": {
+            "type": "object",
+            "properties": {
+                "airHandlerBrand": {
+                    "type": "string",
+                    "example": "Trane"
+                },
+                "airHandlerInstalled": {
+                    "type": "string",
+                    "example": "2024-01-15"
+                },
+                "airHandlerModel": {
+                    "type": "string",
+                    "example": "GAM5A0C48M41SB"
+                },
+                "airHandlerSerial": {
+                    "type": "string",
+                    "example": "5566778899"
+                },
+                "area": {
+                    "type": "string",
+                    "example": "Main Floor"
+                },
+                "evaporatorBrand": {
+                    "type": "string",
+                    "example": "Goodman"
+                },
+                "evaporatorInstalled": {
+                    "type": "string",
+                    "example": "2024-01-15"
+                },
+                "evaporatorModel": {
+                    "type": "string",
+                    "example": "CAPF4961D6"
+                },
+                "evaporatorSerial": {
+                    "type": "string",
+                    "example": "1122334455"
+                },
+                "furnaceBrand": {
+                    "type": "string",
+                    "example": "Lennox"
+                },
+                "furnaceInstalled": {
+                    "type": "string",
+                    "example": "2024-01-15"
+                },
+                "furnaceModel": {
+                    "type": "string",
+                    "example": "ML180UH"
+                },
+                "furnaceSerial": {
+                    "type": "string",
+                    "example": "0987654321"
+                },
+                "outdoorBrand": {
+                    "type": "string",
+                    "example": "Carrier"
+                },
+                "outdoorInstalled": {
+                    "type": "string",
+                    "example": "2024-01-15"
+                },
+                "outdoorModel": {
+                    "type": "string",
+                    "example": "24ACC636A003"
+                },
+                "outdoorSerial": {
+                    "type": "string",
+                    "example": "1234567890"
+                }
+            }
+        },
+        "warranty_equipment.WarrantyEquipmentResponse": {
+            "type": "object",
+            "properties": {
+                "airHandlerBrand": {
+                    "type": "string"
+                },
+                "airHandlerInstalled": {
+                    "type": "string"
+                },
+                "airHandlerModel": {
+                    "type": "string"
+                },
+                "airHandlerSerial": {
+                    "type": "string"
+                },
+                "area": {
+                    "type": "string",
+                    "example": "Main Floor"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "evaporatorBrand": {
+                    "type": "string"
+                },
+                "evaporatorInstalled": {
+                    "type": "string"
+                },
+                "evaporatorModel": {
+                    "type": "string"
+                },
+                "evaporatorSerial": {
+                    "type": "string"
+                },
+                "furnaceBrand": {
+                    "type": "string"
+                },
+                "furnaceInstalled": {
+                    "type": "string"
+                },
+                "furnaceModel": {
+                    "type": "string"
+                },
+                "furnaceSerial": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "outdoorBrand": {
+                    "type": "string"
+                },
+                "outdoorInstalled": {
+                    "type": "string"
+                },
+                "outdoorModel": {
+                    "type": "string"
+                },
+                "outdoorSerial": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "warrantyId": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty_status.CreateWarrantyStatusRequest": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "example": "badge-warning"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Pending"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty_status.UpdateWarrantyStatusRequest": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "example": "badge-warning"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Pending"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "warranty_status.WarrantyStatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string",
+                    "example": "badge-warning"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Pending"
+                },
+                "order": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
+        "warranty_type.CreateWarrantyTypeRequest": {
+            "type": "object",
+            "properties": {
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "labelPlural": {
+                    "type": "string",
+                    "example": "Parts"
+                }
+            }
+        },
+        "warranty_type.UpdateWarrantyTypeRequest": {
+            "type": "object",
+            "properties": {
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "labelPlural": {
+                    "type": "string",
+                    "example": "Parts"
+                }
+            }
+        },
+        "warranty_type.WarrantyTypeResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "labelPlural": {
+                    "type": "string",
+                    "example": "Parts"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                }
+            }
+        },
         "workflow.CreateWorkflowRequest": {
             "type": "object",
             "required": [
@@ -9684,6 +13162,38 @@ const docTemplate = `{
         {
             "description": "Pagos de facturas",
             "name": "Invoice Payments"
+        },
+        {
+            "description": "Operaciones de garantías",
+            "name": "Warranties"
+        },
+        {
+            "description": "Equipos HVAC de garantías",
+            "name": "WarrantyEquipment"
+        },
+        {
+            "description": "Reclamos de garantías",
+            "name": "WarrantyClaims"
+        },
+        {
+            "description": "Tipos de garantías",
+            "name": "WarrantyTypes"
+        },
+        {
+            "description": "Estados de garantías",
+            "name": "WarrantyStatuses"
+        },
+        {
+            "description": "Tipos de reclamos de garantías",
+            "name": "WarrantyClaimTypes"
+        },
+        {
+            "description": "Estados de reclamos de garantías",
+            "name": "WarrantyClaimStatuses"
+        },
+        {
+            "description": "Visitas de trabajo con archivos adjuntos (fotos/documentos)",
+            "name": "JobVisits"
         }
     ]
 }`
