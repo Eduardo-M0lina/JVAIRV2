@@ -49,9 +49,7 @@ pkg/domain/{{modulo}}/
 ├── list.go            # Método List del UseCase
 ├── update.go          # Método Update del UseCase
 ├── delete.go          # Método Delete del UseCase (soft delete)
-├── {{extra}}.go       # Métodos adicionales (ej: close.go, duplicate.go)
-├── mock.go            # Mocks para tests (MockRepository, MockCheckers)
-└── usecase_test.go    # Tests unitarios del UseCase
+└── {{extra}}.go       # Métodos adicionales (ej: close.go, duplicate.go)
 
 pkg/repository/mysql/{{modulo}}/
 ├── repository.go      # Repository struct, NewRepository(), *sql.DB
@@ -83,8 +81,7 @@ pkg/rest/handler/{{modulo}}/
 7. **Router**: Chi (`github.com/go-chi/chi/v5`)
 8. **Response helper**: `github.com/your-org/jvairv2/pkg/rest/response` — usar `response.JSON(w, status, data)` y `response.Error(w, status, msg)`
 9. **Logging**: `log/slog` con `slog.ErrorContext`, `slog.InfoContext`, `slog.WarnContext`
-10. **Tests**: `testify/assert` y `testify/mock`. Mockear Repository y todos los Checkers.
-11. **Swagger**: Annotations en cada handler method (`@Summary`, `@Description`, `@Tags`, `@Accept`, `@Produce`, `@Param`, `@Success`, `@Failure`, `@Router`, `@Security BearerAuth`). Al finalizar el módulo, regenerar docs con `swag init`
+10. **Swagger**: Annotations en cada handler method (`@Summary`, `@Description`, `@Tags`, `@Accept`, `@Produce`, `@Param`, `@Success`, `@Failure`, `@Router`, `@Security BearerAuth`). Al finalizar el módulo, regenerar docs con `swag init`
 
 ### Integración (después de crear el módulo)
 1. **`cmd/api/container.go`**: Agregar imports, inicializar repository, checkers/adapters, use case y handler. Pasar handler al router.
@@ -104,21 +101,13 @@ pkg/rest/handler/{{modulo}}/
 - Todos los archivos listados en la estructura de arriba
 - Seguir exactamente los patrones de módulos existentes (usar `customer` o `property` como referencia para módulos simples, `job` para módulos con dependencias complejas)
 
-### 3. Tests unitarios
-- `usecase_test.go` con cobertura de:
-  - Caso exitoso para cada método
-  - Errores de validación
-  - Errores de FKs inválidas
-  - Errores de not found
-  - Errores de repository
-
-### 4. Documentación Swagger
+### 3. Documentación Swagger
 - Annotations completas en cada handler (`@Summary`, `@Description`, `@Tags`, `@Accept`, `@Produce`, `@Param`, `@Success`, `@Failure`, `@Router`, `@Security BearerAuth`)
 - **Al finalizar la migración del módulo**, ejecutar `swag init -g cmd/api/main.go -o docs/swagger` para regenerar la documentación Swagger completa con los nuevos endpoints
 - Verificar que la documentación generada incluya correctamente todos los endpoints del módulo recién migrado
 - Confirmar que los endpoints previos no se hayan perdido en la regeneración
 
-### 5. Colección Postman
+### 4. Colección Postman
 - Crear `docs/postman_{{modulo}}_collection.json` **siguiendo el mismo estándar y formato de las colecciones existentes** (ver como referencia: `docs/postman_customer_collection.json`, `docs/postman_jobs_collection.json`, u otra colección ya generada)
 - La colección debe incluir:
   - Todas las operaciones CRUD del módulo
@@ -130,9 +119,8 @@ pkg/rest/handler/{{modulo}}/
 - Si el módulo tiene sub-recursos o catálogos, incluir requests para cada uno
 - La colección debe estar lista para importar en Postman y ejecutar pruebas inmediatamente
 
-### 6. Verificación final
+### 5. Verificación final
 - Ejecutar `go build ./...` para verificar compilación
-- Ejecutar `go test ./pkg/domain/{{modulo}}/...` para verificar tests
 - Ejecutar pre-commit hooks si están configurados
 
 ## Operaciones CRUD esperadas
