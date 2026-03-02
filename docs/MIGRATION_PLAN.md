@@ -108,7 +108,6 @@ Para cada módulo, seguiremos este enfoque:
 2. **Repositorios**: Implementar la capa de acceso a datos.
 3. **Casos de Uso**: Implementar la lógica de negocio.
 4. **Endpoints REST**: Implementar la API REST.
-5. **Tests**: Crear pruebas unitarias para todas las capas.
 
 ## Prioridad de Implementación
 

@@ -12,9 +12,14 @@ import (
 
 // GetUserAbilities obtiene las habilidades de un usuario
 func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ability.Ability, error) {
+
 	// Convertir ID de string a int64
-	idInt, err := strconv.ParseInt(userID, 10, 64)
+	userIDInt, err := strconv.ParseInt(userID, 10, 64)
 	if err != nil {
+		slog.Error("Error al convertir ID de usuario",
+			"user_id", userID,
+			"error", err,
+		)
 		return nil, errors.New("ID de usuario inválido")
 	}
 
@@ -22,23 +27,18 @@ func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ab
 		SELECT a.id, a.name, a.title, a.entity_id, a.entity_type, a.only_owned, a.options, a.scope, a.created_at, a.updated_at
 		FROM abilities a
 		INNER JOIN permissions p ON a.id = p.ability_id
-		WHERE p.entity_id = ? AND p.entity_type = 'App\\Models\\User'
-		UNION
-		SELECT a.id, a.name, a.title, a.entity_id, a.entity_type, a.only_owned, a.options, a.scope, a.created_at, a.updated_at
-		FROM abilities a
-		INNER JOIN permissions p ON a.id = p.ability_id
 		INNER JOIN assigned_roles ar ON p.entity_id = ar.role_id
-		WHERE ar.entity_id = ? AND p.entity_type = 'App\\Models\\Role' AND ar.entity_type = 'App\\Models\\User'
+		WHERE ar.entity_id = ? AND p.entity_type = 'roles' AND ar.entity_type = 'App\\Models\\User'
 	`
 
-	slog.Debug("Ejecutando consulta de habilidades de usuario",
-		"user_id", idInt,
+	slog.Debug("Ejecutando consulta SQL para obtener habilidades",
+		"user_id_int", userIDInt,
 	)
 
-	rows, err := r.db.QueryContext(ctx, query, idInt, idInt)
+	rows, err := r.db.QueryContext(ctx, query, userIDInt)
 	if err != nil {
 		slog.Error("Error al ejecutar consulta de habilidades",
-			"user_id", idInt,
+			"user_id", userIDInt,
 			"error", err,
 		)
 		return nil, err
@@ -46,6 +46,8 @@ func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ab
 	defer func() { _ = rows.Close() }()
 
 	abilities := []*ability.Ability{}
+	rowCount := 0
+
 	for rows.Next() {
 		var a ability.Ability
 		var createdAt, updatedAt sql.NullTime
@@ -58,6 +60,11 @@ func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ab
 		)
 
 		if err != nil {
+			slog.Error("Error al escanear fila de habilidades",
+				"user_id", userIDInt,
+				"row_number", rowCount,
+				"error", err,
+			)
 			return nil, err
 		}
 
@@ -91,20 +98,16 @@ func (r *Repository) GetUserAbilities(ctx context.Context, userID string) ([]*ab
 		}
 
 		abilities = append(abilities, &a)
+		rowCount++
 	}
 
 	if err = rows.Err(); err != nil {
 		slog.Error("Error al iterar resultados de habilidades",
-			"user_id", idInt,
+			"user_id", userIDInt,
 			"error", err,
 		)
 		return nil, err
 	}
-
-	slog.Debug("Habilidades obtenidas exitosamente",
-		"user_id", idInt,
-		"count", len(abilities),
-	)
 
 	return abilities, nil
 }

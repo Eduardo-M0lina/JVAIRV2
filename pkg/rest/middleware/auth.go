@@ -38,48 +38,51 @@ func (m *AuthMiddleware) Authenticate(next http.Handler) http.Handler {
 			"remote_addr", r.RemoteAddr,
 		)
 
-		// Obtener token del encabezado Authorization
 		tokenString := extractToken(r)
 		if tokenString == "" {
-			slog.Warn("Token no encontrado en encabezado Authorization",
+			slog.Warn("Token no encontrado o formato inválido en encabezado Authorization",
 				"path", r.URL.Path,
 				"remote_addr", r.RemoteAddr,
+				"expected_format", "Bearer <token>",
 			)
-			http.Error(w, "No autorizado", http.StatusUnauthorized)
+			http.Error(w, "No autorizado - Token no proporcionado o formato inválido", http.StatusUnauthorized)
 			return
 		}
-		slog.Debug("Token extraído del encabezado",
-			"token_prefix", tokenString[:min(20, len(tokenString))],
-		)
 
-		// Validar token
 		valid, err := m.authUseCase.ValidateToken(r.Context(), tokenString)
 		if err != nil || !valid {
-			slog.Error("Token inválido",
+			slog.Error("Token inválido o error en validación",
 				"valid", valid,
 				"error", err,
 				"path", r.URL.Path,
+				"token_length", len(tokenString),
 			)
-			http.Error(w, "No autorizado", http.StatusUnauthorized)
+			http.Error(w, "No autorizado - Token inválido", http.StatusUnauthorized)
 			return
 		}
-		slog.Debug("Token validado correctamente")
 
-		// Obtener usuario del token
 		user, err := m.authUseCase.GetUserFromToken(r.Context(), tokenString)
 		if err != nil {
 			slog.Error("No se pudo obtener usuario del token",
 				"error", err,
 				"path", r.URL.Path,
+				"token_length", len(tokenString),
 			)
-			http.Error(w, "No autorizado", http.StatusUnauthorized)
+			http.Error(w, "No autorizado - Error al obtener usuario", http.StatusUnauthorized)
 			return
 		}
-		slog.Info("Usuario autenticado correctamente",
-			"user_id", user.ID,
-			"email", user.Email,
-			"name", user.Name,
-		)
+
+		// Verificar si el usuario está activo
+		if !user.IsActive {
+			slog.Warn("Usuario inactivo",
+				"user_id", user.ID,
+				"email", user.Email,
+				"is_active", user.IsActive,
+				"path", r.URL.Path,
+			)
+			http.Error(w, "No autorizado - Usuario inactivo", http.StatusUnauthorized)
+			return
+		}
 
 		// Agregar usuario al contexto usando la clave personalizada
 		ctx := context.WithValue(r.Context(), UserContextKey, user)
@@ -95,12 +98,4 @@ func extractToken(r *http.Request) string {
 		return strArr[1]
 	}
 	return ""
-}
-
-// min retorna el menor de dos enteros
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

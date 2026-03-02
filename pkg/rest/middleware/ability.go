@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -16,18 +17,15 @@ type abilityKey struct{}
 func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			slog.Debug("Iniciando carga de habilidades",
-				"method", r.Method,
-				"path", r.URL.Path,
-			)
 
 			// Obtener el usuario del contexto
 			userCtx := r.Context().Value(UserContextKey)
 			if userCtx == nil {
-				slog.Warn("No hay usuario en el contexto",
+				slog.Error("No hay usuario en el contexto - esto no debería pasar si AuthMiddleware funciona correctamente",
 					"path", r.URL.Path,
+					"remote_addr", r.RemoteAddr,
 				)
-				next.ServeHTTP(w, r)
+				http.Error(w, "Error interno - Usuario no encontrado en contexto", http.StatusInternalServerError)
 				return
 			}
 
@@ -36,8 +34,9 @@ func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 			if !ok {
 				slog.Error("No se pudo convertir el usuario del contexto",
 					"type", userCtx,
+					"path", r.URL.Path,
 				)
-				next.ServeHTTP(w, r)
+				http.Error(w, "Error interno - Tipo de usuario inválido", http.StatusInternalServerError)
 				return
 			}
 
@@ -48,16 +47,12 @@ func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 					"user_id", u.ID,
 					"email", u.Email,
 					"error", err,
+					"path", r.URL.Path,
 				)
+				// No bloqueamos la petición si hay error en habilidades, solo registramos
 				next.ServeHTTP(w, r)
 				return
 			}
-
-			slog.Info("Habilidades cargadas correctamente",
-				"user_id", u.ID,
-				"email", u.Email,
-				"abilities_count", len(abilities),
-			)
 
 			// Convertir las habilidades a un slice de strings
 			abilityNames := make([]string, len(abilities))
@@ -76,21 +71,20 @@ func WithAbilities(userUseCase *user.UseCase) func(http.Handler) http.Handler {
 
 // HasAbility verifica si el usuario tiene una habilidad específica
 func HasAbility(ctx context.Context, ability string) bool {
-	slog.Debug("Verificando permiso", "ability", ability)
 
 	// Obtener las habilidades del contexto
 	abilities, ok := ctx.Value(abilityKey{}).([]string)
 	if !ok {
-		slog.Warn("No se encontraron habilidades en el contexto")
+		slog.Error("No se encontraron habilidades en el contexto",
+			"requested_ability", ability,
+			"context_type", fmt.Sprintf("%T", ctx.Value(abilityKey{})),
+		)
 		return false
 	}
 
 	// Verificar si el usuario tiene la habilidad "*" (superadmin)
 	for _, a := range abilities {
 		if a == "*" {
-			slog.Info("Acceso concedido por habilidad wildcard",
-				"requested_ability", ability,
-			)
 			return true
 		}
 	}
@@ -98,17 +92,10 @@ func HasAbility(ctx context.Context, ability string) bool {
 	// Verificar si el usuario tiene la habilidad específica
 	for _, a := range abilities {
 		if a == ability {
-			slog.Info("Acceso concedido",
-				"ability", ability,
-			)
 			return true
 		}
 	}
 
-	slog.Warn("Acceso denegado - habilidad no encontrada",
-		"ability", ability,
-		"available_abilities", abilities,
-	)
 	return false
 }
 
@@ -118,7 +105,13 @@ func RequireAbility(ability string) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if !HasAbility(r.Context(), ability) {
-				http.Error(w, "Forbidden", http.StatusForbidden)
+				slog.Warn("Acceso denegado - habilidad requerida no encontrada",
+					"required_ability", ability,
+					"method", r.Method,
+					"path", r.URL.Path,
+					"remote_addr", r.RemoteAddr,
+				)
+				http.Error(w, "Forbidden - Permiso insuficiente", http.StatusForbidden)
 				return
 			}
 			next.ServeHTTP(w, r)
