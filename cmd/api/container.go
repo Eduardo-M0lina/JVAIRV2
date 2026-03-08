@@ -7,6 +7,7 @@ import (
 	commonAuth "github.com/your-org/jvairv2/pkg/common/auth"
 	"github.com/your-org/jvairv2/pkg/common/storage"
 	ability "github.com/your-org/jvairv2/pkg/domain/ability"
+	domainAlert "github.com/your-org/jvairv2/pkg/domain/alert"
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
@@ -45,6 +46,7 @@ import (
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
+	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
 	mysqlFile "github.com/your-org/jvairv2/pkg/repository/mysql/file"
@@ -82,6 +84,7 @@ import (
 	mysqlWorkflow "github.com/your-org/jvairv2/pkg/repository/mysql/workflow"
 	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	alertHandler "github.com/your-org/jvairv2/pkg/rest/handler/alert"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
@@ -164,6 +167,7 @@ type Container struct {
 	JobRateStatusHandler       *jobRateStatusHandler.Handler
 	JobTaskHandler             *jobTaskHandler.Handler
 	JobRateHandler             *jobRateHandler.Handler
+	AlertHandler               *alertHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -328,6 +332,11 @@ func NewContainer(configPath string) (*Container, error) {
 	jobRateStatusChecker := mysqlJobRate.NewJobRateStatusExistsChecker(dbConn.GetDB())
 	jobRateUC := domainJobRate.NewUseCase(jobRateRepo, jobRateJobChecker, jobRateUserChecker, jobRateStatusChecker)
 
+	// Module 15: Alerts
+	alertRepo := mysqlAlert.NewRepository(dbConn.GetDB())
+	alertUserChecker := mysqlAlert.NewUserExistsChecker(dbConn.GetDB())
+	alertUC := domainAlert.NewUseCase(alertRepo, alertUserChecker)
+
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHandler := authHandler.NewHandler(authUC)
@@ -368,6 +377,7 @@ func NewContainer(configPath string) (*Container, error) {
 	jrsHdlr := jobRateStatusHandler.NewHandler(jobRateStatusUC)
 	jtHdlr := jobTaskHandler.NewHandler(jobTaskUC)
 	jraHdlr := jobRateHandler.NewHandler(jobRateUC)
+	alHdlr := alertHandler.NewHandler(alertUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -411,6 +421,7 @@ func NewContainer(configPath string) (*Container, error) {
 		jrsHdlr,
 		jtHdlr,
 		jraHdlr,
+		alHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -457,6 +468,7 @@ func NewContainer(configPath string) (*Container, error) {
 		JobRateStatusHandler:       jrsHdlr,
 		JobTaskHandler:             jtHdlr,
 		JobRateHandler:             jraHdlr,
+		AlertHandler:               alHdlr,
 	}, nil
 }
 

@@ -8,6 +8,7 @@ import (
 	"github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	alertHandler "github.com/your-org/jvairv2/pkg/rest/handler/alert"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
@@ -85,6 +86,7 @@ func New(
 	jobRateStatusHandler *jobRateStatusHandler.Handler,
 	jobTaskHandler *jobTaskHandler.Handler,
 	jobRateHandler *jobRateHandler.Handler,
+	alertHandler *alertHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -209,6 +211,9 @@ func New(
 
 			// Calculate rate payment (standalone endpoint)
 			r.Post("/calculate-rate-payment", jobRateHandler.CalculatePayment)
+
+			// Module 15: Alerts
+			alertHandler.RegisterRoutes(r)
 		})
 	})
 	return r

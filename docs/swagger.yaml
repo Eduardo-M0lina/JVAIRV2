@@ -60,6 +60,67 @@ definitions:
     required:
     - name
     type: object
+  alert.Alert:
+    properties:
+      alertType:
+        type: string
+      createdAt:
+        type: string
+      entityId:
+        type: integer
+      entityType:
+        type: string
+      id:
+        type: integer
+      isRead:
+        type: boolean
+      message:
+        type: string
+      messageLevel:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  alert.CreateRequest:
+    properties:
+      alertType:
+        type: string
+      entityId:
+        type: integer
+      entityType:
+        type: string
+      message:
+        type: string
+      messageLevel:
+        type: string
+      userId:
+        type: integer
+    type: object
+  alert.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/alert.Alert'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  alert.MarkAllReadResponse:
+    properties:
+      updated:
+        type: integer
+    type: object
+  alert.UnreadCountResponse:
+    properties:
+      count:
+        type: integer
+    type: object
   assigned_role.AssignRoleRequest:
     properties:
       entityId:
@@ -2812,6 +2873,273 @@ paths:
       summary: Actualizar ability
       tags:
       - Abilities
+  /api/v1/alerts:
+    get:
+      consumes:
+      - application/json
+      description: Get all alerts with optional filters and pagination
+      parameters:
+      - description: Filter by user ID
+        in: query
+        name: userId
+        type: integer
+      - description: Filter by read status (true/false)
+        in: query
+        name: isRead
+        type: boolean
+      - description: Filter by alert type
+        in: query
+        name: alertType
+        type: string
+      - description: Filter by entity type
+        in: query
+        name: entityType
+        type: string
+      - default: 15
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/alert.ListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List alerts
+      tags:
+      - Alerts
+    post:
+      consumes:
+      - application/json
+      description: Create a new alert (typically used by system events)
+      parameters:
+      - description: Alert data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/alert.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/alert.Alert'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create alert
+      tags:
+      - Alerts
+  /api/v1/alerts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an alert by ID (hard delete)
+      parameters:
+      - description: Alert ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete alert
+      tags:
+      - Alerts
+    get:
+      consumes:
+      - application/json
+      description: Get a single alert by its ID
+      parameters:
+      - description: Alert ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/alert.Alert'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get alert by ID
+      tags:
+      - Alerts
+  /api/v1/alerts/{id}/read:
+    put:
+      consumes:
+      - application/json
+      description: Mark a single alert as read
+      parameters:
+      - description: Alert ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Mark alert as read
+      tags:
+      - Alerts
+  /api/v1/alerts/read-all:
+    put:
+      consumes:
+      - application/json
+      description: Mark all unread alerts for the authenticated user as read
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/alert.MarkAllReadResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Mark all alerts as read
+      tags:
+      - Alerts
+  /api/v1/alerts/unread-count:
+    get:
+      consumes:
+      - application/json
+      description: Get the count of unread alerts for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/alert.UnreadCountResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get unread alerts count
+      tags:
+      - Alerts
   /api/v1/assigned-roles:
     get:
       consumes:
