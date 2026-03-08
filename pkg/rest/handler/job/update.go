@@ -201,6 +201,9 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Registro automático de actividad: Job actualizado
+	h.logActivity(r.Context(), id, "job_update", "Job was updated")
+
 	// Re-fetch para obtener datos actualizados
 	updated, err := h.useCase.GetByID(r.Context(), id)
 	if err != nil {

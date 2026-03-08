@@ -583,6 +583,47 @@ definitions:
       workflowId:
         type: integer
     type: object
+  job_activity_log.CreateRequest:
+    properties:
+      jobId:
+        type: integer
+      log:
+        type: string
+      type:
+        type: string
+      userId:
+        type: integer
+    type: object
+  job_activity_log.JobActivityLog:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      log:
+        type: string
+      type:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  job_activity_log.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/job_activity_log.JobActivityLog'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
   job_category.CreateJobCategoryRequest:
     properties:
       isActive:
@@ -859,6 +900,215 @@ definitions:
     required:
     - label
     type: object
+  job_rate.CalculatePaymentRequest:
+    properties:
+      companyParts:
+        type: number
+      deduction:
+        type: number
+      rateFlat:
+        type: number
+      ratePercent:
+        type: number
+      salePrice:
+        type: number
+      techParts:
+        type: number
+    type: object
+  job_rate.CalculatePaymentResponse:
+    properties:
+      payment:
+        type: number
+    type: object
+  job_rate.CreateRequest:
+    properties:
+      companyParts:
+        type: number
+      deduction:
+        type: number
+      jobRateStatusId:
+        type: integer
+      notes:
+        type: string
+      partsReplaced:
+        type: string
+      rateFlat:
+        type: number
+      ratePercent:
+        type: number
+      salePrice:
+        type: number
+      techParts:
+        type: number
+      userId:
+        type: integer
+    type: object
+  job_rate.JobRate:
+    properties:
+      companyParts:
+        type: number
+      createdAt:
+        type: string
+      deduction:
+        type: number
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      jobRateStatusId:
+        type: integer
+      notes:
+        type: string
+      paid:
+        type: boolean
+      partsReplaced:
+        type: string
+      payment:
+        type: number
+      rateFlat:
+        type: number
+      ratePercent:
+        type: number
+      salePrice:
+        type: number
+      techParts:
+        type: number
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  job_rate.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/job_rate.JobRate'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  job_rate.UpdateRequest:
+    properties:
+      companyParts:
+        type: number
+      deduction:
+        type: number
+      jobRateStatusId:
+        type: integer
+      notes:
+        type: string
+      paid:
+        type: boolean
+      partsReplaced:
+        type: string
+      rateFlat:
+        type: number
+      ratePercent:
+        type: number
+      salePrice:
+        type: number
+      techParts:
+        type: number
+      userId:
+        type: integer
+    type: object
+  job_rate_status.CreateRequest:
+    properties:
+      class:
+        type: string
+      label:
+        type: string
+      order:
+        type: integer
+    type: object
+  job_rate_status.JobRateStatus:
+    properties:
+      class:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      id:
+        type: integer
+      label:
+        type: string
+      order:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  job_rate_status.UpdateRequest:
+    properties:
+      class:
+        type: string
+      label:
+        type: string
+      order:
+        type: integer
+    type: object
+  job_resident.CreateRequest:
+    properties:
+      email:
+        type: string
+      homePhone:
+        type: string
+      mobilePhone:
+        type: string
+      name:
+        type: string
+    type: object
+  job_resident.JobResident:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      email:
+        type: string
+      homePhone:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      mobilePhone:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  job_resident.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/job_resident.JobResident'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  job_resident.UpdateRequest:
+    properties:
+      email:
+        type: string
+      homePhone:
+        type: string
+      mobilePhone:
+        type: string
+      name:
+        type: string
+    type: object
   job_status.CreateJobStatusRequest:
     properties:
       class:
@@ -895,6 +1145,62 @@ definitions:
         type: string
     required:
     - label
+    type: object
+  job_task.CreateRequest:
+    properties:
+      dueDate:
+        type: string
+      task:
+        type: string
+      taskStatusId:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  job_task.JobTask:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      task:
+        type: string
+      taskStatusId:
+        type: integer
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  job_task.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/job_task.JobTask'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  job_task.UpdateRequest:
+    properties:
+      dueDate:
+        type: string
+      task:
+        type: string
+      taskStatusId:
+        type: integer
+      userId:
+        type: integer
     type: object
   job_visit.CreateJobVisitRequest:
     properties:
@@ -2756,6 +3062,36 @@ paths:
       summary: Revocar rol
       tags:
       - AssignedRoles
+  /api/v1/calculate-rate-payment:
+    post:
+      consumes:
+      - application/json
+      description: Calculate payment amount based on rate formula
+      parameters:
+      - description: Payment calculation data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_rate.CalculatePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_rate.CalculatePaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Calculate rate payment
+      tags:
+      - JobRates
   /api/v1/customers:
     get:
       description: Get a paginated list of customers with optional filters
@@ -3822,6 +4158,191 @@ paths:
       summary: Actualizar prioridad de trabajo
       tags:
       - JobPriorities
+  /api/v1/job-rate-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Get all job rate statuses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/job_rate_status.JobRateStatus'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List job rate statuses
+      tags:
+      - JobRateStatuses
+    post:
+      consumes:
+      - application/json
+      description: Create a new job rate status
+      parameters:
+      - description: Job rate status data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_rate_status.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_rate_status.JobRateStatus'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create job rate status
+      tags:
+      - JobRateStatuses
+  /api/v1/job-rate-statuses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a job rate status by ID
+      parameters:
+      - description: Job Rate Status ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete job rate status
+      tags:
+      - JobRateStatuses
+    get:
+      consumes:
+      - application/json
+      description: Get a job rate status by ID
+      parameters:
+      - description: Job Rate Status ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_rate_status.JobRateStatus'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get job rate status by ID
+      tags:
+      - JobRateStatuses
+    put:
+      consumes:
+      - application/json
+      description: Update a job rate status by ID
+      parameters:
+      - description: Job Rate Status ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Job rate status data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_rate_status.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_rate_status.JobRateStatus'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update job rate status
+      tags:
+      - JobRateStatuses
   /api/v1/job-statuses:
     get:
       consumes:
@@ -4263,6 +4784,141 @@ paths:
       summary: Cerrar trabajo
       tags:
       - Jobs
+  /api/v1/jobs/{jobId}/activities:
+    get:
+      consumes:
+      - application/json
+      description: Get all activity logs for a specific job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 50
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_activity_log.ListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List job activity logs
+      tags:
+      - JobActivities
+    post:
+      consumes:
+      - application/json
+      description: Create a new activity log/note for a job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Activity log data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_activity_log.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_activity_log.JobActivityLog'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create job activity log
+      tags:
+      - JobActivities
+  /api/v1/jobs/{jobId}/activities/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an activity log by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Activity Log ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete job activity log
+      tags:
+      - JobActivities
   /api/v1/jobs/{jobId}/equipment:
     get:
       description: Get a list of equipment for a job with optional type filter
@@ -4450,6 +5106,564 @@ paths:
       summary: Update job equipment
       tags:
       - JobEquipment
+  /api/v1/jobs/{jobId}/rates:
+    get:
+      consumes:
+      - application/json
+      description: Get all rates for a specific job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 50
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_rate.ListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List job rates
+      tags:
+      - JobRates
+    post:
+      consumes:
+      - application/json
+      description: Create a new rate/commission for a job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Rate data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_rate.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_rate.JobRate'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create job rate
+      tags:
+      - JobRates
+  /api/v1/jobs/{jobId}/rates/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a rate by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Rate ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete job rate
+      tags:
+      - JobRates
+    put:
+      consumes:
+      - application/json
+      description: Update a rate by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Rate ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Rate data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_rate.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_rate.JobRate'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update job rate
+      tags:
+      - JobRates
+  /api/v1/jobs/{jobId}/residents:
+    get:
+      consumes:
+      - application/json
+      description: Get all residents for a specific job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 50
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_resident.ListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List job residents
+      tags:
+      - JobResidents
+    post:
+      consumes:
+      - application/json
+      description: Create a new resident contact for a job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Resident data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_resident.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_resident.JobResident'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create job resident
+      tags:
+      - JobResidents
+  /api/v1/jobs/{jobId}/residents/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a resident by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Resident ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete job resident
+      tags:
+      - JobResidents
+    put:
+      consumes:
+      - application/json
+      description: Update a resident by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Resident ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Resident data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_resident.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_resident.JobResident'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update job resident
+      tags:
+      - JobResidents
+  /api/v1/jobs/{jobId}/tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get all tasks for a specific job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 50
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_task.ListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List job tasks
+      tags:
+      - JobTasks
+    post:
+      consumes:
+      - application/json
+      description: Create a new task for a job
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Task data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_task.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_task.JobTask'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create job task
+      tags:
+      - JobTasks
+  /api/v1/jobs/{jobId}/tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a task by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete job task
+      tags:
+      - JobTasks
+    put:
+      consumes:
+      - application/json
+      description: Update a task by ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Task data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_task.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_task.JobTask'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update job task
+      tags:
+      - JobTasks
   /api/v1/permissions:
     get:
       consumes:
@@ -6122,6 +7336,40 @@ paths:
       summary: Actualizar estado de tarea
       tags:
       - TaskStatuses
+  /api/v1/tasks:
+    get:
+      consumes:
+      - application/json
+      description: Get all tasks across all jobs (global view)
+      parameters:
+      - default: 50
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/job_task.ListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List all tasks
+      tags:
+      - JobTasks
   /api/v1/technician-job-statuses:
     get:
       consumes:

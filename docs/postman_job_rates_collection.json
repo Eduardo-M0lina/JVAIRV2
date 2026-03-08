@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "job-rates-collection",
+		"name": "JVAIR V2 - Job Rates",
+		"description": "Colección de endpoints para gestión de comisiones/pagos de técnicos con cálculo automático.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "jobId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "rateId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Crear comisión/pago",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": 1,\n  \"jobRateStatusId\": 1,\n  \"salePrice\": 1000.00,\n  \"ratePercent\": 15.0,\n  \"rateFlat\": 50.00,\n  \"techParts\": 100.00,\n  \"companyParts\": 150.00,\n  \"deduction\": 20.00,\n  \"partsReplaced\": \"2x Compressor units, 1x Thermostat\",\n  \"notes\": \"Trabajo completado satisfactoriamente\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/rates",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "rates"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar comisiones de un trabajo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/rates?limit=50&page=1",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "rates"],
+					"query": [
+						{ "key": "limit", "value": "50" },
+						{ "key": "page", "value": "1" }
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar comisión/pago",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": 1,\n  \"jobRateStatusId\": 2,\n  \"salePrice\": 1000.00,\n  \"ratePercent\": 15.0,\n  \"rateFlat\": 50.00,\n  \"techParts\": 100.00,\n  \"companyParts\": 150.00,\n  \"deduction\": 20.00,\n  \"paid\": true,\n  \"partsReplaced\": \"2x Compressor units, 1x Thermostat\",\n  \"notes\": \"Pago procesado\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/rates/{{rateId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "rates", "{{rateId}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar comisión",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/rates/{{rateId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "rates", "{{rateId}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Calcular pago (simulación)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"salePrice\": 1000.00,\n  \"ratePercent\": 15.0,\n  \"rateFlat\": 50.00,\n  \"techParts\": 100.00,\n  \"companyParts\": 150.00,\n  \"deduction\": 20.00\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/calculate-rate-payment",
+					"host": ["{{baseUrl}}"],
+					"path": ["calculate-rate-payment"]
+				}
+			},
+			"response": []
+		}
+	]
+}

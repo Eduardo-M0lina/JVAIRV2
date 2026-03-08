@@ -58,6 +58,9 @@ func (h *Handler) Close(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Registro automático de actividad: Job cerrado
+	h.logActivity(r.Context(), id, "job_closed", "Job was closed")
+
 	// Re-fetch para obtener datos actualizados
 	updated, err := h.useCase.GetByID(r.Context(), id)
 	if err != nil {

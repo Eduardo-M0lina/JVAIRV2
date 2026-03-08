@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "job-rate-statuses-collection",
+		"name": "JVAIR V2 - Job Rate Statuses",
+		"description": "Colección de endpoints para catálogo de estados de comisiones/pagos de técnicos.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "statusId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Crear estado de comisión",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"label\": \"Pending Approval\",\n  \"class\": \"badge-warning\",\n  \"order\": 1\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/job-rate-statuses",
+					"host": ["{{baseUrl}}"],
+					"path": ["job-rate-statuses"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar todos los estados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/job-rate-statuses",
+					"host": ["{{baseUrl}}"],
+					"path": ["job-rate-statuses"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener estado por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/job-rate-statuses/{{statusId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["job-rate-statuses", "{{statusId}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar estado",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"label\": \"Approved\",\n  \"class\": \"badge-success\",\n  \"order\": 2\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/job-rate-statuses/{{statusId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["job-rate-statuses", "{{statusId}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar estado",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/job-rate-statuses/{{statusId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["job-rate-statuses", "{{statusId}}"]
+				}
+			},
+			"response": []
+		}
+	]
+}

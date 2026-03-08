@@ -14,10 +14,15 @@ import (
 	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
 	domainInvoicePayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
+	domainJobActivityLog "github.com/your-org/jvairv2/pkg/domain/job_activity_log"
 	jobCategory "github.com/your-org/jvairv2/pkg/domain/job_category"
 	domainJobEquip "github.com/your-org/jvairv2/pkg/domain/job_equipment"
 	jobPriority "github.com/your-org/jvairv2/pkg/domain/job_priority"
+	domainJobRate "github.com/your-org/jvairv2/pkg/domain/job_rate"
+	domainJobRateStatus "github.com/your-org/jvairv2/pkg/domain/job_rate_status"
+	domainJobResident "github.com/your-org/jvairv2/pkg/domain/job_resident"
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
+	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
 	domainJobVisit "github.com/your-org/jvairv2/pkg/domain/job_visit"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
@@ -46,10 +51,15 @@ import (
 	mysqlInvoice "github.com/your-org/jvairv2/pkg/repository/mysql/invoice"
 	mysqlInvoicePayment "github.com/your-org/jvairv2/pkg/repository/mysql/invoice_payment"
 	mysqlJob "github.com/your-org/jvairv2/pkg/repository/mysql/job"
+	mysqlJobActivityLog "github.com/your-org/jvairv2/pkg/repository/mysql/job_activity_log"
 	mysqlJobCategory "github.com/your-org/jvairv2/pkg/repository/mysql/job_category"
 	mysqlJobEquip "github.com/your-org/jvairv2/pkg/repository/mysql/job_equipment"
 	mysqlJobPriority "github.com/your-org/jvairv2/pkg/repository/mysql/job_priority"
+	mysqlJobRate "github.com/your-org/jvairv2/pkg/repository/mysql/job_rate"
+	mysqlJobRateStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_rate_status"
+	mysqlJobResident "github.com/your-org/jvairv2/pkg/repository/mysql/job_resident"
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
+	mysqlJobTask "github.com/your-org/jvairv2/pkg/repository/mysql/job_task"
 	mysqlJobVisit "github.com/your-org/jvairv2/pkg/repository/mysql/job_visit"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
@@ -78,10 +88,15 @@ import (
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
+	jobActivityLogHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_activity_log"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
 	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
+	jobRateHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate"
+	jobRateStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate_status"
+	jobResidentHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_resident"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
+	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
@@ -144,6 +159,11 @@ type Container struct {
 	WarrantyEquipHandler       *warrantyEquipHandler.Handler
 	WarrantyClaimHandler       *warrantyClaimHandler.Handler
 	JobVisitHandler            *jobVisitHandler.Handler
+	JobActivityLogHandler      *jobActivityLogHandler.Handler
+	JobResidentHandler         *jobResidentHandler.Handler
+	JobRateStatusHandler       *jobRateStatusHandler.Handler
+	JobTaskHandler             *jobTaskHandler.Handler
+	JobRateHandler             *jobRateHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -278,6 +298,36 @@ func NewContainer(configPath string) (*Container, error) {
 	warrantyClaimStatusChecker := mysqlWarrantyClaim.NewClaimStatusCheckerAdapter(dbConn.GetDB())
 	warrantyClaimUC := domainWarrantyClaim.NewUseCase(warrantyClaimRepo, warrantyClaimJobChecker, warrantyClaimTypeChecker, warrantyClaimStatusChecker)
 
+	// Module 13: Activities and Communications
+	// Job Activity Logs
+	jobActivityLogRepo := mysqlJobActivityLog.NewRepository(dbConn.GetDB())
+	jobActivityLogJobChecker := mysqlJobActivityLog.NewJobExistsChecker(dbConn.GetDB())
+	jobActivityLogUserChecker := mysqlJobActivityLog.NewUserExistsChecker(dbConn.GetDB())
+	jobActivityLogUC := domainJobActivityLog.NewUseCase(jobActivityLogRepo, jobActivityLogJobChecker, jobActivityLogUserChecker)
+
+	// Job Residents
+	jobResidentRepo := mysqlJobResident.NewRepository(dbConn.GetDB())
+	jobResidentJobChecker := mysqlJobResident.NewJobExistsChecker(dbConn.GetDB())
+	jobResidentUC := domainJobResident.NewUseCase(jobResidentRepo, jobResidentJobChecker)
+
+	// Job Rate Statuses
+	jobRateStatusRepo := mysqlJobRateStatus.NewRepository(dbConn.GetDB())
+	jobRateStatusUC := domainJobRateStatus.NewUseCase(jobRateStatusRepo)
+
+	// Job Tasks
+	jobTaskRepo := mysqlJobTask.NewRepository(dbConn.GetDB())
+	jobTaskJobChecker := mysqlJobTask.NewJobExistsChecker(dbConn.GetDB())
+	jobTaskUserChecker := mysqlJobTask.NewUserExistsChecker(dbConn.GetDB())
+	jobTaskStatusChecker := mysqlJobTask.NewTaskStatusExistsChecker(dbConn.GetDB())
+	jobTaskUC := domainJobTask.NewUseCase(jobTaskRepo, jobTaskJobChecker, jobTaskUserChecker, jobTaskStatusChecker)
+
+	// Job Rates
+	jobRateRepo := mysqlJobRate.NewRepository(dbConn.GetDB())
+	jobRateJobChecker := mysqlJobRate.NewJobExistsChecker(dbConn.GetDB())
+	jobRateUserChecker := mysqlJobRate.NewUserExistsChecker(dbConn.GetDB())
+	jobRateStatusChecker := mysqlJobRate.NewJobRateStatusExistsChecker(dbConn.GetDB())
+	jobRateUC := domainJobRate.NewUseCase(jobRateRepo, jobRateJobChecker, jobRateUserChecker, jobRateStatusChecker)
+
 	// Inicializar handlers
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHandler := authHandler.NewHandler(authUC)
@@ -297,7 +347,7 @@ func NewContainer(configPath string) (*Container, error) {
 	jobPrioHandler := jobPriorityHandler.NewHandler(jobPriorityUC)
 	techJobStatHandler := techJobStatusHandler.NewHandler(techJobStatusUC)
 	taskStatHandler := taskStatusHandler.NewHandler(taskStatusUC)
-	jobHdlr := jobHandler.NewHandler(jobUC)
+	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC)
 	quoteHdlr := quoteHandler.NewHandler(quoteUC)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
 	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
@@ -313,6 +363,11 @@ func NewContainer(configPath string) (*Container, error) {
 	weHdlr := warrantyEquipHandler.NewHandler(warrantyEquipUC)
 	wcHdlr := warrantyClaimHandler.NewHandler(warrantyClaimUC)
 	jvHdlr := jobVisitHandler.NewHandler(jobVisitUC, fileUC)
+	jalHdlr := jobActivityLogHandler.NewHandler(jobActivityLogUC)
+	jrHdlr := jobResidentHandler.NewHandler(jobResidentUC)
+	jrsHdlr := jobRateStatusHandler.NewHandler(jobRateStatusUC)
+	jtHdlr := jobTaskHandler.NewHandler(jobTaskUC)
+	jraHdlr := jobRateHandler.NewHandler(jobRateUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -351,6 +406,11 @@ func NewContainer(configPath string) (*Container, error) {
 		weHdlr,
 		wcHdlr,
 		jvHdlr,
+		jalHdlr,
+		jrHdlr,
+		jrsHdlr,
+		jtHdlr,
+		jraHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -392,6 +452,11 @@ func NewContainer(configPath string) (*Container, error) {
 		WarrantyEquipHandler:       weHdlr,
 		WarrantyClaimHandler:       wcHdlr,
 		JobVisitHandler:            jvHdlr,
+		JobActivityLogHandler:      jalHdlr,
+		JobResidentHandler:         jrHdlr,
+		JobRateStatusHandler:       jrsHdlr,
+		JobTaskHandler:             jtHdlr,
+		JobRateHandler:             jraHdlr,
 	}, nil
 }
 

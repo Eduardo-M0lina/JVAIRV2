@@ -14,10 +14,15 @@ import (
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
+	jobActivityLogHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_activity_log"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
 	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
+	jobRateHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate"
+	jobRateStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate_status"
+	jobResidentHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_resident"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
+	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
@@ -75,6 +80,11 @@ func New(
 	warrantyEquipHandler *warrantyEquipHandler.Handler,
 	warrantyClaimHandler *warrantyClaimHandler.Handler,
 	jobVisitHandler *jobVisitHandler.Handler,
+	jobActivityLogHandler *jobActivityLogHandler.Handler,
+	jobResidentHandler *jobResidentHandler.Handler,
+	jobRateStatusHandler *jobRateStatusHandler.Handler,
+	jobTaskHandler *jobTaskHandler.Handler,
+	jobRateHandler *jobRateHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -152,6 +162,53 @@ func New(
 			warrantyClaimHandler.RegisterRoutes(r)
 			// Rutas de visitas de trabajo y archivos
 			jobVisitHandler.RegisterRoutes(r)
+
+			// Module 13: Activities and Communications
+			// Job Activity Logs
+			r.Route("/jobs/{jobId}/activities", func(r chi.Router) {
+				r.Post("/", jobActivityLogHandler.Create)
+				r.Get("/", jobActivityLogHandler.List)
+				r.Delete("/{id}", jobActivityLogHandler.Delete)
+			})
+
+			// Job Residents
+			r.Route("/jobs/{jobId}/residents", func(r chi.Router) {
+				r.Post("/", jobResidentHandler.Create)
+				r.Get("/", jobResidentHandler.List)
+				r.Put("/{id}", jobResidentHandler.Update)
+				r.Delete("/{id}", jobResidentHandler.Delete)
+			})
+
+			// Job Rate Statuses (catalog)
+			r.Route("/job-rate-statuses", func(r chi.Router) {
+				r.Post("/", jobRateStatusHandler.Create)
+				r.Get("/", jobRateStatusHandler.List)
+				r.Get("/{id}", jobRateStatusHandler.GetByID)
+				r.Put("/{id}", jobRateStatusHandler.Update)
+				r.Delete("/{id}", jobRateStatusHandler.Delete)
+			})
+
+			// Job Tasks
+			r.Route("/jobs/{jobId}/tasks", func(r chi.Router) {
+				r.Post("/", jobTaskHandler.Create)
+				r.Get("/", jobTaskHandler.List)
+				r.Put("/{id}", jobTaskHandler.Update)
+				r.Delete("/{id}", jobTaskHandler.Delete)
+			})
+
+			// Global tasks view
+			r.Get("/tasks", jobTaskHandler.ListAll)
+
+			// Job Rates
+			r.Route("/jobs/{jobId}/rates", func(r chi.Router) {
+				r.Post("/", jobRateHandler.Create)
+				r.Get("/", jobRateHandler.List)
+				r.Put("/{id}", jobRateHandler.Update)
+				r.Delete("/{id}", jobRateHandler.Delete)
+			})
+
+			// Calculate rate payment (standalone endpoint)
+			r.Post("/calculate-rate-payment", jobRateHandler.CalculatePayment)
 		})
 	})
 	return r
