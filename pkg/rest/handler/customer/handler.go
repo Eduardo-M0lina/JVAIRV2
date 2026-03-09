@@ -6,18 +6,21 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/your-org/jvairv2/pkg/domain/job"
 	"github.com/your-org/jvairv2/pkg/domain/property"
 )
 
 type Handler struct {
 	useCase    customer.Service
 	propertyUC *property.UseCase
+	jobUC      job.Service
 }
 
-func NewHandler(useCase customer.Service, propertyUC *property.UseCase) *Handler {
+func NewHandler(useCase customer.Service, propertyUC *property.UseCase, jobUC job.Service) *Handler {
 	return &Handler{
 		useCase:    useCase,
 		propertyUC: propertyUC,
+		jobUC:      jobUC,
 	}
 }
 
@@ -29,6 +32,7 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 		r.Put("/{id}", h.Update)
 		r.Delete("/{id}", h.Delete)
 		r.Get("/{id}/properties", h.GetProperties)
+		r.Get("/{id}/jobs", h.GetJobs)
 	})
 }
 

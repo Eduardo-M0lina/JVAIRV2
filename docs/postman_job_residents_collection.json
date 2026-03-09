@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "job-residents-collection",
+		"name": "JVAIR V2 - Job Residents",
+		"description": "Colección de endpoints para gestión de contactos de residentes en propiedades de trabajos.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "jobId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "residentId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Crear residente",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"María González\",\n  \"mobilePhone\": \"+1-555-0123\",\n  \"homePhone\": \"+1-555-0124\",\n  \"email\": \"maria.gonzalez@email.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/residents",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "residents"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar residentes de un trabajo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/residents?limit=50&page=1",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "residents"],
+					"query": [
+						{ "key": "limit", "value": "50" },
+						{ "key": "page", "value": "1" }
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar residente",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"María González Pérez\",\n  \"mobilePhone\": \"+1-555-0123\",\n  \"homePhone\": \"+1-555-0124\",\n  \"email\": \"maria.gonzalez.updated@email.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/residents/{{residentId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "residents", "{{residentId}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar residente",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/residents/{{residentId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "residents", "{{residentId}}"]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -12,7 +12,7 @@
 			"type": "string"
 		},
 		{
-			"key": "token",
+			"key": "accessToken",
 			"value": "",
 			"type": "string"
 		},
@@ -37,7 +37,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "{{token}}",
+				"value": "{{accessToken}}",
 				"type": "string"
 			}
 		]
@@ -52,9 +52,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits?page=1&pageSize=10&sort=created_at&direction=DESC",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits?page=1&pageSize=10&sort=created_at&direction=DESC",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits"],
+							"path": ["jobs", "{{jobId}}", "visits"],
 							"query": [
 								{ "key": "page", "value": "1" },
 								{ "key": "pageSize", "value": "10" },
@@ -72,9 +72,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}"]
 						}
 					}
 				},
@@ -93,9 +93,9 @@
 							"raw": "{\n  \"userId\": 1,\n  \"viewableBy\": \"[\\\"1\\\",\\\"2\\\"]\",\n  \"date\": \"01-15-2024\",\n  \"report\": \"Technician visited the site and inspected the HVAC system. All units operational.\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits"]
+							"path": ["jobs", "{{jobId}}", "visits"]
 						}
 					}
 				},
@@ -114,9 +114,9 @@
 							"raw": "{\n  \"userId\": 1,\n  \"viewableBy\": \"[\\\"1\\\",\\\"2\\\",\\\"3\\\"]\",\n  \"date\": \"01-16-2024\",\n  \"report\": \"Updated report: Follow-up visit completed. Replaced air filter.\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}"]
 						}
 					}
 				},
@@ -126,9 +126,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}"]
 						}
 					}
 				}
@@ -143,9 +143,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}/files",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}", "files"]
 						}
 					}
 				},
@@ -166,9 +166,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}/files",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}", "files"]
 						}
 					}
 				},
@@ -178,9 +178,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files/{{fileId}}/download",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}/files/{{fileId}}/download",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files", "{{fileId}}", "download"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}", "files", "{{fileId}}", "download"]
 						}
 					}
 				},
@@ -190,9 +190,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/jobs/{{jobId}}/visits/{{visitId}}/files/{{fileId}}",
+							"raw": "{{baseUrl}}/jobs/{{jobId}}/visits/{{visitId}}/files/{{fileId}}",
 							"host": ["{{baseUrl}}"],
-							"path": ["api", "v1", "jobs", "{{jobId}}", "visits", "{{visitId}}", "files", "{{fileId}}"]
+							"path": ["jobs", "{{jobId}}", "visits", "{{visitId}}", "files", "{{fileId}}"]
 						}
 					}
 				}

@@ -57,6 +57,7 @@ type S3Config struct {
 	AccessKey string
 	SecretKey string
 	Endpoint  string
+	URL       string // CDN URL override (AWS_URL), e.g. https://images.wecoolatlanta.com
 }
 
 // LoadConfig carga la configuración desde el archivo app.env
@@ -69,7 +70,10 @@ func LoadConfig(path string) (*Config, error) {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("error al leer el archivo de configuración: %w", err)
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			return nil, fmt.Errorf("error al leer el archivo de configuración: %w", err)
+		}
+		// Sin archivo .env → ECS inyecta las vars directamente como OS env vars
 	}
 
 	var config Config
@@ -109,6 +113,7 @@ func LoadConfig(path string) (*Config, error) {
 	config.S3.AccessKey = viper.GetString("AWS_ACCESS_KEY_ID")
 	config.S3.SecretKey = viper.GetString("AWS_SECRET_ACCESS_KEY")
 	config.S3.Endpoint = viper.GetString("AWS_ENDPOINT")
+	config.S3.URL = viper.GetString("AWS_URL")
 
 	return &config, nil
 }
