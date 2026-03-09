@@ -89,6 +89,12 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		args = append(args, workflowID)
 	}
 
+	// Filtro por customer (a través de property)
+	if customerID, ok := filters["customer_id"].(int64); ok && customerID > 0 {
+		conditions = append(conditions, "p.customer_id = ?")
+		args = append(args, customerID)
+	}
+
 	// Búsqueda en múltiples campos (fiel al original: work_order, property fields, customer name)
 	if search, ok := filters["search"].(string); ok && search != "" {
 		searchCondition := `(

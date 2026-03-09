@@ -3654,6 +3654,70 @@ paths:
       summary: Update a customer
       tags:
       - Customers
+  /api/v1/customers/{id}/jobs:
+    get:
+      description: Get all jobs for a specific customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size
+        in: query
+        name: pageSize
+        type: integer
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - default: "0"
+        description: 'Filter by closed status: 0 (open), 1 (closed), all'
+        in: query
+        name: closed
+        type: string
+      - description: Filter by job category ID
+        in: query
+        name: job_category_id
+        type: integer
+      - description: Filter by job status ID
+        in: query
+        name: job_status_id
+        type: integer
+      - description: Filter by job priority ID
+        in: query
+        name: job_priority_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get customer jobs
+      tags:
+      - Customers
   /api/v1/customers/{id}/properties:
     get:
       description: Get all properties for a specific customer

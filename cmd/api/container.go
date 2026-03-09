@@ -349,7 +349,7 @@ func NewContainer(configPath string) (*Container, error) {
 	permissionHandler := permissionHandler.NewHandler(permissionUC)
 	settingsHandler := settingsHandler.NewHandler(settingsUC)
 	workflowHandler := workflowHandler.NewHandler(workflowUC)
-	customerHandler := customerHandler.NewHandler(customerUC, propertyUC)
+	customerHandler := customerHandler.NewHandler(customerUC, propertyUC, jobUC)
 	propHandler := propertyHandler.NewHandler(propertyUC)
 	jobCatHandler := jobCategoryHandler.NewHandler(jobCategoryUC)
 	jobStatHandler := jobStatusHandler.NewHandler(jobStatusUC)
