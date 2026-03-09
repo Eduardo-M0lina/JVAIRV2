@@ -274,6 +274,73 @@
 				"description": "Obtiene todas las propiedades de un cliente específico"
 			},
 			"response": []
+		},
+		{
+			"name": "Get Customer Jobs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/customers/:id/jobs?page=1&pageSize=10",
+					"host": ["{{baseUrl}}"],
+					"path": ["customers", ":id", "jobs"],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Número de página"
+						},
+						{
+							"key": "pageSize",
+							"value": "10",
+							"description": "Cantidad de items por página"
+						},
+						{
+							"key": "search",
+							"value": "",
+							"description": "Busca en work_order, property code, address, customer name",
+							"disabled": true
+						},
+						{
+							"key": "closed",
+							"value": "0",
+							"description": "0=abiertos, 1=cerrados, all=todos"
+						},
+						{
+							"key": "job_category_id",
+							"value": "",
+							"description": "Filtrar por categoría de job",
+							"disabled": true
+						},
+						{
+							"key": "job_status_id",
+							"value": "",
+							"description": "Filtrar por estado de job",
+							"disabled": true
+						},
+						{
+							"key": "job_priority_id",
+							"value": "",
+							"description": "Filtrar por prioridad de job",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "ID del cliente"
+						}
+					]
+				},
+				"description": "Obtiene todos los jobs de un cliente específico (a través de sus propiedades)"
+			},
+			"response": []
 		}
 	],
 	"variable": [

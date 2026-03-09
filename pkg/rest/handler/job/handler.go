@@ -1,22 +1,28 @@
 package job
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
+	domainJobActivityLog "github.com/your-org/jvairv2/pkg/domain/job_activity_log"
+	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // Handler maneja las peticiones HTTP para jobs
 type Handler struct {
-	useCase domainJob.Service
+	useCase            domainJob.Service
+	activityLogService domainJobActivityLog.Service
 }
 
 // NewHandler crea una nueva instancia del handler de jobs
-func NewHandler(useCase domainJob.Service) *Handler {
+func NewHandler(useCase domainJob.Service, activityLogService domainJobActivityLog.Service) *Handler {
 	return &Handler{
-		useCase: useCase,
+		useCase:            useCase,
+		activityLogService: activityLogService,
 	}
 }
 
@@ -248,4 +254,24 @@ func parseFilters(r *http.Request) map[string]interface{} {
 	}
 
 	return filters
+}
+
+// logActivity registra automáticamente una actividad en el job
+func (h *Handler) logActivity(ctx context.Context, jobID int64, activityType, message string) {
+	// Obtener usuario del contexto
+	userFromCtx, ok := ctx.Value(middleware.UserContextKey).(*domainUser.User)
+	if !ok || userFromCtx == nil {
+		// Si no hay usuario en contexto, no registrar actividad
+		return
+	}
+
+	activity := &domainJobActivityLog.JobActivityLog{
+		JobID:  jobID,
+		UserID: userFromCtx.ID,
+		Type:   activityType,
+		Log:    message,
+	}
+
+	// Intentar crear la actividad, pero no fallar si hay error
+	_ = h.activityLogService.Create(ctx, activity)
 }

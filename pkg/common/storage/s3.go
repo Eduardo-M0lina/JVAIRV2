@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log/slog"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
@@ -18,15 +19,19 @@ import (
 type S3Client struct {
 	client *s3.Client
 	bucket string
+	url    string // CDN URL override (opcional)
 }
 
 // NewS3Client crea un nuevo cliente S3
 func NewS3Client(cfg *appconfig.S3Config) (*S3Client, error) {
 	opts := []func(*awsconfig.LoadOptions) error{
 		awsconfig.WithRegion(cfg.Region),
-		awsconfig.WithCredentialsProvider(
+	}
+
+	if cfg.AccessKey != "" && cfg.SecretKey != "" {
+		opts = append(opts, awsconfig.WithCredentialsProvider(
 			credentials.NewStaticCredentialsProvider(cfg.AccessKey, cfg.SecretKey, ""),
-		),
+		))
 	}
 
 	awsCfg, err := awsconfig.LoadDefaultConfig(context.Background(), opts...)
@@ -47,6 +52,7 @@ func NewS3Client(cfg *appconfig.S3Config) (*S3Client, error) {
 	return &S3Client{
 		client: client,
 		bucket: cfg.Bucket,
+		url:    cfg.URL,
 	}, nil
 }
 
@@ -65,8 +71,13 @@ func (s *S3Client) Upload(ctx context.Context, key string, body io.Reader, conte
 		return "", fmt.Errorf("failed to upload file: %w", err)
 	}
 
-	url := fmt.Sprintf("https://%s.s3.amazonaws.com/%s", s.bucket, key)
-	return url, nil
+	var fileURL string
+	if s.url != "" {
+		fileURL = fmt.Sprintf("%s/%s", strings.TrimRight(s.url, "/"), key)
+	} else {
+		fileURL = fmt.Sprintf("https://%s.s3.amazonaws.com/%s", s.bucket, key)
+	}
+	return fileURL, nil
 }
 
 // Delete elimina un archivo de S3

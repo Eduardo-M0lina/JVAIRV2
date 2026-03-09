@@ -1,0 +1,123 @@
+{
+	"info": {
+		"_postman_id": "job-tasks-collection",
+		"name": "JVAIR V2 - Job Tasks",
+		"description": "Colección de endpoints para gestión de tareas asignadas a trabajos con seguimiento de estado.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "jobId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "taskId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Crear tarea",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": 1,\n  \"task\": \"Instalar 2 unidades HVAC en segundo piso\",\n  \"taskStatusId\": 1,\n  \"dueDate\": \"2024-03-20\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/tasks",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "tasks"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar tareas de un trabajo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/tasks?limit=50&page=1",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "tasks"],
+					"query": [
+						{ "key": "limit", "value": "50" },
+						{ "key": "page", "value": "1" }
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar todas las tareas (vista global)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/tasks?limit=50&page=1",
+					"host": ["{{baseUrl}}"],
+					"path": ["tasks"],
+					"query": [
+						{ "key": "limit", "value": "50" },
+						{ "key": "page", "value": "1" }
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar tarea",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": 1,\n  \"task\": \"Instalar 2 unidades HVAC en segundo piso - COMPLETADO\",\n  \"taskStatusId\": 3,\n  \"dueDate\": \"2024-03-20\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/tasks/{{taskId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "tasks", "{{taskId}}"]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar tarea",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/jobs/{{jobId}}/tasks/{{taskId}}",
+					"host": ["{{baseUrl}}"],
+					"path": ["jobs", "{{jobId}}", "tasks", "{{taskId}}"]
+				}
+			},
+			"response": []
+		}
+	]
+}

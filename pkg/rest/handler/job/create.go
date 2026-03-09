@@ -121,5 +121,8 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Registro automático de actividad: Job creado
+	h.logActivity(r.Context(), j.ID, "job_created", "Job was created")
+
 	response.JSON(w, http.StatusCreated, toJobResponse(j))
 }
