@@ -372,6 +372,45 @@ definitions:
         example: 5
         type: integer
     type: object
+  email_template.CreateRequest:
+    properties:
+      body:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+      subject:
+        type: string
+    type: object
+  email_template.ItemResponse:
+    properties:
+      body:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      label:
+        type: string
+      subject:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  email_template.UpdateRequest:
+    properties:
+      body:
+        type: string
+      isActive:
+        type: boolean
+      label:
+        type: string
+      subject:
+        type: string
+    type: object
   invoice.CreateInvoiceRequest:
     properties:
       allowOnlinePayments:
@@ -731,6 +770,32 @@ definitions:
     - label
     - labelPlural
     - type
+    type: object
+  job_email.CreateRequest:
+    properties:
+      recipients:
+        items:
+          type: string
+        type: array
+      type:
+        type: string
+    type: object
+  job_email.ItemResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      recipients:
+        items:
+          type: string
+        type: array
+      type:
+        type: string
+      updatedAt:
+        type: string
     type: object
   job_equipment.CreateJobEquipmentRequest:
     properties:
@@ -1168,6 +1233,36 @@ definitions:
       mobilePhone:
         type: string
       name:
+        type: string
+    type: object
+  job_sms.CreateRequest:
+    properties:
+      message:
+        type: string
+      recipients:
+        items:
+          type: string
+        type: array
+      type:
+        type: string
+    type: object
+  job_sms.ItemResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      message:
+        type: string
+      recipients:
+        items:
+          type: string
+        type: array
+      type:
+        type: string
+      updatedAt:
         type: string
     type: object
   job_status.CreateJobStatusRequest:
@@ -1838,6 +1933,39 @@ definitions:
     - passwordExpireDays
     - passwordHistoryCount
     - passwordMinimumLength
+    type: object
+  sms_template.CreateRequest:
+    properties:
+      isActive:
+        type: boolean
+      label:
+        type: string
+      message:
+        type: string
+    type: object
+  sms_template.ItemResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      label:
+        type: string
+      message:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  sms_template.UpdateRequest:
+    properties:
+      isActive:
+        type: boolean
+      label:
+        type: string
+      message:
+        type: string
     type: object
   supervisor.CreateSupervisorRequest:
     properties:
@@ -3765,6 +3893,184 @@ paths:
       summary: Get customer properties
       tags:
       - Customers
+  /api/v1/email-templates:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de plantillas de email con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 15
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label, subject o body
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar plantillas de email
+      tags:
+      - EmailTemplates
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva plantilla de email
+      parameters:
+      - description: Datos de la plantilla de email
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/email_template.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/email_template.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear plantilla de email
+      tags:
+      - EmailTemplates
+  /api/v1/email-templates/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una plantilla de email
+      parameters:
+      - description: ID de la plantilla de email
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar plantilla de email
+      tags:
+      - EmailTemplates
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una plantilla de email por su ID
+      parameters:
+      - description: ID de la plantilla de email
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/email_template.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener plantilla de email
+      tags:
+      - EmailTemplates
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una plantilla de email existente
+      parameters:
+      - description: ID de la plantilla de email
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la plantilla de email
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/email_template.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/email_template.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar plantilla de email
+      tags:
+      - EmailTemplates
   /api/v1/invoices:
     get:
       consumes:
@@ -5311,6 +5617,125 @@ paths:
       summary: Delete job activity log
       tags:
       - JobActivities
+  /api/v1/jobs/{jobId}/emails:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de emails enviados asociados a un trabajo
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 15
+        description: Tamaño de página
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar emails enviados de un trabajo
+      tags:
+      - JobEmails
+    post:
+      consumes:
+      - application/json
+      description: Crea un registro de email enviado asociado a un trabajo
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Datos del email enviado
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_email.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_email.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Registrar email enviado de un trabajo
+      tags:
+      - JobEmails
+  /api/v1/jobs/{jobId}/emails/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un registro de email enviado por ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID del email
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar email enviado de un trabajo
+      tags:
+      - JobEmails
   /api/v1/jobs/{jobId}/equipment:
     get:
       description: Get a list of equipment for a job with optional type filter
@@ -5870,6 +6295,125 @@ paths:
       summary: Update job resident
       tags:
       - JobResidents
+  /api/v1/jobs/{jobId}/sms:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de SMS enviados asociados a un trabajo
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 15
+        description: Tamaño de página
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar SMS enviados de un trabajo
+      tags:
+      - JobSMS
+    post:
+      consumes:
+      - application/json
+      description: Crea un registro de SMS enviado asociado a un trabajo
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: Datos del SMS enviado
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_sms.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/job_sms.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Registrar SMS enviado de un trabajo
+      tags:
+      - JobSMS
+  /api/v1/jobs/{jobId}/sms/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un registro de SMS enviado por ID
+      parameters:
+      - description: Job ID
+        in: path
+        name: jobId
+        required: true
+        type: integer
+      - description: ID del SMS
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar SMS enviado de un trabajo
+      tags:
+      - JobSMS
   /api/v1/jobs/{jobId}/tasks:
     get:
       consumes:
@@ -7360,6 +7904,184 @@ paths:
       summary: Actualizar configuraciones del sistema
       tags:
       - Settings
+  /api/v1/sms-templates:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista paginada de plantillas de SMS con filtros opcionales
+      parameters:
+      - default: 1
+        description: Número de página
+        in: query
+        name: page
+        type: integer
+      - default: 15
+        description: Tamaño de página
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por label o message
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por estado activo
+        in: query
+        name: isActive
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.PaginatedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Listar plantillas de SMS
+      tags:
+      - SMSTemplates
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva plantilla de SMS
+      parameters:
+      - description: Datos de la plantilla de SMS
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sms_template.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/sms_template.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Crear plantilla de SMS
+      tags:
+      - SMSTemplates
+  /api/v1/sms-templates/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina una plantilla de SMS
+      parameters:
+      - description: ID de la plantilla de SMS
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Eliminar plantilla de SMS
+      tags:
+      - SMSTemplates
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una plantilla de SMS por su ID
+      parameters:
+      - description: ID de la plantilla de SMS
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sms_template.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Obtener plantilla de SMS
+      tags:
+      - SMSTemplates
+    put:
+      consumes:
+      - application/json
+      description: Actualiza una plantilla de SMS existente
+      parameters:
+      - description: ID de la plantilla de SMS
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Datos de la plantilla de SMS
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/sms_template.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/sms_template.ItemResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Actualizar plantilla de SMS
+      tags:
+      - SMSTemplates
   /api/v1/supervisors:
     get:
       description: Get a paginated list of supervisors with optional filters

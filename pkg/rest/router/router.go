@@ -12,16 +12,19 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	emailTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/email_template"
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobActivityLogHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_activity_log"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
+	jobEmailHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_email"
 	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobRateHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate"
 	jobRateStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate_status"
 	jobResidentHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_resident"
+	jobSMSHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_sms"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
@@ -32,6 +35,7 @@ import (
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
@@ -57,6 +61,7 @@ func New(
 	assignedRoleHandler *assignedRoleHandler.Handler,
 	permissionHandler *permissionHandler.Handler,
 	settingsHandler *settingsHandler.Handler,
+	emailTemplateHandler *emailTemplateHandler.Handler,
 	workflowHandler *workflowHandler.Handler,
 	customerHandler *customerHandler.Handler,
 	propertyHandler *propertyHandler.Handler,
@@ -82,8 +87,11 @@ func New(
 	warrantyClaimHandler *warrantyClaimHandler.Handler,
 	jobVisitHandler *jobVisitHandler.Handler,
 	jobActivityLogHandler *jobActivityLogHandler.Handler,
+	jobEmailHandler *jobEmailHandler.Handler,
 	jobResidentHandler *jobResidentHandler.Handler,
 	jobRateStatusHandler *jobRateStatusHandler.Handler,
+	jobSMSHandler *jobSMSHandler.Handler,
+	smsTemplateHandler *smsTemplateHandler.Handler,
 	jobTaskHandler *jobTaskHandler.Handler,
 	jobRateHandler *jobRateHandler.Handler,
 	alertHandler *alertHandler.Handler,
@@ -128,6 +136,8 @@ func New(
 			RegisterPermissionRoutes(r, permissionHandler)
 			// Rutas de configuraciones
 			SetupSettingsRoutes(r, settingsHandler, authMiddleware)
+			// Rutas de plantillas de email
+			emailTemplateHandler.RegisterRoutes(r)
 			// Rutas de workflows
 			SetupWorkflowRoutes(r, workflowHandler, authMiddleware)
 			// Rutas de customers
@@ -173,6 +183,13 @@ func New(
 				r.Delete("/{id}", jobActivityLogHandler.Delete)
 			})
 
+			// Job Emails
+			r.Route("/jobs/{jobId}/emails", func(r chi.Router) {
+				r.Post("/", jobEmailHandler.Create)
+				r.Get("/", jobEmailHandler.List)
+				r.Delete("/{id}", jobEmailHandler.Delete)
+			})
+
 			// Job Residents
 			r.Route("/jobs/{jobId}/residents", func(r chi.Router) {
 				r.Post("/", jobResidentHandler.Create)
@@ -189,6 +206,9 @@ func New(
 				r.Put("/{id}", jobRateStatusHandler.Update)
 				r.Delete("/{id}", jobRateStatusHandler.Delete)
 			})
+
+			// SMS Templates
+			smsTemplateHandler.RegisterRoutes(r)
 
 			// Job Tasks
 			r.Route("/jobs/{jobId}/tasks", func(r chi.Router) {
@@ -207,6 +227,13 @@ func New(
 				r.Get("/", jobRateHandler.List)
 				r.Put("/{id}", jobRateHandler.Update)
 				r.Delete("/{id}", jobRateHandler.Delete)
+			})
+
+			// Job SMS
+			r.Route("/jobs/{jobId}/sms", func(r chi.Router) {
+				r.Post("/", jobSMSHandler.Create)
+				r.Get("/", jobSMSHandler.List)
+				r.Delete("/{id}", jobSMSHandler.Delete)
 			})
 
 			// Calculate rate payment (standalone endpoint)
