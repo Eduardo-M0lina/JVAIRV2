@@ -6,15 +6,17 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/your-org/jvairv2/pkg/domain/email"
 	"github.com/your-org/jvairv2/pkg/domain/job_task"
 )
 
 type Handler struct {
-	service job_task.Service
+	service      job_task.Service
+	emailService email.Service
 }
 
-func NewHandler(service job_task.Service) *Handler {
-	return &Handler{service: service}
+func NewHandler(service job_task.Service, emailService email.Service) *Handler {
+	return &Handler{service: service, emailService: emailService}
 }
 
 type CreateRequest struct {
@@ -53,9 +55,12 @@ type ListResponse struct {
 // @Router /api/v1/jobs/{jobId}/tasks [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	jobID, err := strconv.ParseInt(chi.URLParam(r, "jobId"), 10, 64)
+	ctx := r.Context()
+
+	jobIDStr := chi.URLParam(r, "jobId")
+	jobID, err := strconv.ParseInt(jobIDStr, 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid job ID", http.StatusBadRequest)
+		http.Error(w, `{"error":"invalid job ID"}`, http.StatusBadRequest)
 		return
 	}
 
@@ -72,7 +77,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		TaskStatusID: req.TaskStatusID,
 	}
 
-	if err := h.service.Create(r.Context(), task); err != nil {
+	if err := h.service.Create(ctx, task); err != nil {
 		if err == job_task.ErrJobNotFound {
 			http.Error(w, "Job not found", http.StatusNotFound)
 			return

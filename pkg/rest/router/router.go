@@ -221,6 +221,9 @@ func New(
 			// Global tasks view
 			r.Get("/tasks", jobTaskHandler.ListAll)
 
+			// Task notification email
+			r.Post("/tasks/{id}/notification", jobTaskHandler.SendNotification)
+
 			// Job Rates
 			r.Route("/jobs/{jobId}/rates", func(r chi.Router) {
 				r.Post("/", jobRateHandler.Create)

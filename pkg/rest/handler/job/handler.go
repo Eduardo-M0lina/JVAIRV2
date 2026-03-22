@@ -16,13 +16,21 @@ import (
 type Handler struct {
 	useCase            domainJob.Service
 	activityLogService domainJobActivityLog.Service
+	emailService       EmailService
+}
+
+// EmailService define la interfaz para envío de emails
+type EmailService interface {
+	SendDispatchEmail(ctx context.Context, jobID int64, recipients []string) error
+	SendDispatchSupervisorEmail(ctx context.Context, jobID int64, subject string, body string, recipients []string) error
 }
 
 // NewHandler crea una nueva instancia del handler de jobs
-func NewHandler(useCase domainJob.Service, activityLogService domainJobActivityLog.Service) *Handler {
+func NewHandler(useCase domainJob.Service, activityLogService domainJobActivityLog.Service, emailService EmailService) *Handler {
 	return &Handler{
 		useCase:            useCase,
 		activityLogService: activityLogService,
+		emailService:       emailService,
 	}
 }
 
@@ -35,6 +43,8 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 		r.Put("/{id}", h.Update)
 		r.Delete("/{id}", h.Delete)
 		r.Put("/{id}/close", h.Close)
+		r.Post("/{id}/dispatch-email", h.SendDispatchEmail)
+		r.Post("/{id}/dispatch-supervisor-email", h.SendDispatchSupervisorEmail)
 	})
 }
 

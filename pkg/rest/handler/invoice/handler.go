@@ -5,18 +5,21 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
 	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
 )
 
 // Handler maneja las peticiones HTTP para invoices
 type Handler struct {
-	useCase domainInvoice.Service
+	useCase      domainInvoice.Service
+	emailService domainEmail.Service
 }
 
 // NewHandler crea una nueva instancia del handler de invoices
-func NewHandler(useCase domainInvoice.Service) *Handler {
+func NewHandler(useCase domainInvoice.Service, emailService domainEmail.Service) *Handler {
 	return &Handler{
-		useCase: useCase,
+		useCase:      useCase,
+		emailService: emailService,
 	}
 }
 
@@ -28,6 +31,7 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 		r.Get("/{id}", h.Get)
 		r.Put("/{id}", h.Update)
 		r.Delete("/{id}", h.Delete)
+		r.Post("/{id}/email", h.SendEmail)
 	})
 }
 

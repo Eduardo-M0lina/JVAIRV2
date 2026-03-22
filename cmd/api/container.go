@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	http "net/http"
 
 	configs "github.com/your-org/jvairv2/configs"
@@ -11,6 +12,7 @@ import (
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
 	domainEmailTemplate "github.com/your-org/jvairv2/pkg/domain/email_template"
 	domainFile "github.com/your-org/jvairv2/pkg/domain/file"
 	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
@@ -48,6 +50,7 @@ import (
 	warrantyStatus "github.com/your-org/jvairv2/pkg/domain/warranty_status"
 	warrantyType "github.com/your-org/jvairv2/pkg/domain/warranty_type"
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
+	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
@@ -276,7 +279,7 @@ func NewContainer(configPath string) (*Container, error) {
 	// Job Visits + Files
 	s3Client, err := storage.NewS3Client(&config.S3)
 	if err != nil {
-		// S3 es opcional - log warning y continuar sin soporte de archivos
+		fmt.Println("Error creating S3 client:", err)
 		_ = err
 	}
 	jobVisitRepo := mysqlJobVisit.NewRepository(dbConn.GetDB())
@@ -291,7 +294,7 @@ func NewContainer(configPath string) (*Container, error) {
 		fileUC = domainFile.NewUseCase(fileRepo, nil)
 	}
 
-	// Warranty catalogs
+	// Warranty Catalogs
 	warrantyTypeRepo := mysqlWarrantyType.NewRepository(dbConn.GetDB())
 	warrantyTypeUC := warrantyType.NewUseCase(warrantyTypeRepo)
 	warrantyStatusRepo := mysqlWarrantyStatus.NewRepository(dbConn.GetDB())
@@ -363,12 +366,9 @@ func NewContainer(configPath string) (*Container, error) {
 	alertUserChecker := mysqlAlert.NewUserExistsChecker(dbConn.GetDB())
 	alertUC := domainAlert.NewUseCase(alertRepo, alertUserChecker)
 
-	// Inicializar handlers
+	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHandler := authHandler.NewHandler(authUC)
-
-	// Inicializar handlers con sus casos de uso
-	userHandler := userHandler.NewHandler(userUC)
 	roleHandler := roleHandler.NewHandler(roleUC)
 	abilityHandler := abilityHandler.NewHandler(abilityUC)
 	assignedRoleHandler := assignedRoleHandler.NewHandler(assignedRoleUC)
@@ -383,14 +383,50 @@ func NewContainer(configPath string) (*Container, error) {
 	jobPrioHandler := jobPriorityHandler.NewHandler(jobPriorityUC)
 	techJobStatHandler := techJobStatusHandler.NewHandler(techJobStatusUC)
 	taskStatHandler := taskStatusHandler.NewHandler(taskStatusUC)
-	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC)
-	quoteHdlr := quoteHandler.NewHandler(quoteUC)
+
+	// Crear servicio de email
+	mailgunSender := infraEmail.NewMailgunSender(config.Mail)
+	emailInfraService, err := infraEmail.NewService(mailgunSender, "templates/emails")
+	if err != nil {
+		return nil, fmt.Errorf("error al inicializar servicio de email: %w", err)
+	}
+
+	// Crear adaptadores de repositorio para el servicio de email
+	jobRepoAdapter := domainEmail.NewJobRepositoryAdapter(jobRepo)
+	propertyRepoAdapter := domainEmail.NewPropertyRepositoryAdapter(propertyRepo)
+	customerRepoAdapter := domainEmail.NewCustomerRepositoryAdapter(customerRepo)
+	userRepoAdapter := domainEmail.NewUserRepositoryAdapter(userRepo)
+	residentRepoAdapter := domainEmail.NewResidentRepositoryAdapter(jobResidentRepo)
+
+	// Crear adaptadores de repositorio para invoice, quote y task
+	invoiceRepoAdapter := domainEmail.NewInvoiceRepositoryAdapter(invoiceRepo)
+	quoteRepoAdapter := domainEmail.NewQuoteRepositoryAdapter(quoteRepo)
+	taskRepoAdapter := domainEmail.NewTaskRepositoryAdapter(jobTaskRepo)
+
+	// Crear servicio de dominio de email
+	emailDomainService := domainEmail.NewEmailService(
+		emailInfraService,
+		jobRepoAdapter,
+		propertyRepoAdapter,
+		customerRepoAdapter,
+		userRepoAdapter,
+		residentRepoAdapter,
+		invoiceRepoAdapter,
+		quoteRepoAdapter,
+		taskRepoAdapter,
+	)
+
+	// Handlers que necesitan emailService
+	userHandler := userHandler.NewHandler(userUC, emailDomainService)
+	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService)
+	quoteHdlr := quoteHandler.NewHandler(quoteUC, emailDomainService)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
 	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
 	propEquipHdlr := propEquipHandler.NewHandler(propEquipUC)
 	jobEquipHdlr := jobEquipHandler.NewHandler(jobEquipUC)
-	invHdlr := invoiceHandler.NewHandler(invoiceUC)
+	invHdlr := invoiceHandler.NewHandler(invoiceUC, emailDomainService)
 	invPayHdlr := invoicePaymentHandler.NewHandler(invoicePaymentUC)
+
 	wtHdlr := warrantyTypeHandler.NewHandler(warrantyTypeUC)
 	wsHdlr := warrantyStatusHandler.NewHandler(warrantyStatusUC)
 	wctHdlr := warrantyClaimTypeHandler.NewHandler(warrantyClaimTypeUC)
@@ -399,12 +435,13 @@ func NewContainer(configPath string) (*Container, error) {
 	weHdlr := warrantyEquipHandler.NewHandler(warrantyEquipUC)
 	wcHdlr := warrantyClaimHandler.NewHandler(warrantyClaimUC)
 	jvHdlr := jobVisitHandler.NewHandler(jobVisitUC, fileUC)
+
 	jalHdlr := jobActivityLogHandler.NewHandler(jobActivityLogUC)
 	jeHdlr := jobEmailHandler.NewHandler(jobEmailUC)
 	jrHdlr := jobResidentHandler.NewHandler(jobResidentUC)
 	jrsHdlr := jobRateStatusHandler.NewHandler(jobRateStatusUC)
 	jsHdlr := jobSMSHandler.NewHandler(jobSMSUC)
-	jtHdlr := jobTaskHandler.NewHandler(jobTaskUC)
+	jtHdlr := jobTaskHandler.NewHandler(jobTaskUC, emailDomainService)
 	jraHdlr := jobRateHandler.NewHandler(jobRateUC)
 	stHdlr := smsTemplateHandler.NewHandler(smsTemplateUC)
 	alHdlr := alertHandler.NewHandler(alertUC)

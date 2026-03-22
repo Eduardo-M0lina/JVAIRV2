@@ -6,19 +6,22 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
 	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
 	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para cotizaciones
 type Handler struct {
-	useCase domainQuote.Service
+	useCase      domainQuote.Service
+	emailService domainEmail.Service
 }
 
 // NewHandler crea una nueva instancia del handler de cotizaciones
-func NewHandler(useCase domainQuote.Service) *Handler {
+func NewHandler(useCase domainQuote.Service, emailService domainEmail.Service) *Handler {
 	return &Handler{
-		useCase: useCase,
+		useCase:      useCase,
+		emailService: emailService,
 	}
 }
 
@@ -30,6 +33,7 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 		r.Get("/{id}", h.Get)
 		r.Put("/{id}", h.Update)
 		r.Delete("/{id}", h.Delete)
+		r.Post("/{id}/email", h.SendEmail)
 	})
 }
 
