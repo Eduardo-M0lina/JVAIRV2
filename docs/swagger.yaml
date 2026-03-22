@@ -155,6 +155,19 @@ definitions:
       scope:
         type: integer
     type: object
+  auth.ChangePasswordRequest:
+    properties:
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+      newPasswordConfirm:
+        type: string
+    required:
+    - currentPassword
+    - newPassword
+    - newPasswordConfirm
+    type: object
   auth.LoginRequest:
     properties:
       email:
@@ -181,6 +194,13 @@ definitions:
       user:
         $ref: '#/definitions/auth.UserResponse'
     type: object
+  auth.PasswordResetRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
   auth.RefreshResponse:
     properties:
       accessToken:
@@ -192,6 +212,22 @@ definitions:
       refreshToken:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
         type: string
+    type: object
+  auth.ResetPasswordRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      passwordConfirm:
+        type: string
+      token:
+        type: string
+    required:
+    - email
+    - password
+    - passwordConfirm
+    - token
     type: object
   auth.UserResponse:
     properties:
@@ -449,6 +485,11 @@ definitions:
       updatedAt:
         type: string
     type: object
+  invoice.SendEmailRequest:
+    properties:
+      email:
+        type: string
+    type: object
   invoice.UpdateInvoiceRequest:
     properties:
       allowOnlinePayments:
@@ -621,6 +662,20 @@ definitions:
         type: string
       workflowId:
         type: integer
+    type: object
+  job.SendDispatchEmailRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  job.SendDispatchSupervisorEmailRequest:
+    properties:
+      body:
+        type: string
+      email:
+        type: string
+      subject:
+        type: string
     type: object
   job.UpdateJobRequest:
     properties:
@@ -1347,6 +1402,11 @@ definitions:
       total:
         type: integer
     type: object
+  job_task.SendNotificationRequest:
+    properties:
+      email:
+        type: string
+    type: object
   job_task.UpdateRequest:
     properties:
       dueDate:
@@ -1767,6 +1827,11 @@ definitions:
       updatedAt:
         type: string
     type: object
+  quote.SendEmailRequest:
+    properties:
+      email:
+        type: string
+    type: object
   quote.UpdateQuoteRequest:
     properties:
       amount:
@@ -2128,6 +2193,11 @@ definitions:
       name:
         type: string
       title:
+        type: string
+    type: object
+  user.SendPayStubEmailRequest:
+    properties:
+      email:
         type: string
     type: object
   user.UpdateUserRequest:
@@ -10459,6 +10529,76 @@ paths:
       summary: Duplicar workflow
       tags:
       - Workflows
+  /auth/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Cambia la contraseña del usuario autenticado
+      parameters:
+      - description: Contraseña actual y nueva
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contraseña cambiada exitosamente
+          schema:
+            type: string
+        "400":
+          description: Error en la solicitud
+          schema:
+            type: string
+        "401":
+          description: No autorizado
+          schema:
+            type: string
+        "422":
+          description: La contraseña no cumple con las políticas
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Cambiar contraseña
+      tags:
+      - Auth
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Envía un email con el link para resetear la contraseña
+      parameters:
+      - description: Email del usuario
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.PasswordResetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Se ha enviado un email de recuperación
+          schema:
+            type: string
+        "400":
+          description: Error al decodificar la solicitud
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Solicitar recuperación de contraseña
+      tags:
+      - Auth
   /auth/login:
     post:
       consumes:
@@ -10558,6 +10698,179 @@ paths:
       summary: Refrescar token
       tags:
       - Auth
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Resetea la contraseña usando un token válido
+      parameters:
+      - description: Token y nueva contraseña
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/auth.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contraseña actualizada exitosamente
+          schema:
+            type: string
+        "400":
+          description: Error en la solicitud
+          schema:
+            type: string
+        "401":
+          description: Token inválido o expirado
+          schema:
+            type: string
+        "422":
+          description: La contraseña no cumple con las políticas
+          schema:
+            type: string
+        "500":
+          description: Error interno del servidor
+          schema:
+            type: string
+      summary: Resetear contraseña
+      tags:
+      - Auth
+  /invoices/{id}/email:
+    post:
+      consumes:
+      - application/json
+      description: Send invoice email to specified recipients
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/invoice.SendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send invoice email
+      tags:
+      - invoices
+  /jobs/{id}/dispatch-email:
+    post:
+      consumes:
+      - application/json
+      description: Envía un email de dispatch del job a uno o más técnicos
+      parameters:
+      - description: Job ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job.SendDispatchEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Enviar email de dispatch
+      tags:
+      - jobs
+  /jobs/{id}/dispatch-supervisor-email:
+    post:
+      consumes:
+      - application/json
+      description: Send custom email to supervisors
+      parameters:
+      - description: Job ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job.SendDispatchSupervisorEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send dispatch supervisor email
+      tags:
+      - jobs
   /jobs/{jobId}/visits:
     get:
       consumes:
@@ -10953,6 +11266,147 @@ paths:
       summary: Descargar archivo de una visita
       tags:
       - JobVisits
+  /quotes/{id}/email:
+    post:
+      consumes:
+      - application/json
+      description: Send quote email to specified recipients
+      parameters:
+      - description: Quote ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/quote.SendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send quote email
+      tags:
+      - quotes
+  /tasks/{id}/notification:
+    post:
+      consumes:
+      - application/json
+      description: Send task notification email to specified recipients
+      parameters:
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job_task.SendNotificationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send task notification email
+      tags:
+      - tasks
+  /users/{id}/paystub-email:
+    post:
+      consumes:
+      - application/json
+      description: Send paystub/pay report email to specified recipients
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.SendPayStubEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send paystub email
+      tags:
+      - users
 securityDefinitions:
   BearerAuth:
     description: Ingrese el token con el prefijo 'Bearer '
