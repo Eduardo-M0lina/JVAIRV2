@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
+	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
 	"github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
 	"github.com/your-org/jvairv2/pkg/rest/response"
@@ -15,15 +16,17 @@ import (
 
 // Handler maneja las solicitudes HTTP relacionadas con usuarios
 type Handler struct {
-	userUseCase *user.UseCase
-	validate    *validator.Validate
+	userUseCase  *user.UseCase
+	emailService domainEmail.Service
+	validate     *validator.Validate
 }
 
 // NewHandler crea una nueva instancia del manejador de usuarios
-func NewHandler(userUseCase *user.UseCase) *Handler {
+func NewHandler(userUseCase *user.UseCase, emailService domainEmail.Service) *Handler {
 	return &Handler{
-		userUseCase: userUseCase,
-		validate:    validator.New(),
+		userUseCase:  userUseCase,
+		emailService: emailService,
+		validate:     validator.New(),
 	}
 }
 

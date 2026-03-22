@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #f3f4f6;
+            padding: 20px;
+        }
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+        .header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        .content {
+            padding: 32px 24px;
+        }
+        .info-grid {
+            display: table;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+        .info-row {
+            display: table-row;
+        }
+        .info-label {
+            display: table-cell;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding-right: 16px;
+            width: 120px;
+            vertical-align: top;
+        }
+        .info-value {
+            display: table-cell;
+            font-size: 15px;
+            color: #111827;
+            font-weight: 500;
+        }
+        .footer {
+            background-color: #f9fafb;
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        .footer p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .footer .company {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="header">
+            <h1>NEW TASK ASSIGNMENT</h1>
+        </div>
+
+        <div class="content">
+            <div class="info-grid">
+                <div class="info-row">
+                    <div class="info-label">Date</div>
+                    <div class="info-value">{{.Task.DueDate}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Customer</div>
+                    <div class="info-value">{{.Task.CustomerName}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Property</div>
+                    <div class="info-value">{{.Task.PropertyAddress}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Work Order</div>
+                    <div class="info-value">{{.Task.WorkOrder}}</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Task</div>
+                    <div class="info-value">{{.Task.TaskDescription}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Thanks,</p>
+            <div class="company">WeCool Atlanta</div>
+        </div>
+    </div>
+</body>
+</html>

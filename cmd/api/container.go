@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	http "net/http"
 
 	configs "github.com/your-org/jvairv2/configs"
@@ -11,17 +12,21 @@ import (
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
+	domainEmailTemplate "github.com/your-org/jvairv2/pkg/domain/email_template"
 	domainFile "github.com/your-org/jvairv2/pkg/domain/file"
 	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
 	domainInvoicePayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
 	domainJobActivityLog "github.com/your-org/jvairv2/pkg/domain/job_activity_log"
 	jobCategory "github.com/your-org/jvairv2/pkg/domain/job_category"
+	domainJobEmail "github.com/your-org/jvairv2/pkg/domain/job_email"
 	domainJobEquip "github.com/your-org/jvairv2/pkg/domain/job_equipment"
 	jobPriority "github.com/your-org/jvairv2/pkg/domain/job_priority"
 	domainJobRate "github.com/your-org/jvairv2/pkg/domain/job_rate"
 	domainJobRateStatus "github.com/your-org/jvairv2/pkg/domain/job_rate_status"
 	domainJobResident "github.com/your-org/jvairv2/pkg/domain/job_resident"
+	domainJobSMS "github.com/your-org/jvairv2/pkg/domain/job_sms"
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
 	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
 	domainJobVisit "github.com/your-org/jvairv2/pkg/domain/job_visit"
@@ -32,6 +37,7 @@ import (
 	quoteStatus "github.com/your-org/jvairv2/pkg/domain/quote_status"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSMSTemplate "github.com/your-org/jvairv2/pkg/domain/sms_template"
 	domainSupervisor "github.com/your-org/jvairv2/pkg/domain/supervisor"
 	taskStatus "github.com/your-org/jvairv2/pkg/domain/task_status"
 	techJobStatus "github.com/your-org/jvairv2/pkg/domain/technician_job_status"
@@ -44,25 +50,31 @@ import (
 	warrantyStatus "github.com/your-org/jvairv2/pkg/domain/warranty_status"
 	warrantyType "github.com/your-org/jvairv2/pkg/domain/warranty_type"
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
+	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
+	mysqlEmailTemplate "github.com/your-org/jvairv2/pkg/repository/mysql/email_template"
 	mysqlFile "github.com/your-org/jvairv2/pkg/repository/mysql/file"
 	mysqlInvoice "github.com/your-org/jvairv2/pkg/repository/mysql/invoice"
 	mysqlInvoicePayment "github.com/your-org/jvairv2/pkg/repository/mysql/invoice_payment"
 	mysqlJob "github.com/your-org/jvairv2/pkg/repository/mysql/job"
 	mysqlJobActivityLog "github.com/your-org/jvairv2/pkg/repository/mysql/job_activity_log"
 	mysqlJobCategory "github.com/your-org/jvairv2/pkg/repository/mysql/job_category"
+	mysqlJobEmail "github.com/your-org/jvairv2/pkg/repository/mysql/job_email"
 	mysqlJobEquip "github.com/your-org/jvairv2/pkg/repository/mysql/job_equipment"
 	mysqlJobPriority "github.com/your-org/jvairv2/pkg/repository/mysql/job_priority"
 	mysqlJobRate "github.com/your-org/jvairv2/pkg/repository/mysql/job_rate"
 	mysqlJobRateStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_rate_status"
 	mysqlJobResident "github.com/your-org/jvairv2/pkg/repository/mysql/job_resident"
+	mysqlJobSMS "github.com/your-org/jvairv2/pkg/repository/mysql/job_sms"
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlJobTask "github.com/your-org/jvairv2/pkg/repository/mysql/job_task"
 	mysqlJobVisit "github.com/your-org/jvairv2/pkg/repository/mysql/job_visit"
+	mysqlPasswordHistory "github.com/your-org/jvairv2/pkg/repository/mysql/password_history"
+	mysqlPasswordReset "github.com/your-org/jvairv2/pkg/repository/mysql/password_reset"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
 	mysqlPropEquip "github.com/your-org/jvairv2/pkg/repository/mysql/property_equipment"
@@ -70,6 +82,7 @@ import (
 	mysqlQuoteStatus "github.com/your-org/jvairv2/pkg/repository/mysql/quote_status"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
+	mysqlSMSTemplate "github.com/your-org/jvairv2/pkg/repository/mysql/sms_template"
 	mysqlSupervisor "github.com/your-org/jvairv2/pkg/repository/mysql/supervisor"
 	mysqlTaskStatus "github.com/your-org/jvairv2/pkg/repository/mysql/task_status"
 	mysqlTechJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/technician_job_status"
@@ -88,16 +101,19 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	emailTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/email_template"
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
 	jobHandler "github.com/your-org/jvairv2/pkg/rest/handler/job"
 	jobActivityLogHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_activity_log"
 	jobCategoryHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_category"
+	jobEmailHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_email"
 	jobEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_equipment"
 	jobPriorityHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_priority"
 	jobRateHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate"
 	jobRateStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_rate_status"
 	jobResidentHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_resident"
+	jobSMSHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_sms"
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
@@ -108,6 +124,7 @@ import (
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
+	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
@@ -138,6 +155,7 @@ type Container struct {
 	SettingsHandler            *settingsHandler.Handler
 	WorkflowHandler            *workflowHandler.Handler
 	CustomerHandler            *customerHandler.Handler
+	EmailTemplateHandler       *emailTemplateHandler.Handler
 	PropertyHandler            *propertyHandler.Handler
 	JobHandler                 *jobHandler.Handler
 	JobCategoryHandler         *jobCategoryHandler.Handler
@@ -163,11 +181,15 @@ type Container struct {
 	WarrantyClaimHandler       *warrantyClaimHandler.Handler
 	JobVisitHandler            *jobVisitHandler.Handler
 	JobActivityLogHandler      *jobActivityLogHandler.Handler
+	JobEmailHandler            *jobEmailHandler.Handler
 	JobResidentHandler         *jobResidentHandler.Handler
 	JobRateStatusHandler       *jobRateStatusHandler.Handler
+	JobSMSHandler              *jobSMSHandler.Handler
 	JobTaskHandler             *jobTaskHandler.Handler
 	JobRateHandler             *jobRateHandler.Handler
+	SMSTemplateHandler         *smsTemplateHandler.Handler
 	AlertHandler               *alertHandler.Handler
+	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -214,6 +236,8 @@ func NewContainer(configPath string) (*Container, error) {
 	settingsUC := settings.NewUseCase(settingsRepo)
 	workflowUC := workflow.NewUseCase(workflowRepo)
 	customerUC := customer.NewUseCase(customerRepo, workflowRepo)
+	emailTemplateRepo := mysqlEmailTemplate.NewRepository(dbConn.GetDB())
+	emailTemplateUC := domainEmailTemplate.NewUseCase(emailTemplateRepo)
 	propertyRepo := mysqlProperty.NewRepository(dbConn.DB)
 	propertyUC := property.NewUseCase(propertyRepo, customerRepo)
 	jobCategoryRepo := mysqlJobCategory.NewRepository(dbConn.GetDB())
@@ -258,7 +282,7 @@ func NewContainer(configPath string) (*Container, error) {
 	// Job Visits + Files
 	s3Client, err := storage.NewS3Client(&config.S3)
 	if err != nil {
-		// S3 es opcional - log warning y continuar sin soporte de archivos
+		fmt.Println("Error creating S3 client:", err)
 		_ = err
 	}
 	jobVisitRepo := mysqlJobVisit.NewRepository(dbConn.GetDB())
@@ -273,7 +297,7 @@ func NewContainer(configPath string) (*Container, error) {
 		fileUC = domainFile.NewUseCase(fileRepo, nil)
 	}
 
-	// Warranty catalogs
+	// Warranty Catalogs
 	warrantyTypeRepo := mysqlWarrantyType.NewRepository(dbConn.GetDB())
 	warrantyTypeUC := warrantyType.NewUseCase(warrantyTypeRepo)
 	warrantyStatusRepo := mysqlWarrantyStatus.NewRepository(dbConn.GetDB())
@@ -308,6 +332,9 @@ func NewContainer(configPath string) (*Container, error) {
 	jobActivityLogJobChecker := mysqlJobActivityLog.NewJobExistsChecker(dbConn.GetDB())
 	jobActivityLogUserChecker := mysqlJobActivityLog.NewUserExistsChecker(dbConn.GetDB())
 	jobActivityLogUC := domainJobActivityLog.NewUseCase(jobActivityLogRepo, jobActivityLogJobChecker, jobActivityLogUserChecker)
+	jobEmailRepo := mysqlJobEmail.NewRepository(dbConn.GetDB())
+	jobEmailJobChecker := mysqlJobEmail.NewJobExistsChecker(dbConn.GetDB())
+	jobEmailUC := domainJobEmail.NewUseCase(jobEmailRepo, jobEmailJobChecker)
 
 	// Job Residents
 	jobResidentRepo := mysqlJobResident.NewRepository(dbConn.GetDB())
@@ -331,23 +358,26 @@ func NewContainer(configPath string) (*Container, error) {
 	jobRateUserChecker := mysqlJobRate.NewUserExistsChecker(dbConn.GetDB())
 	jobRateStatusChecker := mysqlJobRate.NewJobRateStatusExistsChecker(dbConn.GetDB())
 	jobRateUC := domainJobRate.NewUseCase(jobRateRepo, jobRateJobChecker, jobRateUserChecker, jobRateStatusChecker)
+	jobSMSRepo := mysqlJobSMS.NewRepository(dbConn.GetDB())
+	jobSMSJobChecker := mysqlJobSMS.NewJobExistsChecker(dbConn.GetDB())
+	jobSMSUC := domainJobSMS.NewUseCase(jobSMSRepo, jobSMSJobChecker)
+	smsTemplateRepo := mysqlSMSTemplate.NewRepository(dbConn.GetDB())
+	smsTemplateUC := domainSMSTemplate.NewUseCase(smsTemplateRepo)
 
 	// Module 15: Alerts
 	alertRepo := mysqlAlert.NewRepository(dbConn.GetDB())
 	alertUserChecker := mysqlAlert.NewUserExistsChecker(dbConn.GetDB())
 	alertUC := domainAlert.NewUseCase(alertRepo, alertUserChecker)
 
-	// Inicializar handlers
+	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
-	authHandler := authHandler.NewHandler(authUC)
-
-	// Inicializar handlers con sus casos de uso
-	userHandler := userHandler.NewHandler(userUC)
+	authHdlr := authHandler.NewHandler(authUC)
 	roleHandler := roleHandler.NewHandler(roleUC)
 	abilityHandler := abilityHandler.NewHandler(abilityUC)
 	assignedRoleHandler := assignedRoleHandler.NewHandler(assignedRoleUC)
 	permissionHandler := permissionHandler.NewHandler(permissionUC)
 	settingsHandler := settingsHandler.NewHandler(settingsUC)
+	emailTemplateHdlr := emailTemplateHandler.NewHandler(emailTemplateUC)
 	workflowHandler := workflowHandler.NewHandler(workflowUC)
 	customerHandler := customerHandler.NewHandler(customerUC, propertyUC, jobUC)
 	propHandler := propertyHandler.NewHandler(propertyUC)
@@ -356,14 +386,65 @@ func NewContainer(configPath string) (*Container, error) {
 	jobPrioHandler := jobPriorityHandler.NewHandler(jobPriorityUC)
 	techJobStatHandler := techJobStatusHandler.NewHandler(techJobStatusUC)
 	taskStatHandler := taskStatusHandler.NewHandler(taskStatusUC)
-	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC)
-	quoteHdlr := quoteHandler.NewHandler(quoteUC)
+
+	// Crear servicio de email
+	mailgunSender := infraEmail.NewMailgunSender(config.Mail)
+	emailInfraService, err := infraEmail.NewService(mailgunSender, "templates/emails")
+	if err != nil {
+		return nil, fmt.Errorf("error al inicializar servicio de email: %w", err)
+	}
+
+	// Crear adaptadores de repositorio para el servicio de email
+	jobRepoAdapter := domainEmail.NewJobRepositoryAdapter(jobRepo)
+	propertyRepoAdapter := domainEmail.NewPropertyRepositoryAdapter(propertyRepo)
+	customerRepoAdapter := domainEmail.NewCustomerRepositoryAdapter(customerRepo)
+	userRepoAdapter := domainEmail.NewUserRepositoryAdapter(userRepo)
+	residentRepoAdapter := domainEmail.NewResidentRepositoryAdapter(jobResidentRepo)
+
+	// Crear adaptadores de repositorio para invoice, quote y task
+	invoiceRepoAdapter := domainEmail.NewInvoiceRepositoryAdapter(invoiceRepo)
+	quoteRepoAdapter := domainEmail.NewQuoteRepositoryAdapter(quoteRepo)
+	taskRepoAdapter := domainEmail.NewTaskRepositoryAdapter(jobTaskRepo)
+
+	// Crear servicio de dominio de email
+	emailDomainService := domainEmail.NewEmailService(
+		emailInfraService,
+		jobRepoAdapter,
+		propertyRepoAdapter,
+		customerRepoAdapter,
+		userRepoAdapter,
+		residentRepoAdapter,
+		invoiceRepoAdapter,
+		quoteRepoAdapter,
+		taskRepoAdapter,
+	)
+
+	// Module 3: Password Security (requires email service from Module 1)
+	// Repositories
+	passwordResetRepo := mysqlPasswordReset.NewRepository(dbConn.GetDB())
+	passwordHistoryRepo := mysqlPasswordHistory.NewRepository(dbConn.GetDB())
+	// Initialize password security use case with real email service
+	passwordSecurityUC := domainAuth.NewPasswordSecurityUseCase(
+		userRepo,
+		passwordResetRepo,
+		passwordHistoryRepo,
+		settingsRepo,
+		emailDomainService,
+	)
+	// Initialize password security handler
+	passwordSecurityHdlr := authHandler.NewPasswordSecurityHandler(passwordSecurityUC)
+
+	// Handlers que necesitan emailService
+	userHandler := userHandler.NewHandler(userUC, emailDomainService)
+	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService)
+	quoteHdlr := quoteHandler.NewHandler(quoteUC, emailDomainService)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
 	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
 	propEquipHdlr := propEquipHandler.NewHandler(propEquipUC)
 	jobEquipHdlr := jobEquipHandler.NewHandler(jobEquipUC)
-	invHdlr := invoiceHandler.NewHandler(invoiceUC)
+	invHdlr := invoiceHandler.NewHandler(invoiceUC, emailDomainService)
 	invPayHdlr := invoicePaymentHandler.NewHandler(invoicePaymentUC)
+
 	wtHdlr := warrantyTypeHandler.NewHandler(warrantyTypeUC)
 	wsHdlr := warrantyStatusHandler.NewHandler(warrantyStatusUC)
 	wctHdlr := warrantyClaimTypeHandler.NewHandler(warrantyClaimTypeUC)
@@ -372,11 +453,15 @@ func NewContainer(configPath string) (*Container, error) {
 	weHdlr := warrantyEquipHandler.NewHandler(warrantyEquipUC)
 	wcHdlr := warrantyClaimHandler.NewHandler(warrantyClaimUC)
 	jvHdlr := jobVisitHandler.NewHandler(jobVisitUC, fileUC)
+
 	jalHdlr := jobActivityLogHandler.NewHandler(jobActivityLogUC)
+	jeHdlr := jobEmailHandler.NewHandler(jobEmailUC)
 	jrHdlr := jobResidentHandler.NewHandler(jobResidentUC)
 	jrsHdlr := jobRateStatusHandler.NewHandler(jobRateStatusUC)
-	jtHdlr := jobTaskHandler.NewHandler(jobTaskUC)
+	jsHdlr := jobSMSHandler.NewHandler(jobSMSUC)
+	jtHdlr := jobTaskHandler.NewHandler(jobTaskUC, emailDomainService)
 	jraHdlr := jobRateHandler.NewHandler(jobRateUC)
+	stHdlr := smsTemplateHandler.NewHandler(smsTemplateUC)
 	alHdlr := alertHandler.NewHandler(alertUC)
 
 	// Inicializar middlewares
@@ -385,13 +470,15 @@ func NewContainer(configPath string) (*Container, error) {
 	// Inicializar router
 	r := router.New(
 		healthHandler,
-		authHandler,
+		authHdlr,
+		passwordSecurityHdlr,
 		userHandler,
 		roleHandler,
 		abilityHandler,
 		assignedRoleHandler,
 		permissionHandler,
 		settingsHandler,
+		emailTemplateHdlr,
 		workflowHandler,
 		customerHandler,
 		propHandler,
@@ -417,8 +504,11 @@ func NewContainer(configPath string) (*Container, error) {
 		wcHdlr,
 		jvHdlr,
 		jalHdlr,
+		jeHdlr,
 		jrHdlr,
 		jrsHdlr,
+		jsHdlr,
+		stHdlr,
 		jtHdlr,
 		jraHdlr,
 		alHdlr,
@@ -430,13 +520,14 @@ func NewContainer(configPath string) (*Container, error) {
 		Config:                     config,
 		DBConnection:               dbConn,
 		HealthHandler:              healthHandler,
-		AuthHandler:                authHandler,
+		AuthHandler:                authHdlr,
 		UserHandler:                userHandler,
 		RoleHandler:                roleHandler,
 		AbilityHandler:             abilityHandler,
 		AssignedRoleHandler:        assignedRoleHandler,
 		PermissionHandler:          permissionHandler,
 		SettingsHandler:            settingsHandler,
+		EmailTemplateHandler:       emailTemplateHdlr,
 		WorkflowHandler:            workflowHandler,
 		CustomerHandler:            customerHandler,
 		PropertyHandler:            propHandler,
@@ -464,11 +555,15 @@ func NewContainer(configPath string) (*Container, error) {
 		WarrantyClaimHandler:       wcHdlr,
 		JobVisitHandler:            jvHdlr,
 		JobActivityLogHandler:      jalHdlr,
+		JobEmailHandler:            jeHdlr,
 		JobResidentHandler:         jrHdlr,
 		JobRateStatusHandler:       jrsHdlr,
+		JobSMSHandler:              jsHdlr,
 		JobTaskHandler:             jtHdlr,
 		JobRateHandler:             jraHdlr,
+		SMSTemplateHandler:         stHdlr,
 		AlertHandler:               alHdlr,
+		PasswordSecurityHandler:    passwordSecurityHdlr,
 	}, nil
 }
 

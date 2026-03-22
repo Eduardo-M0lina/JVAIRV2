@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/your-org/jvairv2/pkg/domain/job_rate_status"
+	"github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 type Handler struct {
@@ -44,7 +45,7 @@ type UpdateRequest struct {
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
@@ -55,7 +56,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.service.Create(r.Context(), status); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -77,7 +78,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	statuses, err := h.service.List(r.Context())
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -101,17 +102,17 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid status ID")
 		return
 	}
 
 	status, err := h.service.GetByID(r.Context(), id)
 	if err != nil {
 		if err == job_rate_status.ErrNotFound {
-			http.Error(w, "Job rate status not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Job rate status not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -136,13 +137,13 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid status ID")
 		return
 	}
 
 	var req UpdateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
@@ -155,16 +156,16 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.service.Update(r.Context(), status); err != nil {
 		if err == job_rate_status.ErrNotFound {
-			http.Error(w, "Job rate status not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Job rate status not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	updatedStatus, err := h.service.GetByID(r.Context(), id)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -188,16 +189,16 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid status ID")
 		return
 	}
 
 	if err := h.service.Delete(r.Context(), id); err != nil {
 		if err == job_rate_status.ErrNotFound {
-			http.Error(w, "Job rate status not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Job rate status not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

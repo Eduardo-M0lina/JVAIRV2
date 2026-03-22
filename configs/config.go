@@ -14,6 +14,7 @@ type Config struct {
 	DB     DBConfig
 	JWT    JWTConfig
 	S3     S3Config
+	Mail   MailConfig
 }
 
 // AppConfig almacena la configuración general de la aplicación
@@ -58,6 +59,14 @@ type S3Config struct {
 	SecretKey string
 	Endpoint  string
 	URL       string // CDN URL override (AWS_URL), e.g. https://images.wecoolatlanta.com
+}
+
+// MailConfig almacena la configuración de email (Mailgun)
+type MailConfig struct {
+	FromAddress   string
+	FromName      string
+	MailgunDomain string
+	MailgunSecret string
 }
 
 // LoadConfig carga la configuración desde el archivo app.env
@@ -114,6 +123,12 @@ func LoadConfig(path string) (*Config, error) {
 	config.S3.SecretKey = viper.GetString("AWS_SECRET_ACCESS_KEY")
 	config.S3.Endpoint = viper.GetString("AWS_ENDPOINT")
 	config.S3.URL = viper.GetString("AWS_URL")
+
+	// Configuración de Mail (Mailgun)
+	config.Mail.FromAddress = viper.GetString("MAIL_FROM_ADDRESS")
+	config.Mail.FromName = viper.GetString("MAIL_FROM_NAME")
+	config.Mail.MailgunDomain = viper.GetString("MAILGUN_DOMAIN")
+	config.Mail.MailgunSecret = viper.GetString("MAILGUN_SECRET")
 
 	return &config, nil
 }

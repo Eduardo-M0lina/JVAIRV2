@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/your-org/jvairv2/pkg/domain/auth"
+	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // Handler maneja las solicitudes HTTP relacionadas con autenticación
@@ -43,7 +44,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 			"error", err,
 			"remote_addr", r.RemoteAddr,
 		)
-		http.Error(w, "Error al decodificar la solicitud", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Error al decodificar la solicitud")
 		return
 	}
 
@@ -52,7 +53,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		slog.Warn("Intento de login con credenciales vacías",
 			"remote_addr", r.RemoteAddr,
 		)
-		http.Error(w, "Email y contraseña son requeridos", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Email y contraseña son requeridos")
 		return
 	}
 
@@ -64,7 +65,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 				"email", req.Email,
 				"remote_addr", r.RemoteAddr,
 			)
-			http.Error(w, "Credenciales inválidas", http.StatusUnauthorized)
+			handler.RespondWithError(w, http.StatusUnauthorized, "Credenciales inválidas")
 			return
 		}
 		if err == auth.ErrUserInactive {
@@ -72,14 +73,14 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 				"email", req.Email,
 				"remote_addr", r.RemoteAddr,
 			)
-			http.Error(w, "Usuario inactivo", http.StatusForbidden)
+			handler.RespondWithError(w, http.StatusForbidden, "Usuario inactivo")
 			return
 		}
 		slog.Error("Error al procesar login",
 			"email", req.Email,
 			"error", err,
 		)
-		http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error interno del servidor")
 		return
 	}
 
@@ -95,7 +96,7 @@ func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 		slog.Error("Error al codificar respuesta de login",
 			"error", err,
 		)
-		http.Error(w, "Error al codificar la respuesta", http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al codificar la respuesta")
 		return
 	}
 }
@@ -116,14 +117,14 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 	// Obtener token de acceso del encabezado de autorización
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		http.Error(w, "Token de acceso no proporcionado", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Token de acceso no proporcionado")
 		return
 	}
 
 	// Extraer token del encabezado (Bearer token)
 	splitToken := strings.Split(authHeader, "Bearer ")
 	if len(splitToken) != 2 {
-		http.Error(w, "Formato de token inválido", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Formato de token inválido")
 		return
 	}
 	accessToken := splitToken[1]
@@ -131,7 +132,7 @@ func (h *Handler) Logout(w http.ResponseWriter, r *http.Request) {
 	// Cerrar sesión
 	err := h.authUseCase.Logout(r.Context(), accessToken)
 	if err != nil {
-		http.Error(w, "Error al cerrar sesión", http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al cerrar sesión")
 		return
 	}
 
@@ -158,13 +159,13 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 
 	// Decodificar el cuerpo de la solicitud
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Error al decodificar la solicitud", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Error al decodificar la solicitud")
 		return
 	}
 
 	// Validar la solicitud
 	if req.RefreshToken == "" {
-		http.Error(w, "Token de refresco es requerido", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Token de refresco es requerido")
 		return
 	}
 
@@ -172,10 +173,10 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	td, err := h.authUseCase.RefreshToken(r.Context(), req.RefreshToken)
 	if err != nil {
 		if err == auth.ErrInvalidToken {
-			http.Error(w, "Token inválido", http.StatusUnauthorized)
+			handler.RespondWithError(w, http.StatusUnauthorized, "Token inválido")
 			return
 		}
-		http.Error(w, "Error interno del servidor", http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error interno del servidor")
 		return
 	}
 
@@ -193,7 +194,7 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
-		http.Error(w, "Error al codificar la respuesta", http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al codificar la respuesta")
 		return
 	}
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/your-org/jvairv2/pkg/domain/alert"
 	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/your-org/jvairv2/pkg/rest/handler"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
@@ -111,7 +112,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 
 	alerts, total, err := h.service.List(r.Context(), filters, limit, offset)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -142,17 +143,17 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid alert ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid alert ID")
 		return
 	}
 
 	a, err := h.service.GetByID(r.Context(), id)
 	if err != nil {
 		if err == alert.ErrNotFound {
-			http.Error(w, "Alert not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Alert not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -176,7 +177,7 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
@@ -192,10 +193,10 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.service.Create(r.Context(), a); err != nil {
 		if err == alert.ErrUserNotFound {
-			http.Error(w, "User not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "User not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -220,16 +221,16 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) MarkAsRead(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid alert ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid alert ID")
 		return
 	}
 
 	if err := h.service.MarkAsRead(r.Context(), id); err != nil {
 		if err == alert.ErrNotFound {
-			http.Error(w, "Alert not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Alert not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -250,13 +251,13 @@ func (h *Handler) MarkAsRead(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) MarkAllRead(w http.ResponseWriter, r *http.Request) {
 	u, ok := r.Context().Value(middleware.UserContextKey).(*user.User)
 	if !ok || u == nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		handler.RespondWithError(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
 	updated, err := h.service.MarkAllRead(r.Context(), u.ID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -279,13 +280,13 @@ func (h *Handler) MarkAllRead(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UnreadCount(w http.ResponseWriter, r *http.Request) {
 	u, ok := r.Context().Value(middleware.UserContextKey).(*user.User)
 	if !ok || u == nil {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		handler.RespondWithError(w, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
 
 	count, err := h.service.UnreadCount(r.Context(), u.ID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -310,16 +311,16 @@ func (h *Handler) UnreadCount(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid alert ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid alert ID")
 		return
 	}
 
 	if err := h.service.Delete(r.Context(), id); err != nil {
 		if err == alert.ErrNotFound {
-			http.Error(w, "Alert not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Alert not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

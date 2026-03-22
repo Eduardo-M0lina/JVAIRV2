@@ -15,5 +15,6 @@ func RegisterUserRoutes(r chi.Router, handler *userHandler.Handler) {
 		r.Delete("/{id}", handler.Delete)
 		r.Get("/{id}/roles", handler.GetRoles)
 		r.Get("/{id}/abilities", handler.GetAbilities)
+		r.Post("/{id}/paystub-email", handler.SendPayStubEmail)
 	})
 }
