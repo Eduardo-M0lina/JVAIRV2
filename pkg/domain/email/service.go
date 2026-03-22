@@ -16,6 +16,7 @@ type Service interface {
 	SendQuoteEmail(ctx context.Context, quoteID int64, recipients []string) error
 	SendTaskNotificationEmail(ctx context.Context, taskID int64, recipients []string) error
 	SendPayStubEmail(ctx context.Context, userID int64, recipients []string) error
+	SendPasswordResetEmail(ctx context.Context, toEmail, resetLink string) error
 }
 
 // EmailService implementa el servicio de email
@@ -487,6 +488,23 @@ func (s *EmailService) SendPayStubEmail(ctx context.Context, userID int64, recip
 	}
 
 	return s.emailService.SendTemplatedEmail(ctx, "paystub.html", templateData, params)
+}
+
+// SendPasswordResetEmail envía un email de recuperación de contraseña
+func (s *EmailService) SendPasswordResetEmail(ctx context.Context, toEmail, resetLink string) error {
+	// Preparar datos del template
+	templateData := map[string]interface{}{
+		"ResetLink": resetLink,
+		"Year":      time.Now().Year(),
+	}
+
+	// Enviar email usando template estático password-reset.html
+	params := infraEmail.SendEmailParams{
+		To:      []string{toEmail},
+		Subject: "Recuperación de Contraseña - JVAIR",
+	}
+
+	return s.emailService.SendTemplatedEmail(ctx, "password-reset.html", templateData, params)
 }
 
 // getStringValue retorna el valor de un puntero a string o un valor por defecto

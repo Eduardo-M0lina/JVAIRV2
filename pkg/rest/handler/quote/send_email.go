@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // SendEmailRequest representa la solicitud para enviar un email de quote
@@ -34,20 +35,20 @@ func (h *Handler) SendEmail(w http.ResponseWriter, r *http.Request) {
 	quoteIDStr := chi.URLParam(r, "id")
 	quoteID, err := strconv.ParseInt(quoteIDStr, 10, 64)
 	if err != nil {
-		http.Error(w, `{"error":"ID de quote inválido"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de quote inválido")
 		return
 	}
 
 	// Parsear request
 	var req SendEmailRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, `{"error":"Request inválido"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Request inválido")
 		return
 	}
 
 	// Validar emails
 	if req.Email == "" {
-		http.Error(w, `{"error":"Email es requerido"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Email es requerido")
 		return
 	}
 
@@ -59,14 +60,14 @@ func (h *Handler) SendEmail(w http.ResponseWriter, r *http.Request) {
 
 	// Verificar que el servicio de email esté disponible
 	if h.emailService == nil {
-		http.Error(w, `{"error":"Servicio de email no configurado"}`, http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Servicio de email no configurado")
 		return
 	}
 
 	// Enviar email usando el servicio de dominio
 	err = h.emailService.SendQuoteEmail(ctx, quoteID, emails)
 	if err != nil {
-		http.Error(w, `{"error":"`+err.Error()+`"}`, http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

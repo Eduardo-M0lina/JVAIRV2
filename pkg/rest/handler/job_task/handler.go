@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/your-org/jvairv2/pkg/domain/email"
 	"github.com/your-org/jvairv2/pkg/domain/job_task"
+	"github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 type Handler struct {
@@ -60,13 +61,13 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	jobIDStr := chi.URLParam(r, "jobId")
 	jobID, err := strconv.ParseInt(jobIDStr, 10, 64)
 	if err != nil {
-		http.Error(w, `{"error":"invalid job ID"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "invalid job ID")
 		return
 	}
 
 	var req CreateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
@@ -79,18 +80,18 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.service.Create(ctx, task); err != nil {
 		if err == job_task.ErrJobNotFound {
-			http.Error(w, "Job not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Job not found")
 			return
 		}
 		if err == job_task.ErrUserNotFound {
-			http.Error(w, "User not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "User not found")
 			return
 		}
 		if err == job_task.ErrTaskStatusNotFound {
-			http.Error(w, "Task status not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Task status not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -116,7 +117,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	jobID, err := strconv.ParseInt(chi.URLParam(r, "jobId"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid job ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid job ID")
 		return
 	}
 
@@ -138,7 +139,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 
 	tasks, total, err := h.service.List(r.Context(), jobID, limit, offset)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -184,7 +185,7 @@ func (h *Handler) ListAll(w http.ResponseWriter, r *http.Request) {
 
 	tasks, total, err := h.service.ListAll(r.Context(), limit, offset)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -217,13 +218,13 @@ func (h *Handler) ListAll(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid task ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid task ID")
 		return
 	}
 
 	var req UpdateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid request body")
 		return
 	}
 
@@ -236,24 +237,24 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 
 	if err := h.service.Update(r.Context(), task); err != nil {
 		if err == job_task.ErrNotFound {
-			http.Error(w, "Task not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Task not found")
 			return
 		}
 		if err == job_task.ErrUserNotFound {
-			http.Error(w, "User not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "User not found")
 			return
 		}
 		if err == job_task.ErrTaskStatusNotFound {
-			http.Error(w, "Task status not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Task status not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	updatedTask, err := h.service.GetByID(r.Context(), id)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -278,16 +279,16 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
-		http.Error(w, "Invalid task ID", http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Invalid task ID")
 		return
 	}
 
 	if err := h.service.Delete(r.Context(), id); err != nil {
 		if err == job_task.ErrNotFound {
-			http.Error(w, "Task not found", http.StatusNotFound)
+			handler.RespondWithError(w, http.StatusNotFound, "Task not found")
 			return
 		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

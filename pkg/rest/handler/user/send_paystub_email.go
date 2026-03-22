@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // SendPayStubEmailRequest representa la solicitud para enviar email de paystub
@@ -34,20 +35,20 @@ func (h *Handler) SendPayStubEmail(w http.ResponseWriter, r *http.Request) {
 	userIDStr := chi.URLParam(r, "id")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		http.Error(w, `{"error":"ID de usuario inválido"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de usuario inválido")
 		return
 	}
 
 	// Parsear request
 	var req SendPayStubEmailRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, `{"error":"Request inválido"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Request inválido")
 		return
 	}
 
 	// Validar email
 	if req.Email == "" {
-		http.Error(w, `{"error":"Email es requerido"}`, http.StatusBadRequest)
+		handler.RespondWithError(w, http.StatusBadRequest, "Email es requerido")
 		return
 	}
 
@@ -59,14 +60,14 @@ func (h *Handler) SendPayStubEmail(w http.ResponseWriter, r *http.Request) {
 
 	// Verificar que el servicio de email esté disponible
 	if h.emailService == nil {
-		http.Error(w, `{"error":"Servicio de email no configurado"}`, http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, "Servicio de email no configurado")
 		return
 	}
 
 	// Enviar email usando el servicio de dominio
 	err = h.emailService.SendPayStubEmail(ctx, userID, emails)
 	if err != nil {
-		http.Error(w, `{"error":"`+err.Error()+`"}`, http.StatusInternalServerError)
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 

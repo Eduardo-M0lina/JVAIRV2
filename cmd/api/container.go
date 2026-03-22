@@ -73,6 +73,8 @@ import (
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlJobTask "github.com/your-org/jvairv2/pkg/repository/mysql/job_task"
 	mysqlJobVisit "github.com/your-org/jvairv2/pkg/repository/mysql/job_visit"
+	mysqlPasswordHistory "github.com/your-org/jvairv2/pkg/repository/mysql/password_history"
+	mysqlPasswordReset "github.com/your-org/jvairv2/pkg/repository/mysql/password_reset"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
 	mysqlPropEquip "github.com/your-org/jvairv2/pkg/repository/mysql/property_equipment"
@@ -187,6 +189,7 @@ type Container struct {
 	JobRateHandler             *jobRateHandler.Handler
 	SMSTemplateHandler         *smsTemplateHandler.Handler
 	AlertHandler               *alertHandler.Handler
+	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -368,7 +371,7 @@ func NewContainer(configPath string) (*Container, error) {
 
 	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
-	authHandler := authHandler.NewHandler(authUC)
+	authHdlr := authHandler.NewHandler(authUC)
 	roleHandler := roleHandler.NewHandler(roleUC)
 	abilityHandler := abilityHandler.NewHandler(abilityUC)
 	assignedRoleHandler := assignedRoleHandler.NewHandler(assignedRoleUC)
@@ -416,6 +419,21 @@ func NewContainer(configPath string) (*Container, error) {
 		taskRepoAdapter,
 	)
 
+	// Module 3: Password Security (requires email service from Module 1)
+	// Repositories
+	passwordResetRepo := mysqlPasswordReset.NewRepository(dbConn.GetDB())
+	passwordHistoryRepo := mysqlPasswordHistory.NewRepository(dbConn.GetDB())
+	// Initialize password security use case with real email service
+	passwordSecurityUC := domainAuth.NewPasswordSecurityUseCase(
+		userRepo,
+		passwordResetRepo,
+		passwordHistoryRepo,
+		settingsRepo,
+		emailDomainService,
+	)
+	// Initialize password security handler
+	passwordSecurityHdlr := authHandler.NewPasswordSecurityHandler(passwordSecurityUC)
+
 	// Handlers que necesitan emailService
 	userHandler := userHandler.NewHandler(userUC, emailDomainService)
 	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService)
@@ -452,7 +470,8 @@ func NewContainer(configPath string) (*Container, error) {
 	// Inicializar router
 	r := router.New(
 		healthHandler,
-		authHandler,
+		authHdlr,
+		passwordSecurityHdlr,
 		userHandler,
 		roleHandler,
 		abilityHandler,
@@ -501,7 +520,7 @@ func NewContainer(configPath string) (*Container, error) {
 		Config:                     config,
 		DBConnection:               dbConn,
 		HealthHandler:              healthHandler,
-		AuthHandler:                authHandler,
+		AuthHandler:                authHdlr,
 		UserHandler:                userHandler,
 		RoleHandler:                roleHandler,
 		AbilityHandler:             abilityHandler,
@@ -544,6 +563,7 @@ func NewContainer(configPath string) (*Container, error) {
 		JobRateHandler:             jraHdlr,
 		SMSTemplateHandler:         stHdlr,
 		AlertHandler:               alHdlr,
+		PasswordSecurityHandler:    passwordSecurityHdlr,
 	}, nil
 }
 

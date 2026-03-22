@@ -55,6 +55,7 @@ import (
 func New(
 	healthHandler *handler.HealthHandler,
 	authHandler *authHandler.Handler,
+	passwordSecurityHandler *authHandler.PasswordSecurityHandler,
 	userHandler *userHandler.Handler,
 	roleHandler *roleHandler.Handler,
 	abilityHandler *abilityHandler.Handler,
@@ -109,7 +110,7 @@ func New(
 		// Health check
 		r.Get("/health", healthHandler.Check)
 		// Rutas de autenticación
-		RegisterAuthRoutes(r, authHandler)
+		RegisterAuthRoutes(r, authHandler, passwordSecurityHandler)
 		// Swagger UI
 		r.Get("/swagger/*", httpSwagger.Handler(
 			httpSwagger.URL("/swagger/doc.json"), // URL para acceder a la documentación JSON
@@ -122,6 +123,10 @@ func New(
 
 		// Middleware de habilidades - añadir esto
 		r.Use(middleware.WithAbilities(userUseCase))
+
+		// Ruta protegida de cambio de contraseña
+		r.Post("/auth/change-password", passwordSecurityHandler.ChangePassword)
+
 		// API v1
 		r.Route("/api/v1", func(r chi.Router) {
 			// Rutas de usuarios
