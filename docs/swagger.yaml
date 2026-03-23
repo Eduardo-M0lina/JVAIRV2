@@ -668,6 +668,13 @@ definitions:
       email:
         type: string
     type: object
+  job.SendDispatchSMSRequest:
+    properties:
+      phoneNumbers:
+        type: string
+      textMessage:
+        type: string
+    type: object
   job.SendDispatchSupervisorEmailRequest:
     properties:
       body:
@@ -5552,6 +5559,56 @@ paths:
       summary: Cerrar trabajo
       tags:
       - Jobs
+  /api/v1/jobs/{id}/dispatch-sms:
+    post:
+      consumes:
+      - application/json
+      description: Envía SMS de dispatch a uno o más números de teléfono via AWS SNS
+        o Twilio
+      parameters:
+      - description: Job ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: SMS request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job.SendDispatchSMSRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Enviar SMS de dispatch
+      tags:
+      - jobs
   /api/v1/jobs/{jobId}/activities:
     get:
       consumes:

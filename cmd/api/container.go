@@ -51,6 +51,7 @@ import (
 	warrantyType "github.com/your-org/jvairv2/pkg/domain/warranty_type"
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
 	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
+	infraSMS "github.com/your-org/jvairv2/pkg/infrastructure/sms"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
@@ -279,6 +280,15 @@ func NewContainer(configPath string) (*Container, error) {
 	invoiceChecker := mysqlInvoice.NewInvoiceCheckerAdapter(dbConn.GetDB())
 	invoicePaymentUC := domainInvoicePayment.NewUseCase(invoicePaymentRepo, invoiceChecker)
 
+	// Inicializar SMS (AWS SNS + Twilio selector)
+	var smsSender infraSMS.SMSSender
+	snsSender, snsErr := infraSMS.NewAWSSNSSender(&config.S3)
+	if snsErr != nil {
+		fmt.Println("Warning: No se pudo inicializar AWS SNS sender:", snsErr)
+	} else {
+		smsSender = infraSMS.NewSelectiveSender(snsSender, settingsUC)
+	}
+
 	// Job Visits + Files
 	s3Client, err := storage.NewS3Client(&config.S3)
 	if err != nil {
@@ -436,7 +446,7 @@ func NewContainer(configPath string) (*Container, error) {
 
 	// Handlers que necesitan emailService
 	userHandler := userHandler.NewHandler(userUC, emailDomainService)
-	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService)
+	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService, smsSender, jobSMSUC)
 	quoteHdlr := quoteHandler.NewHandler(quoteUC, emailDomainService)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
 	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)

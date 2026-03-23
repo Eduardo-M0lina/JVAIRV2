@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
 	domainJobActivityLog "github.com/your-org/jvairv2/pkg/domain/job_activity_log"
+	domainJobSMS "github.com/your-org/jvairv2/pkg/domain/job_sms"
 	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
@@ -17,6 +18,8 @@ type Handler struct {
 	useCase            domainJob.Service
 	activityLogService domainJobActivityLog.Service
 	emailService       EmailService
+	smsSender          SMSSender
+	jobSMSService      domainJobSMS.Service
 }
 
 // EmailService define la interfaz para envío de emails
@@ -25,12 +28,19 @@ type EmailService interface {
 	SendDispatchSupervisorEmail(ctx context.Context, jobID int64, subject string, body string, recipients []string) error
 }
 
+// SMSSender define la interfaz para envío de SMS
+type SMSSender interface {
+	SendSMS(ctx context.Context, to string, body string) error
+}
+
 // NewHandler crea una nueva instancia del handler de jobs
-func NewHandler(useCase domainJob.Service, activityLogService domainJobActivityLog.Service, emailService EmailService) *Handler {
+func NewHandler(useCase domainJob.Service, activityLogService domainJobActivityLog.Service, emailService EmailService, smsSender SMSSender, jobSMSService domainJobSMS.Service) *Handler {
 	return &Handler{
 		useCase:            useCase,
 		activityLogService: activityLogService,
 		emailService:       emailService,
+		smsSender:          smsSender,
+		jobSMSService:      jobSMSService,
 	}
 }
 
@@ -45,6 +55,7 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 		r.Put("/{id}/close", h.Close)
 		r.Post("/{id}/dispatch-email", h.SendDispatchEmail)
 		r.Post("/{id}/dispatch-supervisor-email", h.SendDispatchSupervisorEmail)
+		r.Post("/{id}/dispatch-sms", h.SendDispatchSMS)
 	})
 }
 
