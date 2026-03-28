@@ -12,6 +12,7 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	dashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/dashboard"
 	emailTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/email_template"
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
@@ -28,6 +29,7 @@ import (
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
+	"github.com/your-org/jvairv2/pkg/rest/handler/new_dashboard"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
@@ -96,6 +98,8 @@ func New(
 	jobTaskHandler *jobTaskHandler.Handler,
 	jobRateHandler *jobRateHandler.Handler,
 	alertHandler *alertHandler.Handler,
+	dashboardHandler *dashboardHandler.Handler,
+	newDashboardHdlr *new_dashboard.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -249,6 +253,12 @@ func New(
 
 			// Module 15: Alerts
 			alertHandler.RegisterRoutes(r)
+
+			// Dashboard
+			dashboardHandler.RegisterRoutes(r)
+
+			// New Enhanced Dashboard
+			newDashboardHdlr.RegisterRoutes(r)
 		})
 	})
 	return r

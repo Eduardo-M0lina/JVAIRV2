@@ -408,6 +408,108 @@ definitions:
         example: 5
         type: integer
     type: object
+  dashboard.AdminDashboard:
+    properties:
+      jobsAwaitingDispatch:
+        items:
+          $ref: '#/definitions/dashboard.DashboardJob'
+        type: array
+      jobsUrgent:
+        items:
+          $ref: '#/definitions/dashboard.DashboardJob'
+        type: array
+      stats:
+        $ref: '#/definitions/dashboard.DashboardStats'
+    type: object
+  dashboard.DashboardJob:
+    properties:
+      cageRequired:
+        type: boolean
+      callAttempted:
+        description: Campos adicionales del job
+        type: boolean
+      categoryName:
+        type: string
+      closed:
+        type: boolean
+      completionDate:
+        type: string
+      customerName:
+        type: string
+      dateReceived:
+        type: string
+      dispatchDate:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      jobCategoryId:
+        type: integer
+      jobPriorityId:
+        type: integer
+      jobSalesPrice:
+        type: number
+      jobStatusId:
+        type: integer
+      priorityClass:
+        type: string
+      priorityName:
+        type: string
+      propertyCity:
+        type: string
+      propertyId:
+        type: integer
+      propertyStreet:
+        description: Campos enriquecidos con JOINs
+        type: string
+      propertyZip:
+        type: string
+      quickNotes:
+        type: string
+      routeNumber:
+        type: integer
+      scheduledTime:
+        type: string
+      statusClass:
+        type: string
+      statusName:
+        type: string
+      technicianName:
+        type: string
+      userId:
+        type: integer
+      weekNumber:
+        type: integer
+      workOrder:
+        type: string
+    type: object
+  dashboard.DashboardStats:
+    properties:
+      jobsAwaitingDispatch:
+        type: integer
+      jobsClosedThisMonth:
+        type: integer
+      jobsDispatched:
+        type: integer
+      jobsOpen:
+        type: integer
+      jobsUrgent:
+        type: integer
+    type: object
+  dashboard.TechnicianDashboard:
+    properties:
+      jobsDispatched:
+        items:
+          $ref: '#/definitions/dashboard.DashboardJob'
+        type: array
+      jobsUrgent:
+        items:
+          $ref: '#/definitions/dashboard.DashboardJob'
+        type: array
+      stats:
+        $ref: '#/definitions/dashboard.DashboardStats'
+    type: object
   email_template.CreateRequest:
     properties:
       body:
@@ -1495,6 +1597,294 @@ definitions:
       viewableBy:
         example: '["1","2"]'
         type: string
+    type: object
+  new_dashboard.Activity:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      log:
+        type: string
+      type:
+        type: string
+      userName:
+        type: string
+      workOrder:
+        type: string
+    type: object
+  new_dashboard.AdminEnhancedDashboard:
+    properties:
+      alertSummary:
+        $ref: '#/definitions/new_dashboard.AlertSummary'
+      invoiceSummary:
+        $ref: '#/definitions/new_dashboard.InvoiceSummary'
+      jobsByCategory:
+        items:
+          $ref: '#/definitions/new_dashboard.CategoryCount'
+        type: array
+      jobsByStatus:
+        items:
+          $ref: '#/definitions/new_dashboard.StatusCount'
+        type: array
+      jobsDueThisWeek:
+        items:
+          $ref: '#/definitions/new_dashboard.DueJob'
+        type: array
+      quoteSummary:
+        $ref: '#/definitions/new_dashboard.QuoteSummary'
+      recentActivity:
+        items:
+          $ref: '#/definitions/new_dashboard.Activity'
+        type: array
+      stats:
+        $ref: '#/definitions/new_dashboard.EnhancedStats'
+      taskSummary:
+        $ref: '#/definitions/new_dashboard.TaskSummary'
+      technicianWorkload:
+        items:
+          $ref: '#/definitions/new_dashboard.TechnicianLoad'
+        type: array
+      warrantySummary:
+        $ref: '#/definitions/new_dashboard.WarrantySummary'
+    type: object
+  new_dashboard.Alert:
+    properties:
+      alertType:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      message:
+        type: string
+      messageLevel:
+        type: string
+    type: object
+  new_dashboard.AlertSummary:
+    properties:
+      alerts:
+        items:
+          $ref: '#/definitions/new_dashboard.Alert'
+        type: array
+      unreadCount:
+        type: integer
+    type: object
+  new_dashboard.CategoryCount:
+    properties:
+      categoryId:
+        type: integer
+      categoryName:
+        type: string
+      count:
+        type: integer
+    type: object
+  new_dashboard.DueJob:
+    properties:
+      customerName:
+        type: string
+      dueDate:
+        type: string
+      id:
+        type: integer
+      priorityName:
+        type: string
+      propertyStreet:
+        type: string
+      statusName:
+        type: string
+      workOrder:
+        type: string
+    type: object
+  new_dashboard.EnhancedStats:
+    properties:
+      jobsAwaitingDispatch:
+        description: Stats originales
+        type: integer
+      jobsClosedThisMonth:
+        type: integer
+      jobsDispatched:
+        type: integer
+      jobsOpen:
+        type: integer
+      jobsUrgent:
+        type: integer
+      totalAlerts:
+        description: Conteos de nuevos nodos
+        type: integer
+      totalInvoicesPending:
+        type: integer
+      totalQuotesPending:
+        type: integer
+      totalTasksOverdue:
+        type: integer
+      totalTasksPending:
+        type: integer
+      totalWarrantyClaims:
+        type: integer
+    type: object
+  new_dashboard.InvoiceSummary:
+    properties:
+      amountPaidThisMonth:
+        type: number
+      amountPending:
+        type: number
+      recentInvoices:
+        items:
+          $ref: '#/definitions/new_dashboard.RecentInvoice'
+        type: array
+      totalOverdue:
+        type: integer
+      totalPaid:
+        type: integer
+      totalPending:
+        type: integer
+    type: object
+  new_dashboard.QuoteSummary:
+    properties:
+      recentQuotes:
+        items:
+          $ref: '#/definitions/new_dashboard.RecentQuote'
+        type: array
+      totalApproved:
+        type: integer
+      totalPending:
+        type: integer
+      totalRejected:
+        type: integer
+    type: object
+  new_dashboard.RecentClaim:
+    properties:
+      claimNumber:
+        type: string
+      createdAt:
+        type: string
+      customerName:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      statusName:
+        type: string
+    type: object
+  new_dashboard.RecentInvoice:
+    properties:
+      createdAt:
+        type: string
+      customerName:
+        type: string
+      id:
+        type: integer
+      invoiceNumber:
+        type: string
+      jobId:
+        type: integer
+      status:
+        type: string
+      total:
+        type: number
+    type: object
+  new_dashboard.RecentQuote:
+    properties:
+      createdAt:
+        type: string
+      customerName:
+        type: string
+      id:
+        type: integer
+      jobId:
+        type: integer
+      quoteNumber:
+        type: string
+      statusName:
+        type: string
+      total:
+        type: number
+    type: object
+  new_dashboard.StatusCount:
+    properties:
+      count:
+        type: integer
+      statusId:
+        type: integer
+      statusName:
+        type: string
+    type: object
+  new_dashboard.Task:
+    properties:
+      dueDate:
+        type: string
+      id:
+        type: integer
+      isOverdue:
+        type: boolean
+      jobId:
+        type: integer
+      statusName:
+        type: string
+      title:
+        type: string
+      workOrder:
+        type: string
+    type: object
+  new_dashboard.TaskSummary:
+    properties:
+      tasks:
+        items:
+          $ref: '#/definitions/new_dashboard.Task'
+        type: array
+      totalOverdue:
+        type: integer
+      totalPending:
+        type: integer
+    type: object
+  new_dashboard.TechnicianEnhancedDashboard:
+    properties:
+      alertSummary:
+        $ref: '#/definitions/new_dashboard.AlertSummary'
+      jobsByStatus:
+        items:
+          $ref: '#/definitions/new_dashboard.StatusCount'
+        type: array
+      jobsDueThisWeek:
+        items:
+          $ref: '#/definitions/new_dashboard.DueJob'
+        type: array
+      recentActivity:
+        items:
+          $ref: '#/definitions/new_dashboard.Activity'
+        type: array
+      stats:
+        $ref: '#/definitions/new_dashboard.EnhancedStats'
+      taskSummary:
+        $ref: '#/definitions/new_dashboard.TaskSummary'
+    type: object
+  new_dashboard.TechnicianLoad:
+    properties:
+      name:
+        type: string
+      openJobs:
+        type: integer
+      urgentJobs:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  new_dashboard.WarrantySummary:
+    properties:
+      activeWarranties:
+        type: integer
+      expiringThisMonth:
+        type: integer
+      openClaims:
+        type: integer
+      recentClaims:
+        items:
+          $ref: '#/definitions/new_dashboard.RecentClaim'
+        type: array
     type: object
   permission.CreatePermissionRequest:
     properties:
@@ -3970,6 +4360,92 @@ paths:
       summary: Get customer properties
       tags:
       - Customers
+  /api/v1/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Retorna el dashboard con jobs según el rol del usuario. Admin ve
+        jobs awaiting dispatch y urgent jobs. Técnicos ven jobs dispatched a ellos
+        y sus urgent jobs. Soporta filtros, ordenamiento, búsqueda y paginación.
+      parameters:
+      - description: 'Número de página (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (default: 20)'
+        in: query
+        name: pageSize
+        type: integer
+      - description: Alias de pageSize para backward compatibility
+        in: query
+        name: limit
+        type: integer
+      - description: Filtrar por técnico (ID numérico o 'unassigned')
+        in: query
+        name: filters[user_id]
+        type: string
+      - description: Filtrar por estado del job
+        in: query
+        name: filters[job_status_id]
+        type: integer
+      - description: Filtrar por prioridad del job
+        in: query
+        name: filters[job_priority_id]
+        type: integer
+      - description: Filtrar por estado abierto/cerrado ('0', '1', 'all')
+        in: query
+        name: filters[is_closed]
+        type: string
+      - description: Filtrar por año
+        in: query
+        name: filters[year]
+        type: integer
+      - description: Filtrar por número de semana
+        in: query
+        name: filters[week]
+        type: integer
+      - description: 'Filtrar jobs creados en los últimos X días (ej: 7, 30, 90)'
+        in: query
+        name: filters[last_days]
+        type: integer
+      - description: Búsqueda de texto libre en work_order, property, customer, etc.
+        in: query
+        name: search
+        type: string
+      - description: Campo para ordenar (work_order, date_received, dispatch_date,
+          due_date, completion_date, week_number, job_sales_price, property.city,
+          property.zip, property.customer.name, user_id, status, priority.order)
+        in: query
+        name: sort
+        type: string
+      - description: 'Dirección del ordenamiento (''asc'' o ''desc'', default: ''desc'')'
+        in: query
+        name: direction
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Dashboard de técnico
+          schema:
+            $ref: '#/definitions/dashboard.TechnicianDashboard'
+        "401":
+          description: Usuario no autenticado
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener dashboard
+      tags:
+      - Dashboard
   /api/v1/email-templates:
     get:
       consumes:
@@ -5559,56 +6035,6 @@ paths:
       summary: Cerrar trabajo
       tags:
       - Jobs
-  /api/v1/jobs/{id}/dispatch-sms:
-    post:
-      consumes:
-      - application/json
-      description: Envía SMS de dispatch a uno o más números de teléfono via AWS SNS
-        o Twilio
-      parameters:
-      - description: Job ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: SMS request
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/job.SendDispatchSMSRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "404":
-          description: Not Found
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      security:
-      - BearerAuth: []
-      summary: Enviar SMS de dispatch
-      tags:
-      - jobs
   /api/v1/jobs/{jobId}/activities:
     get:
       consumes:
@@ -6727,6 +7153,50 @@ paths:
       summary: Update job task
       tags:
       - JobTasks
+  /api/v1/new-dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Retorna un dashboard enriquecido con datos de múltiples módulos
+        (invoices, quotes, tasks, warranties, alerts, activity). Admin ve todos los
+        nodos, técnicos ven solo sus datos filtrados por user_id. Todas las queries
+        se ejecutan en paralelo.
+      parameters:
+      - description: 'Rango de tiempo: 7days, 30days (default), 90days, thisMonth,
+          lastMonth, thisYear'
+        in: query
+        name: range
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Dashboard enriquecido de técnico
+          schema:
+            $ref: '#/definitions/new_dashboard.TechnicianEnhancedDashboard'
+        "400":
+          description: Rango de tiempo inválido
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Usuario no autenticado
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener dashboard enriquecido
+      tags:
+      - Dashboard
   /api/v1/permissions:
     get:
       consumes:
@@ -10885,6 +11355,54 @@ paths:
               type: string
             type: object
       summary: Enviar email de dispatch
+      tags:
+      - jobs
+  /jobs/{id}/dispatch-sms:
+    post:
+      consumes:
+      - application/json
+      description: Envía SMS de dispatch a uno o más números de teléfono via AWS SNS
+        o Twilio
+      parameters:
+      - description: Job ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: SMS request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/job.SendDispatchSMSRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Enviar SMS de dispatch
       tags:
       - jobs
   /jobs/{id}/dispatch-supervisor-email:

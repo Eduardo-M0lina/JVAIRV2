@@ -156,15 +156,22 @@ Controlador `DashboardController` con dos vistas:
 - Jobs urgentes (prioridad alta)
 
 ### Estado en Go
-- **NO migrado**: No existe ningún endpoint de dashboard
+- **✅ MIGRADO**: Endpoint `GET /api/v1/dashboard` implementado
+  - Detecta automáticamente el rol del usuario (admin vs técnico) desde el JWT
+  - **Admin**: Jobs pendientes de dispatch + urgentes + estadísticas generales
+  - **Técnico**: Jobs dispatched asignados + urgentes + estadísticas personales
+  - Jobs enriquecidos con JOINs (property, customer, technician, category, priority, status)
+  - Parámetro `?limit=N` para controlar cantidad de jobs por sección
 
-### Recomendación de implementación en Go
-1. Crear handler `pkg/rest/handler/dashboard/`
-2. Endpoints:
-   - `GET /api/v1/dashboard/admin` — Jobs pendientes de dispatch
-   - `GET /api/v1/dashboard/technician` — Jobs del técnico actual + urgentes
-3. Reutilizar el repositorio de `job` existente con filtros específicos
-4. El middleware de auth ya proporciona el usuario actual para filtrar por técnico
+### Archivos creados
+- `pkg/domain/dashboard/entity.go` — Entidades del dominio
+- `pkg/domain/dashboard/repository.go` — Interfaz del repositorio
+- `pkg/domain/dashboard/usecase.go` — Lógica de negocio
+- `pkg/repository/mysql/dashboard/repository.go` — Implementación MySQL
+- `pkg/rest/handler/dashboard/handler.go` — Handler HTTP
+
+### Propuesta de mejora
+- Ver `docs/DASHBOARD_ENHANCEMENT_PROPOSAL.md` para plan de enriquecimiento con datos de invoices, quotes, tasks, warranties, alerts, etc.
 
 ---
 

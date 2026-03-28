@@ -12,6 +12,7 @@ import (
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	domainDashboard "github.com/your-org/jvairv2/pkg/domain/dashboard"
 	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
 	domainEmailTemplate "github.com/your-org/jvairv2/pkg/domain/email_template"
 	domainFile "github.com/your-org/jvairv2/pkg/domain/file"
@@ -30,6 +31,7 @@ import (
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
 	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
 	domainJobVisit "github.com/your-org/jvairv2/pkg/domain/job_visit"
+	domainNewDashboard "github.com/your-org/jvairv2/pkg/domain/new_dashboard"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
 	domainPropEquip "github.com/your-org/jvairv2/pkg/domain/property_equipment"
@@ -57,6 +59,7 @@ import (
 	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
+	mysqlDashboard "github.com/your-org/jvairv2/pkg/repository/mysql/dashboard"
 	mysqlEmailTemplate "github.com/your-org/jvairv2/pkg/repository/mysql/email_template"
 	mysqlFile "github.com/your-org/jvairv2/pkg/repository/mysql/file"
 	mysqlInvoice "github.com/your-org/jvairv2/pkg/repository/mysql/invoice"
@@ -74,6 +77,7 @@ import (
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlJobTask "github.com/your-org/jvairv2/pkg/repository/mysql/job_task"
 	mysqlJobVisit "github.com/your-org/jvairv2/pkg/repository/mysql/job_visit"
+	mysqlNewDashboard "github.com/your-org/jvairv2/pkg/repository/mysql/new_dashboard"
 	mysqlPasswordHistory "github.com/your-org/jvairv2/pkg/repository/mysql/password_history"
 	mysqlPasswordReset "github.com/your-org/jvairv2/pkg/repository/mysql/password_reset"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
@@ -102,6 +106,7 @@ import (
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	dashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/dashboard"
 	emailTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/email_template"
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
@@ -118,6 +123,7 @@ import (
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
+	newDashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/new_dashboard"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
@@ -190,6 +196,7 @@ type Container struct {
 	JobRateHandler             *jobRateHandler.Handler
 	SMSTemplateHandler         *smsTemplateHandler.Handler
 	AlertHandler               *alertHandler.Handler
+	DashboardHandler           *dashboardHandler.Handler
 	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
 }
 
@@ -379,6 +386,14 @@ func NewContainer(configPath string) (*Container, error) {
 	alertUserChecker := mysqlAlert.NewUserExistsChecker(dbConn.GetDB())
 	alertUC := domainAlert.NewUseCase(alertRepo, alertUserChecker)
 
+	// Dashboard
+	dashboardRepo := mysqlDashboard.NewRepository(dbConn.GetDB())
+	dashboardUC := domainDashboard.NewUseCase(dashboardRepo)
+
+	// New Enhanced Dashboard
+	newDashboardRepo := mysqlNewDashboard.NewRepository(dbConn.GetDB())
+	newDashboardUC := domainNewDashboard.NewUseCase(newDashboardRepo)
+
 	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHdlr := authHandler.NewHandler(authUC)
@@ -473,6 +488,8 @@ func NewContainer(configPath string) (*Container, error) {
 	jraHdlr := jobRateHandler.NewHandler(jobRateUC)
 	stHdlr := smsTemplateHandler.NewHandler(smsTemplateUC)
 	alHdlr := alertHandler.NewHandler(alertUC)
+	dashHdlr := dashboardHandler.NewHandler(dashboardUC)
+	newDashHdlr := newDashboardHandler.NewHandler(newDashboardUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -522,6 +539,8 @@ func NewContainer(configPath string) (*Container, error) {
 		jtHdlr,
 		jraHdlr,
 		alHdlr,
+		dashHdlr,
+		newDashHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -573,6 +592,7 @@ func NewContainer(configPath string) (*Container, error) {
 		JobRateHandler:             jraHdlr,
 		SMSTemplateHandler:         stHdlr,
 		AlertHandler:               alHdlr,
+		DashboardHandler:           dashHdlr,
 		PasswordSecurityHandler:    passwordSecurityHdlr,
 	}, nil
 }

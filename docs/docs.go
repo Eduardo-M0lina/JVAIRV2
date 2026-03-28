@@ -1715,6 +1715,132 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/dashboard": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retorna el dashboard con jobs según el rol del usuario. Admin ve jobs awaiting dispatch y urgent jobs. Técnicos ven jobs dispatched a ellos y sus urgent jobs. Soporta filtros, ordenamiento, búsqueda y paginación.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Obtener dashboard",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Número de página (default: 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Tamaño de página (default: 20)",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Alias de pageSize para backward compatibility",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtrar por técnico (ID numérico o 'unassigned')",
+                        "name": "filters[user_id]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por estado del job",
+                        "name": "filters[job_status_id]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por prioridad del job",
+                        "name": "filters[job_priority_id]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtrar por estado abierto/cerrado ('0', '1', 'all')",
+                        "name": "filters[is_closed]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por año",
+                        "name": "filters[year]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar por número de semana",
+                        "name": "filters[week]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Filtrar jobs creados en los últimos X días (ej: 7, 30, 90)",
+                        "name": "filters[last_days]",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Búsqueda de texto libre en work_order, property, customer, etc.",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Campo para ordenar (work_order, date_received, dispatch_date, due_date, completion_date, week_number, job_sales_price, property.city, property.zip, property.customer.name, user_id, status, priority.order)",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Dirección del ordenamiento ('asc' o 'desc', default: 'desc')",
+                        "name": "direction",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard de técnico",
+                        "schema": {
+                            "$ref": "#/definitions/dashboard.TechnicianDashboard"
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/email-templates": {
             "get": {
                 "security": [
@@ -4167,82 +4293,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/jobs/{id}/dispatch-sms": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Envía SMS de dispatch a uno o más números de teléfono via AWS SNS o Twilio",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "jobs"
-                ],
-                "summary": "Enviar SMS de dispatch",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Job ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "SMS request",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/job.SendDispatchSMSRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/jobs/{jobId}/activities": {
             "get": {
                 "security": [
@@ -5957,6 +6007,69 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/new-dashboard": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retorna un dashboard enriquecido con datos de múltiples módulos (invoices, quotes, tasks, warranties, alerts, activity). Admin ve todos los nodos, técnicos ven solo sus datos filtrados por user_id. Todas las queries se ejecutan en paralelo.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Obtener dashboard enriquecido",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Rango de tiempo: 7days, 30days (default), 90days, thisMonth, lastMonth, thisYear",
+                        "name": "range",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dashboard enriquecido de técnico",
+                        "schema": {
+                            "$ref": "#/definitions/new_dashboard.TechnicianEnhancedDashboard"
+                        }
+                    },
+                    "400": {
+                        "description": "Rango de tiempo inválido",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -12423,6 +12536,77 @@ const docTemplate = `{
                 }
             }
         },
+        "/jobs/{id}/dispatch-sms": {
+            "post": {
+                "description": "Envía SMS de dispatch a uno o más números de teléfono via AWS SNS o Twilio",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jobs"
+                ],
+                "summary": "Enviar SMS de dispatch",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Job ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "SMS request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/job.SendDispatchSMSRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/jobs/{id}/dispatch-supervisor-email": {
             "post": {
                 "description": "Send custom email to supervisors",
@@ -13892,6 +14076,160 @@ const docTemplate = `{
                 "workflowId": {
                     "type": "integer",
                     "example": 5
+                }
+            }
+        },
+        "dashboard.AdminDashboard": {
+            "type": "object",
+            "properties": {
+                "jobsAwaitingDispatch": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dashboard.DashboardJob"
+                    }
+                },
+                "jobsUrgent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dashboard.DashboardJob"
+                    }
+                },
+                "stats": {
+                    "$ref": "#/definitions/dashboard.DashboardStats"
+                }
+            }
+        },
+        "dashboard.DashboardJob": {
+            "type": "object",
+            "properties": {
+                "cageRequired": {
+                    "type": "boolean"
+                },
+                "callAttempted": {
+                    "description": "Campos adicionales del job",
+                    "type": "boolean"
+                },
+                "categoryName": {
+                    "type": "string"
+                },
+                "closed": {
+                    "type": "boolean"
+                },
+                "completionDate": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "dateReceived": {
+                    "type": "string"
+                },
+                "dispatchDate": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jobCategoryId": {
+                    "type": "integer"
+                },
+                "jobPriorityId": {
+                    "type": "integer"
+                },
+                "jobSalesPrice": {
+                    "type": "number"
+                },
+                "jobStatusId": {
+                    "type": "integer"
+                },
+                "priorityClass": {
+                    "type": "string"
+                },
+                "priorityName": {
+                    "type": "string"
+                },
+                "propertyCity": {
+                    "type": "string"
+                },
+                "propertyId": {
+                    "type": "integer"
+                },
+                "propertyStreet": {
+                    "description": "Campos enriquecidos con JOINs",
+                    "type": "string"
+                },
+                "propertyZip": {
+                    "type": "string"
+                },
+                "quickNotes": {
+                    "type": "string"
+                },
+                "routeNumber": {
+                    "type": "integer"
+                },
+                "scheduledTime": {
+                    "type": "string"
+                },
+                "statusClass": {
+                    "type": "string"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "technicianName": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                },
+                "weekNumber": {
+                    "type": "integer"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "dashboard.DashboardStats": {
+            "type": "object",
+            "properties": {
+                "jobsAwaitingDispatch": {
+                    "type": "integer"
+                },
+                "jobsClosedThisMonth": {
+                    "type": "integer"
+                },
+                "jobsDispatched": {
+                    "type": "integer"
+                },
+                "jobsOpen": {
+                    "type": "integer"
+                },
+                "jobsUrgent": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dashboard.TechnicianDashboard": {
+            "type": "object",
+            "properties": {
+                "jobsDispatched": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dashboard.DashboardJob"
+                    }
+                },
+                "jobsUrgent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dashboard.DashboardJob"
+                    }
+                },
+                "stats": {
+                    "$ref": "#/definitions/dashboard.DashboardStats"
                 }
             }
         },
@@ -15514,6 +15852,446 @@ const docTemplate = `{
                 "viewableBy": {
                     "type": "string",
                     "example": "[\"1\",\"2\"]"
+                }
+            }
+        },
+        "new_dashboard.Activity": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "log": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "userName": {
+                    "type": "string"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "new_dashboard.AdminEnhancedDashboard": {
+            "type": "object",
+            "properties": {
+                "alertSummary": {
+                    "$ref": "#/definitions/new_dashboard.AlertSummary"
+                },
+                "invoiceSummary": {
+                    "$ref": "#/definitions/new_dashboard.InvoiceSummary"
+                },
+                "jobsByCategory": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.CategoryCount"
+                    }
+                },
+                "jobsByStatus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.StatusCount"
+                    }
+                },
+                "jobsDueThisWeek": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.DueJob"
+                    }
+                },
+                "quoteSummary": {
+                    "$ref": "#/definitions/new_dashboard.QuoteSummary"
+                },
+                "recentActivity": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.Activity"
+                    }
+                },
+                "stats": {
+                    "$ref": "#/definitions/new_dashboard.EnhancedStats"
+                },
+                "taskSummary": {
+                    "$ref": "#/definitions/new_dashboard.TaskSummary"
+                },
+                "technicianWorkload": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.TechnicianLoad"
+                    }
+                },
+                "warrantySummary": {
+                    "$ref": "#/definitions/new_dashboard.WarrantySummary"
+                }
+            }
+        },
+        "new_dashboard.Alert": {
+            "type": "object",
+            "properties": {
+                "alertType": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "messageLevel": {
+                    "type": "string"
+                }
+            }
+        },
+        "new_dashboard.AlertSummary": {
+            "type": "object",
+            "properties": {
+                "alerts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.Alert"
+                    }
+                },
+                "unreadCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.CategoryCount": {
+            "type": "object",
+            "properties": {
+                "categoryId": {
+                    "type": "integer"
+                },
+                "categoryName": {
+                    "type": "string"
+                },
+                "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.DueJob": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string"
+                },
+                "dueDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "priorityName": {
+                    "type": "string"
+                },
+                "propertyStreet": {
+                    "type": "string"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "new_dashboard.EnhancedStats": {
+            "type": "object",
+            "properties": {
+                "jobsAwaitingDispatch": {
+                    "description": "Stats originales",
+                    "type": "integer"
+                },
+                "jobsClosedThisMonth": {
+                    "type": "integer"
+                },
+                "jobsDispatched": {
+                    "type": "integer"
+                },
+                "jobsOpen": {
+                    "type": "integer"
+                },
+                "jobsUrgent": {
+                    "type": "integer"
+                },
+                "totalAlerts": {
+                    "description": "Conteos de nuevos nodos",
+                    "type": "integer"
+                },
+                "totalInvoicesPending": {
+                    "type": "integer"
+                },
+                "totalQuotesPending": {
+                    "type": "integer"
+                },
+                "totalTasksOverdue": {
+                    "type": "integer"
+                },
+                "totalTasksPending": {
+                    "type": "integer"
+                },
+                "totalWarrantyClaims": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.InvoiceSummary": {
+            "type": "object",
+            "properties": {
+                "amountPaidThisMonth": {
+                    "type": "number"
+                },
+                "amountPending": {
+                    "type": "number"
+                },
+                "recentInvoices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.RecentInvoice"
+                    }
+                },
+                "totalOverdue": {
+                    "type": "integer"
+                },
+                "totalPaid": {
+                    "type": "integer"
+                },
+                "totalPending": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.QuoteSummary": {
+            "type": "object",
+            "properties": {
+                "recentQuotes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.RecentQuote"
+                    }
+                },
+                "totalApproved": {
+                    "type": "integer"
+                },
+                "totalPending": {
+                    "type": "integer"
+                },
+                "totalRejected": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.RecentClaim": {
+            "type": "object",
+            "properties": {
+                "claimNumber": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "statusName": {
+                    "type": "string"
+                }
+            }
+        },
+        "new_dashboard.RecentInvoice": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "invoiceNumber": {
+                    "type": "string"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "number"
+                }
+            }
+        },
+        "new_dashboard.RecentQuote": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "number"
+                }
+            }
+        },
+        "new_dashboard.StatusCount": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "statusId": {
+                    "type": "integer"
+                },
+                "statusName": {
+                    "type": "string"
+                }
+            }
+        },
+        "new_dashboard.Task": {
+            "type": "object",
+            "properties": {
+                "dueDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isOverdue": {
+                    "type": "boolean"
+                },
+                "jobId": {
+                    "type": "integer"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "new_dashboard.TaskSummary": {
+            "type": "object",
+            "properties": {
+                "tasks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.Task"
+                    }
+                },
+                "totalOverdue": {
+                    "type": "integer"
+                },
+                "totalPending": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.TechnicianEnhancedDashboard": {
+            "type": "object",
+            "properties": {
+                "alertSummary": {
+                    "$ref": "#/definitions/new_dashboard.AlertSummary"
+                },
+                "jobsByStatus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.StatusCount"
+                    }
+                },
+                "jobsDueThisWeek": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.DueJob"
+                    }
+                },
+                "recentActivity": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.Activity"
+                    }
+                },
+                "stats": {
+                    "$ref": "#/definitions/new_dashboard.EnhancedStats"
+                },
+                "taskSummary": {
+                    "$ref": "#/definitions/new_dashboard.TaskSummary"
+                }
+            }
+        },
+        "new_dashboard.TechnicianLoad": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "openJobs": {
+                    "type": "integer"
+                },
+                "urgentJobs": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "new_dashboard.WarrantySummary": {
+            "type": "object",
+            "properties": {
+                "activeWarranties": {
+                    "type": "integer"
+                },
+                "expiringThisMonth": {
+                    "type": "integer"
+                },
+                "openClaims": {
+                    "type": "integer"
+                },
+                "recentClaims": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/new_dashboard.RecentClaim"
+                    }
                 }
             }
         },
