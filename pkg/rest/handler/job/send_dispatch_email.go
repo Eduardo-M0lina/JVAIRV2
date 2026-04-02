@@ -75,10 +75,6 @@ func (h *Handler) SendDispatchEmail(w http.ResponseWriter, r *http.Request) {
 	// Registrar actividad
 	h.logActivity(ctx, jobID, "email_sent", fmt.Sprintf("Dispatch email sent to: %s", req.Email))
 
-	// Responder
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_ = json.NewEncoder(w).Encode(map[string]string{
-		"message": fmt.Sprintf("Job emailed to %s", req.Email),
-	})
+	// Responder con éxito
+	handler.RespondWithSuccess(w, fmt.Sprintf("Job emailed to %s", req.Email))
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/your-org/jvairv2/pkg/domain/email"
 	"github.com/your-org/jvairv2/pkg/domain/payroll"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	"github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // Handler maneja las peticiones HTTP para payroll
@@ -79,11 +79,11 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	result, err := h.useCase.ListPayroll(r.Context(), filters)
 	if err != nil {
 		slog.ErrorContext(r.Context(), "Error listing payroll", slog.String("error", err.Error()))
-		response.Error(w, http.StatusInternalServerError, "Error al obtener payroll")
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al obtener payroll")
 		return
 	}
 
-	response.JSON(w, http.StatusOK, result)
+	handler.RespondWithJSON(w, http.StatusOK, result)
 }
 
 // GetUserPayroll godoc
@@ -106,7 +106,7 @@ func (h *Handler) GetUserPayroll(w http.ResponseWriter, r *http.Request) {
 	userIDStr := chi.URLParam(r, "userId")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "ID de usuario inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de usuario inválido")
 		return
 	}
 
@@ -133,7 +133,7 @@ func (h *Handler) GetUserPayroll(w http.ResponseWriter, r *http.Request) {
 		slog.ErrorContext(r.Context(), "Error getting user payroll",
 			slog.String("error", err.Error()),
 			slog.Int64("userId", userID))
-		response.Error(w, http.StatusInternalServerError, err.Error())
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -142,7 +142,7 @@ func (h *Handler) GetUserPayroll(w http.ResponseWriter, r *http.Request) {
 		totalPages++
 	}
 
-	response.JSON(w, http.StatusOK, map[string]interface{}{
+	handler.RespondWithJSON(w, http.StatusOK, map[string]interface{}{
 		"rates":      rates,
 		"total":      total,
 		"page":       page,
@@ -169,18 +169,18 @@ func (h *Handler) MarkPaid(w http.ResponseWriter, r *http.Request) {
 	userIDStr := chi.URLParam(r, "userId")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "ID de usuario inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de usuario inválido")
 		return
 	}
 
 	var req payroll.MarkRatesRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		response.Error(w, http.StatusBadRequest, "Cuerpo de solicitud inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "Cuerpo de solicitud inválido")
 		return
 	}
 
 	if len(req.RateIDs) == 0 {
-		response.Error(w, http.StatusBadRequest, "Debe especificar al menos un rate ID")
+		handler.RespondWithError(w, http.StatusBadRequest, "Debe especificar al menos un rate ID")
 		return
 	}
 
@@ -188,11 +188,11 @@ func (h *Handler) MarkPaid(w http.ResponseWriter, r *http.Request) {
 		slog.ErrorContext(r.Context(), "Error marking rates as paid",
 			slog.String("error", err.Error()),
 			slog.Int64("userId", userID))
-		response.Error(w, http.StatusInternalServerError, err.Error())
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	response.JSON(w, http.StatusOK, map[string]string{
+	handler.RespondWithJSON(w, http.StatusOK, map[string]string{
 		"message": "Rates marcados como pagados exitosamente",
 	})
 }
@@ -215,18 +215,18 @@ func (h *Handler) MarkHeld(w http.ResponseWriter, r *http.Request) {
 	userIDStr := chi.URLParam(r, "userId")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "ID de usuario inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de usuario inválido")
 		return
 	}
 
 	var req payroll.MarkRatesRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		response.Error(w, http.StatusBadRequest, "Cuerpo de solicitud inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "Cuerpo de solicitud inválido")
 		return
 	}
 
 	if len(req.RateIDs) == 0 {
-		response.Error(w, http.StatusBadRequest, "Debe especificar al menos un rate ID")
+		handler.RespondWithError(w, http.StatusBadRequest, "Debe especificar al menos un rate ID")
 		return
 	}
 
@@ -234,11 +234,11 @@ func (h *Handler) MarkHeld(w http.ResponseWriter, r *http.Request) {
 		slog.ErrorContext(r.Context(), "Error marking rates as holding",
 			slog.String("error", err.Error()),
 			slog.Int64("userId", userID))
-		response.Error(w, http.StatusInternalServerError, err.Error())
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	response.JSON(w, http.StatusOK, map[string]string{
+	handler.RespondWithJSON(w, http.StatusOK, map[string]string{
 		"message": "Rates marcados como retenidos exitosamente",
 	})
 }
@@ -260,7 +260,7 @@ func (h *Handler) GetPaystub(w http.ResponseWriter, r *http.Request) {
 	userIDStr := chi.URLParam(r, "userId")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "ID de usuario inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de usuario inválido")
 		return
 	}
 
@@ -269,11 +269,11 @@ func (h *Handler) GetPaystub(w http.ResponseWriter, r *http.Request) {
 		slog.ErrorContext(r.Context(), "Error getting paystub",
 			slog.String("error", err.Error()),
 			slog.Int64("userId", userID))
-		response.Error(w, http.StatusInternalServerError, err.Error())
+		handler.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	response.JSON(w, http.StatusOK, paystub)
+	handler.RespondWithJSON(w, http.StatusOK, paystub)
 }
 
 // EmailPaystub godoc
@@ -294,7 +294,7 @@ func (h *Handler) EmailPaystub(w http.ResponseWriter, r *http.Request) {
 	userIDStr := chi.URLParam(r, "userId")
 	userID, err := strconv.ParseInt(userIDStr, 10, 64)
 	if err != nil {
-		response.Error(w, http.StatusBadRequest, "ID de usuario inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "ID de usuario inválido")
 		return
 	}
 
@@ -302,12 +302,12 @@ func (h *Handler) EmailPaystub(w http.ResponseWriter, r *http.Request) {
 		Emails string `json:"emails"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		response.Error(w, http.StatusBadRequest, "Cuerpo de solicitud inválido")
+		handler.RespondWithError(w, http.StatusBadRequest, "Cuerpo de solicitud inválido")
 		return
 	}
 
 	if req.Emails == "" {
-		response.Error(w, http.StatusBadRequest, "Debe especificar al menos una dirección de email")
+		handler.RespondWithError(w, http.StatusBadRequest, "Debe especificar al menos una dirección de email")
 		return
 	}
 
@@ -324,11 +324,11 @@ func (h *Handler) EmailPaystub(w http.ResponseWriter, r *http.Request) {
 			slog.String("error", err.Error()),
 			slog.Int64("userId", userID),
 			slog.Any("emails", emails))
-		response.Error(w, http.StatusInternalServerError, "Error al enviar el paystub por email")
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al enviar el paystub por email")
 		return
 	}
 
-	response.JSON(w, http.StatusOK, map[string]string{
+	handler.RespondWithJSON(w, http.StatusOK, map[string]string{
 		"message": "Paystub enviado exitosamente a " + req.Emails,
 	})
 }

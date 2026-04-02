@@ -8,8 +8,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	domainDashboard "github.com/your-org/jvairv2/pkg/domain/dashboard"
 	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/your-org/jvairv2/pkg/rest/handler"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // adminRoles define los roles que ven el dashboard de administrador
@@ -64,7 +64,7 @@ func (h *Handler) GetDashboard(w http.ResponseWriter, r *http.Request) {
 	// Obtener usuario del contexto
 	userCtx, ok := r.Context().Value(middleware.UserContextKey).(*domainUser.User)
 	if !ok || userCtx == nil {
-		response.Error(w, http.StatusUnauthorized, "Usuario no autenticado")
+		handler.RespondWithError(w, http.StatusUnauthorized, "Usuario no autenticado")
 		return
 	}
 
@@ -162,10 +162,10 @@ func (h *Handler) GetDashboard(w http.ResponseWriter, r *http.Request) {
 			slog.ErrorContext(r.Context(), "Failed to get admin dashboard",
 				slog.String("error", err.Error()),
 				slog.Int64("userId", userCtx.ID))
-			response.Error(w, http.StatusInternalServerError, "Error al obtener dashboard")
+			handler.RespondWithError(w, http.StatusInternalServerError, "Error al obtener dashboard")
 			return
 		}
-		response.JSON(w, http.StatusOK, dashboard)
+		handler.RespondWithJSON(w, http.StatusOK, dashboard)
 		return
 	}
 
@@ -175,8 +175,8 @@ func (h *Handler) GetDashboard(w http.ResponseWriter, r *http.Request) {
 		slog.ErrorContext(r.Context(), "Failed to get technician dashboard",
 			slog.String("error", err.Error()),
 			slog.Int64("userId", userCtx.ID))
-		response.Error(w, http.StatusInternalServerError, "Error al obtener dashboard")
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al obtener dashboard")
 		return
 	}
-	response.JSON(w, http.StatusOK, dashboard)
+	handler.RespondWithJSON(w, http.StatusOK, dashboard)
 }

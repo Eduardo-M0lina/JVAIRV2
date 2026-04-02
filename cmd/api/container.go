@@ -8,6 +8,7 @@ import (
 	commonAuth "github.com/your-org/jvairv2/pkg/common/auth"
 	"github.com/your-org/jvairv2/pkg/common/storage"
 	ability "github.com/your-org/jvairv2/pkg/domain/ability"
+	domainAccount "github.com/your-org/jvairv2/pkg/domain/account"
 	domainAlert "github.com/your-org/jvairv2/pkg/domain/alert"
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
@@ -106,6 +107,7 @@ import (
 	mysqlWorkflow "github.com/your-org/jvairv2/pkg/repository/mysql/workflow"
 	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	accountHandler "github.com/your-org/jvairv2/pkg/rest/handler/account"
 	alertHandler "github.com/your-org/jvairv2/pkg/rest/handler/alert"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
@@ -204,6 +206,7 @@ type Container struct {
 	AlertHandler               *alertHandler.Handler
 	DashboardHandler           *dashboardHandler.Handler
 	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
+	AccountHandler             *accountHandler.Handler
 	PayrollHandler             *payrollHandler.Handler
 	SearchHandler              *searchHandler.Handler
 }
@@ -411,6 +414,13 @@ func NewContainer(configPath string) (*Container, error) {
 	searchRepo := mysqlSearch.NewRepository(dbConn.GetDB())
 	searchUC := domainSearch.NewUseCase(searchRepo)
 
+	// Password History and Reset Repositories (needed by Account and Password Security)
+	passwordResetRepo := mysqlPasswordReset.NewRepository(dbConn.GetDB())
+	passwordHistoryRepo := mysqlPasswordHistory.NewRepository(dbConn.GetDB())
+
+	// Account Management
+	accountUC := domainAccount.NewUseCase(userRepo, passwordHistoryRepo, settingsRepo)
+
 	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHdlr := authHandler.NewHandler(authUC)
@@ -464,9 +474,6 @@ func NewContainer(configPath string) (*Container, error) {
 	)
 
 	// Module 3: Password Security (requires email service from Module 1)
-	// Repositories
-	passwordResetRepo := mysqlPasswordReset.NewRepository(dbConn.GetDB())
-	passwordHistoryRepo := mysqlPasswordHistory.NewRepository(dbConn.GetDB())
 	// Initialize password security use case with real email service
 	passwordSecurityUC := domainAuth.NewPasswordSecurityUseCase(
 		userRepo,
@@ -511,6 +518,7 @@ func NewContainer(configPath string) (*Container, error) {
 	newDashHdlr := newDashboardHandler.NewHandler(newDashboardUC)
 	payrollHdlr := payrollHandler.NewHandler(payrollUC, emailDomainService)
 	searchHdlr := searchHandler.NewHandler(searchUC)
+	accountHdlr := accountHandler.NewHandler(accountUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -564,6 +572,7 @@ func NewContainer(configPath string) (*Container, error) {
 		newDashHdlr,
 		payrollHdlr,
 		searchHdlr,
+		accountHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -617,6 +626,7 @@ func NewContainer(configPath string) (*Container, error) {
 		AlertHandler:               alHdlr,
 		DashboardHandler:           dashHdlr,
 		PasswordSecurityHandler:    passwordSecurityHdlr,
+		AccountHandler:             accountHdlr,
 		PayrollHandler:             payrollHdlr,
 		SearchHandler:              searchHdlr,
 	}, nil

@@ -8,6 +8,7 @@ import (
 	"github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	accountHandler "github.com/your-org/jvairv2/pkg/rest/handler/account"
 	alertHandler "github.com/your-org/jvairv2/pkg/rest/handler/alert"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
@@ -104,6 +105,7 @@ func New(
 	newDashboardHdlr *new_dashboard.Handler,
 	payrollHdlr *payrollHandler.Handler,
 	searchHdlr *searchHandler.Handler,
+	accountHdlr *accountHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -269,6 +271,11 @@ func New(
 
 			// Global Search
 			searchHdlr.RegisterRoutes(r)
+
+			// Account Management (Self-Service)
+			r.Get("/account", accountHdlr.GetProfile)
+			r.Put("/account", accountHdlr.UpdateProfile)
+			r.Put("/account/password", accountHdlr.ChangePassword)
 		})
 	})
 	return r

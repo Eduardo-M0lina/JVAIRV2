@@ -72,9 +72,5 @@ func (h *Handler) SendEmail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Responder con éxito
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_ = json.NewEncoder(w).Encode(map[string]string{
-		"message": "Invoice emailed to " + req.Email,
-	})
+	handler.RespondWithSuccess(w, "Invoice emailed to "+req.Email)
 }

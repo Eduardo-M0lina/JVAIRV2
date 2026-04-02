@@ -60,9 +60,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(status)
+	handler.RespondWithJSON(w, http.StatusCreated, status)
 }
 
 // List godoc
@@ -82,8 +80,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(statuses)
+	handler.RespondWithJSON(w, http.StatusOK, statuses)
 }
 
 // GetByID godoc
@@ -116,8 +113,7 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(status)
+	handler.RespondWithJSON(w, http.StatusOK, status)
 }
 
 // Update godoc
@@ -169,8 +165,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(updatedStatus)
+	handler.RespondWithJSON(w, http.StatusOK, updatedStatus)
 }
 
 // Delete godoc

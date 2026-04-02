@@ -321,7 +321,7 @@ STRIPE_WEBHOOK_SECRET=<webhook_secret>
 
 ---
 
-## 9. Gestión de Cuenta (Self-Service)
+## 9. ✅ Gestión de Cuenta (Self-Service) - COMPLETADO
 
 ### Estado en Laravel
 Controlador `AccountController`:
@@ -330,14 +330,33 @@ Controlador `AccountController`:
 - `POST account/sidebar` — Toggle sidebar (UI-specific)
 
 ### Estado en Go
-- **NO migrado**: No existe endpoint de "mi cuenta"
+- **✅ MIGRADO**: Endpoints de gestión de cuenta implementados
+- **✅ MIGRADO**: Validación de contraseñas con historial y políticas de seguridad
+- **✅ MIGRADO**: Validación de email duplicado
 
-### Recomendación de implementación en Go
-1. Agregar endpoints en auth o user handler:
-   - `GET /api/v1/account` — Obtener datos del usuario actual (desde JWT)
-   - `PUT /api/v1/account` — Actualizar perfil propio
-   - `PUT /api/v1/account/password` — Cambiar contraseña propia
-2. Reutilizar repositorio de `user` existente
+### ✅ Implementación completada
+1. **Dominio**: `pkg/domain/account/` con entities y usecase
+2. **Handler HTTP**: `pkg/rest/handler/account/` con endpoints documentados
+3. **Endpoints implementados**:
+   - `GET /api/v1/account` — Obtener perfil del usuario autenticado
+   - `PUT /api/v1/account` — Actualizar nombre y email del usuario
+   - `PUT /api/v1/account/password` — Cambiar contraseña con validaciones de seguridad
+4. **Validaciones implementadas**:
+   - Verificación de contraseña actual
+   - Validación de requisitos de seguridad (longitud, números, símbolos)
+   - Verificación contra historial de contraseñas
+   - Validación de email duplicado
+5. **Integración**: Usa repositorios existentes de `user`, `password_history` y `settings`
+6. **Documentación**: Swagger actualizado con todos los endpoints
+7. **Testing**: Colección Postman creada en `docs/postman_account_collection.json`
+
+### ✅ Archivos creados
+- `pkg/domain/account/entity.go` — DTOs de request/response
+- `pkg/domain/account/usecase.go` — Lógica de negocio con validaciones
+- `pkg/rest/handler/account/handler.go` — Handler HTTP con 3 endpoints
+
+### Nota
+El endpoint `POST account/sidebar` de Laravel no fue migrado ya que es específico de la UI del frontend Laravel y no aplica para una API REST stateless.
 
 ---
 

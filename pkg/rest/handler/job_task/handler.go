@@ -95,9 +95,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(task)
+	handler.RespondWithJSON(w, http.StatusCreated, task)
 }
 
 // List godoc
@@ -150,8 +148,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		Page:  page,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }
 
 // ListAll godoc
@@ -196,8 +193,7 @@ func (h *Handler) ListAll(w http.ResponseWriter, r *http.Request) {
 		Page:  page,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }
 
 // Update godoc
@@ -258,8 +254,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(updatedTask)
+	handler.RespondWithJSON(w, http.StatusOK, updatedTask)
 }
 
 // Delete godoc

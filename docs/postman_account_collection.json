@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "account-collection-id",
+		"name": "JVAIR Account Management",
+		"description": "Endpoints de gestión de cuenta (self-service) para JVAIR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/account",
+					"host": ["{{baseUrl}}"],
+					"path": ["account"]
+				},
+				"description": "Obtiene el perfil del usuario autenticado actual"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Juan Pérez\",\n  \"email\": \"juan.perez@example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account",
+					"host": ["{{baseUrl}}"],
+					"path": ["account"]
+				},
+				"description": "Actualiza el nombre y email del usuario autenticado"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"current_password\": \"CurrentPassword123!\",\n  \"new_password\": \"NewPassword123!\",\n  \"confirm_password\": \"NewPassword123!\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account/password",
+					"host": ["{{baseUrl}}"],
+					"path": ["account", "password"]
+				},
+				"description": "Cambia la contraseña del usuario autenticado. Valida contraseña actual, requisitos de seguridad y historial de contraseñas"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile - Duplicate Email (Error)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"existing.user@example.com\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account",
+					"host": ["{{baseUrl}}"],
+					"path": ["account"]
+				},
+				"description": "Intenta actualizar el email a uno que ya está en uso. Debe retornar error 409 Conflict"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password - Invalid Current (Error)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"current_password\": \"WrongPassword123!\",\n  \"new_password\": \"NewPassword123!\",\n  \"confirm_password\": \"NewPassword123!\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account/password",
+					"host": ["{{baseUrl}}"],
+					"path": ["account", "password"]
+				},
+				"description": "Intenta cambiar contraseña con contraseña actual incorrecta. Debe retornar error 401 Unauthorized"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password - Weak Password (Error)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"current_password\": \"CurrentPassword123!\",\n  \"new_password\": \"weak\",\n  \"confirm_password\": \"weak\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account/password",
+					"host": ["{{baseUrl}}"],
+					"path": ["account", "password"]
+				},
+				"description": "Intenta cambiar a una contraseña débil que no cumple requisitos de seguridad. Debe retornar error 422 Unprocessable Entity"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password - Mismatch (Error)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{accessToken}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"current_password\": \"CurrentPassword123!\",\n  \"new_password\": \"NewPassword123!\",\n  \"confirm_password\": \"DifferentPassword123!\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/account/password",
+					"host": ["{{baseUrl}}"],
+					"path": ["account", "password"]
+				},
+				"description": "Intenta cambiar contraseña con confirmación que no coincide. Debe retornar error 400 Bad Request"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

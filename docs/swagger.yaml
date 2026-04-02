@@ -60,6 +60,49 @@ definitions:
     required:
     - name
     type: object
+  account.ChangePasswordRequest:
+    properties:
+      confirm_password:
+        type: string
+      current_password:
+        type: string
+      new_password:
+        minLength: 8
+        type: string
+    required:
+    - confirm_password
+    - current_password
+    - new_password
+    type: object
+  account.ProfileResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      is_change_password:
+        type: boolean
+      name:
+        type: string
+      role_id:
+        type: string
+      role_name:
+        type: string
+      role_title:
+        type: string
+    type: object
+  account.UpdateProfileRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+    required:
+    - email
+    - name
+    type: object
   alert.Alert:
     properties:
       alertType:
@@ -3744,6 +3787,135 @@ paths:
       summary: Actualizar ability
       tags:
       - Abilities
+  /api/v1/account:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene la información del perfil del usuario autenticado
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/account.ProfileResponse'
+        "401":
+          description: Usuario no autenticado
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener perfil del usuario actual
+      tags:
+      - Account
+    put:
+      consumes:
+      - application/json
+      description: Actualiza el nombre y email del usuario autenticado
+      parameters:
+      - description: Datos del perfil a actualizar
+        in: body
+        name: profile
+        required: true
+        schema:
+          $ref: '#/definitions/account.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Perfil actualizado exitosamente
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Datos inválidos
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Usuario no autenticado
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Email ya está en uso
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Actualizar perfil del usuario actual
+      tags:
+      - Account
+  /api/v1/account/password:
+    put:
+      consumes:
+      - application/json
+      description: Cambia la contraseña del usuario autenticado validando la contraseña
+        actual y los requisitos de seguridad
+      parameters:
+      - description: Datos para cambiar la contraseña
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/account.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contraseña cambiada exitosamente
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Datos inválidos
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Usuario no autenticado o contraseña actual incorrecta
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "422":
+          description: La contraseña no cumple con los requisitos de seguridad
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Cambiar contraseña del usuario actual
+      tags:
+      - Account
   /api/v1/alerts:
     get:
       consumes:
@@ -12665,3 +12837,5 @@ tags:
   name: JobVisits
 - description: Búsqueda global en múltiples entidades
   name: Search
+- description: Gestión de cuenta del usuario (self-service)
+  name: Account

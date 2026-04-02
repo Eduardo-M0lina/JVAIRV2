@@ -113,6 +113,9 @@
 // @tag.name Search
 // @tag.description Búsqueda global en múltiples entidades
 
+// @tag.name Account
+// @tag.description Gestión de cuenta del usuario (self-service)
+
 package main
 
 import (

@@ -8,8 +8,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	domainSearch "github.com/your-org/jvairv2/pkg/domain/search"
 	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/your-org/jvairv2/pkg/rest/handler"
 	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para búsqueda global
@@ -45,14 +45,14 @@ func (h *Handler) GlobalSearch(w http.ResponseWriter, r *http.Request) {
 	// Obtener usuario del contexto
 	userCtx, ok := r.Context().Value(middleware.UserContextKey).(*domainUser.User)
 	if !ok || userCtx == nil {
-		response.Error(w, http.StatusUnauthorized, "Usuario no autenticado")
+		handler.RespondWithError(w, http.StatusUnauthorized, "Usuario no autenticado")
 		return
 	}
 
 	// Obtener query de búsqueda
 	query := r.URL.Query().Get("q")
 	if query == "" {
-		response.Error(w, http.StatusBadRequest, "El parámetro 'q' es requerido")
+		handler.RespondWithError(w, http.StatusBadRequest, "El parámetro 'q' es requerido")
 		return
 	}
 
@@ -90,9 +90,9 @@ func (h *Handler) GlobalSearch(w http.ResponseWriter, r *http.Request) {
 			slog.String("error", err.Error()),
 			slog.String("query", query),
 			slog.Int64("userId", userCtx.ID))
-		response.Error(w, http.StatusInternalServerError, "Error al realizar la búsqueda")
+		handler.RespondWithError(w, http.StatusInternalServerError, "Error al realizar la búsqueda")
 		return
 	}
 
-	response.JSON(w, http.StatusOK, results)
+	handler.RespondWithJSON(w, http.StatusOK, results)
 }
