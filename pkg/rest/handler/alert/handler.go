@@ -123,8 +123,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		Page:  page,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }
 
 // GetByID godoc
@@ -157,8 +156,7 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(a)
+	handler.RespondWithJSON(w, http.StatusOK, a)
 }
 
 // Create godoc
@@ -200,9 +198,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(a)
+	handler.RespondWithJSON(w, http.StatusCreated, a)
 }
 
 // MarkAsRead godoc
@@ -262,8 +258,7 @@ func (h *Handler) MarkAllRead(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := MarkAllReadResponse{Updated: updated}
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }
 
 // UnreadCount godoc
@@ -291,8 +286,7 @@ func (h *Handler) UnreadCount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := UnreadCountResponse{Count: count}
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }
 
 // Delete godoc

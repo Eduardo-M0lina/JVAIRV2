@@ -81,9 +81,5 @@ func (h *Handler) SendDispatchSupervisorEmail(w http.ResponseWriter, r *http.Req
 	}
 
 	// Responder con éxito
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_ = json.NewEncoder(w).Encode(map[string]string{
-		"message": "Dispatch supervisor email sent to " + req.Email,
-	})
+	handler.RespondWithSuccess(w, "Dispatch supervisor email sent to "+req.Email)
 }

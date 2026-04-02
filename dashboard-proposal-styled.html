@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JVAIR Dashboard - Propuesta Enriquecida</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .badge-urgent { background: #fed7d7; color: #c53030; }
+        .badge-high { background: #feebc8; color: #c05621; }
+        .badge-normal { background: #bee3f8; color: #2c5282; }
+        .badge-low { background: #c6f6d5; color: #22543d; }
+        .badge-pending { background: #feebc8; color: #c05621; }
+        .badge-paid { background: #c6f6d5; color: #22543d; }
+        .badge-overdue { background: #fed7d7; color: #c53030; }
+        .badge-approved { background: #c6f6d5; color: #22543d; }
+        .badge-rejected { background: #fed7d7; color: #c53030; }
+        .badge-open { background: #bee3f8; color: #2c5282; }
+
+        .activity-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .activity-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            background: #845adf;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #845adf;
+        }
+
+        .activity-item::after {
+            content: '';
+            position: absolute;
+            left: -1.125rem;
+            top: 1.25rem;
+            width: 2px;
+            height: calc(100% - 0.75rem);
+            background: #e2e8f0;
+        }
+
+        .activity-item:last-child::after {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">JVAIR Dashboard</h1>
+                    <p class="text-sm text-gray-500 mt-1">Propuesta Enriquecida - Vista Administrador</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleView('admin')" id="btnAdmin" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition">
+                        <i class="ri-admin-line mr-1"></i> Admin
+                    </button>
+                    <button onclick="toggleView('technician')" id="btnTech" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                        <i class="ri-tools-line mr-1"></i> Técnico
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin View -->
+    <div id="adminView" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Awaiting Dispatch</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">12</p>
+                        <p class="text-xs text-green-600 mt-1">+3 desde ayer</p>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-file-list-3-line text-2xl text-indigo-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Dispatched</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">8</p>
+                        <p class="text-xs text-gray-500 mt-1">En proceso</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-truck-line text-2xl text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Urgent</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">3</p>
+                        <p class="text-xs text-red-600 mt-1">Requiere atención</p>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-alarm-warning-line text-2xl text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Jobs Open</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">45</p>
+                        <p class="text-xs text-gray-500 mt-1">Total activos</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-folder-open-line text-2xl text-yellow-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Closed (Month)</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">22</p>
+                        <p class="text-xs text-green-600 mt-1">+18% vs anterior</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-checkbox-circle-line text-2xl text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Stats -->
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+            <i class="ri-money-dollar-circle-line text-xl mr-2 text-green-600"></i>
+            Resumen Financiero
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Facturas Pendientes</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">15</p>
+                        <p class="text-sm text-gray-600 mt-1">$25,430.50</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-file-text-line text-2xl text-orange-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Facturas Pagadas</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">120</p>
+                        <p class="text-sm text-green-600 mt-1">$182,200.00</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-money-dollar-box-line text-2xl text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Facturas Vencidas</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">4</p>
+                        <p class="text-xs text-red-600 mt-1">Requiere seguimiento</p>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-error-warning-line text-2xl text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Cotizaciones Pendientes</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">8</p>
+                        <p class="text-xs text-gray-500 mt-1">Esperando aprobación</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-file-list-line text-2xl text-purple-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="ri-pie-chart-line mr-2 text-indigo-600"></i>
+                    Distribución por Categoría
+                </h3>
+                <canvas id="categoryChart" height="250"></canvas>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="ri-bar-chart-line mr-2 text-blue-600"></i>
+                    Pipeline de Trabajo
+                </h3>
+                <canvas id="statusChart" height="250"></canvas>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="ri-funds-line mr-2 text-green-600"></i>
+                    Estado de Facturación
+                </h3>
+                <canvas id="invoiceChart" height="250"></canvas>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 mb-4 flex items-center">
+                    <i class="ri-file-chart-line mr-2 text-purple-600"></i>
+                    Estado de Cotizaciones
+                </h3>
+                <canvas id="quoteChart" height="250"></canvas>
+            </div>
+        </div>
+
+        <!-- Technician Workload -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+            <h3 class="text-base font-semibold text-gray-900 mb-4 flex items-center">
+                <i class="ri-team-line mr-2 text-indigo-600"></i>
+                Carga de Trabajo por Técnico
+            </h3>
+            <canvas id="workloadChart" height="120"></canvas>
+        </div>
+
+        <!-- Tables Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Recent Invoices -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 flex items-center">
+                        <i class="ri-bill-line mr-2 text-green-600"></i>
+                        Facturas Recientes
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="invoicesTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Recent Quotes -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 flex items-center">
+                        <i class="ri-file-list-2-line mr-2 text-purple-600"></i>
+                        Cotizaciones Recientes
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="quotesTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks and Activity -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Tasks -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 flex items-center">
+                        <i class="ri-task-line mr-2 text-blue-600"></i>
+                        Tareas Pendientes
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div id="tasksList" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-base font-semibold text-gray-900 flex items-center">
+                        <i class="ri-history-line mr-2 text-indigo-600"></i>
+                        Actividad Reciente
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="activity-timeline" id="activityTimeline"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 flex items-center">
+                    <i class="ri-notification-3-line mr-2 text-red-600"></i>
+                    Alertas No Leídas (7)
+                </h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mensaje</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nivel</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="alertsTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technician View -->
+    <div id="technicianView" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Mis Jobs Dispatched</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">5</p>
+                        <p class="text-xs text-gray-500 mt-1">Asignados a mí</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-truck-line text-2xl text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Mis Jobs Urgentes</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">1</p>
+                        <p class="text-xs text-red-600 mt-1">Requiere atención</p>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-alarm-warning-line text-2xl text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Tareas Pendientes</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">3</p>
+                        <p class="text-xs text-red-600 mt-1">2 vencen hoy</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-task-line text-2xl text-yellow-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card bg-white rounded-lg shadow-sm p-5 border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Completados (Mes)</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">12</p>
+                        <p class="text-xs text-green-600 mt-1">+20% vs anterior</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="ri-checkbox-circle-line text-2xl text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 mb-4">Mis Jobs por Estado</h3>
+                <canvas id="techStatusChart" height="250"></canvas>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900 mb-4">Estado de Mis Tareas</h3>
+                <canvas id="techTasksChart" height="250"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-base font-semibold text-gray-900">Mis Tareas Pendientes</h3>
+            </div>
+            <div class="p-6">
+                <div id="techTasksList" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart instances
+        let categoryChartInstance = null;
+        let statusChartInstance = null;
+        let invoiceChartInstance = null;
+        let quoteChartInstance = null;
+        let workloadChartInstance = null;
+        let techStatusChartInstance = null;
+        let techTasksChartInstance = null;
+        let chartsInitialized = false;
+
+        // Mock Data (same as before)
+        const mockData = {
+            admin: {
+                invoices: [
+                    { invoiceNumber: "INV-001", customerName: "Acme Corp", total: 1500.00, status: "pending" },
+                    { invoiceNumber: "INV-002", customerName: "Tech Solutions", total: 2300.00, status: "paid" },
+                    { invoiceNumber: "INV-003", customerName: "Global Industries", total: 890.00, status: "overdue" },
+                    { invoiceNumber: "INV-004", customerName: "Metro Services", total: 3200.00, status: "pending" },
+                    { invoiceNumber: "INV-005", customerName: "City Mall", total: 1750.00, status: "paid" }
+                ],
+                quotes: [
+                    { quoteNumber: "Q-001", customerName: "XYZ Inc", total: 3200.00, statusName: "Pending" },
+                    { quoteNumber: "Q-002", customerName: "ABC LLC", total: 1850.00, statusName: "Approved" },
+                    { quoteNumber: "Q-003", customerName: "Delta Corp", total: 4500.00, statusName: "Pending" },
+                    { quoteNumber: "Q-004", customerName: "Omega Systems", total: 2100.00, statusName: "Rejected" },
+                    { quoteNumber: "Q-005", customerName: "Beta Industries", total: 5200.00, statusName: "Approved" }
+                ],
+                tasks: [
+                    { title: "Revisar equipo HVAC", workOrder: "WO-123", assignedTo: "Mike Smith", isOverdue: true },
+                    { title: "Instalar unidad nueva", workOrder: "WO-124", assignedTo: "Sarah Jones", isOverdue: false },
+                    { title: "Mantenimiento preventivo", workOrder: "WO-125", assignedTo: "Bob Wilson", isOverdue: true },
+                    { title: "Reparación urgente", workOrder: "WO-126", assignedTo: "Mike Smith", isOverdue: false }
+                ],
+                activities: [
+                    { log: "Status changed to Dispatched", workOrder: "WO-123", userName: "John Doe", time: "16:30" },
+                    { log: "Task 'Initial inspection' completed", workOrder: "WO-124", userName: "Mike Smith", time: "15:20" },
+                    { log: "Quote Q-005 sent to customer", workOrder: "WO-125", userName: "Sarah Jones", time: "14:10" },
+                    { log: "Invoice INV-002 marked as paid", workOrder: "WO-126", userName: "Admin", time: "13:00" }
+                ],
+                alerts: [
+                    { type: "job_overdue", message: "Job WO-123 is overdue", level: "warning", date: "Hoy 10:00" },
+                    { type: "invoice_overdue", message: "Invoice INV-003 is 30 days overdue", level: "error", date: "Hoy 09:30" },
+                    { type: "warranty_expiring", message: "5 warranties expiring this month", level: "info", date: "Hoy 08:00" },
+                    { type: "task_overdue", message: "Task 'Revisar equipo HVAC' is overdue", level: "warning", date: "Ayer 16:00" },
+                    { type: "quote_pending", message: "Quote Q-001 pending approval for 7 days", level: "info", date: "Ayer 14:30" }
+                ]
+            }
+        };
+
+        function toggleView(view) {
+            document.getElementById('adminView').classList.toggle('hidden', view !== 'admin');
+            document.getElementById('technicianView').classList.toggle('hidden', view !== 'technician');
+
+            document.getElementById('btnAdmin').className = view === 'admin'
+                ? 'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition'
+                : 'px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition';
+
+            document.getElementById('btnTech').className = view === 'technician'
+                ? 'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition'
+                : 'px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition';
+
+            if (view === 'technician') {
+                renderTechCharts();
+            }
+        }
+
+        function renderInvoicesTable() {
+            const tbody = document.getElementById('invoicesTable');
+            tbody.innerHTML = mockData.admin.invoices.map(inv => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${inv.invoiceNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${inv.customerName}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${inv.total.toFixed(2)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap"><span class="badge badge-${inv.status}">${inv.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderQuotesTable() {
+            const tbody = document.getElementById('quotesTable');
+            tbody.innerHTML = mockData.admin.quotes.map(quote => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${quote.quoteNumber}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${quote.customerName}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${quote.total.toFixed(2)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap"><span class="badge badge-${quote.statusName.toLowerCase()}">${quote.statusName}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTasksList() {
+            const container = document.getElementById('tasksList');
+            container.innerHTML = mockData.admin.tasks.map(task => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-900">${task.title}</p>
+                        <p class="text-xs text-gray-500 mt-1">${task.workOrder} • ${task.assignedTo}</p>
+                    </div>
+                    ${task.isOverdue ? '<span class="badge badge-overdue">Overdue</span>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function renderActivityTimeline() {
+            const container = document.getElementById('activityTimeline');
+            container.innerHTML = mockData.admin.activities.map(activity => `
+                <div class="activity-item">
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p class="text-sm font-medium text-gray-900">${activity.log}</p>
+                        <p class="text-xs text-gray-500 mt-1">${activity.workOrder} • ${activity.userName} • ${activity.time}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAlertsTable() {
+            const tbody = document.getElementById('alertsTable');
+            tbody.innerHTML = mockData.admin.alerts.map(alert => `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${alert.type.replace('_', ' ')}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${alert.message}</td>
+                    <td class="px-6 py-4 whitespace-nowrap"><span class="badge badge-${alert.level}">${alert.level}</span></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${alert.date}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Initialize admin charts
+        function initAdminCharts() {
+            if (chartsInitialized) return;
+
+            categoryChartInstance = new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Maintenance', 'Installation', 'Repair', 'Inspection', 'Emergency'],
+                    datasets: [{
+                        data: [15, 8, 22, 10, 5],
+                        backgroundColor: ['#6366f1', '#3b82f6', '#f59e0b', '#10b981', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            statusChartInstance = new Chart(document.getElementById('statusChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Awaiting Dispatch', 'Dispatched', 'In Progress', 'Completed', 'Urgent'],
+                    datasets: [{
+                        label: 'Jobs',
+                        data: [12, 8, 15, 10, 3],
+                        backgroundColor: '#6366f1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            invoiceChartInstance = new Chart(document.getElementById('invoiceChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'Pagadas', 'Vencidas'],
+                    datasets: [{
+                        data: [15, 120, 4],
+                        backgroundColor: ['#f59e0b', '#10b981', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            quoteChartInstance = new Chart(document.getElementById('quoteChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'Aprobadas', 'Rechazadas'],
+                    datasets: [{
+                        data: [8, 45, 12],
+                        backgroundColor: ['#f59e0b', '#10b981', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            workloadChartInstance = new Chart(document.getElementById('workloadChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Mike Smith', 'Sarah Jones', 'Bob Wilson', 'Alice Brown', 'Charlie Davis'],
+                    datasets: [
+                        { label: 'Jobs Abiertos', data: [8, 5, 12, 6, 4], backgroundColor: '#6366f1' },
+                        { label: 'Jobs Urgentes', data: [1, 0, 3, 1, 0], backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2
+                }
+            });
+
+            chartsInitialized = true;
+        }
+
+        function renderTechCharts() {
+            // Destruir gráficas existentes si ya fueron creadas
+            if (techStatusChartInstance) {
+                techStatusChartInstance.destroy();
+            }
+            if (techTasksChartInstance) {
+                techTasksChartInstance.destroy();
+            }
+
+            // Crear nuevas gráficas
+            techStatusChartInstance = new Chart(document.getElementById('techStatusChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Dispatched', 'In Progress', 'Urgent'],
+                    datasets: [{ data: [2, 3, 1], backgroundColor: ['#6366f1', '#3b82f6', '#ef4444'] }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1
+                }
+            });
+
+            techTasksChartInstance = new Chart(document.getElementById('techTasksChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'Vencidas'],
+                    datasets: [{ data: [1, 2], backgroundColor: ['#10b981', '#ef4444'] }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1
+                }
+            });
+        }
+
+        // Initialize
+        renderInvoicesTable();
+        renderQuotesTable();
+        renderTasksList();
+        renderActivityTimeline();
+        renderAlertsTable();
+        initAdminCharts();
+    </script>
+</body>
+</html>

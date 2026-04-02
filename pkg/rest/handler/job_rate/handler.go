@@ -123,9 +123,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	_ = json.NewEncoder(w).Encode(rate)
+	handler.RespondWithJSON(w, http.StatusCreated, rate)
 }
 
 // List godoc
@@ -178,8 +176,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		Page:  page,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }
 
 // Update godoc
@@ -248,8 +245,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(updatedRate)
+	handler.RespondWithJSON(w, http.StatusOK, updatedRate)
 }
 
 // Delete godoc
@@ -316,6 +312,5 @@ func (h *Handler) CalculatePayment(w http.ResponseWriter, r *http.Request) {
 		Payment: payment,
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_ = json.NewEncoder(w).Encode(response)
+	handler.RespondWithJSON(w, http.StatusOK, response)
 }

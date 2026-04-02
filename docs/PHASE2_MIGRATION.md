@@ -11,7 +11,7 @@ La Fase 1 migró exitosamente los 16 módulos CRUD del proyecto Laravel a Go. Si
 
 ---
 
-## 1. Envío de Email (Mailgun)
+## 1. ✅ Envío de Email (Mailgun) - COMPLETADO
 
 ### Estado en Laravel
 El proyecto usa **Mailgun** como proveedor de email con 6 clases Mailable:
@@ -37,9 +37,9 @@ El proyecto usa **Mailgun** como proveedor de email con 6 clases Mailable:
 | `POST job/{job}/tasks/{task}/send-notification` | `JobTaskController` | `sendNotification` |
 
 ### Estado en Go
-- **Migrado**: CRUD de registros `job_emails` (crear, listar, eliminar registros en BD)
-- **NO migrado**: La lógica real de envío de email via Mailgun/SMTP
-- **NO migrado**: Templates de email (HTML/Markdown)
+- **✅ MIGRADO**: CRUD de registros `job_emails` (crear, listar, eliminar registros en BD)
+- **✅ MIGRADO**: La lógica real de envío de email via Mailgun/SMTP
+- **✅ MIGRADO**: Templates de email (HTML/Markdown)
 
 ### Recomendación de implementación en Go
 1. Crear paquete `pkg/infrastructure/email/` con interfaz `EmailSender`
@@ -58,7 +58,7 @@ MAILGUN_SECRET=<secret>
 
 ---
 
-## 2. Envío de SMS (AWS SNS + Twilio)
+## 2. ✅ Envío de SMS (AWS SNS + Twilio) - COMPLETADO
 
 ### Estado en Laravel
 Dos servicios de SMS coexisten:
@@ -73,9 +73,9 @@ Dos servicios de SMS coexisten:
 **Flujo**: El controlador usa `AWSSMSService` para enviar SMS y registra el envío en `job_sms` + `job_activity_logs`.
 
 ### Estado en Go
-- **Migrado**: CRUD de registros `job_sms` (crear, listar, eliminar registros en BD)
-- **Migrado**: La tabla `settings` ya incluye campos Twilio
-- **NO migrado**: La lógica real de envío de SMS via AWS SNS o Twilio
+- **✅ MIGRADO**: CRUD de registros `job_sms` (crear, listar, eliminar registros en BD)
+- **✅ MIGRADO**: La tabla `settings` ya incluye campos Twilio
+- **✅ MIGRADO**: La lógica real de envío de SMS via AWS SNS o Twilio
 
 ### Recomendación de implementación en Go
 1. Crear paquete `pkg/infrastructure/sms/` con interfaz `SMSSender`
@@ -96,7 +96,7 @@ AWS_DEFAULT_REGION=us-east-1  # Ya existe como S3_REGION
 
 ---
 
-## 3. Seguridad de Contraseñas
+## 3. ✅ Seguridad de Contraseñas - COMPLETADO
 
 ### Estado en Laravel
 Sistema completo de gestión de contraseñas:
@@ -122,12 +122,12 @@ Sistema completo de gestión de contraseñas:
 - `password_resets` — Tokens temporales de reset
 
 ### Estado en Go
-- **Migrado**: Login, Logout, Refresh Token (JWT)
-- **Migrado**: Tabla `settings` con campos de políticas de contraseña
-- **NO migrado**: Forgot password (envío de email con token)
-- **NO migrado**: Reset password (validar token + cambiar contraseña)
-- **NO migrado**: Enforce password reset (verificación en login)
-- **NO migrado**: Password history (modelo, repositorio, validación)
+- **✅ MIGRADO**: Login, Logout, Refresh Token (JWT)
+- **✅ MIGRADO**: Tabla `settings` con campos de políticas de contraseña
+- **✅ MIGRADO**: Forgot password (envío de email con token)
+- **✅ MIGRADO**: Reset password (validar token + cambiar contraseña)
+- **✅ MIGRADO**: Enforce password reset (verificación en login)
+- **✅ MIGRADO**: Password history (modelo, repositorio, validación)
 
 ### Recomendación de implementación en Go
 1. Crear dominio `pkg/domain/password_history/` (entity, repository, usecase)
@@ -142,7 +142,7 @@ Sistema completo de gestión de contraseñas:
 
 ---
 
-## 4. Dashboard
+## 4. ✅ Dashboard - COMPLETADO
 
 ### Estado en Laravel
 Controlador `DashboardController` con dos vistas:
@@ -156,19 +156,26 @@ Controlador `DashboardController` con dos vistas:
 - Jobs urgentes (prioridad alta)
 
 ### Estado en Go
-- **NO migrado**: No existe ningún endpoint de dashboard
+- **✅ MIGRADO**: Endpoint `GET /api/v1/dashboard` implementado
+  - Detecta automáticamente el rol del usuario (admin vs técnico) desde el JWT
+  - **Admin**: Jobs pendientes de dispatch + urgentes + estadísticas generales
+  - **Técnico**: Jobs dispatched asignados + urgentes + estadísticas personales
+  - Jobs enriquecidos con JOINs (property, customer, technician, category, priority, status)
+  - Parámetro `?limit=N` para controlar cantidad de jobs por sección
 
-### Recomendación de implementación en Go
-1. Crear handler `pkg/rest/handler/dashboard/`
-2. Endpoints:
-   - `GET /api/v1/dashboard/admin` — Jobs pendientes de dispatch
-   - `GET /api/v1/dashboard/technician` — Jobs del técnico actual + urgentes
-3. Reutilizar el repositorio de `job` existente con filtros específicos
-4. El middleware de auth ya proporciona el usuario actual para filtrar por técnico
+### ✅ Archivos creados
+- `pkg/domain/dashboard/entity.go` — Entidades del dominio
+- `pkg/domain/dashboard/repository.go` — Interfaz del repositorio
+- `pkg/domain/dashboard/usecase.go` — Lógica de negocio
+- `pkg/repository/mysql/dashboard/repository.go` — Implementación MySQL
+- `pkg/rest/handler/dashboard/handler.go` — Handler HTTP
+
+### Propuesta de mejora
+- Ver `docs/DASHBOARD_ENHANCEMENT_PROPOSAL.md` para plan de enriquecimiento con datos de invoices, quotes, tasks, warranties, alerts, etc.
 
 ---
 
-## 5. Payroll
+## 5. ✅ Payroll - COMPLETADO
 
 ### Estado en Laravel
 Controlador `PayrollController` con las siguientes funcionalidades:
@@ -184,23 +191,38 @@ Controlador `PayrollController` con las siguientes funcionalidades:
 **Nota**: Payroll se basa en las tablas `job_rates` y `job_rate_statuses`, que ya están migradas como CRUD.
 
 ### Estado en Go
-- **Migrado**: CRUD de `job_rates` y `job_rate_statuses`
-- **NO migrado**: Lógica de negocio de payroll (mark paid/held, paystub view, paystub email)
+- **✅ MIGRADO**: CRUD de `job_rates` y `job_rate_statuses`
+- **✅ MIGRADO**: Lógica de negocio completa de payroll (mark paid/held, paystub view, paystub email)
 
-### Recomendación de implementación en Go
-1. Crear handler `pkg/rest/handler/payroll/`
-2. Crear usecase `pkg/domain/payroll/` que use el repositorio de `job_rate`
-3. Endpoints:
+### ✅ Implementación completada
+1. ✅ **Dominio**: `pkg/domain/payroll/` con entities, repository y usecase
+2. ✅ **Repositorio MySQL**: `pkg/repository/mysql/payroll/` con implementación completa
+3. ✅ **Handler HTTP**: `pkg/rest/handler/payroll/` con todos los endpoints
+4. ✅ **Endpoints implementados**:
    - `GET /api/v1/payroll` — Lista agrupada por usuario
+   - `GET /api/v1/payroll/{userId}` — Rates de usuario específico
    - `PUT /api/v1/payroll/{userId}/mark-paid` — Marcar como pagado
    - `PUT /api/v1/payroll/{userId}/mark-held` — Marcar como retenido
    - `GET /api/v1/payroll/{userId}/paystub` — Ver recibo
    - `POST /api/v1/payroll/{userId}/paystub/email` — Enviar recibo por email
-4. **Depende de**: Servicio de email (Sección 1) para el envío del paystub
+5. ✅ **Integración**: Servicio de email integrado para envío de paystub
+6. ✅ **Documentación**: Swagger regenerado con todos los endpoints
+
+### ✅ Archivos creados
+- `pkg/domain/payroll/entity.go` — Entidades del dominio
+- `pkg/domain/payroll/repository.go` — Interface del repositorio
+- `pkg/domain/payroll/usecase.go` — Lógica de negocio
+- `pkg/repository/mysql/payroll/repository.go` — Implementación MySQL
+- `pkg/repository/mysql/payroll/list_payroll_users.go` — Listado de usuarios con rates
+- `pkg/repository/mysql/payroll/get_user_rates.go` — Rates por usuario
+- `pkg/repository/mysql/payroll/mark_rates.go` — Marcar estados
+- `pkg/repository/mysql/payroll/get_paystub.go` — Generación de paystub
+- `pkg/repository/mysql/payroll/adapters.go` — Validaciones
+- `pkg/rest/handler/payroll/handler.go` — Handler HTTP con 6 endpoints
 
 ---
 
-## 6. Búsqueda Global (Search)
+## 6. ✅ Búsqueda Global (Search) - COMPLETADO
 
 ### Estado en Laravel
 Controlador `SearchController` que busca en múltiples entidades simultáneamente:
@@ -216,14 +238,29 @@ Controlador `SearchController` que busca en múltiples entidades simultáneament
 - Users (por name, email)
 
 ### Estado en Go
-- **Parcialmente migrado**: Cada endpoint de listado individual tiene filtros de búsqueda (`search`)
-- **NO migrado**: Endpoint de búsqueda unificada cross-entity
+- **✅ MIGRADO**: Endpoint de búsqueda unificada cross-entity
+- **✅ MIGRADO**: Búsqueda en paralelo usando goroutines
+- **✅ MIGRADO**: Respeta permiso `job_view_user_only` para filtrar resultados
 
-### Recomendación de implementación en Go
-1. Crear handler `pkg/rest/handler/search/`
-2. Endpoint: `GET /api/v1/search?q={query}`
-3. Ejecutar queries en paralelo usando goroutines contra los repositorios existentes
-4. Devolver resultados agrupados por tipo de entidad
+### ✅ Implementación completada
+1. **Dominio**: `pkg/domain/search/` con entities, repository interface y usecase
+2. **Repositorio MySQL**: `pkg/repository/mysql/search/` con queries optimizadas
+3. **Handler HTTP**: `pkg/rest/handler/search/` con endpoint documentado
+4. **Endpoint**: `GET /api/v1/search?q={query}&limit={limit}`
+
+### ✅ Archivos creados
+- `pkg/domain/search/entity.go` — Entidades de respuesta por tipo
+- `pkg/domain/search/repository.go` — Interface del repositorio
+- `pkg/domain/search/usecase.go` — Lógica de negocio con goroutines paralelas
+- `pkg/repository/mysql/search/repository.go` — Implementación MySQL con 8 métodos de búsqueda
+- `pkg/rest/handler/search/handler.go` — Handler HTTP con documentación Swagger
+
+### Características
+- Búsqueda en 8 entidades simultáneamente (jobs, customers, properties, invoices, quotes, warranties, warranty_claims, users)
+- Ejecución paralela con goroutines para máximo rendimiento
+- Límite configurable por entidad (default: 10, max: 50)
+- Respeta el permiso `job_view_user_only` para técnicos
+- Resultados agrupados por tipo de entidad con campos relevantes
 
 ---
 
@@ -284,7 +321,7 @@ STRIPE_WEBHOOK_SECRET=<webhook_secret>
 
 ---
 
-## 9. Gestión de Cuenta (Self-Service)
+## 9. ✅ Gestión de Cuenta (Self-Service) - COMPLETADO
 
 ### Estado en Laravel
 Controlador `AccountController`:
@@ -293,14 +330,33 @@ Controlador `AccountController`:
 - `POST account/sidebar` — Toggle sidebar (UI-specific)
 
 ### Estado en Go
-- **NO migrado**: No existe endpoint de "mi cuenta"
+- **✅ MIGRADO**: Endpoints de gestión de cuenta implementados
+- **✅ MIGRADO**: Validación de contraseñas con historial y políticas de seguridad
+- **✅ MIGRADO**: Validación de email duplicado
 
-### Recomendación de implementación en Go
-1. Agregar endpoints en auth o user handler:
-   - `GET /api/v1/account` — Obtener datos del usuario actual (desde JWT)
-   - `PUT /api/v1/account` — Actualizar perfil propio
-   - `PUT /api/v1/account/password` — Cambiar contraseña propia
-2. Reutilizar repositorio de `user` existente
+### ✅ Implementación completada
+1. **Dominio**: `pkg/domain/account/` con entities y usecase
+2. **Handler HTTP**: `pkg/rest/handler/account/` con endpoints documentados
+3. **Endpoints implementados**:
+   - `GET /api/v1/account` — Obtener perfil del usuario autenticado
+   - `PUT /api/v1/account` — Actualizar nombre y email del usuario
+   - `PUT /api/v1/account/password` — Cambiar contraseña con validaciones de seguridad
+4. **Validaciones implementadas**:
+   - Verificación de contraseña actual
+   - Validación de requisitos de seguridad (longitud, números, símbolos)
+   - Verificación contra historial de contraseñas
+   - Validación de email duplicado
+5. **Integración**: Usa repositorios existentes de `user`, `password_history` y `settings`
+6. **Documentación**: Swagger actualizado con todos los endpoints
+7. **Testing**: Colección Postman creada en `docs/postman_account_collection.json`
+
+### ✅ Archivos creados
+- `pkg/domain/account/entity.go` — DTOs de request/response
+- `pkg/domain/account/usecase.go` — Lógica de negocio con validaciones
+- `pkg/rest/handler/account/handler.go` — Handler HTTP con 3 endpoints
+
+### Nota
+El endpoint `POST account/sidebar` de Laravel no fue migrado ya que es específico de la UI del frontend Laravel y no aplica para una API REST stateless.
 
 ---
 

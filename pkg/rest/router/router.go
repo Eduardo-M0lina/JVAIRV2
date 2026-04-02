@@ -8,10 +8,12 @@ import (
 	"github.com/your-org/jvairv2/pkg/domain/user"
 	"github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	accountHandler "github.com/your-org/jvairv2/pkg/rest/handler/account"
 	alertHandler "github.com/your-org/jvairv2/pkg/rest/handler/alert"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	dashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/dashboard"
 	emailTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/email_template"
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
@@ -28,12 +30,15 @@ import (
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
+	"github.com/your-org/jvairv2/pkg/rest/handler/new_dashboard"
+	payrollHandler "github.com/your-org/jvairv2/pkg/rest/handler/payroll"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
 	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
+	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
@@ -96,6 +101,11 @@ func New(
 	jobTaskHandler *jobTaskHandler.Handler,
 	jobRateHandler *jobRateHandler.Handler,
 	alertHandler *alertHandler.Handler,
+	dashboardHandler *dashboardHandler.Handler,
+	newDashboardHdlr *new_dashboard.Handler,
+	payrollHdlr *payrollHandler.Handler,
+	searchHdlr *searchHandler.Handler,
+	accountHdlr *accountHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -249,6 +259,23 @@ func New(
 
 			// Module 15: Alerts
 			alertHandler.RegisterRoutes(r)
+
+			// Dashboard
+			dashboardHandler.RegisterRoutes(r)
+
+			// New Enhanced Dashboard
+			newDashboardHdlr.RegisterRoutes(r)
+
+			// Payroll
+			payrollHdlr.RegisterRoutes(r)
+
+			// Global Search
+			searchHdlr.RegisterRoutes(r)
+
+			// Account Management (Self-Service)
+			r.Get("/account", accountHdlr.GetProfile)
+			r.Put("/account", accountHdlr.UpdateProfile)
+			r.Put("/account/password", accountHdlr.ChangePassword)
 		})
 	})
 	return r

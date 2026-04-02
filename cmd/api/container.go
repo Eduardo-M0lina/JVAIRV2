@@ -8,10 +8,12 @@ import (
 	commonAuth "github.com/your-org/jvairv2/pkg/common/auth"
 	"github.com/your-org/jvairv2/pkg/common/storage"
 	ability "github.com/your-org/jvairv2/pkg/domain/ability"
+	domainAccount "github.com/your-org/jvairv2/pkg/domain/account"
 	domainAlert "github.com/your-org/jvairv2/pkg/domain/alert"
 	assignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
 	domainAuth "github.com/your-org/jvairv2/pkg/domain/auth"
 	customer "github.com/your-org/jvairv2/pkg/domain/customer"
+	domainDashboard "github.com/your-org/jvairv2/pkg/domain/dashboard"
 	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
 	domainEmailTemplate "github.com/your-org/jvairv2/pkg/domain/email_template"
 	domainFile "github.com/your-org/jvairv2/pkg/domain/file"
@@ -30,12 +32,15 @@ import (
 	jobStatus "github.com/your-org/jvairv2/pkg/domain/job_status"
 	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
 	domainJobVisit "github.com/your-org/jvairv2/pkg/domain/job_visit"
+	domainNewDashboard "github.com/your-org/jvairv2/pkg/domain/new_dashboard"
+	domainPayroll "github.com/your-org/jvairv2/pkg/domain/payroll"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
 	domainPropEquip "github.com/your-org/jvairv2/pkg/domain/property_equipment"
 	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
 	quoteStatus "github.com/your-org/jvairv2/pkg/domain/quote_status"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
+	domainSearch "github.com/your-org/jvairv2/pkg/domain/search"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
 	domainSMSTemplate "github.com/your-org/jvairv2/pkg/domain/sms_template"
 	domainSupervisor "github.com/your-org/jvairv2/pkg/domain/supervisor"
@@ -51,11 +56,13 @@ import (
 	warrantyType "github.com/your-org/jvairv2/pkg/domain/warranty_type"
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
 	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
+	infraSMS "github.com/your-org/jvairv2/pkg/infrastructure/sms"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
 	mysqlAssignedRole "github.com/your-org/jvairv2/pkg/repository/mysql/assigned_role"
 	mysqlCustomer "github.com/your-org/jvairv2/pkg/repository/mysql/customer"
+	mysqlDashboard "github.com/your-org/jvairv2/pkg/repository/mysql/dashboard"
 	mysqlEmailTemplate "github.com/your-org/jvairv2/pkg/repository/mysql/email_template"
 	mysqlFile "github.com/your-org/jvairv2/pkg/repository/mysql/file"
 	mysqlInvoice "github.com/your-org/jvairv2/pkg/repository/mysql/invoice"
@@ -73,14 +80,17 @@ import (
 	mysqlJobStatus "github.com/your-org/jvairv2/pkg/repository/mysql/job_status"
 	mysqlJobTask "github.com/your-org/jvairv2/pkg/repository/mysql/job_task"
 	mysqlJobVisit "github.com/your-org/jvairv2/pkg/repository/mysql/job_visit"
+	mysqlNewDashboard "github.com/your-org/jvairv2/pkg/repository/mysql/new_dashboard"
 	mysqlPasswordHistory "github.com/your-org/jvairv2/pkg/repository/mysql/password_history"
 	mysqlPasswordReset "github.com/your-org/jvairv2/pkg/repository/mysql/password_reset"
+	mysqlPayroll "github.com/your-org/jvairv2/pkg/repository/mysql/payroll"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
 	mysqlPropEquip "github.com/your-org/jvairv2/pkg/repository/mysql/property_equipment"
 	mysqlQuote "github.com/your-org/jvairv2/pkg/repository/mysql/quote"
 	mysqlQuoteStatus "github.com/your-org/jvairv2/pkg/repository/mysql/quote_status"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
+	mysqlSearch "github.com/your-org/jvairv2/pkg/repository/mysql/search"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
 	mysqlSMSTemplate "github.com/your-org/jvairv2/pkg/repository/mysql/sms_template"
 	mysqlSupervisor "github.com/your-org/jvairv2/pkg/repository/mysql/supervisor"
@@ -97,10 +107,12 @@ import (
 	mysqlWorkflow "github.com/your-org/jvairv2/pkg/repository/mysql/workflow"
 	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
+	accountHandler "github.com/your-org/jvairv2/pkg/rest/handler/account"
 	alertHandler "github.com/your-org/jvairv2/pkg/rest/handler/alert"
 	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 	customerHandler "github.com/your-org/jvairv2/pkg/rest/handler/customer"
+	dashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/dashboard"
 	emailTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/email_template"
 	invoiceHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice"
 	invoicePaymentHandler "github.com/your-org/jvairv2/pkg/rest/handler/invoice_payment"
@@ -117,12 +129,15 @@ import (
 	jobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_status"
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
+	newDashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/new_dashboard"
+	payrollHandler "github.com/your-org/jvairv2/pkg/rest/handler/payroll"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
 	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
+	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
@@ -189,7 +204,11 @@ type Container struct {
 	JobRateHandler             *jobRateHandler.Handler
 	SMSTemplateHandler         *smsTemplateHandler.Handler
 	AlertHandler               *alertHandler.Handler
+	DashboardHandler           *dashboardHandler.Handler
 	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
+	AccountHandler             *accountHandler.Handler
+	PayrollHandler             *payrollHandler.Handler
+	SearchHandler              *searchHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -278,6 +297,15 @@ func NewContainer(configPath string) (*Container, error) {
 	invoicePaymentRepo := mysqlInvoicePayment.NewRepository(dbConn.GetDB())
 	invoiceChecker := mysqlInvoice.NewInvoiceCheckerAdapter(dbConn.GetDB())
 	invoicePaymentUC := domainInvoicePayment.NewUseCase(invoicePaymentRepo, invoiceChecker)
+
+	// Inicializar SMS (AWS SNS + Twilio selector)
+	var smsSender infraSMS.SMSSender
+	snsSender, snsErr := infraSMS.NewAWSSNSSender(&config.S3)
+	if snsErr != nil {
+		fmt.Println("Warning: No se pudo inicializar AWS SNS sender:", snsErr)
+	} else {
+		smsSender = infraSMS.NewSelectiveSender(snsSender, settingsUC)
+	}
 
 	// Job Visits + Files
 	s3Client, err := storage.NewS3Client(&config.S3)
@@ -369,6 +397,30 @@ func NewContainer(configPath string) (*Container, error) {
 	alertUserChecker := mysqlAlert.NewUserExistsChecker(dbConn.GetDB())
 	alertUC := domainAlert.NewUseCase(alertRepo, alertUserChecker)
 
+	// Dashboard
+	dashboardRepo := mysqlDashboard.NewRepository(dbConn.GetDB())
+	dashboardUC := domainDashboard.NewUseCase(dashboardRepo)
+
+	// New Enhanced Dashboard
+	newDashboardRepo := mysqlNewDashboard.NewRepository(dbConn.GetDB())
+	newDashboardUC := domainNewDashboard.NewUseCase(newDashboardRepo)
+
+	// Payroll
+	payrollRepo := mysqlPayroll.NewRepository(dbConn.GetDB())
+	payrollUserChecker := mysqlPayroll.NewUserExistsChecker(dbConn.GetDB())
+	payrollUC := domainPayroll.NewUseCase(payrollRepo, payrollUserChecker)
+
+	// Global Search
+	searchRepo := mysqlSearch.NewRepository(dbConn.GetDB())
+	searchUC := domainSearch.NewUseCase(searchRepo)
+
+	// Password History and Reset Repositories (needed by Account and Password Security)
+	passwordResetRepo := mysqlPasswordReset.NewRepository(dbConn.GetDB())
+	passwordHistoryRepo := mysqlPasswordHistory.NewRepository(dbConn.GetDB())
+
+	// Account Management
+	accountUC := domainAccount.NewUseCase(userRepo, passwordHistoryRepo, settingsRepo)
+
 	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHdlr := authHandler.NewHandler(authUC)
@@ -405,6 +457,7 @@ func NewContainer(configPath string) (*Container, error) {
 	invoiceRepoAdapter := domainEmail.NewInvoiceRepositoryAdapter(invoiceRepo)
 	quoteRepoAdapter := domainEmail.NewQuoteRepositoryAdapter(quoteRepo)
 	taskRepoAdapter := domainEmail.NewTaskRepositoryAdapter(jobTaskRepo)
+	payrollRepoAdapter := domainEmail.NewPayrollRepositoryAdapter(payrollRepo)
 
 	// Crear servicio de dominio de email
 	emailDomainService := domainEmail.NewEmailService(
@@ -417,12 +470,10 @@ func NewContainer(configPath string) (*Container, error) {
 		invoiceRepoAdapter,
 		quoteRepoAdapter,
 		taskRepoAdapter,
+		payrollRepoAdapter,
 	)
 
 	// Module 3: Password Security (requires email service from Module 1)
-	// Repositories
-	passwordResetRepo := mysqlPasswordReset.NewRepository(dbConn.GetDB())
-	passwordHistoryRepo := mysqlPasswordHistory.NewRepository(dbConn.GetDB())
 	// Initialize password security use case with real email service
 	passwordSecurityUC := domainAuth.NewPasswordSecurityUseCase(
 		userRepo,
@@ -436,7 +487,7 @@ func NewContainer(configPath string) (*Container, error) {
 
 	// Handlers que necesitan emailService
 	userHandler := userHandler.NewHandler(userUC, emailDomainService)
-	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService)
+	jobHdlr := jobHandler.NewHandler(jobUC, jobActivityLogUC, emailDomainService, smsSender, jobSMSUC)
 	quoteHdlr := quoteHandler.NewHandler(quoteUC, emailDomainService)
 	quoteStatHandler := quoteStatusHandler.NewHandler(quoteStatusUC)
 	supervisorHdlr := supervisorHandler.NewHandler(supervisorUC)
@@ -463,6 +514,11 @@ func NewContainer(configPath string) (*Container, error) {
 	jraHdlr := jobRateHandler.NewHandler(jobRateUC)
 	stHdlr := smsTemplateHandler.NewHandler(smsTemplateUC)
 	alHdlr := alertHandler.NewHandler(alertUC)
+	dashHdlr := dashboardHandler.NewHandler(dashboardUC)
+	newDashHdlr := newDashboardHandler.NewHandler(newDashboardUC)
+	payrollHdlr := payrollHandler.NewHandler(payrollUC, emailDomainService)
+	searchHdlr := searchHandler.NewHandler(searchUC)
+	accountHdlr := accountHandler.NewHandler(accountUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -512,6 +568,11 @@ func NewContainer(configPath string) (*Container, error) {
 		jtHdlr,
 		jraHdlr,
 		alHdlr,
+		dashHdlr,
+		newDashHdlr,
+		payrollHdlr,
+		searchHdlr,
+		accountHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -563,7 +624,11 @@ func NewContainer(configPath string) (*Container, error) {
 		JobRateHandler:             jraHdlr,
 		SMSTemplateHandler:         stHdlr,
 		AlertHandler:               alHdlr,
+		DashboardHandler:           dashHdlr,
 		PasswordSecurityHandler:    passwordSecurityHdlr,
+		AccountHandler:             accountHdlr,
+		PayrollHandler:             payrollHdlr,
+		SearchHandler:              searchHdlr,
 	}, nil
 }
 

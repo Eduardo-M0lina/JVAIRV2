@@ -110,6 +110,12 @@
 // @tag.name JobVisits
 // @tag.description Visitas de trabajo con archivos adjuntos (fotos/documentos)
 
+// @tag.name Search
+// @tag.description Búsqueda global en múltiples entidades
+
+// @tag.name Account
+// @tag.description Gestión de cuenta del usuario (self-service)
+
 package main
 
 import (
