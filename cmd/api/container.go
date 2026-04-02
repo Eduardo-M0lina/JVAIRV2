@@ -39,6 +39,7 @@ import (
 	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
 	quoteStatus "github.com/your-org/jvairv2/pkg/domain/quote_status"
 	role "github.com/your-org/jvairv2/pkg/domain/role"
+	domainSearch "github.com/your-org/jvairv2/pkg/domain/search"
 	settings "github.com/your-org/jvairv2/pkg/domain/settings"
 	domainSMSTemplate "github.com/your-org/jvairv2/pkg/domain/sms_template"
 	domainSupervisor "github.com/your-org/jvairv2/pkg/domain/supervisor"
@@ -88,6 +89,7 @@ import (
 	mysqlQuote "github.com/your-org/jvairv2/pkg/repository/mysql/quote"
 	mysqlQuoteStatus "github.com/your-org/jvairv2/pkg/repository/mysql/quote_status"
 	mysqlRole "github.com/your-org/jvairv2/pkg/repository/mysql/role"
+	mysqlSearch "github.com/your-org/jvairv2/pkg/repository/mysql/search"
 	mysqlSettings "github.com/your-org/jvairv2/pkg/repository/mysql/settings"
 	mysqlSMSTemplate "github.com/your-org/jvairv2/pkg/repository/mysql/sms_template"
 	mysqlSupervisor "github.com/your-org/jvairv2/pkg/repository/mysql/supervisor"
@@ -133,6 +135,7 @@ import (
 	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
+	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
@@ -202,6 +205,7 @@ type Container struct {
 	DashboardHandler           *dashboardHandler.Handler
 	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
 	PayrollHandler             *payrollHandler.Handler
+	SearchHandler              *searchHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -403,6 +407,10 @@ func NewContainer(configPath string) (*Container, error) {
 	payrollUserChecker := mysqlPayroll.NewUserExistsChecker(dbConn.GetDB())
 	payrollUC := domainPayroll.NewUseCase(payrollRepo, payrollUserChecker)
 
+	// Global Search
+	searchRepo := mysqlSearch.NewRepository(dbConn.GetDB())
+	searchUC := domainSearch.NewUseCase(searchRepo)
+
 	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHdlr := authHandler.NewHandler(authUC)
@@ -502,6 +510,7 @@ func NewContainer(configPath string) (*Container, error) {
 	dashHdlr := dashboardHandler.NewHandler(dashboardUC)
 	newDashHdlr := newDashboardHandler.NewHandler(newDashboardUC)
 	payrollHdlr := payrollHandler.NewHandler(payrollUC, emailDomainService)
+	searchHdlr := searchHandler.NewHandler(searchUC)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -554,6 +563,7 @@ func NewContainer(configPath string) (*Container, error) {
 		dashHdlr,
 		newDashHdlr,
 		payrollHdlr,
+		searchHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -608,6 +618,7 @@ func NewContainer(configPath string) (*Container, error) {
 		DashboardHandler:           dashHdlr,
 		PasswordSecurityHandler:    passwordSecurityHdlr,
 		PayrollHandler:             payrollHdlr,
+		SearchHandler:              searchHdlr,
 	}, nil
 }
 

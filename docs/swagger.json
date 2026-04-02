@@ -8434,6 +8434,76 @@
                 }
             }
         },
+        "/api/v1/search": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Busca en múltiples entidades (jobs, customers, properties, invoices, quotes, warranties, warranty claims, users) simultáneamente. Respeta el permiso job_view_user_only para filtrar resultados.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Búsqueda global",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Término de búsqueda",
+                        "name": "q",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Límite de resultados por entidad (default: 10, max: 50)",
+                        "name": "limit",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultados de búsqueda agrupados por entidad",
+                        "schema": {
+                            "$ref": "#/definitions/search.GlobalSearchResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Parámetro de búsqueda requerido",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuario no autenticado",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/settings": {
             "get": {
                 "security": [
@@ -17546,6 +17616,258 @@
                 }
             }
         },
+        "search.CustomerSearchResult": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "website": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.GlobalSearchResponse": {
+            "type": "object",
+            "properties": {
+                "customers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.CustomerSearchResult"
+                    }
+                },
+                "invoices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.InvoiceSearchResult"
+                    }
+                },
+                "jobs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.JobSearchResult"
+                    }
+                },
+                "properties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.PropertySearchResult"
+                    }
+                },
+                "query": {
+                    "type": "string"
+                },
+                "quotes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.QuoteSearchResult"
+                    }
+                },
+                "totalResults": {
+                    "type": "integer"
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.UserSearchResult"
+                    }
+                },
+                "warranties": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.WarrantySearchResult"
+                    }
+                },
+                "warrantyClaims": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/search.WarrantyClaimSearchResult"
+                    }
+                }
+            }
+        },
+        "search.InvoiceSearchResult": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "invoiceNumber": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "number"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.JobSearchResult": {
+            "type": "object",
+            "properties": {
+                "closed": {
+                    "type": "boolean"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "propertyCity": {
+                    "type": "string"
+                },
+                "propertyStreet": {
+                    "type": "string"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "technicianName": {
+                    "type": "string"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.PropertySearchResult": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "propertyCode": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.QuoteSearchResult": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "quoteNumber": {
+                    "type": "string"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "number"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.UserSearchResult": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "roleName": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.WarrantyClaimSearchResult": {
+            "type": "object",
+            "properties": {
+                "claimNumber": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "internalClaimNumber": {
+                    "type": "string"
+                },
+                "manufacturer": {
+                    "type": "string"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "warrantyPart": {
+                    "type": "string"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
+        "search.WarrantySearchResult": {
+            "type": "object",
+            "properties": {
+                "agreementNumber": {
+                    "type": "string"
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "statusName": {
+                    "type": "string"
+                },
+                "typeName": {
+                    "type": "string"
+                },
+                "warrantyNumber": {
+                    "type": "string"
+                },
+                "workOrder": {
+                    "type": "string"
+                }
+            }
+        },
         "settings.SettingsResponse": {
             "type": "object",
             "properties": {
@@ -19003,6 +19325,10 @@
         {
             "description": "Visitas de trabajo con archivos adjuntos (fotos/documentos)",
             "name": "JobVisits"
+        },
+        {
+            "description": "Búsqueda global en múltiples entidades",
+            "name": "Search"
         }
     ]
 }

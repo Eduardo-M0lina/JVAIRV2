@@ -99,6 +99,25 @@ func HasAbility(ctx context.Context, ability string) bool {
 	return false
 }
 
+// HasAbilityExact verifica si el usuario tiene una habilidad específica SIN considerar el wildcard "*"
+// Útil para verificar restricciones como "job_view_user_only" donde el superadmin NO debe tener la restricción
+func HasAbilityExact(ctx context.Context, ability string) bool {
+	// Obtener las habilidades del contexto
+	abilities, ok := ctx.Value(abilityKey{}).([]string)
+	if !ok {
+		return false
+	}
+
+	// Verificar si el usuario tiene la habilidad específica (sin considerar "*")
+	for _, a := range abilities {
+		if a == ability {
+			return true
+		}
+	}
+
+	return false
+}
+
 // RequireAbility verifica si el usuario tiene una habilidad específica
 // y devuelve un error 403 si no la tiene
 func RequireAbility(ability string) func(http.Handler) http.Handler {

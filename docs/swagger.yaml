@@ -2446,6 +2446,171 @@ definitions:
     required:
     - name
     type: object
+  search.CustomerSearchResult:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      mobile:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      website:
+        type: string
+    type: object
+  search.GlobalSearchResponse:
+    properties:
+      customers:
+        items:
+          $ref: '#/definitions/search.CustomerSearchResult'
+        type: array
+      invoices:
+        items:
+          $ref: '#/definitions/search.InvoiceSearchResult'
+        type: array
+      jobs:
+        items:
+          $ref: '#/definitions/search.JobSearchResult'
+        type: array
+      properties:
+        items:
+          $ref: '#/definitions/search.PropertySearchResult'
+        type: array
+      query:
+        type: string
+      quotes:
+        items:
+          $ref: '#/definitions/search.QuoteSearchResult'
+        type: array
+      totalResults:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/search.UserSearchResult'
+        type: array
+      warranties:
+        items:
+          $ref: '#/definitions/search.WarrantySearchResult'
+        type: array
+      warrantyClaims:
+        items:
+          $ref: '#/definitions/search.WarrantyClaimSearchResult'
+        type: array
+    type: object
+  search.InvoiceSearchResult:
+    properties:
+      customerName:
+        type: string
+      id:
+        type: integer
+      invoiceNumber:
+        type: string
+      total:
+        type: number
+      workOrder:
+        type: string
+    type: object
+  search.JobSearchResult:
+    properties:
+      closed:
+        type: boolean
+      customerName:
+        type: string
+      id:
+        type: integer
+      propertyCity:
+        type: string
+      propertyStreet:
+        type: string
+      statusName:
+        type: string
+      technicianName:
+        type: string
+      workOrder:
+        type: string
+    type: object
+  search.PropertySearchResult:
+    properties:
+      city:
+        type: string
+      customerName:
+        type: string
+      id:
+        type: integer
+      propertyCode:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      zip:
+        type: string
+    type: object
+  search.QuoteSearchResult:
+    properties:
+      customerName:
+        type: string
+      id:
+        type: integer
+      quoteNumber:
+        type: string
+      statusName:
+        type: string
+      total:
+        type: number
+      workOrder:
+        type: string
+    type: object
+  search.UserSearchResult:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      name:
+        type: string
+      roleName:
+        type: string
+    type: object
+  search.WarrantyClaimSearchResult:
+    properties:
+      claimNumber:
+        type: string
+      id:
+        type: integer
+      internalClaimNumber:
+        type: string
+      manufacturer:
+        type: string
+      statusName:
+        type: string
+      warrantyPart:
+        type: string
+      workOrder:
+        type: string
+    type: object
+  search.WarrantySearchResult:
+    properties:
+      agreementNumber:
+        type: string
+      customerName:
+        type: string
+      id:
+        type: integer
+      statusName:
+        type: string
+      typeName:
+        type: string
+      warrantyNumber:
+        type: string
+      workOrder:
+        type: string
+    type: object
   settings.SettingsResponse:
     properties:
       id:
@@ -8827,6 +8992,53 @@ paths:
       summary: Actualizar rol
       tags:
       - Roles
+  /api/v1/search:
+    get:
+      consumes:
+      - application/json
+      description: Busca en múltiples entidades (jobs, customers, properties, invoices,
+        quotes, warranties, warranty claims, users) simultáneamente. Respeta el permiso
+        job_view_user_only para filtrar resultados.
+      parameters:
+      - description: Término de búsqueda
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: 'Límite de resultados por entidad (default: 10, max: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resultados de búsqueda agrupados por entidad
+          schema:
+            $ref: '#/definitions/search.GlobalSearchResponse'
+        "400":
+          description: Parámetro de búsqueda requerido
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Usuario no autenticado
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Error interno del servidor
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Búsqueda global
+      tags:
+      - Search
   /api/v1/settings:
     get:
       consumes:
@@ -12451,3 +12663,5 @@ tags:
   name: WarrantyClaimStatuses
 - description: Visitas de trabajo con archivos adjuntos (fotos/documentos)
   name: JobVisits
+- description: Búsqueda global en múltiples entidades
+  name: Search

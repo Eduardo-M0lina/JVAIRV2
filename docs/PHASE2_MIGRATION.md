@@ -222,7 +222,7 @@ Controlador `PayrollController` con las siguientes funcionalidades:
 
 ---
 
-## 6. Búsqueda Global (Search)
+## 6. ✅ Búsqueda Global (Search) - COMPLETADO
 
 ### Estado en Laravel
 Controlador `SearchController` que busca en múltiples entidades simultáneamente:
@@ -238,14 +238,29 @@ Controlador `SearchController` que busca en múltiples entidades simultáneament
 - Users (por name, email)
 
 ### Estado en Go
-- **Parcialmente migrado**: Cada endpoint de listado individual tiene filtros de búsqueda (`search`)
-- **NO migrado**: Endpoint de búsqueda unificada cross-entity
+- **✅ MIGRADO**: Endpoint de búsqueda unificada cross-entity
+- **✅ MIGRADO**: Búsqueda en paralelo usando goroutines
+- **✅ MIGRADO**: Respeta permiso `job_view_user_only` para filtrar resultados
 
-### Recomendación de implementación en Go
-1. Crear handler `pkg/rest/handler/search/`
-2. Endpoint: `GET /api/v1/search?q={query}`
-3. Ejecutar queries en paralelo usando goroutines contra los repositorios existentes
-4. Devolver resultados agrupados por tipo de entidad
+### ✅ Implementación completada
+1. **Dominio**: `pkg/domain/search/` con entities, repository interface y usecase
+2. **Repositorio MySQL**: `pkg/repository/mysql/search/` con queries optimizadas
+3. **Handler HTTP**: `pkg/rest/handler/search/` con endpoint documentado
+4. **Endpoint**: `GET /api/v1/search?q={query}&limit={limit}`
+
+### ✅ Archivos creados
+- `pkg/domain/search/entity.go` — Entidades de respuesta por tipo
+- `pkg/domain/search/repository.go` — Interface del repositorio
+- `pkg/domain/search/usecase.go` — Lógica de negocio con goroutines paralelas
+- `pkg/repository/mysql/search/repository.go` — Implementación MySQL con 8 métodos de búsqueda
+- `pkg/rest/handler/search/handler.go` — Handler HTTP con documentación Swagger
+
+### Características
+- Búsqueda en 8 entidades simultáneamente (jobs, customers, properties, invoices, quotes, warranties, warranty_claims, users)
+- Ejecución paralela con goroutines para máximo rendimiento
+- Límite configurable por entidad (default: 10, max: 50)
+- Respeta el permiso `job_view_user_only` para técnicos
+- Resultados agrupados por tipo de entidad con campos relevantes
 
 ---
 

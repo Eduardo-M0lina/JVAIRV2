@@ -37,6 +37,7 @@ import (
 	quoteHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote"
 	quoteStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/quote_status"
 	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
+	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
@@ -102,6 +103,7 @@ func New(
 	dashboardHandler *dashboardHandler.Handler,
 	newDashboardHdlr *new_dashboard.Handler,
 	payrollHdlr *payrollHandler.Handler,
+	searchHdlr *searchHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -264,6 +266,9 @@ func New(
 
 			// Payroll
 			payrollHdlr.RegisterRoutes(r)
+
+			// Global Search
+			searchHdlr.RegisterRoutes(r)
 		})
 	})
 	return r
