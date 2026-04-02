@@ -1886,6 +1886,117 @@ definitions:
           $ref: '#/definitions/new_dashboard.RecentClaim'
         type: array
     type: object
+  payroll.MarkRatesRequest:
+    properties:
+      rateIds:
+        items:
+          type: integer
+        type: array
+    type: object
+  payroll.PayrollListResponse:
+    properties:
+      page:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
+      totalPages:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/payroll.PayrollUser'
+        type: array
+    type: object
+  payroll.PayrollRate:
+    properties:
+      companyParts:
+        type: number
+      createdAt:
+        type: string
+      deduction:
+        type: number
+      id:
+        type: integer
+      jobId:
+        type: integer
+      jobRateStatusId:
+        type: integer
+      notes:
+        type: string
+      paid:
+        type: boolean
+      partsReplaced:
+        type: string
+      payment:
+        type: number
+      propertyAddress:
+        type: string
+      rateFlat:
+        type: number
+      ratePercent:
+        type: number
+      salePrice:
+        type: number
+      statusClass:
+        type: string
+      statusLabel:
+        description: Información del status
+        type: string
+      techParts:
+        type: number
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+      workOrder:
+        description: Información del job (enriquecida)
+        type: string
+    type: object
+  payroll.PayrollUser:
+    properties:
+      email:
+        type: string
+      holdingRates:
+        items:
+          $ref: '#/definitions/payroll.PayrollRate'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      paidRates:
+        items:
+          $ref: '#/definitions/payroll.PayrollRate'
+        type: array
+      roleName:
+        type: string
+      totalHolding:
+        type: number
+      totalPaid:
+        type: number
+      totalUnpaid:
+        description: Totales calculados
+        type: number
+      unpaidRates:
+        description: Rates agrupados por estado
+        items:
+          $ref: '#/definitions/payroll.PayrollRate'
+        type: array
+    type: object
+  payroll.PaystubData:
+    properties:
+      generatedAt:
+        type: string
+      rates:
+        items:
+          $ref: '#/definitions/payroll.PayrollRate'
+        type: array
+      totalPayment:
+        type: number
+      user:
+        $ref: '#/definitions/payroll.PayrollUser'
+    type: object
   permission.CreatePermissionRequest:
     properties:
       abilityId:
@@ -7197,6 +7308,294 @@ paths:
       summary: Obtener dashboard enriquecido
       tags:
       - Dashboard
+  /api/v1/payroll:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene la lista de usuarios con sus rates de payroll agrupados
+        por estado (unpaid, holding, paid)
+      parameters:
+      - description: 'Número de página (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (default: 20)'
+        in: query
+        name: pageSize
+        type: integer
+      - description: Búsqueda por nombre o email de usuario
+        in: query
+        name: search
+        type: string
+      - description: Filtrar por ID de usuario específico
+        in: query
+        name: userId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payroll.PayrollListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Listar payroll de usuarios
+      tags:
+      - Payroll
+  /api/v1/payroll/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene los rates de payroll de un usuario específico con filtros
+        opcionales
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: 'Filtrar por estado: unpaid, holding, paid, all (default: all)'
+        in: query
+        name: status
+        type: string
+      - description: 'Número de página (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Tamaño de página (default: 50)'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener payroll de un usuario
+      tags:
+      - Payroll
+  /api/v1/payroll/{userId}/mark-held:
+    put:
+      consumes:
+      - application/json
+      description: Marca los rates especificados como retenidos (holding) para un
+        usuario
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: IDs de los rates a marcar como retenidos
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payroll.MarkRatesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Marcar rates como retenidos
+      tags:
+      - Payroll
+  /api/v1/payroll/{userId}/mark-paid:
+    put:
+      consumes:
+      - application/json
+      description: Marca los rates especificados como pagados para un usuario
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: IDs de los rates a marcar como pagados
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/payroll.MarkRatesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Marcar rates como pagados
+      tags:
+      - Payroll
+  /api/v1/payroll/{userId}/paystub:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene el recibo de pago (paystub) de un usuario con sus rates
+        pendientes
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payroll.PaystubData'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener recibo de pago
+      tags:
+      - Payroll
+  /api/v1/payroll/{userId}/paystub/email:
+    post:
+      consumes:
+      - application/json
+      description: Envía el recibo de pago (paystub) de un usuario a las direcciones
+        de email especificadas
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Direcciones de email (campo 'emails')
+        in: body
+        name: body
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Enviar recibo de pago por email
+      tags:
+      - Payroll
   /api/v1/permissions:
     get:
       consumes:

@@ -30,6 +30,7 @@ import (
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
 	"github.com/your-org/jvairv2/pkg/rest/handler/new_dashboard"
+	payrollHandler "github.com/your-org/jvairv2/pkg/rest/handler/payroll"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
@@ -100,6 +101,7 @@ func New(
 	alertHandler *alertHandler.Handler,
 	dashboardHandler *dashboardHandler.Handler,
 	newDashboardHdlr *new_dashboard.Handler,
+	payrollHdlr *payrollHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -259,6 +261,9 @@ func New(
 
 			// New Enhanced Dashboard
 			newDashboardHdlr.RegisterRoutes(r)
+
+			// Payroll
+			payrollHdlr.RegisterRoutes(r)
 		})
 	})
 	return r

@@ -9,6 +9,7 @@ import (
 	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
 	domainJobResident "github.com/your-org/jvairv2/pkg/domain/job_resident"
 	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
+	domainPayroll "github.com/your-org/jvairv2/pkg/domain/payroll"
 	domainProperty "github.com/your-org/jvairv2/pkg/domain/property"
 	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
 	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
@@ -223,4 +224,17 @@ func (a *TaskRepositoryAdapter) GetByID(ctx context.Context, id int64) (*TaskDat
 		JobID:       task.JobID,
 		UserID:      task.UserID,
 	}, nil
+}
+
+// PayrollRepositoryAdapter adapta el repositorio de payroll
+type PayrollRepositoryAdapter struct {
+	repo domainPayroll.Repository
+}
+
+func NewPayrollRepositoryAdapter(repo domainPayroll.Repository) PayrollRepository {
+	return &PayrollRepositoryAdapter{repo: repo}
+}
+
+func (a *PayrollRepositoryAdapter) GetPaystubData(ctx context.Context, userID int64) (*domainPayroll.PaystubData, error) {
+	return a.repo.GetPaystubData(ctx, userID)
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	domainPayroll "github.com/your-org/jvairv2/pkg/domain/payroll"
 	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
 )
 
@@ -30,6 +31,7 @@ type EmailService struct {
 	invoiceRepo  InvoiceRepository
 	quoteRepo    QuoteRepository
 	taskRepo     TaskRepository
+	payrollRepo  PayrollRepository
 }
 
 // JobRepository define los métodos necesarios del repositorio de jobs
@@ -70,6 +72,11 @@ type QuoteRepository interface {
 // TaskRepository define los métodos necesarios del repositorio de tasks
 type TaskRepository interface {
 	GetByID(ctx context.Context, id int64) (*TaskData, error)
+}
+
+// PayrollRepository define los métodos necesarios del repositorio de payroll
+type PayrollRepository interface {
+	GetPaystubData(ctx context.Context, userID int64) (*domainPayroll.PaystubData, error)
 }
 
 // JobData representa los datos de un job
@@ -154,6 +161,7 @@ func NewEmailService(
 	invoiceRepo InvoiceRepository,
 	quoteRepo QuoteRepository,
 	taskRepo TaskRepository,
+	payrollRepo PayrollRepository,
 ) Service {
 	return &EmailService{
 		emailService: emailService,
@@ -165,6 +173,7 @@ func NewEmailService(
 		invoiceRepo:  invoiceRepo,
 		quoteRepo:    quoteRepo,
 		taskRepo:     taskRepo,
+		payrollRepo:  payrollRepo,
 	}
 }
 
@@ -443,35 +452,55 @@ func (s *EmailService) SendDispatchSupervisorEmail(ctx context.Context, jobID in
 
 // SendPayStubEmail envía un email de recibo de pago a un usuario
 func (s *EmailService) SendPayStubEmail(ctx context.Context, userID int64, recipients []string) error {
-	// Obtener usuario
-	user, err := s.userRepo.GetByID(ctx, userID)
+	// Obtener datos del paystub desde el repositorio de payroll
+	paystub, err := s.payrollRepo.GetPaystubData(ctx, userID)
 	if err != nil {
-		return fmt.Errorf("error al obtener usuario: %w", err)
+		return fmt.Errorf("error al obtener datos del paystub: %w", err)
+	}
+
+	// Debug: Log de datos recibidos
+	fmt.Printf("[DEBUG] SendPayStubEmail - UserID: %d, User: %s, Rates count: %d, TotalPayment: %.2f\n",
+		userID, paystub.User.Name, len(paystub.Rates), paystub.TotalPayment)
+	for i, rate := range paystub.Rates {
+		fmt.Printf("[DEBUG] Rate[%d]: ID=%d, WorkOrder=%v, Payment=%.2f\n",
+			i, rate.ID, rate.WorkOrder, rate.Payment)
 	}
 
 	// Formatear fecha actual
 	date := time.Now().Format("January 2, 2006")
 
-	// TODO: Obtener rates no pagados del usuario desde el repositorio
-	// Por ahora, enviamos un email con datos de ejemplo
-	unpaidRates := []map[string]interface{}{
-		// Aquí deberían ir los rates reales del usuario
+	// Convertir rates a formato para el template
+	unpaidRates := make([]map[string]interface{}, 0, len(paystub.Rates))
+	for _, rate := range paystub.Rates {
+		// Formatear fecha de completado
+		completionDate := ""
+		if rate.CreatedAt != nil {
+			completionDate = rate.CreatedAt.Format("Jan 2, 2006")
+		}
+
+		rateMap := map[string]interface{}{
+			"CompletionDate": completionDate,
+			"WorkOrder":      getStringValue(rate.WorkOrder),
+			"PropertyStreet": getStringValue(rate.PropertyAddr),
+			"Payment":        fmt.Sprintf("%.2f", rate.Payment),
+		}
+		unpaidRates = append(unpaidRates, rateMap)
 	}
 
 	// Calcular totales
 	totals := map[string]interface{}{
-		"CurrentPeriodJobs":  0,
-		"CurrentPeriodTotal": "0.00",
-		"YTDJobs":            0,
-		"YTDTotal":           "0.00",
-		"AllTimeJobs":        0,
-		"AllTimeTotal":       "0.00",
+		"CurrentPeriodJobs":  len(paystub.Rates),
+		"CurrentPeriodTotal": fmt.Sprintf("%.2f", paystub.TotalPayment),
+		"YTDJobs":            len(paystub.Rates),
+		"YTDTotal":           fmt.Sprintf("%.2f", paystub.TotalPayment),
+		"AllTimeJobs":        len(paystub.Rates),
+		"AllTimeTotal":       fmt.Sprintf("%.2f", paystub.TotalPayment),
 	}
 
 	// Preparar datos del template
 	templateData := map[string]interface{}{
 		"User": map[string]interface{}{
-			"Name": user.Name,
+			"Name": paystub.User.Name,
 		},
 		"Date":        date,
 		"UnpaidRates": unpaidRates,
@@ -479,7 +508,7 @@ func (s *EmailService) SendPayStubEmail(ctx context.Context, userID int64, recip
 	}
 
 	// Construir subject dinámico
-	subject := fmt.Sprintf("Pay Report for %s as of %s", user.Name, date)
+	subject := fmt.Sprintf("Pay Report for %s as of %s", paystub.User.Name, date)
 
 	// Enviar email usando template estático paystub.html
 	params := infraEmail.SendEmailParams{

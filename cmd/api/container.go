@@ -32,6 +32,7 @@ import (
 	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
 	domainJobVisit "github.com/your-org/jvairv2/pkg/domain/job_visit"
 	domainNewDashboard "github.com/your-org/jvairv2/pkg/domain/new_dashboard"
+	domainPayroll "github.com/your-org/jvairv2/pkg/domain/payroll"
 	permission "github.com/your-org/jvairv2/pkg/domain/permission"
 	property "github.com/your-org/jvairv2/pkg/domain/property"
 	domainPropEquip "github.com/your-org/jvairv2/pkg/domain/property_equipment"
@@ -80,6 +81,7 @@ import (
 	mysqlNewDashboard "github.com/your-org/jvairv2/pkg/repository/mysql/new_dashboard"
 	mysqlPasswordHistory "github.com/your-org/jvairv2/pkg/repository/mysql/password_history"
 	mysqlPasswordReset "github.com/your-org/jvairv2/pkg/repository/mysql/password_reset"
+	mysqlPayroll "github.com/your-org/jvairv2/pkg/repository/mysql/payroll"
 	mysqlPermission "github.com/your-org/jvairv2/pkg/repository/mysql/permission"
 	mysqlProperty "github.com/your-org/jvairv2/pkg/repository/mysql/property"
 	mysqlPropEquip "github.com/your-org/jvairv2/pkg/repository/mysql/property_equipment"
@@ -124,6 +126,7 @@ import (
 	jobTaskHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_task"
 	jobVisitHandler "github.com/your-org/jvairv2/pkg/rest/handler/job_visit"
 	newDashboardHandler "github.com/your-org/jvairv2/pkg/rest/handler/new_dashboard"
+	payrollHandler "github.com/your-org/jvairv2/pkg/rest/handler/payroll"
 	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 	propEquipHandler "github.com/your-org/jvairv2/pkg/rest/handler/property_equipment"
@@ -198,6 +201,7 @@ type Container struct {
 	AlertHandler               *alertHandler.Handler
 	DashboardHandler           *dashboardHandler.Handler
 	PasswordSecurityHandler    *authHandler.PasswordSecurityHandler
+	PayrollHandler             *payrollHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -394,6 +398,11 @@ func NewContainer(configPath string) (*Container, error) {
 	newDashboardRepo := mysqlNewDashboard.NewRepository(dbConn.GetDB())
 	newDashboardUC := domainNewDashboard.NewUseCase(newDashboardRepo)
 
+	// Payroll
+	payrollRepo := mysqlPayroll.NewRepository(dbConn.GetDB())
+	payrollUserChecker := mysqlPayroll.NewUserExistsChecker(dbConn.GetDB())
+	payrollUC := domainPayroll.NewUseCase(payrollRepo, payrollUserChecker)
+
 	// Inicializar handlers básicos
 	healthHandler := handler.NewHealthHandler(dbConn)
 	authHdlr := authHandler.NewHandler(authUC)
@@ -430,6 +439,7 @@ func NewContainer(configPath string) (*Container, error) {
 	invoiceRepoAdapter := domainEmail.NewInvoiceRepositoryAdapter(invoiceRepo)
 	quoteRepoAdapter := domainEmail.NewQuoteRepositoryAdapter(quoteRepo)
 	taskRepoAdapter := domainEmail.NewTaskRepositoryAdapter(jobTaskRepo)
+	payrollRepoAdapter := domainEmail.NewPayrollRepositoryAdapter(payrollRepo)
 
 	// Crear servicio de dominio de email
 	emailDomainService := domainEmail.NewEmailService(
@@ -442,6 +452,7 @@ func NewContainer(configPath string) (*Container, error) {
 		invoiceRepoAdapter,
 		quoteRepoAdapter,
 		taskRepoAdapter,
+		payrollRepoAdapter,
 	)
 
 	// Module 3: Password Security (requires email service from Module 1)
@@ -490,6 +501,7 @@ func NewContainer(configPath string) (*Container, error) {
 	alHdlr := alertHandler.NewHandler(alertUC)
 	dashHdlr := dashboardHandler.NewHandler(dashboardUC)
 	newDashHdlr := newDashboardHandler.NewHandler(newDashboardUC)
+	payrollHdlr := payrollHandler.NewHandler(payrollUC, emailDomainService)
 
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
@@ -541,6 +553,7 @@ func NewContainer(configPath string) (*Container, error) {
 		alHdlr,
 		dashHdlr,
 		newDashHdlr,
+		payrollHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -594,6 +607,7 @@ func NewContainer(configPath string) (*Container, error) {
 		AlertHandler:               alHdlr,
 		DashboardHandler:           dashHdlr,
 		PasswordSecurityHandler:    passwordSecurityHdlr,
+		PayrollHandler:             payrollHdlr,
 	}, nil
 }
 
