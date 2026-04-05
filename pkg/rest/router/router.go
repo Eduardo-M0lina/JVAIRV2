@@ -145,8 +145,8 @@ func New(
 			RegisterRoleRoutes(r, roleHandler)
 			// Rutas de abilities
 			RegisterAbilityRoutes(r, abilityHandler)
-			// Rutas de assigned-roles
-			RegisterAssignedRoleRoutes(r, assignedRoleHandler)
+			// Rutas de assigned-roles (DISABLED - dead code from Laravel)
+			// RegisterAssignedRoleRoutes(r, assignedRoleHandler)
 			// Rutas de permisos
 			RegisterPermissionRoutes(r, permissionHandler)
 			// Rutas de configuraciones
@@ -167,18 +167,18 @@ func New(
 			jobPriorityHandler.RegisterRoutes(r)
 			techJobStatusHandler.RegisterRoutes(r)
 			taskStatusHandler.RegisterRoutes(r)
-			// Rutas de cotizaciones
-			quoteHandler.RegisterRoutes(r)
-			quoteStatusHandler.RegisterRoutes(r)
+			// Rutas de cotizaciones (DISABLED - dead code from Laravel)
+			// quoteHandler.RegisterRoutes(r)
+			// quoteStatusHandler.RegisterRoutes(r)
 			// Rutas de supervisores
 			supervisorHandler.RegisterRoutes(r)
 			// Rutas de equipos de propiedad
 			propEquipHandler.RegisterRoutes(r)
 			// Rutas de equipos de trabajo
 			jobEquipHandler.RegisterRoutes(r)
-			// Rutas de facturas y pagos
-			invoiceHandler.RegisterRoutes(r)
-			invoicePaymentHandler.RegisterRoutes(r)
+			// Rutas de facturas y pagos (DISABLED - dead code from Laravel)
+			// invoiceHandler.RegisterRoutes(r)
+			// invoicePaymentHandler.RegisterRoutes(r)
 			// Rutas de garantías y catálogos
 			warrantyTypeHandler.RegisterRoutes(r)
 			warrantyStatusHandler.RegisterRoutes(r)
@@ -198,12 +198,12 @@ func New(
 				r.Delete("/{id}", jobActivityLogHandler.Delete)
 			})
 
-			// Job Emails
-			r.Route("/jobs/{jobId}/emails", func(r chi.Router) {
-				r.Post("/", jobEmailHandler.Create)
-				r.Get("/", jobEmailHandler.List)
-				r.Delete("/{id}", jobEmailHandler.Delete)
-			})
+			// Job Emails (DISABLED - dead code from Laravel)
+			// r.Route("/jobs/{jobId}/emails", func(r chi.Router) {
+			// 	r.Post("/", jobEmailHandler.Create)
+			// 	r.Get("/", jobEmailHandler.List)
+			// 	r.Delete("/{id}", jobEmailHandler.Delete)
+			// })
 
 			// Job Residents
 			r.Route("/jobs/{jobId}/residents", func(r chi.Router) {
@@ -213,14 +213,14 @@ func New(
 				r.Delete("/{id}", jobResidentHandler.Delete)
 			})
 
-			// Job Rate Statuses (catalog)
-			r.Route("/job-rate-statuses", func(r chi.Router) {
-				r.Post("/", jobRateStatusHandler.Create)
-				r.Get("/", jobRateStatusHandler.List)
-				r.Get("/{id}", jobRateStatusHandler.GetByID)
-				r.Put("/{id}", jobRateStatusHandler.Update)
-				r.Delete("/{id}", jobRateStatusHandler.Delete)
-			})
+			// Job Rate Statuses (catalog) (DISABLED - dead code from Laravel)
+			// r.Route("/job-rate-statuses", func(r chi.Router) {
+			// 	r.Post("/", jobRateStatusHandler.Create)
+			// 	r.Get("/", jobRateStatusHandler.List)
+			// 	r.Get("/{id}", jobRateStatusHandler.GetByID)
+			// 	r.Put("/{id}", jobRateStatusHandler.Update)
+			// 	r.Delete("/{id}", jobRateStatusHandler.Delete)
+			// })
 
 			// SMS Templates
 			smsTemplateHandler.RegisterRoutes(r)
@@ -247,12 +247,12 @@ func New(
 				r.Delete("/{id}", jobRateHandler.Delete)
 			})
 
-			// Job SMS
-			r.Route("/jobs/{jobId}/sms", func(r chi.Router) {
-				r.Post("/", jobSMSHandler.Create)
-				r.Get("/", jobSMSHandler.List)
-				r.Delete("/{id}", jobSMSHandler.Delete)
-			})
+			// Job SMS (DISABLED - dead code from Laravel)
+			// r.Route("/jobs/{jobId}/sms", func(r chi.Router) {
+			// 	r.Post("/", jobSMSHandler.Create)
+			// 	r.Get("/", jobSMSHandler.List)
+			// 	r.Delete("/{id}", jobSMSHandler.Delete)
+			// })
 
 			// Calculate rate payment (standalone endpoint)
 			r.Post("/calculate-rate-payment", jobRateHandler.CalculatePayment)

@@ -10,23 +10,6 @@ import (
 )
 
 // List maneja la solicitud de listado de pagos de una factura
-// @Summary Listar pagos de factura
-// @Description Obtiene una lista paginada de pagos de una factura
-// @Tags Invoice Payments
-// @Accept json
-// @Produce json
-// @Param invoiceId path int true "ID de la factura"
-// @Param page query int false "Número de página" default(1)
-// @Param pageSize query int false "Tamaño de página" default(10)
-// @Param search query string false "Búsqueda por payment_id"
-// @Param sort query string false "Campo de ordenamiento: amount, created_at, payment_processor"
-// @Param direction query string false "Dirección de ordenamiento: asc, desc" default(desc)
-// @Success 200 {object} response.PaginatedResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices/{invoiceId}/payments [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	invoiceID, err := parseInvoiceID(r)
 	if err != nil {

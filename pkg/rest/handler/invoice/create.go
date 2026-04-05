@@ -10,17 +10,6 @@ import (
 )
 
 // Create maneja la solicitud de creación de una factura
-// @Summary Crear factura
-// @Description Crea una nueva factura asociada a un job
-// @Tags Invoices
-// @Accept json
-// @Produce json
-// @Param invoice body CreateInvoiceRequest true "Datos de la factura"
-// @Success 201 {object} InvoiceResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices [post]
-// @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateInvoiceRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

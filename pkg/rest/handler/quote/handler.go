@@ -124,22 +124,6 @@ func parseFilters(r *http.Request) map[string]interface{} {
 }
 
 // List maneja la solicitud de listado de cotizaciones
-// @Summary Listar cotizaciones
-// @Description Obtiene una lista paginada de cotizaciones con filtros opcionales
-// @Tags Quotes
-// @Accept json
-// @Produce json
-// @Param page query int false "Número de página" default(1)
-// @Param pageSize query int false "Tamaño de página" default(15)
-// @Param search query string false "Búsqueda por número de cotización"
-// @Param jobId query int false "Filtrar por trabajo"
-// @Param quoteStatusId query int false "Filtrar por estado de cotización"
-// @Param sort query string false "Campo de ordenamiento (quote_number, amount, created_at)"
-// @Param direction query string false "Dirección de ordenamiento (ASC, DESC)"
-// @Success 200 {object} response.PaginatedResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quotes [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	pageSize, _ := strconv.Atoi(r.URL.Query().Get("pageSize"))
@@ -161,17 +145,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 // Create maneja la solicitud de creación de una cotización
-// @Summary Crear cotización
-// @Description Crea una nueva cotización para un trabajo
-// @Tags Quotes
-// @Accept json
-// @Produce json
-// @Param quote body CreateQuoteRequest true "Datos de la cotización"
-// @Success 201 {object} QuoteResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quotes [post]
-// @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateQuoteRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -209,18 +182,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 // Get maneja la solicitud de obtención de una cotización por ID
-// @Summary Obtener cotización
-// @Description Obtiene una cotización por su ID
-// @Tags Quotes
-// @Accept json
-// @Produce json
-// @Param id path int true "ID de la cotización"
-// @Success 200 {object} QuoteResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quotes/{id} [get]
-// @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -242,19 +203,6 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 // Update maneja la solicitud de actualización de una cotización
-// @Summary Actualizar cotización
-// @Description Actualiza una cotización existente
-// @Tags Quotes
-// @Accept json
-// @Produce json
-// @Param id path int true "ID de la cotización"
-// @Param quote body UpdateQuoteRequest true "Datos de la cotización"
-// @Success 200 {object} QuoteResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quotes/{id} [put]
-// @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -301,18 +249,6 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 // Delete maneja la solicitud de eliminación de una cotización
-// @Summary Eliminar cotización
-// @Description Elimina una cotización (soft delete)
-// @Tags Quotes
-// @Accept json
-// @Produce json
-// @Param id path int true "ID de la cotización"
-// @Success 204 "No Content"
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quotes/{id} [delete]
-// @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

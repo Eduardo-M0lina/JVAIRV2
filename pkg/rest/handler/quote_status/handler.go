@@ -73,18 +73,6 @@ func toResponse(qs *quote_status.QuoteStatus) QuoteStatusResponse {
 }
 
 // List maneja la solicitud de listado de estados de cotización
-// @Summary Listar estados de cotización
-// @Description Obtiene una lista paginada de estados de cotización
-// @Tags QuoteStatuses
-// @Accept json
-// @Produce json
-// @Param page query int false "Número de página" default(1)
-// @Param pageSize query int false "Tamaño de página" default(10)
-// @Param search query string false "Búsqueda por label"
-// @Success 200 {object} response.PaginatedResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quote-statuses [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	pageSize, _ := strconv.Atoi(r.URL.Query().Get("pageSize"))
@@ -109,17 +97,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 // Create maneja la solicitud de creación de un estado de cotización
-// @Summary Crear estado de cotización
-// @Description Crea un nuevo estado de cotización
-// @Tags QuoteStatuses
-// @Accept json
-// @Produce json
-// @Param quoteStatus body CreateQuoteStatusRequest true "Datos del estado de cotización"
-// @Success 201 {object} QuoteStatusResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quote-statuses [post]
-// @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateQuoteStatusRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -142,18 +119,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 // Get maneja la solicitud de obtención de un estado de cotización por ID
-// @Summary Obtener estado de cotización
-// @Description Obtiene un estado de cotización por su ID
-// @Tags QuoteStatuses
-// @Accept json
-// @Produce json
-// @Param id path int true "ID del estado de cotización"
-// @Success 200 {object} QuoteStatusResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quote-statuses/{id} [get]
-// @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -175,19 +140,6 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 // Update maneja la solicitud de actualización de un estado de cotización
-// @Summary Actualizar estado de cotización
-// @Description Actualiza un estado de cotización existente
-// @Tags QuoteStatuses
-// @Accept json
-// @Produce json
-// @Param id path int true "ID del estado de cotización"
-// @Param quoteStatus body UpdateQuoteStatusRequest true "Datos del estado de cotización"
-// @Success 200 {object} QuoteStatusResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quote-statuses/{id} [put]
-// @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -221,19 +173,6 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 // Delete maneja la solicitud de eliminación de un estado de cotización
-// @Summary Eliminar estado de cotización
-// @Description Elimina un estado de cotización. No se puede eliminar si tiene cotizaciones asociadas
-// @Tags QuoteStatuses
-// @Accept json
-// @Produce json
-// @Param id path int true "ID del estado de cotización"
-// @Success 204 "No Content"
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 409 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/quote-statuses/{id} [delete]
-// @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

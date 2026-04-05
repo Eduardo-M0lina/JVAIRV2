@@ -48,19 +48,6 @@ type AssignedRoleResponse struct {
 }
 
 // Assign maneja la solicitud de asignación de un rol a una entidad
-// @Summary Asignar rol a una entidad
-// @Description Asigna un rol a una entidad (usuario, cliente, etc). Opcionalmente puede restringir la asignación a una entidad específica usando restricted_to_id y restricted_to_type
-// @Tags AssignedRoles
-// @Accept json
-// @Produce json
-// @Param role body assigned_role.AssignRoleRequest true "Datos de la asignación de rol. Ejemplo: {\"roleId\": 4, \"entityId\": 148, \"entityType\": \"App\\\\Models\\\\User\", \"restrictedToId\": 10, \"restrictedToType\": \"App\\\\Models\\\\Customer\", \"scope\": 1}"
-// @Success 201 {object} assigned_role.AssignedRoleResponse "Rol asignado exitosamente"
-// @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
-// @Failure 403 {string} string "No tiene permisos para asignar roles"
-// @Failure 409 {string} string "El rol ya está asignado a esta entidad"
-// @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles [post]
-// @Security BearerAuth
 func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "assign_role") {
@@ -115,18 +102,6 @@ func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 }
 
 // Get maneja la solicitud de obtención de una asignación de rol por ID
-// @Summary Obtener asignación de rol
-// @Description Obtiene una asignación de rol por su ID
-// @Tags AssignedRoles
-// @Accept json
-// @Produce json
-// @Param id path int true "ID de la asignación de rol"
-// @Success 200 {object} AssignedRoleResponse
-// @Failure 400 {string} string "ID de asignación de rol inválido"
-// @Failure 404 {string} string "Asignación de rol no encontrada"
-// @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles/{id} [get]
-// @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "view_assigned_role") {
@@ -168,18 +143,6 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetByEntity maneja la solicitud de obtención de asignaciones de roles por entidad
-// @Summary Obtener asignaciones de roles por entidad
-// @Description Obtiene todas las asignaciones de roles para una entidad específica
-// @Tags AssignedRoles
-// @Accept json
-// @Produce json
-// @Param entity_type path string true "Tipo de entidad"
-// @Param entity_id path int true "ID de la entidad"
-// @Success 200 {array} AssignedRoleResponse
-// @Failure 400 {string} string "Parámetros inválidos"
-// @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles/entity/{entity_type}/{entity_id} [get]
-// @Security BearerAuth
 func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "view_entity_roles") {
@@ -222,20 +185,6 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 }
 
 // Revoke maneja la solicitud de revocación de un rol de una entidad
-// @Summary Revocar rol
-// @Description Revoca un rol de una entidad
-// @Tags AssignedRoles
-// @Accept json
-// @Produce json
-// @Param roleId path int true "ID del rol"
-// @Param entityType path string true "Tipo de entidad"
-// @Param entityId path int true "ID de la entidad"
-// @Success 204 "No Content"
-// @Failure 400 {string} string "Parámetros inválidos"
-// @Failure 404 {string} string "Asignación de rol no encontrada"
-// @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles/revoke/{roleId}/{entityType}/{entityId} [delete]
-// @Security BearerAuth
 func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "revoke_role") {
@@ -274,19 +223,6 @@ func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 }
 
 // HasRole maneja la solicitud de verificación si una entidad tiene un rol específico
-// @Summary Verificar rol
-// @Description Verifica si una entidad tiene un rol específico
-// @Tags AssignedRoles
-// @Accept json
-// @Produce json
-// @Param roleId path int true "ID del rol"
-// @Param entityType path string true "Tipo de entidad"
-// @Param entityId path int true "ID de la entidad"
-// @Success 200 {object} map[string]bool
-// @Failure 400 {string} string "Parámetros inválidos"
-// @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles/check/{roleId}/{entityType}/{entityId} [get]
-// @Security BearerAuth
 func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "check_role") {
@@ -321,22 +257,6 @@ func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 }
 
 // List maneja la solicitud de listado de asignaciones de roles
-// @Summary Listar asignaciones de roles
-// @Description Obtiene una lista paginada de asignaciones de roles
-// @Tags AssignedRoles
-// @Accept json
-// @Produce json
-// @Param page query int false "Número de página (por defecto: 1)"
-// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
-// @Param roleId query int false "Filtrar por ID de rol"
-// @Param entityType query string false "Filtrar por tipo de entidad"
-// @Param entityId query int false "Filtrar por ID de entidad"
-// @Param restricted query bool false "Filtrar por restricción"
-// @Success 200 {object} response.PaginatedResponse
-// @Failure 400 {string} string "Parámetros de consulta inválidos"
-// @Failure 500 {string} string "Error interno del servidor"
-// @Router /api/v1/assigned-roles [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
 	if !middleware.HasAbility(r.Context(), "list_assigned_roles") {

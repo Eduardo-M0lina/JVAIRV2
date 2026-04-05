@@ -52,19 +52,6 @@ func toResponse(item *job_email.JobEmail) ItemResponse {
 }
 
 // Create godoc
-// @Summary Registrar email enviado de un trabajo
-// @Description Crea un registro de email enviado asociado a un trabajo
-// @Tags JobEmails
-// @Accept json
-// @Produce json
-// @Param jobId path int true "Job ID"
-// @Param request body CreateRequest true "Datos del email enviado"
-// @Success 201 {object} ItemResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/jobs/{jobId}/emails [post]
-// @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	jobID, err := strconv.ParseInt(chi.URLParam(r, "jobId"), 10, 64)
 	if err != nil {
@@ -89,19 +76,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 // List godoc
-// @Summary Listar emails enviados de un trabajo
-// @Description Obtiene una lista paginada de emails enviados asociados a un trabajo
-// @Tags JobEmails
-// @Accept json
-// @Produce json
-// @Param jobId path int true "Job ID"
-// @Param page query int false "Número de página" default(1)
-// @Param limit query int false "Tamaño de página" default(15)
-// @Success 200 {object} response.PaginatedResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/jobs/{jobId}/emails [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	jobID, err := strconv.ParseInt(chi.URLParam(r, "jobId"), 10, 64)
 	if err != nil {
@@ -130,19 +104,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 // Delete godoc
-// @Summary Eliminar email enviado de un trabajo
-// @Description Elimina un registro de email enviado por ID
-// @Tags JobEmails
-// @Accept json
-// @Produce json
-// @Param jobId path int true "Job ID"
-// @Param id path int true "ID del email"
-// @Success 204
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/jobs/{jobId}/emails/{id} [delete]
-// @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

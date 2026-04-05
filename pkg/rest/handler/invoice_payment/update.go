@@ -12,20 +12,6 @@ import (
 )
 
 // Update maneja la solicitud de actualización de un pago
-// @Summary Actualizar pago de factura
-// @Description Actualiza un pago existente
-// @Tags Invoice Payments
-// @Accept json
-// @Produce json
-// @Param invoiceId path int true "ID de la factura"
-// @Param id path int true "ID del pago"
-// @Param payment body UpdatePaymentRequest true "Datos a actualizar"
-// @Success 200 {object} PaymentResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices/{invoiceId}/payments/{id} [put]
-// @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	invoiceID, err := parseInvoiceID(r)
 	if err != nil {

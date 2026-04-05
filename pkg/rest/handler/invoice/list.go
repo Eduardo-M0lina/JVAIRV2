@@ -9,22 +9,6 @@ import (
 )
 
 // List maneja la solicitud de listado de facturas
-// @Summary Listar facturas
-// @Description Obtiene una lista paginada de facturas con filtros opcionales
-// @Tags Invoices
-// @Accept json
-// @Produce json
-// @Param page query int false "Número de página" default(1)
-// @Param pageSize query int false "Tamaño de página" default(10)
-// @Param search query string false "Búsqueda en invoice_number, work_order, property, customer"
-// @Param jobId query int false "Filtrar por job"
-// @Param status query string false "Filtrar por status: paid, unpaid"
-// @Param sort query string false "Campo de ordenamiento: invoice_number, total, balance, created_at"
-// @Param direction query string false "Dirección de ordenamiento: asc, desc" default(desc)
-// @Success 200 {object} response.PaginatedResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	if page < 1 {
