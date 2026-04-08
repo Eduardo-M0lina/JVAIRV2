@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/your-org/jvairv2/pkg/rest/middleware"
 	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
@@ -22,6 +23,12 @@ import (
 // @Router /api/v1/customers [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "customer_edit") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para crear customers")
+		return
+	}
+
 	var req CreateCustomerRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		slog.ErrorContext(r.Context(), "Failed to decode request body",

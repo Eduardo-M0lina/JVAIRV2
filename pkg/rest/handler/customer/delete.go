@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/your-org/jvairv2/pkg/rest/middleware"
 	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
@@ -22,6 +23,12 @@ import (
 // @Router /api/v1/customers/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "customer_delete") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para eliminar customers")
+		return
+	}
+
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {

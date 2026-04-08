@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/your-org/jvairv2/pkg/rest/middleware"
 	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
@@ -22,6 +23,12 @@ import (
 // @Router /api/v1/customers [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "customer_view") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para listar customers")
+		return
+	}
+
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	if page < 1 {
 		page = 1

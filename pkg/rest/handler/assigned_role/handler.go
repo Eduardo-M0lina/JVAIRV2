@@ -50,7 +50,7 @@ type AssignedRoleResponse struct {
 // Assign maneja la solicitud de asignación de un rol a una entidad
 func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "assign_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para asignar roles")
 		return
 	}
@@ -104,12 +104,12 @@ func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
 // Get maneja la solicitud de obtención de una asignación de rol por ID
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_assigned_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver asignaciones de roles")
 		return
 	}
 
-	// Obtener el ID de la asignación de rol de la URL
+	// Obtener el ID de la asignación de la URL
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
@@ -145,12 +145,12 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // GetByEntity maneja la solicitud de obtención de asignaciones de roles por entidad
 func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_entity_roles") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver roles de entidades")
 		return
 	}
 
-	// Obtener los parámetros de la URL
+	// Obtener parámetros de la URL
 	entityType := chi.URLParam(r, "entityType")
 	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
@@ -187,12 +187,12 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 // Revoke maneja la solicitud de revocación de un rol de una entidad
 func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "revoke_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para revocar roles")
 		return
 	}
 
-	// Obtener los parámetros de la URL
+	// Obtener el ID de la asignación de la URL
 	roleIDStr := chi.URLParam(r, "roleId")
 	roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
 	if err != nil {
@@ -225,12 +225,12 @@ func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
 // HasRole maneja la solicitud de verificación si una entidad tiene un rol específico
 func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "check_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para verificar roles")
 		return
 	}
 
-	// Obtener los parámetros de la URL
+	// Obtener parámetros de la consulta
 	roleIDStr := chi.URLParam(r, "roleId")
 	roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
 	if err != nil {
@@ -259,7 +259,7 @@ func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
 // List maneja la solicitud de listado de asignaciones de roles
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "list_assigned_roles") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para listar asignaciones de roles")
 		return
 	}

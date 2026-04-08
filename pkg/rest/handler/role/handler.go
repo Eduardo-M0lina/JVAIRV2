@@ -66,7 +66,7 @@ type RoleResponse struct {
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "create_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		slog.Warn("Intento de crear rol sin permisos",
 			"path", r.URL.Path,
 		)
@@ -145,7 +145,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver roles")
 		return
 	}
@@ -206,7 +206,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "update_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para actualizar roles")
 		return
 	}
@@ -293,7 +293,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "delete_role") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para eliminar roles")
 		return
 	}
@@ -337,7 +337,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "list_roles") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para listar roles")
 		return
 	}

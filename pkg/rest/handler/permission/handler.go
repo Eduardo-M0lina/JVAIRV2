@@ -70,7 +70,7 @@ type PermissionResponse struct {
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "create_permission") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para crear permisos")
 		return
 	}
@@ -135,7 +135,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_permission") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver permisos")
 		return
 	}
@@ -188,12 +188,12 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_entity_permissions") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver permisos de entidades")
 		return
 	}
 
-	// Obtener los parámetros de la URL
+	// Obtener parámetros de la URL
 	entityType := chi.URLParam(r, "entityType")
 	entityIDStr := chi.URLParam(r, "entityId")
 	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
@@ -241,7 +241,7 @@ func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_ability_permissions") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver permisos de abilities")
 		return
 	}
@@ -296,7 +296,7 @@ func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "update_permission") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para actualizar permisos")
 		return
 	}
@@ -375,7 +375,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "delete_permission") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para eliminar permisos")
 		return
 	}
@@ -418,12 +418,12 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "check_permission") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para verificar permisos")
 		return
 	}
 
-	// Obtener los parámetros de la URL
+	// Obtener parámetros de la consulta
 	abilityIDStr := chi.URLParam(r, "abilityId")
 	abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
 	if err != nil {
@@ -468,7 +468,7 @@ func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "list_permissions") {
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para listar permisos")
 		return
 	}

@@ -9,7 +9,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
 	"github.com/your-org/jvairv2/pkg/domain/workflow"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
 	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
@@ -76,12 +75,6 @@ type WorkflowStatusResponse struct {
 // @Router /api/v1/workflows [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_workflow") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para listar workflows")
-		return
-	}
-
 	// Obtener parámetros de paginación
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	if page < 1 {
@@ -153,12 +146,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/workflows/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_workflow") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para ver workflows")
-		return
-	}
-
 	// Obtener el ID del workflow de la URL
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
@@ -217,12 +204,6 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/workflows [post]
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "create_workflow") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para crear workflows")
-		return
-	}
-
 	// Decodificar la solicitud
 	var req CreateWorkflowRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -292,12 +273,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/workflows/{id} [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "update_workflow") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para actualizar workflows")
-		return
-	}
-
 	// Obtener el ID del workflow de la URL
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
@@ -379,12 +354,6 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/workflows/{id} [delete]
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "delete_workflow") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para eliminar workflows")
-		return
-	}
-
 	// Obtener el ID del workflow de la URL
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
@@ -421,12 +390,6 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/workflows/{id}/duplicate [post]
 // @Security BearerAuth
 func (h *Handler) Duplicate(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "create_workflow") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para duplicar workflows")
-		return
-	}
-
 	// Obtener el ID del workflow de la URL
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)

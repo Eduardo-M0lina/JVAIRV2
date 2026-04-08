@@ -62,14 +62,13 @@ type SettingsResponse struct {
 // @Accept json
 // @Produce json
 // @Success 200 {object} SettingsResponse "Configuraciones obtenidas exitosamente"
-// @Failure 403 {string} string "No tiene permisos para ver configuraciones"
 // @Failure 404 {string} string "Configuraciones no encontradas"
 // @Failure 500 {string} string "Error interno del servidor"
 // @Router /api/v1/settings [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_settings") {
+	if !middleware.HasAbility(r.Context(), "settings_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver configuraciones")
 		return
 	}
@@ -113,14 +112,13 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Param settings body UpdateSettingsRequest true "Datos de las configuraciones a actualizar"
 // @Success 200 {object} SettingsResponse "Configuraciones actualizadas exitosamente"
 // @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
-// @Failure 403 {string} string "No tiene permisos para actualizar configuraciones"
 // @Failure 404 {string} string "Configuraciones no encontradas"
 // @Failure 500 {string} string "Error interno del servidor"
 // @Router /api/v1/settings [put]
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "update_settings") {
+	if !middleware.HasAbility(r.Context(), "settings_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para actualizar configuraciones")
 		return
 	}

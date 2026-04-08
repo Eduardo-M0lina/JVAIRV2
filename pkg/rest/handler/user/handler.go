@@ -80,7 +80,7 @@ type RoleInfo struct {
 // @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "create_user") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para crear usuarios")
 		return
 	}
@@ -164,7 +164,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_user") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver usuarios")
 		return
 	}
@@ -232,7 +232,7 @@ func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "update_user") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para actualizar usuarios")
 		return
 	}
@@ -330,7 +330,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "delete_user") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para eliminar usuarios")
 		return
 	}
@@ -374,7 +374,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "list_users") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para listar usuarios")
 		return
 	}
@@ -490,7 +490,7 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_user_roles") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver roles de usuarios")
 		return
 	}
@@ -531,7 +531,7 @@ func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 // @Security BearerAuth
 func (h *Handler) GetAbilities(w http.ResponseWriter, r *http.Request) {
 	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "view_user_abilities") {
+	if !middleware.HasAbility(r.Context(), "users_manage") {
 		response.Error(w, http.StatusForbidden, "No tiene permisos para ver habilidades de usuarios")
 		return
 	}
