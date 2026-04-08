@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            background-color: #f3f4f6;
+            padding: 20px;
+        }
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+        .header {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            padding: 32px 24px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+        .header .subtitle {
+            color: #cffafe;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .content {
+            padding: 32px 24px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+            margin-top: 32px;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 24px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        thead {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+        }
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #d1d5db;
+        }
+        td {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #1f2937;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        .amount-cell {
+            font-weight: 600;
+            color: #059669;
+        }
+        .totals-table {
+            background-color: #f0fdf4;
+        }
+        .totals-table td {
+            font-weight: 600;
+        }
+        .totals-table .amount-cell {
+            font-size: 16px;
+            color: #047857;
+        }
+        .footer {
+            background-color: #f9fafb;
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        .footer p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .footer .company {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2563eb;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="header">
+            <h1>PAY RATES</h1>
+            <div class="subtitle">{{.User.Name}} - {{.Date}}</div>
+        </div>
+
+        <div class="content">
+            <div class="section-title">Unpaid Jobs</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Completed</th>
+                        <th>Job</th>
+                        <th>Property</th>
+                        <th>Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range .UnpaidRates}}
+                    <tr>
+                        <td>{{.CompletionDate}}</td>
+                        <td>{{.WorkOrder}}</td>
+                        <td>{{.PropertyStreet}}</td>
+                        <td class="amount-cell">${{.Payment}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+            <div class="section-title">Totals Summary</div>
+            <table class="totals-table">
+                <thead>
+                    <tr>
+                        <th>Period</th>
+                        <th>Jobs</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Current Period</td>
+                        <td>{{.Totals.CurrentPeriodJobs}}</td>
+                        <td class="amount-cell">${{.Totals.CurrentPeriodTotal}}</td>
+                    </tr>
+                    <tr>
+                        <td>YTD</td>
+                        <td>{{.Totals.YTDJobs}}</td>
+                        <td class="amount-cell">${{.Totals.YTDTotal}}</td>
+                    </tr>
+                    <tr>
+                        <td>All Time</td>
+                        <td>{{.Totals.AllTimeJobs}}</td>
+                        <td class="amount-cell">${{.Totals.AllTimeTotal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>Thanks,</p>
+            <div class="company">WeCool Atlanta</div>
+        </div>
+    </div>
+</body>
+</html>

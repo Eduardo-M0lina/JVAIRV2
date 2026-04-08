@@ -1,0 +1,545 @@
+package permission
+
+import (
+	"encoding/json"
+	"log/slog"
+	"net/http"
+	"strconv"
+
+	"github.com/angumol/jvairv2/pkg/domain/permission"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/rest/response"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
+)
+
+// Handler maneja las solicitudes HTTP relacionadas con permisos
+type Handler struct {
+	permissionUseCase *permission.UseCase
+	validate          *validator.Validate
+}
+
+// NewHandler crea una nueva instancia del manejador de permisos
+func NewHandler(permissionUseCase *permission.UseCase) *Handler {
+	return &Handler{
+		permissionUseCase: permissionUseCase,
+		validate:          validator.New(),
+	}
+}
+
+// CreatePermissionRequest representa la solicitud para crear un permiso
+type CreatePermissionRequest struct {
+	AbilityID  int64  `json:"abilityId" validate:"required"`
+	EntityID   int64  `json:"entityId" validate:"required"`
+	EntityType string `json:"entityType" validate:"required"`
+	Forbidden  bool   `json:"forbidden"`
+	Scope      *int   `json:"scope,omitempty"`
+}
+
+// UpdatePermissionRequest representa la solicitud para actualizar un permiso
+type UpdatePermissionRequest struct {
+	AbilityID  int64  `json:"abilityId" validate:"required"`
+	EntityID   int64  `json:"entityId" validate:"required"`
+	EntityType string `json:"entityType" validate:"required"`
+	Forbidden  bool   `json:"forbidden"`
+	Scope      *int   `json:"scope,omitempty"`
+}
+
+// PermissionResponse representa la respuesta de un permiso
+type PermissionResponse struct {
+	ID         int64  `json:"id"`
+	AbilityID  int64  `json:"abilityId"`
+	EntityID   int64  `json:"entityId"`
+	EntityType string `json:"entityType"`
+	Forbidden  bool   `json:"forbidden"`
+	Scope      *int   `json:"scope,omitempty"`
+}
+
+// Create maneja la solicitud de creación de un permiso
+// @Summary Crear permiso
+// @Description Crea un nuevo permiso en el sistema
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param permission body permission.CreatePermissionRequest true "Datos del permiso"
+// @Success 201 {object} permission.PermissionResponse
+// @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
+// @Failure 409 {string} string "El permiso ya existe para esta entidad y ability"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions [post]
+// @Security BearerAuth
+func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para crear permisos")
+		return
+	}
+
+	// Decodificar la solicitud
+	var req CreatePermissionRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		response.Error(w, http.StatusBadRequest, "Error al decodificar la solicitud")
+		return
+	}
+
+	// Validar la solicitud
+	if err := h.validate.Struct(req); err != nil {
+		response.Error(w, http.StatusBadRequest, "Datos inválidos: "+err.Error())
+		return
+	}
+
+	// Crear el permiso
+	permission := &permission.Permission{
+		AbilityID:  req.AbilityID,
+		EntityID:   req.EntityID,
+		EntityType: req.EntityType,
+		Forbidden:  req.Forbidden,
+		Scope:      req.Scope,
+	}
+
+	if err := h.permissionUseCase.Create(r.Context(), permission); err != nil {
+		// Verificar si el error es de permiso duplicado
+		if err.Error() == "el permiso ya existe para esta entidad y ability" {
+			response.Error(w, http.StatusConflict, "El permiso ya existe para esta entidad y ability")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al crear el permiso")
+		return
+	}
+
+	// Preparar la respuesta
+	resp := PermissionResponse{
+		ID:         permission.ID,
+		AbilityID:  permission.AbilityID,
+		EntityID:   permission.EntityID,
+		EntityType: permission.EntityType,
+		Forbidden:  permission.Forbidden,
+		Scope:      permission.Scope,
+	}
+
+	response.JSON(w, http.StatusCreated, resp)
+}
+
+// Get maneja la solicitud de obtención de un permiso por ID
+// @Summary Obtener permiso
+// @Description Obtiene un permiso por su ID
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param id path int true "ID del permiso"
+// @Success 200 {object} PermissionResponse
+// @Failure 400 {string} string "ID de permiso inválido"
+// @Failure 404 {string} string "Permiso no encontrado"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions/{id} [get]
+// @Security BearerAuth
+func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para ver permisos")
+		return
+	}
+
+	// Obtener el ID del permiso de la URL
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de permiso inválido")
+		return
+	}
+
+	// Obtener el permiso
+	permission, err := h.permissionUseCase.GetByID(r.Context(), id)
+	if err != nil {
+		// Verificar si el error es de permiso no encontrado
+		if err.Error() == "permiso no encontrado" {
+			response.Error(w, http.StatusNotFound, "Permiso no encontrado")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al obtener el permiso")
+		return
+	}
+
+	// Preparar la respuesta
+	resp := PermissionResponse{
+		ID:         permission.ID,
+		AbilityID:  permission.AbilityID,
+		EntityID:   permission.EntityID,
+		EntityType: permission.EntityType,
+		Forbidden:  permission.Forbidden,
+		Scope:      permission.Scope,
+	}
+
+	response.JSON(w, http.StatusOK, resp)
+}
+
+// GetByEntity maneja la solicitud de obtención de permisos por entidad
+// @Summary Obtener permisos por entidad
+// @Description Obtiene todos los permisos para una entidad específica
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param entityType path string true "Tipo de entidad"
+// @Param entityId path int true "ID de la entidad"
+// @Success 200 {array} PermissionResponse
+// @Failure 400 {string} string "Parámetros inválidos"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions/entity/{entityType}/{entityId} [get]
+// @Security BearerAuth
+func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para ver permisos de entidades")
+		return
+	}
+
+	// Obtener parámetros de la URL
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
+	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
+		return
+	}
+
+	// Obtener los permisos
+	permissions, err := h.permissionUseCase.GetByEntity(r.Context(), entityType, entityID)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Error al obtener los permisos")
+		return
+	}
+
+	// Preparar la respuesta
+	var items []PermissionResponse
+	for _, p := range permissions {
+		item := PermissionResponse{
+			ID:         p.ID,
+			AbilityID:  p.AbilityID,
+			EntityID:   p.EntityID,
+			EntityType: p.EntityType,
+			Forbidden:  p.Forbidden,
+			Scope:      p.Scope,
+		}
+
+		items = append(items, item)
+	}
+
+	response.JSON(w, http.StatusOK, items)
+}
+
+// GetByAbility maneja la solicitud de obtención de permisos por ability
+// @Summary Obtener permisos por ability
+// @Description Obtiene todos los permisos para una ability específica
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param abilityId path int true "ID de la ability"
+// @Success 200 {array} PermissionResponse
+// @Failure 400 {string} string "ID de ability inválido"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions/ability/{abilityId} [get]
+// @Security BearerAuth
+func (h *Handler) GetByAbility(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para ver permisos de abilities")
+		return
+	}
+
+	// Obtener el ID de la ability de la URL
+	abilityIDStr := chi.URLParam(r, "abilityId")
+	abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de ability inválido")
+		return
+	}
+
+	// Obtener los permisos
+	permissions, err := h.permissionUseCase.GetByAbility(r.Context(), abilityID)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Error al obtener los permisos")
+		return
+	}
+
+	// Preparar la respuesta
+	var items []PermissionResponse
+	for _, p := range permissions {
+		item := PermissionResponse{
+			ID:         p.ID,
+			AbilityID:  p.AbilityID,
+			EntityID:   p.EntityID,
+			EntityType: p.EntityType,
+			Forbidden:  p.Forbidden,
+			Scope:      p.Scope,
+		}
+
+		items = append(items, item)
+	}
+
+	response.JSON(w, http.StatusOK, items)
+}
+
+// Update maneja la solicitud de actualización de un permiso
+// @Summary Actualizar permiso
+// @Description Actualiza un permiso existente
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param id path int true "ID del permiso"
+// @Param permission body UpdatePermissionRequest true "Datos del permiso"
+// @Success 200 {object} PermissionResponse
+// @Failure 400 {string} string "Error al decodificar la solicitud o datos inválidos"
+// @Failure 404 {string} string "Permiso no encontrado"
+// @Failure 409 {string} string "El permiso ya existe para esta entidad y ability"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions/{id} [put]
+// @Security BearerAuth
+func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para actualizar permisos")
+		return
+	}
+
+	// Obtener el ID del permiso de la URL
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de permiso inválido")
+		return
+	}
+
+	// Decodificar la solicitud
+	var req UpdatePermissionRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		response.Error(w, http.StatusBadRequest, "Error al decodificar la solicitud")
+		return
+	}
+
+	// Validar la solicitud
+	if err := h.validate.Struct(req); err != nil {
+		response.Error(w, http.StatusBadRequest, "Datos inválidos: "+err.Error())
+		return
+	}
+
+	// Actualizar el permiso
+	permission := &permission.Permission{
+		ID:         id,
+		AbilityID:  req.AbilityID,
+		EntityID:   req.EntityID,
+		EntityType: req.EntityType,
+		Forbidden:  req.Forbidden,
+		Scope:      req.Scope,
+	}
+
+	if err := h.permissionUseCase.Update(r.Context(), permission); err != nil {
+		// Verificar si el error es de permiso no encontrado
+		if err.Error() == "permiso no encontrado" {
+			response.Error(w, http.StatusNotFound, "Permiso no encontrado")
+			return
+		}
+		// Verificar si el error es de permiso duplicado
+		if err.Error() == "el permiso ya existe para esta entidad y ability" {
+			response.Error(w, http.StatusConflict, "El permiso ya existe para esta entidad y ability")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al actualizar el permiso")
+		return
+	}
+
+	// Preparar la respuesta
+	resp := PermissionResponse{
+		ID:         permission.ID,
+		AbilityID:  permission.AbilityID,
+		EntityID:   permission.EntityID,
+		EntityType: permission.EntityType,
+		Forbidden:  permission.Forbidden,
+		Scope:      permission.Scope,
+	}
+
+	response.JSON(w, http.StatusOK, resp)
+}
+
+// Delete maneja la solicitud de eliminación de un permiso
+// @Summary Eliminar permiso
+// @Description Elimina un permiso
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param id path int true "ID del permiso"
+// @Success 204 "No Content"
+// @Failure 400 {string} string "ID de permiso inválido"
+// @Failure 404 {string} string "Permiso no encontrado"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions/{id} [delete]
+// @Security BearerAuth
+func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para eliminar permisos")
+		return
+	}
+
+	// Obtener el ID del permiso de la URL
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de permiso inválido")
+		return
+	}
+
+	// Eliminar el permiso
+	if err := h.permissionUseCase.Delete(r.Context(), id); err != nil {
+		// Verificar si el error es de permiso no encontrado
+		if err.Error() == "permiso no encontrado" {
+			response.Error(w, http.StatusNotFound, "Permiso no encontrado")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al eliminar el permiso")
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// Exists maneja la solicitud de verificación si existe un permiso específico
+// @Summary Verificar permiso
+// @Description Verifica si existe un permiso específico
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param abilityId path int true "ID de la ability"
+// @Param entityType path string true "Tipo de entidad"
+// @Param entityId path int true "ID de la entidad"
+// @Success 200 {object} map[string]bool
+// @Failure 400 {string} string "Parámetros inválidos"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions/check/{abilityId}/{entityType}/{entityId} [get]
+// @Security BearerAuth
+func (h *Handler) Exists(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para verificar permisos")
+		return
+	}
+
+	// Obtener parámetros de la consulta
+	abilityIDStr := chi.URLParam(r, "abilityId")
+	abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de ability inválido")
+		return
+	}
+
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
+	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
+		return
+	}
+
+	// Verificar si existe el permiso
+	exists, err := h.permissionUseCase.Exists(r.Context(), abilityID, entityID, entityType)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Error al verificar el permiso")
+		return
+	}
+
+	response.JSON(w, http.StatusOK, map[string]bool{"exists": exists})
+}
+
+// List maneja la solicitud de listado de permisos
+// @Summary Listar permisos
+// @Description Obtiene una lista paginada de permisos
+// @Tags Permissions
+// @Accept json
+// @Produce json
+// @Param page query int false "Número de página (por defecto: 1)"
+// @Param pageSize query int false "Tamaño de página (por defecto: 10)"
+// @Param abilityId query int false "Filtrar por ID de ability"
+// @Param entityType query string false "Filtrar por tipo de entidad"
+// @Param entityId query int false "Filtrar por ID de entidad"
+// @Param forbidden query bool false "Filtrar por prohibición"
+// @Success 200 {object} response.PaginatedResponse
+// @Failure 400 {string} string "Parámetros de consulta inválidos"
+// @Failure 500 {string} string "Error interno del servidor"
+// @Router /api/v1/permissions [get]
+// @Security BearerAuth
+func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para listar permisos")
+		return
+	}
+
+	// Obtener parámetros de consulta
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
+	if err != nil || pageSize < 1 {
+		pageSize = 10
+	}
+
+	// Construir filtros
+	filters := make(map[string]interface{})
+
+	if abilityIDStr := r.URL.Query().Get("abilityId"); abilityIDStr != "" {
+		abilityID, err := strconv.ParseInt(abilityIDStr, 10, 64)
+		if err == nil {
+			filters["ability_id"] = abilityID
+		}
+	}
+
+	if entityType := r.URL.Query().Get("entityType"); entityType != "" {
+		filters["entity_type"] = entityType
+	}
+
+	if entityIDStr := r.URL.Query().Get("entityId"); entityIDStr != "" {
+		entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+		if err == nil {
+			filters["entity_id"] = entityID
+		}
+	}
+
+	if forbiddenStr := r.URL.Query().Get("forbidden"); forbiddenStr != "" {
+		switch forbiddenStr {
+		case "true":
+			filters["forbidden"] = true
+		case "false":
+			filters["forbidden"] = false
+		}
+	}
+
+	// Obtener la lista de permisos
+	permissions, total, err := h.permissionUseCase.List(r.Context(), filters, page, pageSize)
+	if err != nil {
+		slog.ErrorContext(r.Context(), "Failed to list permissions",
+			slog.String("error", err.Error()),
+			slog.Int("page", page),
+			slog.Int("pageSize", pageSize))
+		response.Error(w, http.StatusInternalServerError, "Error al listar permisos")
+		return
+	}
+
+	// Preparar la respuesta
+	var items []PermissionResponse
+	for _, p := range permissions {
+		item := PermissionResponse{
+			ID:         p.ID,
+			AbilityID:  p.AbilityID,
+			EntityID:   p.EntityID,
+			EntityType: p.EntityType,
+			Forbidden:  p.Forbidden,
+			Scope:      p.Scope,
+		}
+
+		items = append(items, item)
+	}
+
+	// Enviar respuesta paginada
+	response.Paginated(w, items, page, pageSize, total)
+}

@@ -1,0 +1,97 @@
+package invoice_payment
+
+import (
+	"encoding/json"
+	"log/slog"
+	"net/http"
+	"strconv"
+
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
+	"github.com/angumol/jvairv2/pkg/rest/response"
+	"github.com/go-chi/chi/v5"
+)
+
+// Update maneja la solicitud de actualización de un pago
+func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
+	invoiceID, err := parseInvoiceID(r)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de factura inválido")
+		return
+	}
+
+	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de pago inválido")
+		return
+	}
+
+	var req UpdatePaymentRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		slog.WarnContext(r.Context(), "Invalid request body",
+			slog.String("error", err.Error()))
+		response.Error(w, http.StatusBadRequest, "Error al decodificar la solicitud")
+		return
+	}
+
+	// Obtener pago existente para hacer merge
+	existing, err := h.useCase.GetByID(r.Context(), invoiceID, id)
+	if err != nil {
+		if err == domainPayment.ErrPaymentNotFound {
+			response.Error(w, http.StatusNotFound, "Pago no encontrado")
+			return
+		}
+		slog.ErrorContext(r.Context(), "Failed to get payment for update",
+			slog.Int64("id", id),
+			slog.String("error", err.Error()))
+		response.Error(w, http.StatusInternalServerError, "Error al obtener pago")
+		return
+	}
+
+	// Merge campos
+	payment := &domainPayment.InvoicePayment{
+		ID:               id,
+		InvoiceID:        invoiceID,
+		PaymentProcessor: existing.PaymentProcessor,
+		PaymentID:        existing.PaymentID,
+		Amount:           existing.Amount,
+		Notes:            existing.Notes,
+	}
+
+	if req.PaymentProcessor != nil {
+		payment.PaymentProcessor = *req.PaymentProcessor
+	}
+	if req.PaymentID != nil {
+		payment.PaymentID = *req.PaymentID
+	}
+	if req.Amount != nil {
+		payment.Amount = *req.Amount
+	}
+	if req.Notes != nil {
+		payment.Notes = *req.Notes
+	}
+
+	if err := h.useCase.Update(r.Context(), payment); err != nil {
+		switch err {
+		case domainPayment.ErrPaymentNotFound:
+			response.Error(w, http.StatusNotFound, "Pago no encontrado")
+		case domainPayment.ErrStripePaymentImmutable:
+			response.Error(w, http.StatusForbidden, "Los pagos de Stripe no pueden ser modificados")
+		default:
+			if err.Error() == "id is required" {
+				response.Error(w, http.StatusBadRequest, err.Error())
+			} else {
+				response.Error(w, http.StatusInternalServerError, "Error al actualizar pago")
+			}
+		}
+		return
+	}
+
+	// Re-obtener el pago actualizado
+	updated, err := h.useCase.GetByID(r.Context(), invoiceID, id)
+	if err != nil {
+		response.JSON(w, http.StatusOK, toPaymentResponse(payment))
+		return
+	}
+
+	response.JSON(w, http.StatusOK, toPaymentResponse(updated))
+}

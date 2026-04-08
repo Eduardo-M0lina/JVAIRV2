@@ -1,0 +1,337 @@
+package assigned_role
+
+import (
+	"encoding/json"
+	"log/slog"
+	"net/http"
+	"strconv"
+
+	"github.com/angumol/jvairv2/pkg/domain/assigned_role"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/rest/response"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
+)
+
+// Handler maneja las solicitudes HTTP relacionadas con asignaciones de roles
+type Handler struct {
+	assignedRoleUseCase *assigned_role.UseCase
+	validate            *validator.Validate
+}
+
+// NewHandler crea una nueva instancia del manejador de asignaciones de roles
+func NewHandler(assignedRoleUseCase *assigned_role.UseCase) *Handler {
+	return &Handler{
+		assignedRoleUseCase: assignedRoleUseCase,
+		validate:            validator.New(),
+	}
+}
+
+// AssignRoleRequest representa la solicitud para asignar un rol a una entidad
+type AssignRoleRequest struct {
+	RoleID           int64   `json:"roleId" validate:"required"`
+	EntityID         int64   `json:"entityId" validate:"required"`
+	EntityType       string  `json:"entityType" validate:"required"`
+	RestrictedToID   *int64  `json:"restrictedToId,omitempty"`
+	RestrictedToType *string `json:"restrictedToType,omitempty"`
+	Scope            *int    `json:"scope,omitempty"`
+}
+
+// AssignedRoleResponse representa la respuesta de una asignación de rol
+type AssignedRoleResponse struct {
+	ID         int64  `json:"id"`
+	RoleID     int64  `json:"roleId"`
+	EntityID   int64  `json:"entityId"`
+	EntityType string `json:"entityType"`
+	Restricted bool   `json:"restricted"`
+	Scope      *int   `json:"scope,omitempty"`
+}
+
+// Assign maneja la solicitud de asignación de un rol a una entidad
+func (h *Handler) Assign(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para asignar roles")
+		return
+	}
+
+	// Decodificar la solicitud
+	var req AssignRoleRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		response.Error(w, http.StatusBadRequest, "Error al decodificar la solicitud")
+		return
+	}
+
+	// Validar la solicitud
+	if err := h.validate.Struct(req); err != nil {
+		response.Error(w, http.StatusBadRequest, "Datos inválidos: "+err.Error())
+		return
+	}
+
+	// Asignar el rol
+	assignedRole := &assigned_role.AssignedRole{
+		RoleID:           req.RoleID,
+		EntityID:         req.EntityID,
+		EntityType:       req.EntityType,
+		RestrictedToID:   req.RestrictedToID,
+		RestrictedToType: req.RestrictedToType,
+		Scope:            req.Scope,
+	}
+
+	if err := h.assignedRoleUseCase.Assign(r.Context(), assignedRole); err != nil {
+		// Verificar si el error es de asignación duplicada
+		if err.Error() == "el rol ya está asignado a esta entidad" {
+			response.Error(w, http.StatusConflict, "El rol ya está asignado a esta entidad")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al asignar el rol")
+		return
+	}
+
+	// Preparar la respuesta
+	resp := AssignedRoleResponse{
+		ID:         assignedRole.ID,
+		RoleID:     assignedRole.RoleID,
+		EntityID:   assignedRole.EntityID,
+		EntityType: assignedRole.EntityType,
+		Restricted: assignedRole.Restricted,
+		Scope:      assignedRole.Scope,
+	}
+
+	response.JSON(w, http.StatusCreated, resp)
+}
+
+// Get maneja la solicitud de obtención de una asignación de rol por ID
+func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para ver asignaciones de roles")
+		return
+	}
+
+	// Obtener el ID de la asignación de la URL
+	idStr := chi.URLParam(r, "id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de asignación de rol inválido")
+		return
+	}
+
+	// Obtener la asignación de rol
+	assignedRole, err := h.assignedRoleUseCase.GetByID(r.Context(), id)
+	if err != nil {
+		// Verificar si el error es de asignación de rol no encontrada
+		if err.Error() == "asignación de rol no encontrada" {
+			response.Error(w, http.StatusNotFound, "Asignación de rol no encontrada")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al obtener la asignación de rol")
+		return
+	}
+
+	// Preparar la respuesta
+	resp := AssignedRoleResponse{
+		ID:         assignedRole.ID,
+		RoleID:     assignedRole.RoleID,
+		EntityID:   assignedRole.EntityID,
+		EntityType: assignedRole.EntityType,
+		Restricted: assignedRole.Restricted,
+		Scope:      assignedRole.Scope,
+	}
+
+	response.JSON(w, http.StatusOK, resp)
+}
+
+// GetByEntity maneja la solicitud de obtención de asignaciones de roles por entidad
+func (h *Handler) GetByEntity(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para ver roles de entidades")
+		return
+	}
+
+	// Obtener parámetros de la URL
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
+	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
+		return
+	}
+
+	// Obtener las asignaciones de roles
+	assignedRoles, err := h.assignedRoleUseCase.GetByEntity(r.Context(), entityType, entityID)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Error al obtener las asignaciones de roles")
+		return
+	}
+
+	// Preparar la respuesta
+	var items []AssignedRoleResponse
+	for _, ar := range assignedRoles {
+		item := AssignedRoleResponse{
+			ID:         ar.ID,
+			RoleID:     ar.RoleID,
+			EntityID:   ar.EntityID,
+			EntityType: ar.EntityType,
+			Restricted: ar.Restricted,
+			Scope:      ar.Scope,
+		}
+
+		items = append(items, item)
+	}
+
+	response.JSON(w, http.StatusOK, items)
+}
+
+// Revoke maneja la solicitud de revocación de un rol de una entidad
+func (h *Handler) Revoke(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para revocar roles")
+		return
+	}
+
+	// Obtener el ID de la asignación de la URL
+	roleIDStr := chi.URLParam(r, "roleId")
+	roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de rol inválido")
+		return
+	}
+
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
+	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
+		return
+	}
+
+	// Revocar el rol
+	if err := h.assignedRoleUseCase.Revoke(r.Context(), roleID, entityID, entityType); err != nil {
+		// Verificar si el error es de asignación de rol no encontrada
+		if err.Error() == "asignación de rol no encontrada" {
+			response.Error(w, http.StatusNotFound, "Asignación de rol no encontrada")
+			return
+		}
+		response.Error(w, http.StatusInternalServerError, "Error al revocar el rol")
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+
+// HasRole maneja la solicitud de verificación si una entidad tiene un rol específico
+func (h *Handler) HasRole(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para verificar roles")
+		return
+	}
+
+	// Obtener parámetros de la consulta
+	roleIDStr := chi.URLParam(r, "roleId")
+	roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de rol inválido")
+		return
+	}
+
+	entityType := chi.URLParam(r, "entityType")
+	entityIDStr := chi.URLParam(r, "entityId")
+	entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+	if err != nil {
+		response.Error(w, http.StatusBadRequest, "ID de entidad inválido")
+		return
+	}
+
+	// Verificar si la entidad tiene el rol
+	hasRole, err := h.assignedRoleUseCase.HasRole(r.Context(), roleID, entityID, entityType)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "Error al verificar el rol")
+		return
+	}
+
+	response.JSON(w, http.StatusOK, map[string]bool{"has_role": hasRole})
+}
+
+// List maneja la solicitud de listado de asignaciones de roles
+func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
+	// Verificar permisos
+	if !middleware.HasAbility(r.Context(), "roles_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para listar asignaciones de roles")
+		return
+	}
+
+	// Obtener parámetros de consulta
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
+	if err != nil || pageSize < 1 {
+		pageSize = 10
+	}
+
+	// Construir filtros
+	filters := make(map[string]interface{})
+
+	if roleIDStr := r.URL.Query().Get("roleId"); roleIDStr != "" {
+		roleID, err := strconv.ParseInt(roleIDStr, 10, 64)
+		if err == nil {
+			filters["role_id"] = roleID
+		}
+	}
+
+	if entityType := r.URL.Query().Get("entityType"); entityType != "" {
+		filters["entity_type"] = entityType
+	}
+
+	if entityIDStr := r.URL.Query().Get("entityId"); entityIDStr != "" {
+		entityID, err := strconv.ParseInt(entityIDStr, 10, 64)
+		if err == nil {
+			filters["entity_id"] = entityID
+		}
+	}
+
+	if restrictedStr := r.URL.Query().Get("restricted"); restrictedStr != "" {
+		switch restrictedStr {
+		case "true":
+			filters["restricted"] = true
+		case "false":
+			filters["restricted"] = false
+		}
+	}
+
+	// Obtener la lista de asignaciones de roles
+	assignedRoles, total, err := h.assignedRoleUseCase.List(r.Context(), filters, page, pageSize)
+	if err != nil {
+		slog.Error("Error al listar asignaciones de roles",
+			"error", err,
+			"page", page,
+			"pageSize", pageSize,
+		)
+		response.Error(w, http.StatusInternalServerError, "Error al listar asignaciones de roles: "+err.Error())
+		return
+	}
+
+	// Preparar la respuesta
+	var items []AssignedRoleResponse
+	for _, ar := range assignedRoles {
+		item := AssignedRoleResponse{
+			ID:         ar.ID,
+			RoleID:     ar.RoleID,
+			EntityID:   ar.EntityID,
+			EntityType: ar.EntityType,
+			Restricted: ar.Restricted,
+			Scope:      ar.Scope,
+		}
+
+		items = append(items, item)
+	}
+
+	// Enviar respuesta paginada
+	response.Paginated(w, items, page, pageSize, total)
+}

@@ -1,0 +1,20 @@
+package router
+
+import (
+	permissionHandler "github.com/angumol/jvairv2/pkg/rest/handler/permission"
+	"github.com/go-chi/chi/v5"
+)
+
+// RegisterPermissionRoutes registra las rutas de permisos
+func RegisterPermissionRoutes(r chi.Router, handler *permissionHandler.Handler) {
+	r.Route("/permissions", func(r chi.Router) {
+		r.Get("/", handler.List)
+		r.Post("/", handler.Create)
+		r.Get("/check/{abilityId}/{entityType}/{entityId}", handler.Exists)
+		r.Get("/ability/{abilityId}", handler.GetByAbility)
+		r.Get("/entity/{entityType}/{entityId}", handler.GetByEntity)
+		r.Get("/{id}", handler.Get)
+		r.Put("/{id}", handler.Update)
+		r.Delete("/{id}", handler.Delete)
+	})
+}

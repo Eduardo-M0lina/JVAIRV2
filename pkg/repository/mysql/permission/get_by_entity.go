@@ -1,0 +1,50 @@
+package permission
+
+import (
+	"context"
+	"database/sql"
+
+	"github.com/angumol/jvairv2/pkg/domain/permission"
+)
+
+// GetByEntity obtiene todos los permisos para una entidad específica
+func (r *Repository) GetByEntity(ctx context.Context, entityType string, entityID int64) ([]*permission.Permission, error) {
+	query := `
+		SELECT id, ability_id, entity_id, entity_type, forbidden, scope
+		FROM permissions
+		WHERE entity_type = ? AND entity_id = ?
+	`
+
+	rows, err := r.db.QueryContext(ctx, query, entityType, entityID)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = rows.Close() }()
+
+	var permissions []*permission.Permission
+	for rows.Next() {
+		var p permission.Permission
+		var scope sql.NullInt32
+
+		err := rows.Scan(
+			&p.ID, &p.AbilityID, &p.EntityID, &p.EntityType, &p.Forbidden, &scope,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		if scope.Valid {
+			scopeInt := int(scope.Int32)
+			p.Scope = &scopeInt
+		}
+
+		permissions = append(permissions, &p)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return permissions, nil
+}

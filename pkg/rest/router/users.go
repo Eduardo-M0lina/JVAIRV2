@@ -1,0 +1,20 @@
+package router
+
+import (
+	userHandler "github.com/angumol/jvairv2/pkg/rest/handler/user"
+	"github.com/go-chi/chi/v5"
+)
+
+// RegisterUserRoutes registra las rutas de usuarios
+func RegisterUserRoutes(r chi.Router, handler *userHandler.Handler) {
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", handler.List)
+		r.Post("/", handler.Create)
+		r.Get("/{id}", handler.Get)
+		r.Put("/{id}", handler.Update)
+		r.Delete("/{id}", handler.Delete)
+		r.Get("/{id}/roles", handler.GetRoles)
+		r.Get("/{id}/abilities", handler.GetAbilities)
+		r.Post("/{id}/paystub-email", handler.SendPayStubEmail)
+	})
+}
