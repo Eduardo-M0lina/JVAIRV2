@@ -15,6 +15,7 @@ type Config struct {
 	JWT    JWTConfig
 	S3     S3Config
 	Mail   MailConfig
+	Stripe StripeConfig
 }
 
 // AppConfig almacena la configuración general de la aplicación
@@ -67,6 +68,12 @@ type MailConfig struct {
 	FromName      string
 	MailgunDomain string
 	MailgunSecret string
+}
+
+// StripeConfig almacena la configuración de Stripe
+type StripeConfig struct {
+	SecretKey string
+	PublicKey string
 }
 
 // LoadConfig carga la configuración desde el archivo app.env
@@ -129,6 +136,10 @@ func LoadConfig(path string) (*Config, error) {
 	config.Mail.FromName = viper.GetString("MAIL_FROM_NAME")
 	config.Mail.MailgunDomain = viper.GetString("MAILGUN_DOMAIN")
 	config.Mail.MailgunSecret = viper.GetString("MAILGUN_SECRET")
+
+	// Configuración de Stripe
+	config.Stripe.SecretKey = viper.GetString("STRIPE_SECRET_KEY")
+	config.Stripe.PublicKey = viper.GetString("STRIPE_PUBLIC_KEY")
 
 	return &config, nil
 }

@@ -57,6 +57,7 @@ import (
 	workflow "github.com/your-org/jvairv2/pkg/domain/workflow"
 	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
 	infraSMS "github.com/your-org/jvairv2/pkg/infrastructure/sms"
+	infraStripe "github.com/your-org/jvairv2/pkg/infrastructure/stripe"
 	mysql "github.com/your-org/jvairv2/pkg/repository/mysql"
 	mysqlAbility "github.com/your-org/jvairv2/pkg/repository/mysql/ability"
 	mysqlAlert "github.com/your-org/jvairv2/pkg/repository/mysql/alert"
@@ -140,6 +141,7 @@ import (
 	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
+	stripeHandler "github.com/your-org/jvairv2/pkg/rest/handler/stripe"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
@@ -209,6 +211,7 @@ type Container struct {
 	AccountHandler             *accountHandler.Handler
 	PayrollHandler             *payrollHandler.Handler
 	SearchHandler              *searchHandler.Handler
+	StripeHandler              *stripeHandler.Handler
 }
 
 // NewContainer crea un nuevo contenedor con todas las dependencias inicializadas
@@ -297,6 +300,17 @@ func NewContainer(configPath string) (*Container, error) {
 	invoicePaymentRepo := mysqlInvoicePayment.NewRepository(dbConn.GetDB())
 	invoiceChecker := mysqlInvoice.NewInvoiceCheckerAdapter(dbConn.GetDB())
 	invoicePaymentUC := domainInvoicePayment.NewUseCase(invoicePaymentRepo, invoiceChecker)
+
+	// Inicializar Stripe
+	var stripeClient *infraStripe.Client
+	if config.Stripe.SecretKey != "" {
+		stripeClient, err = infraStripe.NewClient(&config.Stripe)
+		if err != nil {
+			fmt.Println("Warning: No se pudo inicializar Stripe client:", err)
+		}
+	} else {
+		fmt.Println("Warning: STRIPE_SECRET_KEY not configured, Stripe integration disabled")
+	}
 
 	// Inicializar SMS (AWS SNS + Twilio selector)
 	var smsSender infraSMS.SMSSender
@@ -520,6 +534,12 @@ func NewContainer(configPath string) (*Container, error) {
 	searchHdlr := searchHandler.NewHandler(searchUC)
 	accountHdlr := accountHandler.NewHandler(accountUC)
 
+	// Stripe handler (puede ser nil si Stripe no está configurado)
+	var stripeHdlr *stripeHandler.Handler
+	if stripeClient != nil {
+		stripeHdlr = stripeHandler.NewHandler(stripeClient, invoiceRepo, invoicePaymentUC)
+	}
+
 	// Inicializar middlewares
 	authMiddleware := middleware.NewAuthMiddleware(authUC)
 
@@ -573,6 +593,7 @@ func NewContainer(configPath string) (*Container, error) {
 		payrollHdlr,
 		searchHdlr,
 		accountHdlr,
+		stripeHdlr,
 		authMiddleware,
 		userUC,
 	)
@@ -629,6 +650,7 @@ func NewContainer(configPath string) (*Container, error) {
 		AccountHandler:             accountHdlr,
 		PayrollHandler:             payrollHdlr,
 		SearchHandler:              searchHdlr,
+		StripeHandler:              stripeHdlr,
 	}, nil
 }
 

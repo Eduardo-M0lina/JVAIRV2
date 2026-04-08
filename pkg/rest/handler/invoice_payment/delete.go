@@ -29,6 +29,10 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 			response.Error(w, http.StatusNotFound, "Pago no encontrado")
 			return
 		}
+		if err == domainPayment.ErrStripePaymentImmutable {
+			response.Error(w, http.StatusForbidden, "Los pagos de Stripe no pueden ser eliminados")
+			return
+		}
 		slog.ErrorContext(r.Context(), "Failed to delete invoice payment",
 			slog.Int64("id", id),
 			slog.String("error", err.Error()))

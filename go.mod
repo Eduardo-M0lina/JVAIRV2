@@ -14,6 +14,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/mailgun/mailgun-go/v4 v4.23.0
 	github.com/spf13/viper v1.16.0
+	github.com/stripe/stripe-go/v76 v76.25.0
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.6
 	golang.org/x/crypto v0.46.0

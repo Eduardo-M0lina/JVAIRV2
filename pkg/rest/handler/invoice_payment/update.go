@@ -74,6 +74,8 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 		switch err {
 		case domainPayment.ErrPaymentNotFound:
 			response.Error(w, http.StatusNotFound, "Pago no encontrado")
+		case domainPayment.ErrStripePaymentImmutable:
+			response.Error(w, http.StatusForbidden, "Los pagos de Stripe no pueden ser modificados")
 		default:
 			if err.Error() == "id is required" {
 				response.Error(w, http.StatusBadRequest, err.Error())

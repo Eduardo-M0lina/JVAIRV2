@@ -24,6 +24,11 @@ func (uc *UseCase) Update(ctx context.Context, payment *InvoicePayment) error {
 		return ErrPaymentNotFound
 	}
 
+	// Pagos de Stripe son inmutables (no se pueden modificar)
+	if existing.PaymentProcessor == "Stripe" {
+		return ErrStripePaymentImmutable
+	}
+
 	// Mantener el invoice_id original
 	payment.InvoiceID = existing.InvoiceID
 

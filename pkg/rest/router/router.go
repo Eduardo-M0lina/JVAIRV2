@@ -41,6 +41,7 @@ import (
 	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
+	stripeHandler "github.com/your-org/jvairv2/pkg/rest/handler/stripe"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
@@ -106,6 +107,7 @@ func New(
 	payrollHdlr *payrollHandler.Handler,
 	searchHdlr *searchHandler.Handler,
 	accountHdlr *accountHandler.Handler,
+	stripeHdlr *stripeHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -125,6 +127,11 @@ func New(
 		r.Get("/swagger/*", httpSwagger.Handler(
 			httpSwagger.URL("/swagger/doc.json"), // URL para acceder a la documentación JSON
 		))
+		// Rutas públicas de Stripe (sin autenticación)
+		if stripeHdlr != nil {
+			r.Get("/api/v1/invoices/{id}/payment-intent", stripeHdlr.CreatePaymentIntent)
+			r.Post("/webhooks/stripe", stripeHdlr.Webhook)
+		}
 	})
 	// Rutas protegidas que requieren autenticación
 	r.Group(func(r chi.Router) {
@@ -176,9 +183,9 @@ func New(
 			propEquipHandler.RegisterRoutes(r)
 			// Rutas de equipos de trabajo
 			jobEquipHandler.RegisterRoutes(r)
-			// Rutas de facturas y pagos (DISABLED - dead code from Laravel)
-			// invoiceHandler.RegisterRoutes(r)
-			// invoicePaymentHandler.RegisterRoutes(r)
+			// Rutas de facturas y pagos
+			invoiceHandler.RegisterRoutes(r)
+			invoicePaymentHandler.RegisterRoutes(r)
 			// Rutas de garantías y catálogos
 			warrantyTypeHandler.RegisterRoutes(r)
 			warrantyStatusHandler.RegisterRoutes(r)
