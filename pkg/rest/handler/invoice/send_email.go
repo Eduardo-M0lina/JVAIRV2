@@ -16,18 +16,6 @@ type SendEmailRequest struct {
 }
 
 // SendEmail maneja el envío de email de invoice
-// @Summary Send invoice email
-// @Description Send invoice email to specified recipients
-// @Tags invoices
-// @Accept json
-// @Produce json
-// @Param id path int true "Invoice ID"
-// @Param request body SendEmailRequest true "Email request"
-// @Success 200 {object} map[string]string
-// @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /invoices/{id}/email [post]
 func (h *Handler) SendEmail(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

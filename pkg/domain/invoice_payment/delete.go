@@ -19,6 +19,11 @@ func (uc *UseCase) Delete(ctx context.Context, invoiceID, id int64) error {
 		return ErrPaymentNotFound
 	}
 
+	// Pagos de Stripe son inmutables (no se pueden eliminar)
+	if existing.PaymentProcessor == "Stripe" {
+		return ErrStripePaymentImmutable
+	}
+
 	// Verificar que el pago pertenece a la factura indicada
 	if existing.InvoiceID != invoiceID {
 		return ErrPaymentNotFound

@@ -11,19 +11,6 @@ import (
 )
 
 // Get maneja la solicitud de obtención de un pago por ID
-// @Summary Obtener pago de factura
-// @Description Obtiene un pago por su ID
-// @Tags Invoice Payments
-// @Accept json
-// @Produce json
-// @Param invoiceId path int true "ID de la factura"
-// @Param id path int true "ID del pago"
-// @Success 200 {object} PaymentResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices/{invoiceId}/payments/{id} [get]
-// @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
 	invoiceID, err := parseInvoiceID(r)
 	if err != nil {

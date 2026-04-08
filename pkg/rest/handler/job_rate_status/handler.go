@@ -31,17 +31,6 @@ type UpdateRequest struct {
 }
 
 // Create godoc
-// @Summary Create job rate status
-// @Description Create a new job rate status
-// @Tags JobRateStatuses
-// @Accept json
-// @Produce json
-// @Param request body CreateRequest true "Job rate status data"
-// @Success 201 {object} job_rate_status.JobRateStatus
-// @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /api/v1/job-rate-statuses [post]
-// @Security BearerAuth
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req CreateRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -64,15 +53,6 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 // List godoc
-// @Summary List job rate statuses
-// @Description Get all job rate statuses
-// @Tags JobRateStatuses
-// @Accept json
-// @Produce json
-// @Success 200 {array} job_rate_status.JobRateStatus
-// @Failure 500 {object} map[string]string
-// @Router /api/v1/job-rate-statuses [get]
-// @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 	statuses, err := h.service.List(r.Context())
 	if err != nil {
@@ -84,18 +64,6 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetByID godoc
-// @Summary Get job rate status by ID
-// @Description Get a job rate status by ID
-// @Tags JobRateStatuses
-// @Accept json
-// @Produce json
-// @Param id path int true "Job Rate Status ID"
-// @Success 200 {object} job_rate_status.JobRateStatus
-// @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /api/v1/job-rate-statuses/{id} [get]
-// @Security BearerAuth
 func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -117,19 +85,6 @@ func (h *Handler) GetByID(w http.ResponseWriter, r *http.Request) {
 }
 
 // Update godoc
-// @Summary Update job rate status
-// @Description Update a job rate status by ID
-// @Tags JobRateStatuses
-// @Accept json
-// @Produce json
-// @Param id path int true "Job Rate Status ID"
-// @Param request body UpdateRequest true "Job rate status data"
-// @Success 200 {object} job_rate_status.JobRateStatus
-// @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /api/v1/job-rate-statuses/{id} [put]
-// @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
@@ -169,18 +124,6 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 // Delete godoc
-// @Summary Delete job rate status
-// @Description Soft delete a job rate status by ID
-// @Tags JobRateStatuses
-// @Accept json
-// @Produce json
-// @Param id path int true "Job Rate Status ID"
-// @Success 204
-// @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /api/v1/job-rate-statuses/{id} [delete]
-// @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

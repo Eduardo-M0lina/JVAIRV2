@@ -16,18 +16,6 @@ type SendEmailRequest struct {
 }
 
 // SendEmail maneja el envío de email de quote
-// @Summary Send quote email
-// @Description Send quote email to specified recipients
-// @Tags quotes
-// @Accept json
-// @Produce json
-// @Param id path int true "Quote ID"
-// @Param request body SendEmailRequest true "Email request"
-// @Success 200 {object} map[string]string
-// @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Failure 500 {object} map[string]string
-// @Router /quotes/{id}/email [post]
 func (h *Handler) SendEmail(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

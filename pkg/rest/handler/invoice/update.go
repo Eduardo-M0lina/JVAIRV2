@@ -12,19 +12,6 @@ import (
 )
 
 // Update maneja la solicitud de actualización de una factura
-// @Summary Actualizar factura
-// @Description Actualiza una factura existente
-// @Tags Invoices
-// @Accept json
-// @Produce json
-// @Param id path int true "ID de la factura"
-// @Param invoice body UpdateInvoiceRequest true "Datos a actualizar"
-// @Success 200 {object} InvoiceResponse
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices/{id} [put]
-// @Security BearerAuth
 func (h *Handler) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {

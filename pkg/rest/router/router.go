@@ -41,6 +41,7 @@ import (
 	searchHandler "github.com/your-org/jvairv2/pkg/rest/handler/search"
 	settingsHandler "github.com/your-org/jvairv2/pkg/rest/handler/settings"
 	smsTemplateHandler "github.com/your-org/jvairv2/pkg/rest/handler/sms_template"
+	stripeHandler "github.com/your-org/jvairv2/pkg/rest/handler/stripe"
 	supervisorHandler "github.com/your-org/jvairv2/pkg/rest/handler/supervisor"
 	taskStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/task_status"
 	techJobStatusHandler "github.com/your-org/jvairv2/pkg/rest/handler/technician_job_status"
@@ -106,6 +107,7 @@ func New(
 	payrollHdlr *payrollHandler.Handler,
 	searchHdlr *searchHandler.Handler,
 	accountHdlr *accountHandler.Handler,
+	stripeHdlr *stripeHandler.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	userUseCase *user.UseCase, // Añadir esta dependencia
 ) *chi.Mux {
@@ -125,6 +127,11 @@ func New(
 		r.Get("/swagger/*", httpSwagger.Handler(
 			httpSwagger.URL("/swagger/doc.json"), // URL para acceder a la documentación JSON
 		))
+		// Rutas públicas de Stripe (sin autenticación)
+		if stripeHdlr != nil {
+			r.Get("/api/v1/invoices/{id}/payment-intent", stripeHdlr.CreatePaymentIntent)
+			r.Post("/webhooks/stripe", stripeHdlr.Webhook)
+		}
 	})
 	// Rutas protegidas que requieren autenticación
 	r.Group(func(r chi.Router) {
@@ -145,8 +152,8 @@ func New(
 			RegisterRoleRoutes(r, roleHandler)
 			// Rutas de abilities
 			RegisterAbilityRoutes(r, abilityHandler)
-			// Rutas de assigned-roles
-			RegisterAssignedRoleRoutes(r, assignedRoleHandler)
+			// Rutas de assigned-roles (DISABLED - dead code from Laravel)
+			// RegisterAssignedRoleRoutes(r, assignedRoleHandler)
 			// Rutas de permisos
 			RegisterPermissionRoutes(r, permissionHandler)
 			// Rutas de configuraciones
@@ -167,9 +174,9 @@ func New(
 			jobPriorityHandler.RegisterRoutes(r)
 			techJobStatusHandler.RegisterRoutes(r)
 			taskStatusHandler.RegisterRoutes(r)
-			// Rutas de cotizaciones
-			quoteHandler.RegisterRoutes(r)
-			quoteStatusHandler.RegisterRoutes(r)
+			// Rutas de cotizaciones (DISABLED - dead code from Laravel)
+			// quoteHandler.RegisterRoutes(r)
+			// quoteStatusHandler.RegisterRoutes(r)
 			// Rutas de supervisores
 			supervisorHandler.RegisterRoutes(r)
 			// Rutas de equipos de propiedad
@@ -198,12 +205,12 @@ func New(
 				r.Delete("/{id}", jobActivityLogHandler.Delete)
 			})
 
-			// Job Emails
-			r.Route("/jobs/{jobId}/emails", func(r chi.Router) {
-				r.Post("/", jobEmailHandler.Create)
-				r.Get("/", jobEmailHandler.List)
-				r.Delete("/{id}", jobEmailHandler.Delete)
-			})
+			// Job Emails (DISABLED - dead code from Laravel)
+			// r.Route("/jobs/{jobId}/emails", func(r chi.Router) {
+			// 	r.Post("/", jobEmailHandler.Create)
+			// 	r.Get("/", jobEmailHandler.List)
+			// 	r.Delete("/{id}", jobEmailHandler.Delete)
+			// })
 
 			// Job Residents
 			r.Route("/jobs/{jobId}/residents", func(r chi.Router) {
@@ -213,14 +220,14 @@ func New(
 				r.Delete("/{id}", jobResidentHandler.Delete)
 			})
 
-			// Job Rate Statuses (catalog)
-			r.Route("/job-rate-statuses", func(r chi.Router) {
-				r.Post("/", jobRateStatusHandler.Create)
-				r.Get("/", jobRateStatusHandler.List)
-				r.Get("/{id}", jobRateStatusHandler.GetByID)
-				r.Put("/{id}", jobRateStatusHandler.Update)
-				r.Delete("/{id}", jobRateStatusHandler.Delete)
-			})
+			// Job Rate Statuses (catalog) (DISABLED - dead code from Laravel)
+			// r.Route("/job-rate-statuses", func(r chi.Router) {
+			// 	r.Post("/", jobRateStatusHandler.Create)
+			// 	r.Get("/", jobRateStatusHandler.List)
+			// 	r.Get("/{id}", jobRateStatusHandler.GetByID)
+			// 	r.Put("/{id}", jobRateStatusHandler.Update)
+			// 	r.Delete("/{id}", jobRateStatusHandler.Delete)
+			// })
 
 			// SMS Templates
 			smsTemplateHandler.RegisterRoutes(r)
@@ -247,12 +254,12 @@ func New(
 				r.Delete("/{id}", jobRateHandler.Delete)
 			})
 
-			// Job SMS
-			r.Route("/jobs/{jobId}/sms", func(r chi.Router) {
-				r.Post("/", jobSMSHandler.Create)
-				r.Get("/", jobSMSHandler.List)
-				r.Delete("/{id}", jobSMSHandler.Delete)
-			})
+			// Job SMS (DISABLED - dead code from Laravel)
+			// r.Route("/jobs/{jobId}/sms", func(r chi.Router) {
+			// 	r.Post("/", jobSMSHandler.Create)
+			// 	r.Get("/", jobSMSHandler.List)
+			// 	r.Delete("/{id}", jobSMSHandler.Delete)
+			// })
 
 			// Calculate rate payment (standalone endpoint)
 			r.Post("/calculate-rate-payment", jobRateHandler.CalculatePayment)

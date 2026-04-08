@@ -10,6 +10,9 @@ type Repository interface {
 	// GetByID obtiene una factura por su ID (incluye balance calculado)
 	GetByID(ctx context.Context, id int64) (*Invoice, error)
 
+	// GetByInvoiceNumber obtiene una factura por su número de factura (incluye balance calculado)
+	GetByInvoiceNumber(ctx context.Context, invoiceNumber string) (*Invoice, error)
+
 	// List obtiene una lista paginada de facturas con filtros opcionales
 	List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*Invoice, int, error)
 

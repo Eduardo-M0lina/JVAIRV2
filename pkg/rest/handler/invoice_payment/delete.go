@@ -11,19 +11,6 @@ import (
 )
 
 // Delete maneja la solicitud de eliminación de un pago (soft delete)
-// @Summary Eliminar pago de factura
-// @Description Elimina un pago (soft delete)
-// @Tags Invoice Payments
-// @Accept json
-// @Produce json
-// @Param invoiceId path int true "ID de la factura"
-// @Param id path int true "ID del pago"
-// @Success 204 "No Content"
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices/{invoiceId}/payments/{id} [delete]
-// @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	invoiceID, err := parseInvoiceID(r)
 	if err != nil {
@@ -40,6 +27,10 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	if err := h.useCase.Delete(r.Context(), invoiceID, id); err != nil {
 		if err == domainPayment.ErrPaymentNotFound {
 			response.Error(w, http.StatusNotFound, "Pago no encontrado")
+			return
+		}
+		if err == domainPayment.ErrStripePaymentImmutable {
+			response.Error(w, http.StatusForbidden, "Los pagos de Stripe no pueden ser eliminados")
 			return
 		}
 		slog.ErrorContext(r.Context(), "Failed to delete invoice payment",

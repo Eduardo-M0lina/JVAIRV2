@@ -11,4 +11,7 @@ var (
 
 	// ErrInvalidInvoice indica que la factura no es válida
 	ErrInvalidInvoice = errors.New("invalid invoice")
+
+	// ErrStripePaymentImmutable indica que los pagos de Stripe no pueden ser modificados ni eliminados
+	ErrStripePaymentImmutable = errors.New("stripe payments cannot be modified or deleted")
 )

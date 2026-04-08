@@ -11,18 +11,6 @@ import (
 )
 
 // Delete maneja la solicitud de eliminación de una factura (soft delete)
-// @Summary Eliminar factura
-// @Description Elimina una factura (soft delete)
-// @Tags Invoices
-// @Accept json
-// @Produce json
-// @Param id path int true "ID de la factura"
-// @Success 204 "No Content"
-// @Failure 400 {object} response.ErrorResponse
-// @Failure 404 {object} response.ErrorResponse
-// @Failure 500 {object} response.ErrorResponse
-// @Router /api/v1/invoices/{id} [delete]
-// @Security BearerAuth
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseInt(chi.URLParam(r, "id"), 10, 64)
 	if err != nil {
