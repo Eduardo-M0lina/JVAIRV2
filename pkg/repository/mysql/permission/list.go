@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/permission"
+	"github.com/angumol/jvairv2/pkg/domain/permission"
 )
 
 // List obtiene una lista paginada de permisos con filtros opcionales

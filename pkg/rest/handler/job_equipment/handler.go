@@ -3,8 +3,8 @@ package job_equipment
 import (
 	"time"
 
+	"github.com/angumol/jvairv2/pkg/domain/job_equipment"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/job_equipment"
 )
 
 // Handler maneja las peticiones HTTP para equipos de trabajo

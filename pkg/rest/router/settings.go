@@ -1,9 +1,9 @@
 package router
 
 import (
+	"github.com/angumol/jvairv2/pkg/rest/handler/settings"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/rest/handler/settings"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // SetupSettingsRoutes configura las rutas para el módulo de configuraciones

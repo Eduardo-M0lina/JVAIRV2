@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/angumol/jvairv2/pkg/domain/job_priority"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/job_priority"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 type Handler struct {

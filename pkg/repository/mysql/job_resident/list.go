@@ -3,7 +3,7 @@ package job_resident
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_resident"
+	"github.com/angumol/jvairv2/pkg/domain/job_resident"
 )
 
 func (r *repository) List(ctx context.Context, jobID int64, limit, offset int) ([]*job_resident.JobResident, int64, error) {

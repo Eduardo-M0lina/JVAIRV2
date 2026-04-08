@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainSettings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSettings "github.com/angumol/jvairv2/pkg/domain/settings"
 )
 
 // SettingsProvider define la interfaz para obtener configuraciones del sistema

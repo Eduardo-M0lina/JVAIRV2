@@ -1,8 +1,8 @@
 package router
 
 import (
+	abilityHandler "github.com/angumol/jvairv2/pkg/rest/handler/ability"
 	"github.com/go-chi/chi/v5"
-	abilityHandler "github.com/your-org/jvairv2/pkg/rest/handler/ability"
 )
 
 // RegisterAbilityRoutes registra las rutas de abilities

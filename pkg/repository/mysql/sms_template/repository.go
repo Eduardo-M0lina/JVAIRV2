@@ -3,7 +3,7 @@ package sms_template
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/sms_template"
+	"github.com/angumol/jvairv2/pkg/domain/sms_template"
 )
 
 type Repository struct {

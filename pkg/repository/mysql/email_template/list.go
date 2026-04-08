@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/email_template"
+	"github.com/angumol/jvairv2/pkg/domain/email_template"
 )
 
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*email_template.EmailTemplate, int, error) {

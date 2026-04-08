@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // Update actualiza un usuario existente

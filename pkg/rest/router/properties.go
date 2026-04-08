@@ -1,8 +1,8 @@
 package router
 
 import (
+	propertyHandler "github.com/angumol/jvairv2/pkg/rest/handler/property"
 	"github.com/go-chi/chi/v5"
-	propertyHandler "github.com/your-org/jvairv2/pkg/rest/handler/property"
 )
 
 // RegisterPropertyRoutes registra las rutas de propiedades

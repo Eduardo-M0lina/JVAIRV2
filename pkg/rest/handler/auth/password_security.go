@@ -5,10 +5,10 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/your-org/jvairv2/pkg/domain/auth"
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
-	handler "github.com/your-org/jvairv2/pkg/rest/handler"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/domain/auth"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
+	handler "github.com/angumol/jvairv2/pkg/rest/handler"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
 )
 
 // PasswordSecurityHandler maneja las solicitudes HTTP relacionadas con seguridad de contraseñas

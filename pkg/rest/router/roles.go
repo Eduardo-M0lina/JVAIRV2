@@ -1,8 +1,8 @@
 package router
 
 import (
+	roleHandler "github.com/angumol/jvairv2/pkg/rest/handler/role"
 	"github.com/go-chi/chi/v5"
-	roleHandler "github.com/your-org/jvairv2/pkg/rest/handler/role"
 )
 
 // RegisterRoleRoutes registra las rutas de roles

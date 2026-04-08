@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainPasswordReset "github.com/your-org/jvairv2/pkg/domain/password_reset"
+	domainPasswordReset "github.com/angumol/jvairv2/pkg/domain/password_reset"
 )
 
 // Create crea un nuevo token de reseteo

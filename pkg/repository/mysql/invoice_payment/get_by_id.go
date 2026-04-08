@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainPayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
 )
 
 // GetByID obtiene un pago por su ID

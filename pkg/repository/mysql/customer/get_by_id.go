@@ -6,7 +6,7 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/angumol/jvairv2/pkg/domain/customer"
 )
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*customer.Customer, error) {

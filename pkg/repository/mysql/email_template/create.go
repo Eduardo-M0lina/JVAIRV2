@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/email_template"
+	"github.com/angumol/jvairv2/pkg/domain/email_template"
 )
 
 func (r *Repository) Create(ctx context.Context, template *email_template.EmailTemplate) error {

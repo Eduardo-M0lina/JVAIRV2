@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/your-org/jvairv2/pkg/domain/email_template"
+	"github.com/angumol/jvairv2/pkg/domain/email_template"
 )
 
 func (r *Repository) GetByLabel(ctx context.Context, label string) (*email_template.EmailTemplate, error) {

@@ -3,7 +3,7 @@ package warranty_claim
 import (
 	"database/sql"
 
-	domainWC "github.com/your-org/jvairv2/pkg/domain/warranty_claim"
+	domainWC "github.com/angumol/jvairv2/pkg/domain/warranty_claim"
 )
 
 type Repository struct {

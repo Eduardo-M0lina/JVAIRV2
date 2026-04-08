@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	domain "github.com/angumol/jvairv2/pkg/domain/job_equipment"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domain "github.com/your-org/jvairv2/pkg/domain/job_equipment"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Update godoc

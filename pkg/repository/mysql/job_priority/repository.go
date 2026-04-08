@@ -3,7 +3,7 @@ package job_priority
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_priority"
+	"github.com/angumol/jvairv2/pkg/domain/job_priority"
 )
 
 type Repository struct {

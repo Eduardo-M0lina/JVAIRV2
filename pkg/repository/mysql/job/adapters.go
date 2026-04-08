@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
 )
 
 // JobCategoryCheckerAdapter adapta el repositorio de job_category para el checker del job use case

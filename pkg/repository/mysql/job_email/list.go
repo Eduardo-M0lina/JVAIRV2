@@ -3,7 +3,7 @@ package job_email
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_email"
+	"github.com/angumol/jvairv2/pkg/domain/job_email"
 )
 
 func (r *repository) List(ctx context.Context, jobID int64, limit, offset int) ([]*job_email.JobEmail, int64, error) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainAssignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
+	domainAssignedRole "github.com/angumol/jvairv2/pkg/domain/assigned_role"
 )
 
 // GetByEntity obtiene todas las asignaciones de roles para una entidad específica

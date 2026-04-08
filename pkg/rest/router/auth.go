@@ -1,8 +1,8 @@
 package router
 
 import (
+	authHandler "github.com/angumol/jvairv2/pkg/rest/handler/auth"
 	"github.com/go-chi/chi/v5"
-	authHandler "github.com/your-org/jvairv2/pkg/rest/handler/auth"
 )
 
 // RegisterAuthRoutes registra las rutas de autenticación

@@ -1,8 +1,8 @@
 package router
 
 import (
+	permissionHandler "github.com/angumol/jvairv2/pkg/rest/handler/permission"
 	"github.com/go-chi/chi/v5"
-	permissionHandler "github.com/your-org/jvairv2/pkg/rest/handler/permission"
 )
 
 // RegisterPermissionRoutes registra las rutas de permisos

@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/quote_status"
+	"github.com/angumol/jvairv2/pkg/domain/quote_status"
 )
 
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*quote_status.QuoteStatus, int, error) {

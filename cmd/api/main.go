@@ -129,8 +129,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/your-org/jvairv2/configs"
-	"github.com/your-org/jvairv2/pkg/common/logger"
+	"github.com/angumol/jvairv2/configs"
+	"github.com/angumol/jvairv2/pkg/common/logger"
 )
 
 func main() {

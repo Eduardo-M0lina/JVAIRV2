@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/task_status"
+	"github.com/angumol/jvairv2/pkg/domain/task_status"
 )
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*task_status.TaskStatus, error) {

@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
+	domainWE "github.com/angumol/jvairv2/pkg/domain/warranty_equipment"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainWE "github.com/your-org/jvairv2/pkg/domain/warranty_equipment"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para equipos de garantía

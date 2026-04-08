@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/angumol/jvairv2/pkg/domain/email"
+	"github.com/angumol/jvairv2/pkg/domain/payroll"
+	"github.com/angumol/jvairv2/pkg/rest/handler"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/email"
-	"github.com/your-org/jvairv2/pkg/domain/payroll"
-	"github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // Handler maneja las peticiones HTTP para payroll

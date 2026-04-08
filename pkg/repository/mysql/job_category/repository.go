@@ -3,7 +3,7 @@ package job_category
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_category"
+	"github.com/angumol/jvairv2/pkg/domain/job_category"
 )
 
 type Repository struct {

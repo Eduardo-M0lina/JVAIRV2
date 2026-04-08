@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/angumol/jvairv2/configs"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/your-org/jvairv2/configs"
 )
 
 // DBConfig contiene la configuración para la conexión a MySQL

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
 )
 
 // GetByID obtiene un job por su ID

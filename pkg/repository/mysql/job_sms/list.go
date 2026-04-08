@@ -3,7 +3,7 @@ package job_sms
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_sms"
+	"github.com/angumol/jvairv2/pkg/domain/job_sms"
 )
 
 func (r *repository) List(ctx context.Context, jobID int64, limit, offset int) ([]*job_sms.JobSMS, int64, error) {

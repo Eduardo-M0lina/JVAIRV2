@@ -3,7 +3,7 @@ package settings
 import (
 	"database/sql"
 
-	domainSettings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSettings "github.com/angumol/jvairv2/pkg/domain/settings"
 )
 
 // Repository implementa el repositorio de configuraciones usando MySQL

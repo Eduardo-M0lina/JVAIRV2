@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/search"
+	"github.com/angumol/jvairv2/pkg/domain/search"
 )
 
 // Repository implementa search.Repository para MySQL

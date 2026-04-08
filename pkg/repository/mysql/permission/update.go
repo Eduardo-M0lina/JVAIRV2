@@ -3,7 +3,7 @@ package permission
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/permission"
+	"github.com/angumol/jvairv2/pkg/domain/permission"
 )
 
 // Update actualiza un permiso existente

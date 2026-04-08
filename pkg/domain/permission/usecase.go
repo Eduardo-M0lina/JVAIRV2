@@ -3,7 +3,7 @@ package permission
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/ability"
+	"github.com/angumol/jvairv2/pkg/domain/ability"
 )
 
 // UseCase define los casos de uso para la gestión de permisos

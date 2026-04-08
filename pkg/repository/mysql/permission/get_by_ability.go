@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/permission"
+	"github.com/angumol/jvairv2/pkg/domain/permission"
 )
 
 // GetByAbility obtiene todos los permisos para una ability específica

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/payroll"
+	"github.com/angumol/jvairv2/pkg/domain/payroll"
 )
 
 func (r *repository) GetUserRates(ctx context.Context, userID int64, status *string, limit, offset int) ([]*payroll.PayrollRate, int64, error) {

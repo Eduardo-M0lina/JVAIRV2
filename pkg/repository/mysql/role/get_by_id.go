@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainRole "github.com/your-org/jvairv2/pkg/domain/role"
+	domainRole "github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // GetByID obtiene un rol por su ID

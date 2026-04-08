@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
+	domainEmail "github.com/angumol/jvairv2/pkg/domain/email"
+	domainQuote "github.com/angumol/jvairv2/pkg/domain/quote"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
-	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para cotizaciones

@@ -3,7 +3,7 @@ package job_task
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_task"
+	"github.com/angumol/jvairv2/pkg/domain/job_task"
 )
 
 func (r *repository) List(ctx context.Context, jobID int64, limit, offset int) ([]*job_task.JobTask, int64, error) {

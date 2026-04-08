@@ -3,7 +3,7 @@ package job_task
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_task"
+	"github.com/angumol/jvairv2/pkg/domain/job_task"
 )
 
 type repository struct {

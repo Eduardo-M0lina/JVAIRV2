@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"strconv"
 
+	domainDashboard "github.com/angumol/jvairv2/pkg/domain/dashboard"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/rest/handler"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
 	"github.com/go-chi/chi/v5"
-	domainDashboard "github.com/your-org/jvairv2/pkg/domain/dashboard"
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
-	"github.com/your-org/jvairv2/pkg/rest/handler"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // adminRoles define los roles que ven el dashboard de administrador

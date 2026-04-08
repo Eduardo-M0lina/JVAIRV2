@@ -3,7 +3,7 @@ package assigned_role
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // UseCase define los casos de uso para la gestión de asignaciones de roles

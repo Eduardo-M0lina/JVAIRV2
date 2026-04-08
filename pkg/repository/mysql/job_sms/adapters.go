@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_sms"
+	"github.com/angumol/jvairv2/pkg/domain/job_sms"
 )
 
 type jobExistsChecker struct {

@@ -3,7 +3,7 @@ package job_activity_log
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_activity_log"
+	"github.com/angumol/jvairv2/pkg/domain/job_activity_log"
 )
 
 func (r *repository) Create(ctx context.Context, log *job_activity_log.JobActivityLog) error {

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/angumol/jvairv2/pkg/domain/supervisor"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/supervisor"
 )
 
 type Handler struct {

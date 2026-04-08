@@ -3,7 +3,7 @@ package job_sms
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_sms"
+	"github.com/angumol/jvairv2/pkg/domain/job_sms"
 )
 
 func (r *repository) Create(ctx context.Context, item *job_sms.JobSMS) error {

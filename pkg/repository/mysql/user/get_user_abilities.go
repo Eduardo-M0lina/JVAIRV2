@@ -7,7 +7,7 @@ import (
 	"log/slog"
 	"strconv"
 
-	"github.com/your-org/jvairv2/pkg/domain/ability"
+	"github.com/angumol/jvairv2/pkg/domain/ability"
 )
 
 // GetUserAbilities obtiene las habilidades de un usuario

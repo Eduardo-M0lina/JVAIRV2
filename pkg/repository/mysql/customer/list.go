@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/angumol/jvairv2/pkg/domain/customer"
 )
 
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*customer.Customer, int, error) {

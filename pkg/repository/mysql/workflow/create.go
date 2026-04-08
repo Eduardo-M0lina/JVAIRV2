@@ -3,7 +3,7 @@ package workflow
 import (
 	"context"
 
-	domainWorkflow "github.com/your-org/jvairv2/pkg/domain/workflow"
+	domainWorkflow "github.com/angumol/jvairv2/pkg/domain/workflow"
 )
 
 // Create crea un nuevo workflow

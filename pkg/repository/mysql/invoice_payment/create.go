@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainPayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
 )
 
 // Create crea un nuevo pago de factura en la base de datos

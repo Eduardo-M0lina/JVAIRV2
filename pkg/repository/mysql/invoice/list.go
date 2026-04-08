@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
 )
 
 // List obtiene una lista paginada de facturas con filtros opcionales

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_task"
+	"github.com/angumol/jvairv2/pkg/domain/job_task"
 )
 
 func (r *repository) GetByID(ctx context.Context, id int64) (*job_task.JobTask, error) {

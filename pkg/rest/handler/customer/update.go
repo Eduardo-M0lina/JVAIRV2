@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/angumol/jvairv2/pkg/domain/customer"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/customer"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Update godoc

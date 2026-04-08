@@ -3,7 +3,7 @@ package property_equipment
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/property_equipment"
+	"github.com/angumol/jvairv2/pkg/domain/property_equipment"
 )
 
 // Repository implementa el repositorio de equipos de propiedad usando MySQL

@@ -3,7 +3,7 @@ package alert
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/alert"
+	"github.com/angumol/jvairv2/pkg/domain/alert"
 )
 
 type repository struct {

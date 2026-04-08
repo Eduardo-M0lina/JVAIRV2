@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/angumol/jvairv2/pkg/domain/supervisor"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/supervisor"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Update godoc

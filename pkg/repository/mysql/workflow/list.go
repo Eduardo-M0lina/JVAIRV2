@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	domainWorkflow "github.com/your-org/jvairv2/pkg/domain/workflow"
+	domainWorkflow "github.com/angumol/jvairv2/pkg/domain/workflow"
 )
 
 // List obtiene una lista paginada de workflows

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainWC "github.com/your-org/jvairv2/pkg/domain/warranty_claim"
+	domainWC "github.com/angumol/jvairv2/pkg/domain/warranty_claim"
 )
 
 // JobCheckerAdapter adapta la verificación de jobs para el use case de warranty claims

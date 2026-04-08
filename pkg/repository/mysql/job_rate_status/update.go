@@ -3,7 +3,7 @@ package job_rate_status
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_rate_status"
+	"github.com/angumol/jvairv2/pkg/domain/job_rate_status"
 )
 
 func (r *repository) Update(ctx context.Context, status *job_rate_status.JobRateStatus) error {

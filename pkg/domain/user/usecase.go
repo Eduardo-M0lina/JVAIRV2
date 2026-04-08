@@ -10,9 +10,9 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/your-org/jvairv2/pkg/domain/ability"
-	"github.com/your-org/jvairv2/pkg/domain/assigned_role"
-	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/angumol/jvairv2/pkg/domain/ability"
+	"github.com/angumol/jvairv2/pkg/domain/assigned_role"
+	"github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 var (

@@ -3,7 +3,7 @@ package property
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/property"
+	"github.com/angumol/jvairv2/pkg/domain/property"
 )
 
 // Repository implementa el repositorio de propiedades usando MySQL

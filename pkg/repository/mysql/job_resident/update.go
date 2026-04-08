@@ -3,7 +3,7 @@ package job_resident
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_resident"
+	"github.com/angumol/jvairv2/pkg/domain/job_resident"
 )
 
 func (r *repository) Update(ctx context.Context, resident *job_resident.JobResident) error {

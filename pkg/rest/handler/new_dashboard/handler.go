@@ -4,10 +4,10 @@ import (
 	"log/slog"
 	"net/http"
 
-	domainNewDashboard "github.com/your-org/jvairv2/pkg/domain/new_dashboard"
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	domainNewDashboard "github.com/angumol/jvairv2/pkg/domain/new_dashboard"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 
 	"github.com/go-chi/chi/v5"
 )

@@ -1,7 +1,7 @@
 package property_equipment
 
 import (
-	"github.com/your-org/jvairv2/pkg/domain/property"
+	"github.com/angumol/jvairv2/pkg/domain/property"
 )
 
 // UseCase orquesta las operaciones de negocio para equipos de propiedad

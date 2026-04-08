@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 )
 
 // Create maneja la solicitud de creación de un job

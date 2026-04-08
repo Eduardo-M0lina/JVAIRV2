@@ -1,8 +1,8 @@
 package router
 
 import (
+	assignedRoleHandler "github.com/angumol/jvairv2/pkg/rest/handler/assigned_role"
 	"github.com/go-chi/chi/v5"
-	assignedRoleHandler "github.com/your-org/jvairv2/pkg/rest/handler/assigned_role"
 )
 
 // RegisterAssignedRoleRoutes registra las rutas de assigned-roles

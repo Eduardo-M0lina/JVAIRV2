@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
+	domainWC "github.com/angumol/jvairv2/pkg/domain/warranty_claim"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainWC "github.com/your-org/jvairv2/pkg/domain/warranty_claim"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para warranty claims

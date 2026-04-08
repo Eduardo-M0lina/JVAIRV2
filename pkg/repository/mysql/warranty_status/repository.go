@@ -3,7 +3,7 @@ package warranty_status
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/warranty_status"
+	"github.com/angumol/jvairv2/pkg/domain/warranty_status"
 )
 
 type Repository struct {

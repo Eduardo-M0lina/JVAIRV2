@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/warranty_claim_type"
+	"github.com/angumol/jvairv2/pkg/domain/warranty_claim_type"
 )
 
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*warranty_claim_type.WarrantyClaimType, int, error) {

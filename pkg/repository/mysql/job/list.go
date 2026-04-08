@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
 )
 
 // List obtiene una lista paginada de jobs con filtros opcionales

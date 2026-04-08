@@ -3,7 +3,7 @@ package technician_job_status
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_status"
+	"github.com/angumol/jvairv2/pkg/domain/job_status"
 )
 
 type Service interface {

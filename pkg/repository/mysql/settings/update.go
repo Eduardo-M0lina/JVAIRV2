@@ -3,7 +3,7 @@ package settings
 import (
 	"context"
 
-	domainSettings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSettings "github.com/angumol/jvairv2/pkg/domain/settings"
 )
 
 // Update actualiza las configuraciones del sistema

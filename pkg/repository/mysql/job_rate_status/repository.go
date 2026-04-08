@@ -3,7 +3,7 @@ package job_rate_status
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_rate_status"
+	"github.com/angumol/jvairv2/pkg/domain/job_rate_status"
 )
 
 type repository struct {

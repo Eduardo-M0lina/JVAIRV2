@@ -3,7 +3,7 @@ package email_template
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/email_template"
+	"github.com/angumol/jvairv2/pkg/domain/email_template"
 )
 
 type Repository struct {

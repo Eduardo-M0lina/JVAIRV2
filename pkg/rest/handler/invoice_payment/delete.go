@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainPayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Delete maneja la solicitud de eliminación de un pago (soft delete)

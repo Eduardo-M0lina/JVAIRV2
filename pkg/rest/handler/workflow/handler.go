@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/angumol/jvairv2/pkg/domain/workflow"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
-	"github.com/your-org/jvairv2/pkg/domain/workflow"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las solicitudes HTTP relacionadas con workflows

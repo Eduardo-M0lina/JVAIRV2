@@ -3,7 +3,7 @@ package password_reset
 import (
 	"database/sql"
 
-	domainPasswordReset "github.com/your-org/jvairv2/pkg/domain/password_reset"
+	domainPasswordReset "github.com/angumol/jvairv2/pkg/domain/password_reset"
 )
 
 // Repository implementa la interfaz domainPasswordReset.Repository para MySQL

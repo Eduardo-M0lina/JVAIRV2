@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/your-org/jvairv2/pkg/domain/supervisor"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	"github.com/angumol/jvairv2/pkg/domain/supervisor"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 )
 
 // Create godoc

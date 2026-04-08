@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/alert"
+	"github.com/angumol/jvairv2/pkg/domain/alert"
 )
 
 func (r *repository) GetByID(ctx context.Context, id int64) (*alert.Alert, error) {

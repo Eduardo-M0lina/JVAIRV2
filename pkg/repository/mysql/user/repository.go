@@ -3,7 +3,7 @@ package user
 import (
 	"database/sql"
 
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // Usar los errores del dominio

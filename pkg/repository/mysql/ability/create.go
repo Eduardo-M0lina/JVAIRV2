@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/ability"
+	"github.com/angumol/jvairv2/pkg/domain/ability"
 )
 
 // Create crea una nueva ability

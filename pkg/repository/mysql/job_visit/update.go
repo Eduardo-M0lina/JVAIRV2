@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainJV "github.com/your-org/jvairv2/pkg/domain/job_visit"
+	domainJV "github.com/angumol/jvairv2/pkg/domain/job_visit"
 )
 
 // Update actualiza una visita de trabajo en la base de datos

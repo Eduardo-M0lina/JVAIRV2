@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"log/slog"
 
+	appconfig "github.com/angumol/jvairv2/configs"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
-	appconfig "github.com/your-org/jvairv2/configs"
 )
 
 // AWSSNSSender implementa SMSSender usando AWS SNS

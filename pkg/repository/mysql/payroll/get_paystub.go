@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/payroll"
+	"github.com/angumol/jvairv2/pkg/domain/payroll"
 )
 
 func (r *repository) GetPaystubData(ctx context.Context, userID int64) (*payroll.PaystubData, error) {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/payroll"
+	"github.com/angumol/jvairv2/pkg/domain/payroll"
 )
 
 func (r *repository) ListPayrollUsers(ctx context.Context, filters payroll.PayrollFilters) ([]*payroll.PayrollUser, int64, error) {

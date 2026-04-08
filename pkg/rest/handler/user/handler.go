@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"strconv"
 
+	domainEmail "github.com/angumol/jvairv2/pkg/domain/email"
+	"github.com/angumol/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
-	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
-	"github.com/your-org/jvairv2/pkg/domain/user"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las solicitudes HTTP relacionadas con usuarios

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
+	domainQuote "github.com/angumol/jvairv2/pkg/domain/quote"
 )
 
 // JobCheckerAdapter adapta la verificación de existencia de jobs

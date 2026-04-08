@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 var (

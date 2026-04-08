@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainWarranty "github.com/your-org/jvairv2/pkg/domain/warranty"
+	domainWarranty "github.com/angumol/jvairv2/pkg/domain/warranty"
 )
 
 func (r *Repository) Update(ctx context.Context, w *domainWarranty.Warranty) error {

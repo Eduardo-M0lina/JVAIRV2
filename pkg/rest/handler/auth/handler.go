@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/auth"
-	handler "github.com/your-org/jvairv2/pkg/rest/handler"
+	"github.com/angumol/jvairv2/pkg/domain/auth"
+	handler "github.com/angumol/jvairv2/pkg/rest/handler"
 )
 
 // Handler maneja las solicitudes HTTP relacionadas con autenticación

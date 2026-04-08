@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"time"
 
-	domainDashboard "github.com/your-org/jvairv2/pkg/domain/dashboard"
+	domainDashboard "github.com/angumol/jvairv2/pkg/domain/dashboard"
 )
 
 const timeFormat = "2006-01-02T15:04:05Z07:00"

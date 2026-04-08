@@ -3,7 +3,7 @@ package customer
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/workflow"
+	"github.com/angumol/jvairv2/pkg/domain/workflow"
 )
 
 type Service interface {

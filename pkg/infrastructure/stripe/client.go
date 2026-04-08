@@ -3,8 +3,8 @@ package stripe
 import (
 	"fmt"
 
+	"github.com/angumol/jvairv2/configs"
 	"github.com/stripe/stripe-go/v76"
-	"github.com/your-org/jvairv2/configs"
 )
 
 // Client encapsula la configuración de Stripe

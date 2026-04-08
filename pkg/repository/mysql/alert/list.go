@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/alert"
+	"github.com/angumol/jvairv2/pkg/domain/alert"
 )
 
 func (r *repository) List(ctx context.Context, filters alert.ListFilters, limit, offset int) ([]*alert.Alert, int64, error) {

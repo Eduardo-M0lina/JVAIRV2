@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Close maneja la solicitud de cierre de un job

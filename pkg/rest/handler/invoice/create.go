@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 )
 
 // Create maneja la solicitud de creación de una factura

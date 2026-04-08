@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // Create crea un nuevo rol

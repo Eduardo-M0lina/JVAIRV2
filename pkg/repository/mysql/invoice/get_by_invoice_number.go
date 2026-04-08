@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
 )
 
 // GetByInvoiceNumber obtiene una factura por su número, incluyendo el balance calculado

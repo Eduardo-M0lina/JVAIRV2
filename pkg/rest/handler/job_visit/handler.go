@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
+	domainFile "github.com/angumol/jvairv2/pkg/domain/file"
+	domainJV "github.com/angumol/jvairv2/pkg/domain/job_visit"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainFile "github.com/your-org/jvairv2/pkg/domain/file"
-	domainJV "github.com/your-org/jvairv2/pkg/domain/job_visit"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para visitas de trabajo

@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainWE "github.com/your-org/jvairv2/pkg/domain/warranty_equipment"
+	domainWE "github.com/angumol/jvairv2/pkg/domain/warranty_equipment"
 )
 
 func (r *Repository) Create(ctx context.Context, we *domainWE.WarrantyEquipment) error {

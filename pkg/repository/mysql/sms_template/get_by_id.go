@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/sms_template"
+	"github.com/angumol/jvairv2/pkg/domain/sms_template"
 )
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*sms_template.SMSTemplate, error) {

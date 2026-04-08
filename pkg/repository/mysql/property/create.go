@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/property"
+	"github.com/angumol/jvairv2/pkg/domain/property"
 )
 
 func (r *Repository) Create(ctx context.Context, p *property.Property) error {

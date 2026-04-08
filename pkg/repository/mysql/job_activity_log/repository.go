@@ -3,7 +3,7 @@ package job_activity_log
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_activity_log"
+	"github.com/angumol/jvairv2/pkg/domain/job_activity_log"
 )
 
 type repository struct {

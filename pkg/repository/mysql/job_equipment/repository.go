@@ -3,7 +3,7 @@ package job_equipment
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_equipment"
+	"github.com/angumol/jvairv2/pkg/domain/job_equipment"
 )
 
 // Repository implementa el repositorio de equipos de trabajo usando MySQL

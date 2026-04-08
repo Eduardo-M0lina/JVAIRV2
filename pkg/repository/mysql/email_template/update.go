@@ -3,7 +3,7 @@ package email_template
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/email_template"
+	"github.com/angumol/jvairv2/pkg/domain/email_template"
 )
 
 func (r *Repository) Update(ctx context.Context, template *email_template.EmailTemplate) error {

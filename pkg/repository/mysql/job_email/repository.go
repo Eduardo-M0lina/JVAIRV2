@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_email"
+	"github.com/angumol/jvairv2/pkg/domain/job_email"
 )
 
 type repository struct {

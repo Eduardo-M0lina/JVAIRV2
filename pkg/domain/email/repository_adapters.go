@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	domainCustomer "github.com/your-org/jvairv2/pkg/domain/customer"
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
-	domainJobResident "github.com/your-org/jvairv2/pkg/domain/job_resident"
-	domainJobTask "github.com/your-org/jvairv2/pkg/domain/job_task"
-	domainPayroll "github.com/your-org/jvairv2/pkg/domain/payroll"
-	domainProperty "github.com/your-org/jvairv2/pkg/domain/property"
-	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
+	domainCustomer "github.com/angumol/jvairv2/pkg/domain/customer"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
+	domainJobResident "github.com/angumol/jvairv2/pkg/domain/job_resident"
+	domainJobTask "github.com/angumol/jvairv2/pkg/domain/job_task"
+	domainPayroll "github.com/angumol/jvairv2/pkg/domain/payroll"
+	domainProperty "github.com/angumol/jvairv2/pkg/domain/property"
+	domainQuote "github.com/angumol/jvairv2/pkg/domain/quote"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // JobRepositoryAdapter adapta el repositorio de job

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // List obtiene una lista paginada de roles con filtros opcionales

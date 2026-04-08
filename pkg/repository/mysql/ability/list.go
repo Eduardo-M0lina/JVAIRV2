@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	domainAbility "github.com/your-org/jvairv2/pkg/domain/ability"
+	domainAbility "github.com/angumol/jvairv2/pkg/domain/ability"
 )
 
 // List obtiene una lista paginada de abilities con filtros opcionales

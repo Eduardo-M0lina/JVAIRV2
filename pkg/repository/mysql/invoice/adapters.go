@@ -4,8 +4,8 @@ import (
 	"context"
 	"database/sql"
 
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
-	domainInvoicePayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
+	domainInvoicePayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
 )
 
 // JobCheckerAdapter adapta la verificación de jobs para el use case de invoices

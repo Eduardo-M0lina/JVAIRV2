@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainNewDashboard "github.com/your-org/jvairv2/pkg/domain/new_dashboard"
+	domainNewDashboard "github.com/angumol/jvairv2/pkg/domain/new_dashboard"
 )
 
 // Repository implementa el repositorio MySQL para el dashboard enriquecido

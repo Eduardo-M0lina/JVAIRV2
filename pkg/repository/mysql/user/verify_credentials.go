@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 	"golang.org/x/crypto/bcrypt"
 )
 

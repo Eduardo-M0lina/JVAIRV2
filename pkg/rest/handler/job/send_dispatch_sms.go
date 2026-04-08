@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"strings"
 
+	domainJobSMS "github.com/angumol/jvairv2/pkg/domain/job_sms"
+	handler "github.com/angumol/jvairv2/pkg/rest/handler"
 	"github.com/go-chi/chi/v5"
-	domainJobSMS "github.com/your-org/jvairv2/pkg/domain/job_sms"
-	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // SendDispatchSMSRequest representa la solicitud para enviar SMS de dispatch

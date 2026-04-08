@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_category"
+	"github.com/angumol/jvairv2/pkg/domain/job_category"
 )
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*job_category.JobCategory, error) {

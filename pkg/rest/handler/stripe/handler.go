@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"strconv"
 
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
+	infraStripe "github.com/angumol/jvairv2/pkg/infrastructure/stripe"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
-	domainPayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
-	infraStripe "github.com/your-org/jvairv2/pkg/infrastructure/stripe"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja los endpoints públicos de Stripe

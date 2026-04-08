@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	domainPayroll "github.com/your-org/jvairv2/pkg/domain/payroll"
-	infraEmail "github.com/your-org/jvairv2/pkg/infrastructure/email"
+	domainPayroll "github.com/angumol/jvairv2/pkg/domain/payroll"
+	infraEmail "github.com/angumol/jvairv2/pkg/infrastructure/email"
 )
 
 // Service define la interfaz del servicio de email

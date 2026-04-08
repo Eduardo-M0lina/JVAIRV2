@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	domainRole "github.com/your-org/jvairv2/pkg/domain/role"
+	domainRole "github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // Update actualiza un rol existente

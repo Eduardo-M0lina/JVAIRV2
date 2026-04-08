@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"strings"
 
-	domainAssignedRole "github.com/your-org/jvairv2/pkg/domain/assigned_role"
+	domainAssignedRole "github.com/angumol/jvairv2/pkg/domain/assigned_role"
 )
 
 // List obtiene una lista paginada de asignaciones de roles con filtros opcionales

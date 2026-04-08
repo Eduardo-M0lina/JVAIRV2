@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/supervisor"
+	"github.com/angumol/jvairv2/pkg/domain/supervisor"
 )
 
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*supervisor.Supervisor, int, error) {

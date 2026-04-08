@@ -3,7 +3,7 @@ package quote
 import (
 	"database/sql"
 
-	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
+	domainQuote "github.com/angumol/jvairv2/pkg/domain/quote"
 )
 
 type Repository struct {

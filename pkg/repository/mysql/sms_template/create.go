@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/sms_template"
+	"github.com/angumol/jvairv2/pkg/domain/sms_template"
 )
 
 func (r *Repository) Create(ctx context.Context, template *sms_template.SMSTemplate) error {

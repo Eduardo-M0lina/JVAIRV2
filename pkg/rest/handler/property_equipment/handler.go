@@ -3,8 +3,8 @@ package property_equipment
 import (
 	"time"
 
+	"github.com/angumol/jvairv2/pkg/domain/property_equipment"
 	"github.com/go-chi/chi/v5"
-	"github.com/your-org/jvairv2/pkg/domain/property_equipment"
 )
 
 // Handler maneja las peticiones HTTP para equipos de propiedad

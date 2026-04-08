@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 
-	appconfig "github.com/your-org/jvairv2/configs"
+	appconfig "github.com/angumol/jvairv2/configs"
 )
 
 // S3Client maneja las operaciones de almacenamiento en S3

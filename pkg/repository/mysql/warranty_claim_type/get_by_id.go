@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/warranty_claim_type"
+	"github.com/angumol/jvairv2/pkg/domain/warranty_claim_type"
 )
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*warranty_claim_type.WarrantyClaimType, error) {

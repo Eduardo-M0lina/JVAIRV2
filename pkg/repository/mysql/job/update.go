@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
 )
 
 // Update actualiza un job existente

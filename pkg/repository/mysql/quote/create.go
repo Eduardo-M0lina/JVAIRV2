@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainQuote "github.com/your-org/jvairv2/pkg/domain/quote"
+	domainQuote "github.com/angumol/jvairv2/pkg/domain/quote"
 )
 
 func (r *Repository) Create(ctx context.Context, q *domainQuote.Quote) error {

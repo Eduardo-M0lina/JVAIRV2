@@ -3,7 +3,7 @@ package workflow
 import (
 	"database/sql"
 
-	domainWorkflow "github.com/your-org/jvairv2/pkg/domain/workflow"
+	domainWorkflow "github.com/angumol/jvairv2/pkg/domain/workflow"
 )
 
 // Repository implementa el repositorio de workflows usando MySQL

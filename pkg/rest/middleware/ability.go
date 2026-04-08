@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // abilityKey es la clave para almacenar las habilidades del usuario en el contexto

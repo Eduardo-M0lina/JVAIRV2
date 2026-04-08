@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/auth"
+	"github.com/angumol/jvairv2/pkg/domain/auth"
 )
 
 // Tipo personalizado para la clave del contexto

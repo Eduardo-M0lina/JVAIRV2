@@ -1,8 +1,8 @@
 package router
 
 import (
+	userHandler "github.com/angumol/jvairv2/pkg/rest/handler/user"
 	"github.com/go-chi/chi/v5"
-	userHandler "github.com/your-org/jvairv2/pkg/rest/handler/user"
 )
 
 // RegisterUserRoutes registra las rutas de usuarios

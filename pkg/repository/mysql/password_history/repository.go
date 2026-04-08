@@ -3,7 +3,7 @@ package password_history
 import (
 	"database/sql"
 
-	domainPasswordHistory "github.com/your-org/jvairv2/pkg/domain/password_history"
+	domainPasswordHistory "github.com/angumol/jvairv2/pkg/domain/password_history"
 )
 
 // Repository implementa la interfaz domainPasswordHistory.Repository para MySQL

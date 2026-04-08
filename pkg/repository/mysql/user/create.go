@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // Create crea un nuevo usuario

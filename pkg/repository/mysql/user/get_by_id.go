@@ -6,7 +6,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // GetByID obtiene un usuario por su ID

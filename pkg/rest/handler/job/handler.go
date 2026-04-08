@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"strconv"
 
+	domainJob "github.com/angumol/jvairv2/pkg/domain/job"
+	domainJobActivityLog "github.com/angumol/jvairv2/pkg/domain/job_activity_log"
+	domainJobSMS "github.com/angumol/jvairv2/pkg/domain/job_sms"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
 	"github.com/go-chi/chi/v5"
-	domainJob "github.com/your-org/jvairv2/pkg/domain/job"
-	domainJobActivityLog "github.com/your-org/jvairv2/pkg/domain/job_activity_log"
-	domainJobSMS "github.com/your-org/jvairv2/pkg/domain/job_sms"
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // Handler maneja las peticiones HTTP para jobs

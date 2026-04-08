@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainSettings "github.com/your-org/jvairv2/pkg/domain/settings"
+	domainSettings "github.com/angumol/jvairv2/pkg/domain/settings"
 )
 
 // Get obtiene las configuraciones del sistema (siempre retorna el primer registro)

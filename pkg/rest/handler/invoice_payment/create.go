@@ -5,8 +5,8 @@ import (
 	"log/slog"
 	"net/http"
 
-	domainPayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 )
 
 // Create maneja la solicitud de creación de un pago de factura

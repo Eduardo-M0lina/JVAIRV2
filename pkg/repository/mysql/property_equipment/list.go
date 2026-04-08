@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/property_equipment"
+	"github.com/angumol/jvairv2/pkg/domain/property_equipment"
 )
 
 func (r *Repository) List(ctx context.Context, propertyID int64) ([]*property_equipment.PropertyEquipment, error) {

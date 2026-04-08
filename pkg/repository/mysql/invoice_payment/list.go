@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	domainPayment "github.com/your-org/jvairv2/pkg/domain/invoice_payment"
+	domainPayment "github.com/angumol/jvairv2/pkg/domain/invoice_payment"
 )
 
 // ListByInvoiceID obtiene los pagos de una factura con paginación

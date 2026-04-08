@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/angumol/jvairv2/configs"
 	"github.com/mailgun/mailgun-go/v4"
-	"github.com/your-org/jvairv2/configs"
 )
 
 // MailgunSender implementa EmailSender usando Mailgun

@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/your-org/jvairv2/pkg/domain/property"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
-	"github.com/your-org/jvairv2/pkg/rest/response"
+	"github.com/angumol/jvairv2/pkg/domain/property"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 )
 
 // Create godoc

@@ -3,7 +3,7 @@ package warranty_equipment
 import (
 	"database/sql"
 
-	domainWE "github.com/your-org/jvairv2/pkg/domain/warranty_equipment"
+	domainWE "github.com/angumol/jvairv2/pkg/domain/warranty_equipment"
 )
 
 type Repository struct {

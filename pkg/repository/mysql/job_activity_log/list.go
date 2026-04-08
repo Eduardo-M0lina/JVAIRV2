@@ -3,7 +3,7 @@ package job_activity_log
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_activity_log"
+	"github.com/angumol/jvairv2/pkg/domain/job_activity_log"
 )
 
 func (r *repository) List(ctx context.Context, jobID int64, limit, offset int) ([]*job_activity_log.JobActivityLog, int64, error) {

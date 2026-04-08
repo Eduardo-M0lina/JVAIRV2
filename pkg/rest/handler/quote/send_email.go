@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
+	handler "github.com/angumol/jvairv2/pkg/rest/handler"
 	"github.com/go-chi/chi/v5"
-	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // SendEmailRequest representa la solicitud para enviar un email de quote

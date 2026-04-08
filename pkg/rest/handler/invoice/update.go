@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Update maneja la solicitud de actualización de una factura

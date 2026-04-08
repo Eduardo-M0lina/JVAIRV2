@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainAbility "github.com/your-org/jvairv2/pkg/domain/ability"
+	domainAbility "github.com/angumol/jvairv2/pkg/domain/ability"
 )
 
 // GetByName obtiene una ability por su nombre

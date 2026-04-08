@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/supervisor"
+	"github.com/angumol/jvairv2/pkg/domain/supervisor"
 )
 
 func (r *Repository) Update(ctx context.Context, s *supervisor.Supervisor) error {

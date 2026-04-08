@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 // TokenDetails contiene información sobre el token JWT

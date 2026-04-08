@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/angumol/jvairv2/pkg/domain/auth"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/your-org/jvairv2/pkg/domain/auth"
-	"github.com/your-org/jvairv2/pkg/domain/user"
 )
 
 var (

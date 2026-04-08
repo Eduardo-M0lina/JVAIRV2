@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	domainAbility "github.com/your-org/jvairv2/pkg/domain/ability"
+	domainAbility "github.com/angumol/jvairv2/pkg/domain/ability"
 )
 
 // Update actualiza una ability existente

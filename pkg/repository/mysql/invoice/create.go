@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
 )
 
 // Create crea una nueva factura en la base de datos

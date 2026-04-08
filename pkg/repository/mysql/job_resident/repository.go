@@ -3,7 +3,7 @@ package job_resident
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_resident"
+	"github.com/angumol/jvairv2/pkg/domain/job_resident"
 )
 
 type repository struct {

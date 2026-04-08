@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/payroll"
+	"github.com/angumol/jvairv2/pkg/domain/payroll"
 )
 
 // UserExistsChecker implementa la interfaz para verificar existencia de usuarios

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	domainWE "github.com/your-org/jvairv2/pkg/domain/warranty_equipment"
+	domainWE "github.com/angumol/jvairv2/pkg/domain/warranty_equipment"
 )
 
 // WarrantyCheckerAdapter adapta la verificación de warranties para el use case de warranty equipment

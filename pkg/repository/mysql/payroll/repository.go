@@ -3,7 +3,7 @@ package payroll
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/payroll"
+	"github.com/angumol/jvairv2/pkg/domain/payroll"
 )
 
 type repository struct {

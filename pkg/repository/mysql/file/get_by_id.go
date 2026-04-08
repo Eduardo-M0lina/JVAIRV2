@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"log/slog"
 
-	domainFile "github.com/your-org/jvairv2/pkg/domain/file"
+	domainFile "github.com/angumol/jvairv2/pkg/domain/file"
 )
 
 // GetByID obtiene un archivo por su ID

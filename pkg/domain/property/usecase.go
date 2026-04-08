@@ -1,7 +1,7 @@
 package property
 
 import (
-	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/angumol/jvairv2/pkg/domain/customer"
 )
 
 // UseCase orquesta las operaciones de negocio para propiedades

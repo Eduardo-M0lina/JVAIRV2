@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_status"
+	"github.com/angumol/jvairv2/pkg/domain/job_status"
 )
 
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*job_status.JobStatus, int, error) {

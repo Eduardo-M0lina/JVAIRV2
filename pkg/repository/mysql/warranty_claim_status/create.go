@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/warranty_claim_status"
+	"github.com/angumol/jvairv2/pkg/domain/warranty_claim_status"
 )
 
 func (r *Repository) Create(ctx context.Context, wcs *warranty_claim_status.WarrantyClaimStatus) error {

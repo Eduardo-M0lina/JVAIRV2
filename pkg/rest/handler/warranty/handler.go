@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
+	domainWarranty "github.com/angumol/jvairv2/pkg/domain/warranty"
+	"github.com/angumol/jvairv2/pkg/rest/response"
 	"github.com/go-chi/chi/v5"
-	domainWarranty "github.com/your-org/jvairv2/pkg/domain/warranty"
-	"github.com/your-org/jvairv2/pkg/rest/response"
 )
 
 // Handler maneja las peticiones HTTP para warranties

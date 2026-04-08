@@ -6,7 +6,7 @@ import (
 	"errors"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/supervisor"
+	"github.com/angumol/jvairv2/pkg/domain/supervisor"
 )
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*supervisor.Supervisor, error) {

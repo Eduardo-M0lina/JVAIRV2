@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/ability"
-	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/angumol/jvairv2/pkg/domain/ability"
+	"github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // Repository define las operaciones de persistencia para usuarios

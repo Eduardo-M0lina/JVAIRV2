@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
+	handler "github.com/angumol/jvairv2/pkg/rest/handler"
 	"github.com/go-chi/chi/v5"
-	handler "github.com/your-org/jvairv2/pkg/rest/handler"
 )
 
 // SendDispatchSupervisorEmailRequest representa la solicitud para enviar email a supervisores

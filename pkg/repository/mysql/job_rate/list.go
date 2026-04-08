@@ -3,7 +3,7 @@ package job_rate
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_rate"
+	"github.com/angumol/jvairv2/pkg/domain/job_rate"
 )
 
 func (r *repository) List(ctx context.Context, jobID int64, limit, offset int) ([]*job_rate.JobRate, int64, error) {

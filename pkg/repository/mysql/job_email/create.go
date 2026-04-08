@@ -3,7 +3,7 @@ package job_email
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_email"
+	"github.com/angumol/jvairv2/pkg/domain/job_email"
 )
 
 func (r *repository) Create(ctx context.Context, item *job_email.JobEmail) error {

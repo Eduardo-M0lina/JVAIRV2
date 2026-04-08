@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/assigned_role"
+	"github.com/angumol/jvairv2/pkg/domain/assigned_role"
 )
 
 // Assign asigna un rol a una entidad

@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_email"
+	"github.com/angumol/jvairv2/pkg/domain/job_email"
 )
 
 type jobExistsChecker struct {

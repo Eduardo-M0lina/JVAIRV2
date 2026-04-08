@@ -3,7 +3,7 @@ package job_task
 import (
 	"context"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_task"
+	"github.com/angumol/jvairv2/pkg/domain/job_task"
 )
 
 func (r *repository) Update(ctx context.Context, task *job_task.JobTask) error {

@@ -1,4 +1,4 @@
-module github.com/your-org/jvairv2
+module github.com/angumol/jvairv2
 
 go 1.24.0
 

@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"strconv"
 
+	domainSearch "github.com/angumol/jvairv2/pkg/domain/search"
+	domainUser "github.com/angumol/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/rest/handler"
+	"github.com/angumol/jvairv2/pkg/rest/middleware"
 	"github.com/go-chi/chi/v5"
-	domainSearch "github.com/your-org/jvairv2/pkg/domain/search"
-	domainUser "github.com/your-org/jvairv2/pkg/domain/user"
-	"github.com/your-org/jvairv2/pkg/rest/handler"
-	"github.com/your-org/jvairv2/pkg/rest/middleware"
 )
 
 // Handler maneja las peticiones HTTP para búsqueda global

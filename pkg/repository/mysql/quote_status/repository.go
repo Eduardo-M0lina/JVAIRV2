@@ -3,7 +3,7 @@ package quote_status
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/quote_status"
+	"github.com/angumol/jvairv2/pkg/domain/quote_status"
 )
 
 type Repository struct {

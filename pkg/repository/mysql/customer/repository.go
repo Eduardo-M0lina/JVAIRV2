@@ -3,7 +3,7 @@ package customer
 import (
 	"database/sql"
 
-	"github.com/your-org/jvairv2/pkg/domain/customer"
+	"github.com/angumol/jvairv2/pkg/domain/customer"
 )
 
 type Repository struct {

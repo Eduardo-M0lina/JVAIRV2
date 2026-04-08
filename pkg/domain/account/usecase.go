@@ -10,9 +10,9 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/your-org/jvairv2/pkg/domain/password_history"
-	"github.com/your-org/jvairv2/pkg/domain/settings"
-	"github.com/your-org/jvairv2/pkg/domain/user"
+	"github.com/angumol/jvairv2/pkg/domain/password_history"
+	"github.com/angumol/jvairv2/pkg/domain/settings"
+	"github.com/angumol/jvairv2/pkg/domain/user"
 )
 
 var (

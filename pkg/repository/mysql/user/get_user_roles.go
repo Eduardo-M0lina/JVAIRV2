@@ -6,7 +6,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/your-org/jvairv2/pkg/domain/role"
+	"github.com/angumol/jvairv2/pkg/domain/role"
 )
 
 // GetUserRoles obtiene los roles de un usuario

@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	domainEmail "github.com/angumol/jvairv2/pkg/domain/email"
+	domainInvoice "github.com/angumol/jvairv2/pkg/domain/invoice"
 	"github.com/go-chi/chi/v5"
-	domainEmail "github.com/your-org/jvairv2/pkg/domain/email"
-	domainInvoice "github.com/your-org/jvairv2/pkg/domain/invoice"
 )
 
 // Handler maneja las peticiones HTTP para invoices

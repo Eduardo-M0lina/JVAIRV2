@@ -4,7 +4,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/your-org/jvairv2/pkg/domain/job_priority"
+	"github.com/angumol/jvairv2/pkg/domain/job_priority"
 )
 
 func (r *Repository) Create(ctx context.Context, p *job_priority.JobPriority) error {
