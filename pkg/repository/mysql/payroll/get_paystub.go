@@ -54,6 +54,10 @@ func (r *repository) GetPaystubData(ctx context.Context, userID int64) (*payroll
 	var rates []*payroll.PayrollRate
 	var totalPayment float64
 
+	user.UnpaidRates = []*payroll.PayrollRate{}
+	user.HoldingRates = []*payroll.PayrollRate{}
+	user.PaidRates = []*payroll.PayrollRate{}
+
 	for rows.Next() {
 		rate := &payroll.PayrollRate{}
 		err := rows.Scan(
@@ -70,15 +74,22 @@ func (r *repository) GetPaystubData(ctx context.Context, userID int64) (*payroll
 		}
 		rates = append(rates, rate)
 		totalPayment += rate.Payment
+
+		// Agrupar en el usuario directamente desde la misma query
+		if rate.StatusLabel != nil {
+			switch *rate.StatusLabel {
+			case "Unpaid":
+				user.UnpaidRates = append(user.UnpaidRates, rate)
+				user.TotalUnpaid += rate.Payment
+			case "Holding":
+				user.HoldingRates = append(user.HoldingRates, rate)
+				user.TotalHolding += rate.Payment
+			}
+		}
 	}
 
 	if err = rows.Err(); err != nil {
 		return nil, fmt.Errorf("error iterating rates: %w", err)
-	}
-
-	// Cargar rates agrupados para el usuario
-	if err := r.loadUserRates(ctx, user); err != nil {
-		return nil, fmt.Errorf("error loading user rates: %w", err)
 	}
 
 	return &payroll.PaystubData{

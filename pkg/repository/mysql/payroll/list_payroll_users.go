@@ -79,9 +79,11 @@ func (r *repository) ListPayrollUsers(ctx context.Context, filters payroll.Payro
 		return nil, 0, fmt.Errorf("error iterating users: %w", err)
 	}
 
-	// Para cada usuario, obtener sus rates agrupados por status
+	// Para cada usuario, obtener sus rates con límite fijo
+	// Para paginación completa de rates, usar GET /payroll/{userId}?page=X&pageSize=Y
+	const maxRatesPerUser = 100
 	for _, user := range users {
-		if err := r.loadUserRates(ctx, user); err != nil {
+		if err := r.loadUserRates(ctx, user, maxRatesPerUser, 0); err != nil {
 			return nil, 0, fmt.Errorf("error loading rates for user %d: %w", user.ID, err)
 		}
 	}
@@ -89,7 +91,7 @@ func (r *repository) ListPayrollUsers(ctx context.Context, filters payroll.Payro
 	return users, total, nil
 }
 
-func (r *repository) loadUserRates(ctx context.Context, user *payroll.PayrollUser) error {
+func (r *repository) loadUserRates(ctx context.Context, user *payroll.PayrollUser, limit, offset int) error {
 	query := `
 		SELECT jr.id, jr.job_id, jr.user_id, jr.job_rate_status_id, jr.sale_price,
 			   jr.rate_percent, jr.rate_flat, jr.tech_parts, jr.company_parts,
@@ -104,9 +106,10 @@ func (r *repository) loadUserRates(ctx context.Context, user *payroll.PayrollUse
 		LEFT JOIN job_rate_statuses jrs ON jrs.id = jr.job_rate_status_id
 		WHERE jr.user_id = ? AND jr.deleted_at IS NULL
 		ORDER BY jr.created_at DESC
+		LIMIT ? OFFSET ?
 	`
 
-	rows, err := r.db.QueryContext(ctx, query, user.ID)
+	rows, err := r.db.QueryContext(ctx, query, user.ID, limit, offset)
 	if err != nil {
 		return err
 	}
