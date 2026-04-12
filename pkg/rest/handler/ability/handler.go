@@ -153,11 +153,8 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/abilities/{id} [get]
 // @Security BearerAuth
 func (h *Handler) Get(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "roles_manage") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para ver abilities")
-		return
-	}
+	// Nota: No se requiere validación de permisos aquí.
+	// Todos los usuarios autenticados pueden consultar abilities individuales.
 
 	// Obtener el ID de la ability de la URL
 	idStr := chi.URLParam(r, "id")
@@ -354,11 +351,9 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/abilities [get]
 // @Security BearerAuth
 func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "roles_manage") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para listar abilities")
-		return
-	}
+	// Nota: No se requiere validación de permisos aquí.
+	// Todos los usuarios autenticados pueden consultar las abilities disponibles
+	// para saber qué permisos existen en el sistema.
 
 	// Obtener parámetros de consulta
 	page, err := strconv.Atoi(r.URL.Query().Get("page"))
