@@ -15959,6 +15959,10 @@
                 },
                 "property": {
                     "$ref": "#/definitions/warranty.PropertyResponse"
+                },
+                "week": {
+                    "type": "integer",
+                    "example": 42
                 }
             }
         },
@@ -16174,6 +16178,10 @@
                 },
                 "property": {
                     "$ref": "#/definitions/warranty_claim.PropertyResponse"
+                },
+                "week": {
+                    "type": "integer",
+                    "example": 42
                 }
             }
         },

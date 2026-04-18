@@ -2730,6 +2730,9 @@ definitions:
         type: integer
       property:
         $ref: '#/definitions/warranty.PropertyResponse'
+      week:
+        example: 42
+        type: integer
     type: object
   warranty.PropertyResponse:
     properties:
@@ -2886,6 +2889,9 @@ definitions:
         type: integer
       property:
         $ref: '#/definitions/warranty_claim.PropertyResponse'
+      week:
+        example: 42
+        type: integer
     type: object
   warranty_claim.PropertyResponse:
     properties:

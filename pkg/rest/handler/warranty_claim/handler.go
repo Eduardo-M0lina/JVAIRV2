@@ -101,6 +101,7 @@ type PropertyResponse struct {
 // JobResponse representa la información del trabajo en la respuesta
 type JobResponse struct {
 	ID             int64            `json:"id" example:"1"`
+	Week           *int             `json:"week,omitempty" example:"42"`
 	CompletionDate *string          `json:"completionDate,omitempty" example:"2024-01-15T10:30:00Z"`
 	Property       PropertyResponse `json:"property"`
 }
@@ -169,7 +170,8 @@ func toClaimResponse(wc *domainWC.WarrantyClaim) WarrantyClaimResponse {
 
 	if wc.Job != nil {
 		jobResp := &JobResponse{
-			ID: wc.Job.ID,
+			ID:   wc.Job.ID,
+			Week: wc.Job.WeekNumber,
 			Property: PropertyResponse{
 				ID:      wc.Job.Property.ID,
 				Address: wc.Job.Property.Address,

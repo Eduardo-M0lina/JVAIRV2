@@ -85,7 +85,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			wc.old_part_serial_number, wc.new_part_serial_number, wc.esa_number, wc.serial,
 			wc.claim_number, wc.approved, wc.parts_credit_received, wc.labor_payment_received,
 			wc.notes, wc.created_at, wc.updated_at, wc.deleted_at,
-			j.id, j.completion_date,
+			j.id, j.week_number, j.completion_date,
 			p.id, CONCAT(p.street, ', ', p.city, ', ', p.state, ' ', p.zip),
 			c.name
 		FROM warranty_claims wc
@@ -113,6 +113,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		var oldPartSerialNumber, newPartSerialNumber, esaNumber, serial sql.NullString
 		var claimNumber, notes sql.NullString
 		var jobID int64
+		var weekNumber sql.NullInt32
 		var completionDate sql.NullTime
 		var propertyID int64
 		var propertyAddress string
@@ -129,7 +130,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			&oldPartSerialNumber, &newPartSerialNumber, &esaNumber, &serial,
 			&claimNumber, &wc.Approved, &wc.PartsCreditReceived, &wc.LaborPaymentReceived,
 			&notes, &wc.CreatedAt, &wc.UpdatedAt, &wc.DeletedAt,
-			&jobID, &completionDate,
+			&jobID, &weekNumber, &completionDate,
 			&propertyID, &propertyAddress,
 			&customerName,
 		); err != nil {
@@ -164,6 +165,10 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			},
 		}
 
+		if weekNumber.Valid {
+			wn := int(weekNumber.Int32)
+			wc.Job.WeekNumber = &wn
+		}
 		if completionDate.Valid {
 			wc.Job.CompletionDate = &completionDate.Time
 		}
