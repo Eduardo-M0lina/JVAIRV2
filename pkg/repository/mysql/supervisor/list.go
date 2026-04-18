@@ -11,9 +11,11 @@ import (
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*supervisor.Supervisor, int, error) {
 	baseQuery := `
 		SELECT
-			id, customer_id, name, phone, email, created_at, updated_at, deleted_at
-		FROM supervisors
-		WHERE deleted_at IS NULL
+			s.id, s.customer_id, c.name as customer_name, s.name, s.phone, s.email,
+			s.created_at, s.updated_at, s.deleted_at
+		FROM supervisors s
+		INNER JOIN customers c ON s.customer_id = c.id
+		WHERE s.deleted_at IS NULL
 	`
 
 	countQuery := "SELECT COUNT(*) FROM supervisors WHERE deleted_at IS NULL"
@@ -22,15 +24,15 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	var conditions []string
 
 	if customerID, ok := filters["customer_id"].(int64); ok && customerID > 0 {
-		conditions = append(conditions, "customer_id = ?")
+		conditions = append(conditions, "s.customer_id = ?")
 		args = append(args, customerID)
 	}
 
 	if search, ok := filters["search"].(string); ok && search != "" {
 		searchCondition := `(
-			name LIKE ? OR
-			phone LIKE ? OR
-			email LIKE ?
+			s.name LIKE ? OR
+			s.phone LIKE ? OR
+			s.email LIKE ?
 		)`
 		conditions = append(conditions, searchCondition)
 		searchPattern := "%" + search + "%"
@@ -75,6 +77,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		err := rows.Scan(
 			&s.ID,
 			&s.CustomerID,
+			&s.CustomerName,
 			&s.Name,
 			&s.Phone,
 			&s.Email,

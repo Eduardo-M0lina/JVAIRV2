@@ -86,33 +86,52 @@ type UpdateWarrantyClaimRequest struct {
 	Notes                 *string `json:"notes,omitempty" example:"Claim notes"`
 }
 
+// CustomerResponse representa la información del cliente en la respuesta
+type CustomerResponse struct {
+	Name string `json:"name" example:"John Doe"`
+}
+
+// PropertyResponse representa la información de la propiedad en la respuesta
+type PropertyResponse struct {
+	ID       int64            `json:"id" example:"1"`
+	Address  string           `json:"address" example:"123 Main St, Atlanta, GA 30301"`
+	Customer CustomerResponse `json:"customer"`
+}
+
+// JobResponse representa la información del trabajo en la respuesta
+type JobResponse struct {
+	ID             int64            `json:"id" example:"1"`
+	CompletionDate *string          `json:"completionDate,omitempty" example:"2024-01-15T10:30:00Z"`
+	Property       PropertyResponse `json:"property"`
+}
+
 // WarrantyClaimResponse representa la respuesta de un reclamo
 type WarrantyClaimResponse struct {
-	ID                    int64   `json:"id" example:"1"`
-	InternalClaimNumber   string  `json:"internalClaimNumber" example:"ICN-2024-001"`
-	WarrantyClaimTypeID   int64   `json:"warrantyClaimTypeId" example:"1"`
-	WarrantyClaimStatusID int64   `json:"warrantyClaimStatusId" example:"1"`
-	JobID                 int64   `json:"jobId" example:"1"`
-	InvoiceNumber         *string `json:"invoiceNumber,omitempty"`
-	WorkDone              bool    `json:"workDone" example:"false"`
-	WarrantyPart          *string `json:"warrantyPart,omitempty"`
-	Manufacturer          *string `json:"manufacturer,omitempty"`
-	ModelNumber           *string `json:"modelNumber,omitempty"`
-	PartNumber            *string `json:"partNumber,omitempty"`
-	ReplacementPartNumber *string `json:"replacementPartNumber,omitempty"`
-	PartDistributor       *string `json:"partDistributor,omitempty"`
-	PartInvoiceNumber     *string `json:"partInvoiceNumber,omitempty"`
-	OldPartSerialNumber   *string `json:"oldPartSerialNumber,omitempty"`
-	NewPartSerialNumber   *string `json:"newPartSerialNumber,omitempty"`
-	EsaNumber             *string `json:"esaNumber,omitempty"`
-	Serial                *string `json:"serial,omitempty"`
-	ClaimNumber           *string `json:"claimNumber,omitempty"`
-	Approved              bool    `json:"approved" example:"false"`
-	PartsCreditReceived   bool    `json:"partsCreditReceived" example:"false"`
-	LaborPaymentReceived  bool    `json:"laborPaymentReceived" example:"false"`
-	Notes                 *string `json:"notes,omitempty"`
-	CreatedAt             string  `json:"createdAt,omitempty"`
-	UpdatedAt             string  `json:"updatedAt,omitempty"`
+	ID                    int64        `json:"id" example:"1"`
+	InternalClaimNumber   string       `json:"internalClaimNumber" example:"ICN-2024-001"`
+	WarrantyClaimTypeID   int64        `json:"warrantyClaimTypeId" example:"1"`
+	WarrantyClaimStatusID int64        `json:"warrantyClaimStatusId" example:"1"`
+	Job                   *JobResponse `json:"job,omitempty"`
+	InvoiceNumber         *string      `json:"invoiceNumber,omitempty"`
+	WorkDone              bool         `json:"workDone" example:"false"`
+	WarrantyPart          *string      `json:"warrantyPart,omitempty"`
+	Manufacturer          *string      `json:"manufacturer,omitempty"`
+	ModelNumber           *string      `json:"modelNumber,omitempty"`
+	PartNumber            *string      `json:"partNumber,omitempty"`
+	ReplacementPartNumber *string      `json:"replacementPartNumber,omitempty"`
+	PartDistributor       *string      `json:"partDistributor,omitempty"`
+	PartInvoiceNumber     *string      `json:"partInvoiceNumber,omitempty"`
+	OldPartSerialNumber   *string      `json:"oldPartSerialNumber,omitempty"`
+	NewPartSerialNumber   *string      `json:"newPartSerialNumber,omitempty"`
+	EsaNumber             *string      `json:"esaNumber,omitempty"`
+	Serial                *string      `json:"serial,omitempty"`
+	ClaimNumber           *string      `json:"claimNumber,omitempty"`
+	Approved              bool         `json:"approved" example:"false"`
+	PartsCreditReceived   bool         `json:"partsCreditReceived" example:"false"`
+	LaborPaymentReceived  bool         `json:"laborPaymentReceived" example:"false"`
+	Notes                 *string      `json:"notes,omitempty"`
+	CreatedAt             string       `json:"createdAt,omitempty"`
+	UpdatedAt             string       `json:"updatedAt,omitempty"`
 }
 
 func toClaimResponse(wc *domainWC.WarrantyClaim) WarrantyClaimResponse {
@@ -121,7 +140,6 @@ func toClaimResponse(wc *domainWC.WarrantyClaim) WarrantyClaimResponse {
 		InternalClaimNumber:   wc.InternalClaimNumber,
 		WarrantyClaimTypeID:   wc.WarrantyClaimTypeID,
 		WarrantyClaimStatusID: wc.WarrantyClaimStatusID,
-		JobID:                 wc.JobID,
 		InvoiceNumber:         wc.InvoiceNumber,
 		WorkDone:              wc.WorkDone,
 		WarrantyPart:          wc.WarrantyPart,
@@ -147,6 +165,24 @@ func toClaimResponse(wc *domainWC.WarrantyClaim) WarrantyClaimResponse {
 	}
 	if wc.UpdatedAt != nil {
 		resp.UpdatedAt = wc.UpdatedAt.Format(timeFormat)
+	}
+
+	if wc.Job != nil {
+		jobResp := &JobResponse{
+			ID: wc.Job.ID,
+			Property: PropertyResponse{
+				ID:      wc.Job.Property.ID,
+				Address: wc.Job.Property.Address,
+				Customer: CustomerResponse{
+					Name: wc.Job.Property.Customer.Name,
+				},
+			},
+		}
+		if wc.Job.CompletionDate != nil {
+			completionDateStr := wc.Job.CompletionDate.Format(timeFormat)
+			jobResp.CompletionDate = &completionDateStr
+		}
+		resp.Job = jobResp
 	}
 
 	return resp

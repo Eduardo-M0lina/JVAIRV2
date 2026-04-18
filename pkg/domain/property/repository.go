@@ -21,4 +21,7 @@ type Repository interface {
 
 	// HasJobs verifica si una propiedad tiene jobs asociados
 	HasJobs(ctx context.Context, id int64) (bool, error)
+
+	// SearchByAddress busca propiedades por dirección (street)
+	SearchByAddress(ctx context.Context, address string) ([]*Property, error)
 }

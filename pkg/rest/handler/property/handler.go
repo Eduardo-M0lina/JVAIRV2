@@ -24,6 +24,7 @@ func NewHandler(useCase *property.UseCase) *Handler {
 func (h *Handler) RegisterRoutes(r chi.Router) {
 	r.Get("/", h.List)
 	r.Post("/", h.Create)
+	r.Get("/search", h.SearchByAddress)
 	r.Get("/{id}", h.Get)
 	r.Put("/{id}", h.Update)
 	r.Delete("/{id}", h.Delete)
@@ -55,6 +56,7 @@ type UpdatePropertyRequest struct {
 type PropertyResponse struct {
 	ID           int64   `json:"id"`
 	CustomerID   int64   `json:"customerId"`
+	CustomerName string  `json:"customerName"`
 	PropertyCode *string `json:"propertyCode,omitempty"`
 	Street       string  `json:"street"`
 	City         string  `json:"city"`
@@ -71,6 +73,7 @@ func toPropertyResponse(p *property.Property) PropertyResponse {
 	resp := PropertyResponse{
 		ID:           p.ID,
 		CustomerID:   p.CustomerID,
+		CustomerName: p.CustomerName,
 		PropertyCode: p.PropertyCode,
 		Street:       p.Street,
 		City:         p.City,

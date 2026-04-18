@@ -5654,6 +5654,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/properties/search": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Search properties by street address (minimum 3 characters)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Properties"
+                ],
+                "summary": "Search properties by address",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Address search term (minimum 3 characters)",
+                        "name": "address",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/property.PropertyResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/properties/{id}": {
             "get": {
                 "security": [
@@ -6485,12 +6540,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/settings.SettingsResponse"
                         }
                     },
-                    "403": {
-                        "description": "No tiene permisos para ver configuraciones",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "404": {
                         "description": "Configuraciones no encontradas",
                         "schema": {
@@ -6542,12 +6591,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Error al decodificar la solicitud o datos inválidos",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "403": {
-                        "description": "No tiene permisos para actualizar configuraciones",
                         "schema": {
                             "type": "string"
                         }
@@ -10852,6 +10895,53 @@ const docTemplate = `{
                 }
             }
         },
+        "/invoices/{id}/payment-intent": {
+            "get": {
+                "description": "Crea un PaymentIntent en Stripe para el balance pendiente de una factura. Endpoint público (sin autenticación).",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stripe"
+                ],
+                "summary": "Crear PaymentIntent para pago de factura",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID de la factura",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/stripe.PaymentIntentResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/jobs/{id}/dispatch-email": {
             "post": {
                 "description": "Envía un email de dispatch del job a uno o más técnicos",
@@ -11800,6 +11890,41 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/webhooks/stripe": {
+            "post": {
+                "description": "Recibe y procesa eventos de Stripe (payment_intent.succeeded). Endpoint público (sin autenticación).",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Stripe"
+                ],
+                "summary": "Procesar webhook de Stripe",
+                "responses": {
+                    "200": {
+                        "description": "Event processed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -12325,6 +12450,10 @@ const docTemplate = `{
                     "type": "string",
                     "example": "+1-555-0103"
                 },
+                "totalProperties": {
+                    "type": "integer",
+                    "example": 10
+                },
                 "updatedAt": {
                     "type": "string",
                     "example": "2024-01-18T14:20:00Z"
@@ -12622,6 +12751,20 @@ const docTemplate = `{
                 }
             }
         },
+        "job.CategoryResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "job.CloseJobRequest": {
             "type": "object",
             "properties": {
@@ -12707,6 +12850,9 @@ const docTemplate = `{
                 "callLogs": {
                     "type": "string"
                 },
+                "category": {
+                    "$ref": "#/definitions/job.CategoryResponse"
+                },
                 "closed": {
                     "type": "boolean"
                 },
@@ -12737,23 +12883,17 @@ const docTemplate = `{
                 "internalJobNotes": {
                     "type": "string"
                 },
-                "jobCategoryId": {
-                    "type": "integer"
-                },
-                "jobPriorityId": {
-                    "type": "integer"
-                },
                 "jobReport": {
                     "type": "string"
                 },
                 "jobSalesPrice": {
                     "type": "number"
                 },
-                "jobStatusId": {
-                    "type": "integer"
-                },
                 "moneyTurnedIn": {
                     "type": "number"
+                },
+                "priority": {
+                    "$ref": "#/definitions/job.PriorityResponse"
                 },
                 "propertyId": {
                     "type": "integer"
@@ -12769,6 +12909,9 @@ const docTemplate = `{
                 },
                 "scheduledTimeType": {
                     "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/job.StatusResponse"
                 },
                 "supervisorIds": {
                     "type": "string"
@@ -12795,6 +12938,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "workflowId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "job.PriorityResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "order": {
                     "type": "integer"
                 }
             }
@@ -12828,6 +12988,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "subject": {
+                    "type": "string"
+                }
+            }
+        },
+        "job.StatusResponse": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "label": {
                     "type": "string"
                 }
             }
@@ -14634,6 +14808,9 @@ const docTemplate = `{
                 "customerId": {
                     "type": "integer"
                 },
+                "customerName": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
@@ -15400,6 +15577,29 @@ const docTemplate = `{
                 }
             }
         },
+        "stripe.PaymentIntentResult": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "clientSecret": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "invoiceNumber": {
+                    "type": "string"
+                },
+                "publicKey": {
+                    "type": "string"
+                }
+            }
+        },
         "supervisor.CreateSupervisorRequest": {
             "type": "object",
             "properties": {
@@ -15431,6 +15631,10 @@ const docTemplate = `{
                 "customerId": {
                     "type": "integer",
                     "example": 10
+                },
+                "customerName": {
+                    "type": "string",
+                    "example": "ACME Corporation"
                 },
                 "email": {
                     "type": "string",
@@ -15740,6 +15944,47 @@ const docTemplate = `{
                 }
             }
         },
+        "warranty.CustomerResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                }
+            }
+        },
+        "warranty.JobResponse": {
+            "type": "object",
+            "properties": {
+                "completionDate": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "property": {
+                    "$ref": "#/definitions/warranty.PropertyResponse"
+                }
+            }
+        },
+        "warranty.PropertyResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "123 Main St, Atlanta, GA 30301"
+                },
+                "customer": {
+                    "$ref": "#/definitions/warranty.CustomerResponse"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
         "warranty.UpdateWarrantyRequest": {
             "type": "object",
             "properties": {
@@ -15796,9 +16041,8 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1
                 },
-                "jobId": {
-                    "type": "integer",
-                    "example": 1
+                "job": {
+                    "$ref": "#/definitions/warranty.JobResponse"
                 },
                 "notes": {
                     "type": "string",
@@ -15912,6 +16156,47 @@ const docTemplate = `{
                 "workDone": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "warranty_claim.CustomerResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                }
+            }
+        },
+        "warranty_claim.JobResponse": {
+            "type": "object",
+            "properties": {
+                "completionDate": {
+                    "type": "string",
+                    "example": "2024-01-15T10:30:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "property": {
+                    "$ref": "#/definitions/warranty_claim.PropertyResponse"
+                }
+            }
+        },
+        "warranty_claim.PropertyResponse": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "example": "123 Main St, Atlanta, GA 30301"
+                },
+                "customer": {
+                    "$ref": "#/definitions/warranty_claim.CustomerResponse"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -16031,9 +16316,8 @@ const docTemplate = `{
                 "invoiceNumber": {
                     "type": "string"
                 },
-                "jobId": {
-                    "type": "integer",
-                    "example": 1
+                "job": {
+                    "$ref": "#/definitions/warranty_claim.JobResponse"
                 },
                 "laborPaymentReceived": {
                     "type": "boolean",

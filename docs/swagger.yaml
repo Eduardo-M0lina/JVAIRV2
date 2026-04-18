@@ -356,6 +356,9 @@ definitions:
       phoneOther:
         example: +1-555-0103
         type: string
+      totalProperties:
+        example: 10
+        type: integer
       updatedAt:
         example: "2024-01-18T14:20:00Z"
         type: string
@@ -558,6 +561,15 @@ definitions:
       subject:
         type: string
     type: object
+  job.CategoryResponse:
+    properties:
+      id:
+        type: integer
+      label:
+        type: string
+      type:
+        type: string
+    type: object
   job.CloseJobRequest:
     properties:
       jobStatusId:
@@ -614,6 +626,8 @@ definitions:
         type: boolean
       callLogs:
         type: string
+      category:
+        $ref: '#/definitions/job.CategoryResponse'
       closed:
         type: boolean
       completionDate:
@@ -634,18 +648,14 @@ definitions:
         type: string
       internalJobNotes:
         type: string
-      jobCategoryId:
-        type: integer
-      jobPriorityId:
-        type: integer
       jobReport:
         type: string
       jobSalesPrice:
         type: number
-      jobStatusId:
-        type: integer
       moneyTurnedIn:
         type: number
+      priority:
+        $ref: '#/definitions/job.PriorityResponse'
       propertyId:
         type: integer
       quickNotes:
@@ -656,6 +666,8 @@ definitions:
         type: string
       scheduledTimeType:
         type: string
+      status:
+        $ref: '#/definitions/job.StatusResponse'
       supervisorIds:
         type: string
       technicianJobStatusId:
@@ -673,6 +685,17 @@ definitions:
       workOrder:
         type: string
       workflowId:
+        type: integer
+    type: object
+  job.PriorityResponse:
+    properties:
+      class:
+        type: string
+      id:
+        type: integer
+      label:
+        type: string
+      order:
         type: integer
     type: object
   job.SendDispatchEmailRequest:
@@ -694,6 +717,15 @@ definitions:
       email:
         type: string
       subject:
+        type: string
+    type: object
+  job.StatusResponse:
+    properties:
+      class:
+        type: string
+      id:
+        type: integer
+      label:
         type: string
     type: object
   job.UpdateJobRequest:
@@ -1907,6 +1939,8 @@ definitions:
         type: string
       customerId:
         type: integer
+      customerName:
+        type: string
       id:
         type: integer
       name:
@@ -2431,6 +2465,21 @@ definitions:
       message:
         type: string
     type: object
+  stripe.PaymentIntentResult:
+    properties:
+      amount:
+        type: integer
+      clientSecret:
+        type: string
+      currency:
+        type: string
+      id:
+        type: string
+      invoiceNumber:
+        type: string
+      publicKey:
+        type: string
+    type: object
   supervisor.CreateSupervisorRequest:
     properties:
       customerId:
@@ -2454,6 +2503,9 @@ definitions:
       customerId:
         example: 10
         type: integer
+      customerName:
+        example: ACME Corporation
+        type: string
       email:
         example: john@example.com
         type: string
@@ -2662,6 +2714,34 @@ definitions:
         example: 1
         type: integer
     type: object
+  warranty.CustomerResponse:
+    properties:
+      name:
+        example: John Doe
+        type: string
+    type: object
+  warranty.JobResponse:
+    properties:
+      completionDate:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      property:
+        $ref: '#/definitions/warranty.PropertyResponse'
+    type: object
+  warranty.PropertyResponse:
+    properties:
+      address:
+        example: 123 Main St, Atlanta, GA 30301
+        type: string
+      customer:
+        $ref: '#/definitions/warranty.CustomerResponse'
+      id:
+        example: 1
+        type: integer
+    type: object
   warranty.UpdateWarrantyRequest:
     properties:
       agreementNumber:
@@ -2703,9 +2783,8 @@ definitions:
       id:
         example: 1
         type: integer
-      jobId:
-        example: 1
-        type: integer
+      job:
+        $ref: '#/definitions/warranty.JobResponse'
       notes:
         example: Warranty notes
         type: string
@@ -2790,6 +2869,34 @@ definitions:
       workDone:
         example: false
         type: boolean
+    type: object
+  warranty_claim.CustomerResponse:
+    properties:
+      name:
+        example: John Doe
+        type: string
+    type: object
+  warranty_claim.JobResponse:
+    properties:
+      completionDate:
+        example: "2024-01-15T10:30:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      property:
+        $ref: '#/definitions/warranty_claim.PropertyResponse'
+    type: object
+  warranty_claim.PropertyResponse:
+    properties:
+      address:
+        example: 123 Main St, Atlanta, GA 30301
+        type: string
+      customer:
+        $ref: '#/definitions/warranty_claim.CustomerResponse'
+      id:
+        example: 1
+        type: integer
     type: object
   warranty_claim.UpdateWarrantyClaimRequest:
     properties:
@@ -2876,9 +2983,8 @@ definitions:
         type: string
       invoiceNumber:
         type: string
-      jobId:
-        example: 1
-        type: integer
+      job:
+        $ref: '#/definitions/warranty_claim.JobResponse'
       laborPaymentReceived:
         example: false
         type: boolean
@@ -7206,6 +7312,41 @@ paths:
       summary: Update property equipment
       tags:
       - PropertyEquipment
+  /api/v1/properties/search:
+    get:
+      description: Search properties by street address (minimum 3 characters)
+      parameters:
+      - description: Address search term (minimum 3 characters)
+        in: query
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/property.PropertyResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Search properties by address
+      tags:
+      - Properties
   /api/v1/roles:
     get:
       consumes:
@@ -7454,10 +7595,6 @@ paths:
           description: Configuraciones obtenidas exitosamente
           schema:
             $ref: '#/definitions/settings.SettingsResponse'
-        "403":
-          description: No tiene permisos para ver configuraciones
-          schema:
-            type: string
         "404":
           description: Configuraciones no encontradas
           schema:
@@ -7495,10 +7632,6 @@ paths:
             $ref: '#/definitions/settings.SettingsResponse'
         "400":
           description: Error al decodificar la solicitud o datos inválidos
-          schema:
-            type: string
-        "403":
-          description: No tiene permisos para actualizar configuraciones
           schema:
             type: string
         "404":
@@ -10276,6 +10409,38 @@ paths:
       summary: Resetear contraseña
       tags:
       - Auth
+  /invoices/{id}/payment-intent:
+    get:
+      description: Crea un PaymentIntent en Stripe para el balance pendiente de una
+        factura. Endpoint público (sin autenticación).
+      parameters:
+      - description: ID de la factura
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/stripe.PaymentIntentResult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Crear PaymentIntent para pago de factura
+      tags:
+      - Stripe
   /jobs/{id}/dispatch-email:
     post:
       consumes:
@@ -10901,6 +11066,30 @@ paths:
       summary: Send paystub email
       tags:
       - users
+  /webhooks/stripe:
+    post:
+      consumes:
+      - application/json
+      description: Recibe y procesa eventos de Stripe (payment_intent.succeeded).
+        Endpoint público (sin autenticación).
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Event processed
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Procesar webhook de Stripe
+      tags:
+      - Stripe
 securityDefinitions:
   BearerAuth:
     description: Ingrese el token con el prefijo 'Bearer '

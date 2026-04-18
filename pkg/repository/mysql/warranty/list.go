@@ -13,7 +13,6 @@ import (
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*domainWarranty.Warranty, int, error) {
 	where := []string{"w.deleted_at IS NULL"}
 	args := []interface{}{}
-	needsJoin := false
 
 	if search, ok := filters["search"].(string); ok && search != "" {
 		where = append(where, "(w.warranty_number LIKE ? OR w.agreement_number LIKE ? OR w.notes LIKE ?)")
@@ -36,17 +35,16 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	}
 
 	if weekNumber, ok := filters["week_number"].(string); ok && weekNumber != "" {
-		needsJoin = true
 		where = append(where, "j.week_number = ?")
 		args = append(args, weekNumber)
 	}
 
 	whereClause := strings.Join(where, " AND ")
 
-	joinClause := ""
-	if needsJoin {
-		joinClause = "INNER JOIN jobs j ON w.job_id = j.id"
-	}
+	joinClause := `
+		INNER JOIN jobs j ON w.job_id = j.id
+		INNER JOIN properties p ON j.property_id = p.id
+		INNER JOIN customers c ON p.customer_id = c.id`
 
 	// Count
 	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM warranties w %s WHERE %s", joinClause, whereClause)
@@ -72,9 +70,6 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		case "created_at":
 			orderBy = fmt.Sprintf("w.created_at %s", direction)
 		case "week_number":
-			if !needsJoin {
-				joinClause = "INNER JOIN jobs j ON w.job_id = j.id"
-			}
 			orderBy = fmt.Sprintf("j.week_number %s", direction)
 		default:
 			orderBy = fmt.Sprintf("w.id %s", direction)
@@ -86,7 +81,10 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	query := fmt.Sprintf(`
 		SELECT w.id, w.warranty_number, w.job_id, w.warranty_type_id, w.warranty_status_id,
 			w.date_submitted, w.agreement_number, w.audit_done, w.notes,
-			w.created_at, w.updated_at, w.deleted_at
+			w.created_at, w.updated_at, w.deleted_at,
+			j.id, j.completion_date,
+			p.id, CONCAT(p.street, ', ', p.city, ', ', p.state, ' ', p.zip),
+			c.name
 		FROM warranties w
 		%s
 		WHERE %s
@@ -110,6 +108,11 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		var dateSubmitted sql.NullTime
 		var agreementNumber sql.NullString
 		var notes sql.NullString
+		var jobID int64
+		var completionDate sql.NullTime
+		var propertyID int64
+		var propertyAddress string
+		var customerName string
 
 		if err := rows.Scan(
 			&w.ID,
@@ -124,6 +127,9 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			&w.CreatedAt,
 			&w.UpdatedAt,
 			&w.DeletedAt,
+			&jobID, &completionDate,
+			&propertyID, &propertyAddress,
+			&customerName,
 		); err != nil {
 			slog.ErrorContext(ctx, "Failed to scan warranty row",
 				slog.String("error", err.Error()))
@@ -138,6 +144,21 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		}
 		if notes.Valid {
 			w.Notes = &notes.String
+		}
+
+		w.Job = &domainWarranty.Job{
+			ID: jobID,
+			Property: domainWarranty.Property{
+				ID:      propertyID,
+				Address: propertyAddress,
+				Customer: domainWarranty.Customer{
+					Name: customerName,
+				},
+			},
+		}
+
+		if completionDate.Valid {
+			w.Job.CompletionDate = &completionDate.Time
 		}
 
 		warranties = append(warranties, w)

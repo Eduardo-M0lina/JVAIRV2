@@ -12,15 +12,18 @@ import (
 func (r *Repository) GetByID(ctx context.Context, id int64) (*supervisor.Supervisor, error) {
 	query := `
 		SELECT
-			id, customer_id, name, phone, email, created_at, updated_at, deleted_at
-		FROM supervisors
-		WHERE id = ? AND deleted_at IS NULL
+			s.id, s.customer_id, c.name as customer_name, s.name, s.phone, s.email,
+			s.created_at, s.updated_at, s.deleted_at
+		FROM supervisors s
+		INNER JOIN customers c ON s.customer_id = c.id
+		WHERE s.id = ? AND s.deleted_at IS NULL
 	`
 
 	s := &supervisor.Supervisor{}
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
 		&s.ID,
 		&s.CustomerID,
+		&s.CustomerName,
 		&s.Name,
 		&s.Phone,
 		&s.Email,

@@ -5,11 +5,31 @@ import (
 	"time"
 )
 
+// Customer representa la información del cliente
+type Customer struct {
+	Name string `json:"name"`
+}
+
+// Property representa la información de la propiedad
+type Property struct {
+	ID       int64    `json:"id"`
+	Address  string   `json:"address"`
+	Customer Customer `json:"customer"`
+}
+
+// Job representa la información del trabajo
+type Job struct {
+	ID             int64      `json:"id"`
+	CompletionDate *time.Time `json:"completionDate,omitempty"`
+	Property       Property   `json:"property"`
+}
+
 // Warranty representa una garantía en el sistema
 type Warranty struct {
 	ID               int64      `json:"id"`
 	WarrantyNumber   string     `json:"warrantyNumber"`
 	JobID            int64      `json:"jobId"`
+	Job              *Job       `json:"job,omitempty"`
 	WarrantyTypeID   int64      `json:"warrantyTypeId"`
 	WarrantyStatusID int64      `json:"warrantyStatusId"`
 	DateSubmitted    *time.Time `json:"dateSubmitted,omitempty"`

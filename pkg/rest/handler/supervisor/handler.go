@@ -32,13 +32,14 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 }
 
 type SupervisorResponse struct {
-	ID         int64   `json:"id" example:"1"`
-	CustomerID int64   `json:"customerId" example:"10"`
-	Name       string  `json:"name" example:"John Doe"`
-	Phone      *string `json:"phone,omitempty" example:"+1-555-0100"`
-	Email      *string `json:"email,omitempty" example:"john@example.com"`
-	CreatedAt  string  `json:"createdAt,omitempty" example:"2024-01-15T10:30:00Z"`
-	UpdatedAt  string  `json:"updatedAt,omitempty" example:"2024-01-18T14:20:00Z"`
+	ID           int64   `json:"id" example:"1"`
+	CustomerID   int64   `json:"customerId" example:"10"`
+	CustomerName string  `json:"customerName" example:"ACME Corporation"`
+	Name         string  `json:"name" example:"John Doe"`
+	Phone        *string `json:"phone,omitempty" example:"+1-555-0100"`
+	Email        *string `json:"email,omitempty" example:"john@example.com"`
+	CreatedAt    string  `json:"createdAt,omitempty" example:"2024-01-15T10:30:00Z"`
+	UpdatedAt    string  `json:"updatedAt,omitempty" example:"2024-01-18T14:20:00Z"`
 }
 
 type CreateSupervisorRequest struct {
@@ -57,11 +58,12 @@ type UpdateSupervisorRequest struct {
 
 func toSupervisorResponse(s *supervisor.Supervisor) SupervisorResponse {
 	resp := SupervisorResponse{
-		ID:         s.ID,
-		CustomerID: s.CustomerID,
-		Name:       s.Name,
-		Phone:      s.Phone,
-		Email:      s.Email,
+		ID:           s.ID,
+		CustomerID:   s.CustomerID,
+		CustomerName: s.CustomerName,
+		Name:         s.Name,
+		Phone:        s.Phone,
+		Email:        s.Email,
 	}
 
 	if s.CreatedAt != nil {
