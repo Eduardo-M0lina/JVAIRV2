@@ -13,7 +13,6 @@ import (
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*domainWC.WarrantyClaim, int, error) {
 	where := []string{"wc.deleted_at IS NULL"}
 	args := []interface{}{}
-	needsJoin := false
 
 	if search, ok := filters["search"].(string); ok && search != "" {
 		where = append(where, "(wc.internal_claim_number LIKE ? OR wc.claim_number LIKE ? OR wc.notes LIKE ?)")
@@ -36,17 +35,16 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	}
 
 	if weekNumber, ok := filters["week_number"].(string); ok && weekNumber != "" {
-		needsJoin = true
 		where = append(where, "j.week_number = ?")
 		args = append(args, weekNumber)
 	}
 
 	whereClause := strings.Join(where, " AND ")
 
-	joinClause := ""
-	if needsJoin {
-		joinClause = "INNER JOIN jobs j ON wc.job_id = j.id"
-	}
+	joinClause := `
+		INNER JOIN jobs j ON wc.job_id = j.id
+		INNER JOIN properties p ON j.property_id = p.id
+		INNER JOIN customers c ON p.customer_id = c.id`
 
 	// Count
 	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM warranty_claims wc %s WHERE %s", joinClause, whereClause)
@@ -72,9 +70,6 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		case "created_at":
 			orderBy = fmt.Sprintf("wc.created_at %s", direction)
 		case "week_number":
-			if !needsJoin {
-				joinClause = "INNER JOIN jobs j ON wc.job_id = j.id"
-			}
 			orderBy = fmt.Sprintf("j.week_number %s", direction)
 		default:
 			orderBy = fmt.Sprintf("wc.id %s", direction)
@@ -89,7 +84,10 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			wc.part_number, wc.replacement_part_number, wc.part_distributor, wc.part_invoice_number,
 			wc.old_part_serial_number, wc.new_part_serial_number, wc.esa_number, wc.serial,
 			wc.claim_number, wc.approved, wc.parts_credit_received, wc.labor_payment_received,
-			wc.notes, wc.created_at, wc.updated_at, wc.deleted_at
+			wc.notes, wc.created_at, wc.updated_at, wc.deleted_at,
+			j.id, j.completion_date,
+			p.id, CONCAT(p.street, ', ', p.city, ', ', p.state, ' ', p.zip),
+			c.name
 		FROM warranty_claims wc
 		%s
 		WHERE %s
@@ -114,6 +112,11 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		var partNumber, replacementPartNumber, partDistributor, partInvoiceNumber sql.NullString
 		var oldPartSerialNumber, newPartSerialNumber, esaNumber, serial sql.NullString
 		var claimNumber, notes sql.NullString
+		var jobID int64
+		var completionDate sql.NullTime
+		var propertyID int64
+		var propertyAddress string
+		var customerName string
 
 		if err := rows.Scan(
 			&wc.ID,
@@ -126,6 +129,9 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			&oldPartSerialNumber, &newPartSerialNumber, &esaNumber, &serial,
 			&claimNumber, &wc.Approved, &wc.PartsCreditReceived, &wc.LaborPaymentReceived,
 			&notes, &wc.CreatedAt, &wc.UpdatedAt, &wc.DeletedAt,
+			&jobID, &completionDate,
+			&propertyID, &propertyAddress,
+			&customerName,
 		); err != nil {
 			slog.ErrorContext(ctx, "Failed to scan warranty claim row",
 				slog.String("error", err.Error()))
@@ -146,6 +152,21 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		wc.Serial = fromNullString(serial)
 		wc.ClaimNumber = fromNullString(claimNumber)
 		wc.Notes = fromNullString(notes)
+
+		wc.Job = &domainWC.Job{
+			ID: jobID,
+			Property: domainWC.Property{
+				ID:      propertyID,
+				Address: propertyAddress,
+				Customer: domainWC.Customer{
+					Name: customerName,
+				},
+			},
+		}
+
+		if completionDate.Valid {
+			wc.Job.CompletionDate = &completionDate.Time
+		}
 
 		claims = append(claims, wc)
 	}

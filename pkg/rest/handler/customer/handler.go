@@ -37,22 +37,23 @@ func (h *Handler) RegisterRoutes(r chi.Router) {
 }
 
 type CustomerResponse struct {
-	ID             int64           `json:"id" example:"1"`
-	Name           string          `json:"name" example:"ACME Corporation"`
-	Email          *string         `json:"email,omitempty" example:"contact@acme.com"`
-	Phone          *string         `json:"phone,omitempty" example:"+1-555-0100"`
-	Mobile         *string         `json:"mobile,omitempty" example:"+1-555-0101"`
-	Fax            *string         `json:"fax,omitempty" example:"+1-555-0102"`
-	PhoneOther     *string         `json:"phoneOther,omitempty" example:"+1-555-0103"`
-	Website        *string         `json:"website,omitempty" example:"https://acme.com"`
-	ContactName    *string         `json:"contactName,omitempty" example:"John Doe"`
-	ContactEmail   *string         `json:"contactEmail,omitempty" example:"john@acme.com"`
-	ContactPhone   *string         `json:"contactPhone,omitempty" example:"+1-555-0104"`
-	BillingAddress *BillingAddress `json:"billingAddress,omitempty"`
-	WorkflowID     int64           `json:"workflowId" example:"5"`
-	Notes          *string         `json:"notes,omitempty" example:"Important client notes"`
-	CreatedAt      string          `json:"createdAt,omitempty" example:"2024-01-15T10:30:00Z"`
-	UpdatedAt      string          `json:"updatedAt,omitempty" example:"2024-01-18T14:20:00Z"`
+	ID              int64           `json:"id" example:"1"`
+	Name            string          `json:"name" example:"ACME Corporation"`
+	Email           *string         `json:"email,omitempty" example:"contact@acme.com"`
+	Phone           *string         `json:"phone,omitempty" example:"+1-555-0100"`
+	Mobile          *string         `json:"mobile,omitempty" example:"+1-555-0101"`
+	Fax             *string         `json:"fax,omitempty" example:"+1-555-0102"`
+	PhoneOther      *string         `json:"phoneOther,omitempty" example:"+1-555-0103"`
+	Website         *string         `json:"website,omitempty" example:"https://acme.com"`
+	ContactName     *string         `json:"contactName,omitempty" example:"John Doe"`
+	ContactEmail    *string         `json:"contactEmail,omitempty" example:"john@acme.com"`
+	ContactPhone    *string         `json:"contactPhone,omitempty" example:"+1-555-0104"`
+	BillingAddress  *BillingAddress `json:"billingAddress,omitempty"`
+	WorkflowID      int64           `json:"workflowId" example:"5"`
+	Notes           *string         `json:"notes,omitempty" example:"Important client notes"`
+	TotalProperties int             `json:"totalProperties" example:"10"`
+	CreatedAt       string          `json:"createdAt,omitempty" example:"2024-01-15T10:30:00Z"`
+	UpdatedAt       string          `json:"updatedAt,omitempty" example:"2024-01-18T14:20:00Z"`
 }
 
 type BillingAddress struct {
@@ -102,19 +103,20 @@ type UpdateCustomerRequest struct {
 
 func toCustomerResponse(c *customer.Customer) CustomerResponse {
 	resp := CustomerResponse{
-		ID:           c.ID,
-		Name:         c.Name,
-		Email:        c.Email,
-		Phone:        c.Phone,
-		Mobile:       c.Mobile,
-		Fax:          c.Fax,
-		PhoneOther:   c.PhoneOther,
-		Website:      c.Website,
-		ContactName:  c.ContactName,
-		ContactEmail: c.ContactEmail,
-		ContactPhone: c.ContactPhone,
-		WorkflowID:   c.WorkflowID,
-		Notes:        c.Notes,
+		ID:              c.ID,
+		Name:            c.Name,
+		Email:           c.Email,
+		Phone:           c.Phone,
+		Mobile:          c.Mobile,
+		Fax:             c.Fax,
+		PhoneOther:      c.PhoneOther,
+		Website:         c.Website,
+		ContactName:     c.ContactName,
+		ContactEmail:    c.ContactEmail,
+		ContactPhone:    c.ContactPhone,
+		WorkflowID:      c.WorkflowID,
+		Notes:           c.Notes,
+		TotalProperties: c.TotalProperties,
 	}
 
 	if c.BillingAddressStreet != nil || c.BillingAddressCity != nil ||

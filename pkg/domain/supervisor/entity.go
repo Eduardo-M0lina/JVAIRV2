@@ -7,14 +7,15 @@ import (
 )
 
 type Supervisor struct {
-	ID         int64      `json:"id"`
-	CustomerID int64      `json:"customerId"`
-	Name       string     `json:"name"`
-	Phone      *string    `json:"phone,omitempty"`
-	Email      *string    `json:"email,omitempty"`
-	CreatedAt  *time.Time `json:"createdAt,omitempty"`
-	UpdatedAt  *time.Time `json:"updatedAt,omitempty"`
-	DeletedAt  *time.Time `json:"deletedAt,omitempty"`
+	ID           int64      `json:"id"`
+	CustomerID   int64      `json:"customerId"`
+	CustomerName string     `json:"customerName"`
+	Name         string     `json:"name"`
+	Phone        *string    `json:"phone,omitempty"`
+	Email        *string    `json:"email,omitempty"`
+	CreatedAt    *time.Time `json:"createdAt,omitempty"`
+	UpdatedAt    *time.Time `json:"updatedAt,omitempty"`
+	DeletedAt    *time.Time `json:"deletedAt,omitempty"`
 }
 
 // Validate valida los campos requeridos del supervisor

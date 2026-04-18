@@ -171,11 +171,17 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			j.job_report, j.installation_due_date, j.cage_required, j.warranty_claim,
 			j.warranty_registration, j.job_sales_price, j.money_turned_in, j.closed,
 			j.dispatch_notes, j.call_logs, j.due_date, j.call_attempted,
-			j.created_at, j.updated_at, j.deleted_at
+			j.created_at, j.updated_at, j.deleted_at,
+			jc.label as category_label, jc.type as category_type,
+			js.label as status_label, js.class as status_class,
+			jp.label as priority_label, jp.order as priority_order, jp.class as priority_class
 		FROM jobs j
 		LEFT JOIN properties p ON p.id = j.property_id
 		LEFT JOIN customers c ON c.id = p.customer_id
 		LEFT JOIN job_status_workflow jsw ON jsw.workflow_id = j.workflow_id AND jsw.job_status_id = j.job_status_id
+		INNER JOIN job_categories jc ON jc.id = j.job_category_id
+		INNER JOIN job_statuses js ON js.id = j.job_status_id
+		INNER JOIN job_priorities jp ON jp.id = j.job_priority_id
 		WHERE %s
 		ORDER BY %s
 		LIMIT ? OFFSET ?
@@ -194,6 +200,13 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	var jobs []*domainJob.Job
 	for rows.Next() {
 		j := &domainJob.Job{}
+		var categoryLabel, categoryType string
+		var statusLabel string
+		var statusClass *string
+		var priorityLabel string
+		var priorityOrder int
+		var priorityClass *string
+
 		if err := rows.Scan(
 			&j.ID, &j.WorkOrder, &j.DateReceived, &j.JobCategoryID, &j.JobPriorityID, &j.JobStatusID,
 			&j.TechnicianJobStatusID, &j.WorkflowID, &j.PropertyID, &j.UserID, &j.SupervisorIDs,
@@ -203,11 +216,33 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			&j.WarrantyRegistration, &j.JobSalesPrice, &j.MoneyTurnedIn, &j.Closed,
 			&j.DispatchNotes, &j.CallLogs, &j.DueDate, &j.CallAttempted,
 			&j.CreatedAt, &j.UpdatedAt, &j.DeletedAt,
+			&categoryLabel, &categoryType,
+			&statusLabel, &statusClass,
+			&priorityLabel, &priorityOrder, &priorityClass,
 		); err != nil {
 			slog.ErrorContext(ctx, "Failed to scan job row",
 				slog.String("error", err.Error()))
 			return nil, 0, err
 		}
+
+		// Asignar objetos anidados
+		j.Category = &domainJob.JobCategory{
+			ID:    j.JobCategoryID,
+			Label: categoryLabel,
+			Type:  categoryType,
+		}
+		j.Status = &domainJob.JobStatus{
+			ID:    j.JobStatusID,
+			Label: statusLabel,
+			Class: statusClass,
+		}
+		j.Priority = &domainJob.JobPriority{
+			ID:    j.JobPriorityID,
+			Label: priorityLabel,
+			Order: priorityOrder,
+			Class: priorityClass,
+		}
+
 		jobs = append(jobs, j)
 	}
 

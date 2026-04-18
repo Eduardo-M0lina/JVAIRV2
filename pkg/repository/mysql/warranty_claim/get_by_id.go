@@ -10,14 +10,20 @@ import (
 
 func (r *Repository) GetByID(ctx context.Context, id int64) (*domainWC.WarrantyClaim, error) {
 	query := `
-		SELECT id, internal_claim_number, warranty_claim_type_id, warranty_claim_status_id, job_id,
-			invoice_number, work_done, warranty_part, manufacturer, model_number,
-			part_number, replacement_part_number, part_distributor, part_invoice_number,
-			old_part_serial_number, new_part_serial_number, esa_number, serial,
-			claim_number, approved, parts_credit_received, labor_payment_received,
-			notes, created_at, updated_at, deleted_at
-		FROM warranty_claims
-		WHERE id = ? AND deleted_at IS NULL
+		SELECT wc.id, wc.internal_claim_number, wc.warranty_claim_type_id, wc.warranty_claim_status_id, wc.job_id,
+			wc.invoice_number, wc.work_done, wc.warranty_part, wc.manufacturer, wc.model_number,
+			wc.part_number, wc.replacement_part_number, wc.part_distributor, wc.part_invoice_number,
+			wc.old_part_serial_number, wc.new_part_serial_number, wc.esa_number, wc.serial,
+			wc.claim_number, wc.approved, wc.parts_credit_received, wc.labor_payment_received,
+			wc.notes, wc.created_at, wc.updated_at, wc.deleted_at,
+			j.id, j.completion_date,
+			p.id, CONCAT(p.street, ', ', p.city, ', ', p.state, ' ', p.zip),
+			c.name
+		FROM warranty_claims wc
+		INNER JOIN jobs j ON wc.job_id = j.id
+		INNER JOIN properties p ON j.property_id = p.id
+		INNER JOIN customers c ON p.customer_id = c.id
+		WHERE wc.id = ? AND wc.deleted_at IS NULL
 	`
 
 	wc := &domainWC.WarrantyClaim{}
@@ -25,6 +31,11 @@ func (r *Repository) GetByID(ctx context.Context, id int64) (*domainWC.WarrantyC
 	var partNumber, replacementPartNumber, partDistributor, partInvoiceNumber sql.NullString
 	var oldPartSerialNumber, newPartSerialNumber, esaNumber, serial sql.NullString
 	var claimNumber, notes sql.NullString
+	var jobID int64
+	var completionDate sql.NullTime
+	var propertyID int64
+	var propertyAddress string
+	var customerName string
 
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
 		&wc.ID,
@@ -37,6 +48,9 @@ func (r *Repository) GetByID(ctx context.Context, id int64) (*domainWC.WarrantyC
 		&oldPartSerialNumber, &newPartSerialNumber, &esaNumber, &serial,
 		&claimNumber, &wc.Approved, &wc.PartsCreditReceived, &wc.LaborPaymentReceived,
 		&notes, &wc.CreatedAt, &wc.UpdatedAt, &wc.DeletedAt,
+		&jobID, &completionDate,
+		&propertyID, &propertyAddress,
+		&customerName,
 	)
 
 	if err != nil {
@@ -63,6 +77,21 @@ func (r *Repository) GetByID(ctx context.Context, id int64) (*domainWC.WarrantyC
 	wc.Serial = fromNullString(serial)
 	wc.ClaimNumber = fromNullString(claimNumber)
 	wc.Notes = fromNullString(notes)
+
+	wc.Job = &domainWC.Job{
+		ID: jobID,
+		Property: domainWC.Property{
+			ID:      propertyID,
+			Address: propertyAddress,
+			Customer: domainWC.Customer{
+				Name: customerName,
+			},
+		},
+	}
+
+	if completionDate.Valid {
+		wc.Job.CompletionDate = &completionDate.Time
+	}
 
 	return wc, nil
 }

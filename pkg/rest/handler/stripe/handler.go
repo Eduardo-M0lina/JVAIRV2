@@ -39,7 +39,7 @@ func NewHandler(
 // @Tags Stripe
 // @Produce json
 // @Param id path int true "ID de la factura"
-// @Success 200 {object} infraStripe.PaymentIntentResult
+// @Success 200 {object} stripe.PaymentIntentResult
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 404 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse

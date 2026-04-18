@@ -121,41 +121,63 @@ type CloseJobRequest struct {
 	JobStatusID int64 `json:"jobStatusId"`
 }
 
+// CategoryResponse representa la categoría de un job
+type CategoryResponse struct {
+	ID    int64  `json:"id"`
+	Label string `json:"label"`
+	Type  string `json:"type"`
+}
+
+// StatusResponse representa el estado de un job
+type StatusResponse struct {
+	ID    int64   `json:"id"`
+	Label string  `json:"label"`
+	Class *string `json:"class,omitempty"`
+}
+
+// PriorityResponse representa la prioridad de un job
+type PriorityResponse struct {
+	ID    int64   `json:"id"`
+	Label string  `json:"label"`
+	Order int     `json:"order"`
+	Class *string `json:"class,omitempty"`
+}
+
 // JobResponse representa la respuesta de un job
 type JobResponse struct {
-	ID                    int64    `json:"id"`
-	WorkOrder             *string  `json:"workOrder,omitempty"`
-	DateReceived          string   `json:"dateReceived"`
-	JobCategoryID         int64    `json:"jobCategoryId"`
-	JobPriorityID         int64    `json:"jobPriorityId"`
-	JobStatusID           int64    `json:"jobStatusId"`
-	TechnicianJobStatusID *int64   `json:"technicianJobStatusId,omitempty"`
-	WorkflowID            int64    `json:"workflowId"`
-	PropertyID            int64    `json:"propertyId"`
-	UserID                *int64   `json:"userId,omitempty"`
-	SupervisorIDs         *string  `json:"supervisorIds,omitempty"`
-	DispatchDate          *string  `json:"dispatchDate,omitempty"`
-	CompletionDate        *string  `json:"completionDate,omitempty"`
-	WeekNumber            *int     `json:"weekNumber,omitempty"`
-	RouteNumber           *int     `json:"routeNumber,omitempty"`
-	ScheduledTimeType     *string  `json:"scheduledTimeType,omitempty"`
-	ScheduledTime         *string  `json:"scheduledTime,omitempty"`
-	InternalJobNotes      *string  `json:"internalJobNotes,omitempty"`
-	QuickNotes            *string  `json:"quickNotes,omitempty"`
-	JobReport             *string  `json:"jobReport,omitempty"`
-	InstallationDueDate   *string  `json:"installationDueDate,omitempty"`
-	CageRequired          bool     `json:"cageRequired"`
-	WarrantyClaim         bool     `json:"warrantyClaim"`
-	WarrantyRegistration  bool     `json:"warrantyRegistration"`
-	JobSalesPrice         *float64 `json:"jobSalesPrice,omitempty"`
-	MoneyTurnedIn         *float64 `json:"moneyTurnedIn,omitempty"`
-	Closed                bool     `json:"closed"`
-	DispatchNotes         *string  `json:"dispatchNotes,omitempty"`
-	CallLogs              *string  `json:"callLogs,omitempty"`
-	DueDate               *string  `json:"dueDate,omitempty"`
-	CallAttempted         bool     `json:"callAttempted"`
-	CreatedAt             string   `json:"createdAt,omitempty"`
-	UpdatedAt             string   `json:"updatedAt,omitempty"`
+	ID                    int64             `json:"id"`
+	WorkOrder             *string           `json:"workOrder,omitempty"`
+	DateReceived          string            `json:"dateReceived"`
+	Category              *CategoryResponse `json:"category,omitempty"`
+	Priority              *PriorityResponse `json:"priority,omitempty"`
+	Status                *StatusResponse   `json:"status,omitempty"`
+	TechnicianJobStatusID *int64            `json:"technicianJobStatusId,omitempty"`
+	WorkflowID            int64             `json:"workflowId"`
+	PropertyID            int64             `json:"propertyId"`
+	UserID                *int64            `json:"userId,omitempty"`
+	SupervisorIDs         *string           `json:"supervisorIds,omitempty"`
+	DispatchDate          *string           `json:"dispatchDate,omitempty"`
+	CompletionDate        *string           `json:"completionDate,omitempty"`
+	WeekNumber            *int              `json:"weekNumber,omitempty"`
+	RouteNumber           *int              `json:"routeNumber,omitempty"`
+	ScheduledTimeType     *string           `json:"scheduledTimeType,omitempty"`
+	ScheduledTime         *string           `json:"scheduledTime,omitempty"`
+	InternalJobNotes      *string           `json:"internalJobNotes,omitempty"`
+	QuickNotes            *string           `json:"quickNotes,omitempty"`
+	JobReport             *string           `json:"jobReport,omitempty"`
+	InstallationDueDate   *string           `json:"installationDueDate,omitempty"`
+	CageRequired          bool              `json:"cageRequired"`
+	WarrantyClaim         bool              `json:"warrantyClaim"`
+	WarrantyRegistration  bool              `json:"warrantyRegistration"`
+	JobSalesPrice         *float64          `json:"jobSalesPrice,omitempty"`
+	MoneyTurnedIn         *float64          `json:"moneyTurnedIn,omitempty"`
+	Closed                bool              `json:"closed"`
+	DispatchNotes         *string           `json:"dispatchNotes,omitempty"`
+	CallLogs              *string           `json:"callLogs,omitempty"`
+	DueDate               *string           `json:"dueDate,omitempty"`
+	CallAttempted         bool              `json:"callAttempted"`
+	CreatedAt             string            `json:"createdAt,omitempty"`
+	UpdatedAt             string            `json:"updatedAt,omitempty"`
 }
 
 const timeFormat = "2006-01-02T15:04:05Z07:00"
@@ -165,9 +187,6 @@ func toJobResponse(j *domainJob.Job) JobResponse {
 		ID:                    j.ID,
 		WorkOrder:             j.WorkOrder,
 		DateReceived:          j.DateReceived.Format(timeFormat),
-		JobCategoryID:         j.JobCategoryID,
-		JobPriorityID:         j.JobPriorityID,
-		JobStatusID:           j.JobStatusID,
 		TechnicianJobStatusID: j.TechnicianJobStatusID,
 		WorkflowID:            j.WorkflowID,
 		PropertyID:            j.PropertyID,
@@ -189,6 +208,30 @@ func toJobResponse(j *domainJob.Job) JobResponse {
 		DispatchNotes:         j.DispatchNotes,
 		CallLogs:              j.CallLogs,
 		CallAttempted:         j.CallAttempted,
+	}
+
+	// Mapear objetos anidados
+	if j.Category != nil {
+		resp.Category = &CategoryResponse{
+			ID:    j.Category.ID,
+			Label: j.Category.Label,
+			Type:  j.Category.Type,
+		}
+	}
+	if j.Status != nil {
+		resp.Status = &StatusResponse{
+			ID:    j.Status.ID,
+			Label: j.Status.Label,
+			Class: j.Status.Class,
+		}
+	}
+	if j.Priority != nil {
+		resp.Priority = &PriorityResponse{
+			ID:    j.Priority.ID,
+			Label: j.Priority.Label,
+			Order: j.Priority.Order,
+			Class: j.Priority.Class,
+		}
 	}
 
 	if j.DispatchDate != nil {

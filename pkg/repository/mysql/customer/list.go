@@ -11,12 +11,14 @@ import (
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*customer.Customer, int, error) {
 	baseQuery := `
 		SELECT
-			id, name, email, phone, mobile, fax, phone_other, website,
-			contact_name, contact_email, contact_phone,
-			billing_address_street, billing_address_city, billing_address_state, billing_address_zip,
-			workflow_id, notes, created_at, updated_at, deleted_at
-		FROM customers
-		WHERE deleted_at IS NULL
+			c.id, c.name, c.email, c.phone, c.mobile, c.fax, c.phone_other, c.website,
+			c.contact_name, c.contact_email, c.contact_phone,
+			c.billing_address_street, c.billing_address_city, c.billing_address_state, c.billing_address_zip,
+			c.workflow_id, c.notes, c.created_at, c.updated_at, c.deleted_at,
+			COALESCE(COUNT(p.id), 0) as total_properties
+		FROM customers c
+		LEFT JOIN properties p ON c.id = p.customer_id AND p.deleted_at IS NULL
+		WHERE c.deleted_at IS NULL
 	`
 
 	countQuery := "SELECT COUNT(*) FROM customers WHERE deleted_at IS NULL"
@@ -25,20 +27,20 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	var conditions []string
 
 	if workflowID, ok := filters["workflow_id"].(int64); ok && workflowID > 0 {
-		conditions = append(conditions, "workflow_id = ?")
+		conditions = append(conditions, "c.workflow_id = ?")
 		args = append(args, workflowID)
 	}
 
 	if search, ok := filters["search"].(string); ok && search != "" {
 		searchCondition := `(
-			name LIKE ? OR
-			email LIKE ? OR
-			phone LIKE ? OR
-			mobile LIKE ? OR
-			contact_name LIKE ? OR
-			contact_email LIKE ? OR
-			billing_address_city LIKE ? OR
-			billing_address_state LIKE ?
+			c.name LIKE ? OR
+			c.email LIKE ? OR
+			c.phone LIKE ? OR
+			c.mobile LIKE ? OR
+			c.contact_name LIKE ? OR
+			c.contact_email LIKE ? OR
+			c.billing_address_city LIKE ? OR
+			c.billing_address_state LIKE ?
 		)`
 		conditions = append(conditions, searchCondition)
 		searchPattern := "%" + search + "%"
@@ -52,6 +54,8 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		baseQuery += whereClause
 		countQuery += whereClause
 	}
+
+	baseQuery += " GROUP BY c.id"
 
 	var total int
 	err := r.db.QueryRowContext(ctx, countQuery, args...).Scan(&total)
@@ -101,6 +105,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 			&c.CreatedAt,
 			&c.UpdatedAt,
 			&c.DeletedAt,
+			&c.TotalProperties,
 		)
 		if err != nil {
 			slog.ErrorContext(ctx, "Failed to scan customer row",

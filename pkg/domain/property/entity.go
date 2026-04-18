@@ -10,6 +10,7 @@ import (
 type Property struct {
 	ID           int64      `json:"id"`
 	CustomerID   int64      `json:"customerId"`
+	CustomerName string     `json:"customerName"`
 	PropertyCode *string    `json:"propertyCode,omitempty"`
 	Street       string     `json:"street"`
 	City         string     `json:"city"`

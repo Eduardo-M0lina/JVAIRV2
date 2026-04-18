@@ -12,19 +12,32 @@ import (
 func (r *Repository) GetByID(ctx context.Context, id int64) (*domainJob.Job, error) {
 	query := `
 		SELECT
-			id, work_order, date_received, job_category_id, job_priority_id, job_status_id,
-			technician_job_status_id, workflow_id, property_id, user_id, supervisor_ids,
-			dispatch_date, completion_date, week_number, route_number,
-			scheduled_time_type, scheduled_time, internal_job_notes, quick_notes,
-			job_report, installation_due_date, cage_required, warranty_claim,
-			warranty_registration, job_sales_price, money_turned_in, closed,
-			dispatch_notes, call_logs, due_date, call_attempted,
-			created_at, updated_at, deleted_at
-		FROM jobs
-		WHERE id = ?
+			j.id, j.work_order, j.date_received, j.job_category_id, j.job_priority_id, j.job_status_id,
+			j.technician_job_status_id, j.workflow_id, j.property_id, j.user_id, j.supervisor_ids,
+			j.dispatch_date, j.completion_date, j.week_number, j.route_number,
+			j.scheduled_time_type, j.scheduled_time, j.internal_job_notes, j.quick_notes,
+			j.job_report, j.installation_due_date, j.cage_required, j.warranty_claim,
+			j.warranty_registration, j.job_sales_price, j.money_turned_in, j.closed,
+			j.dispatch_notes, j.call_logs, j.due_date, j.call_attempted,
+			j.created_at, j.updated_at, j.deleted_at,
+			jc.label as category_label, jc.type as category_type,
+			js.label as status_label, js.class as status_class,
+			jp.label as priority_label, jp.order as priority_order, jp.class as priority_class
+		FROM jobs j
+		INNER JOIN job_categories jc ON jc.id = j.job_category_id
+		INNER JOIN job_statuses js ON js.id = j.job_status_id
+		INNER JOIN job_priorities jp ON jp.id = j.job_priority_id
+		WHERE j.id = ?
 	`
 
 	j := &domainJob.Job{}
+	var categoryLabel, categoryType string
+	var statusLabel string
+	var statusClass *string
+	var priorityLabel string
+	var priorityOrder int
+	var priorityClass *string
+
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
 		&j.ID, &j.WorkOrder, &j.DateReceived, &j.JobCategoryID, &j.JobPriorityID, &j.JobStatusID,
 		&j.TechnicianJobStatusID, &j.WorkflowID, &j.PropertyID, &j.UserID, &j.SupervisorIDs,
@@ -34,7 +47,29 @@ func (r *Repository) GetByID(ctx context.Context, id int64) (*domainJob.Job, err
 		&j.WarrantyRegistration, &j.JobSalesPrice, &j.MoneyTurnedIn, &j.Closed,
 		&j.DispatchNotes, &j.CallLogs, &j.DueDate, &j.CallAttempted,
 		&j.CreatedAt, &j.UpdatedAt, &j.DeletedAt,
+		&categoryLabel, &categoryType,
+		&statusLabel, &statusClass,
+		&priorityLabel, &priorityOrder, &priorityClass,
 	)
+	if err == nil {
+		// Asignar objetos anidados
+		j.Category = &domainJob.JobCategory{
+			ID:    j.JobCategoryID,
+			Label: categoryLabel,
+			Type:  categoryType,
+		}
+		j.Status = &domainJob.JobStatus{
+			ID:    j.JobStatusID,
+			Label: statusLabel,
+			Class: statusClass,
+		}
+		j.Priority = &domainJob.JobPriority{
+			ID:    j.JobPriorityID,
+			Label: priorityLabel,
+			Order: priorityOrder,
+			Class: priorityClass,
+		}
+	}
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, domainJob.ErrJobNotFound

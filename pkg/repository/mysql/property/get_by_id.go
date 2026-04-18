@@ -12,16 +12,18 @@ import (
 func (r *Repository) GetByID(ctx context.Context, id int64) (*property.Property, error) {
 	query := `
 		SELECT
-			id, customer_id, property_code, street, city, state, zip, notes,
-			created_at, updated_at, deleted_at
-		FROM properties
-		WHERE id = ? AND deleted_at IS NULL
+			p.id, p.customer_id, c.name as customer_name, p.property_code, p.street, p.city, p.state, p.zip, p.notes,
+			p.created_at, p.updated_at, p.deleted_at
+		FROM properties p
+		INNER JOIN customers c ON p.customer_id = c.id
+		WHERE p.id = ? AND p.deleted_at IS NULL
 	`
 
 	p := &property.Property{}
 	err := r.db.QueryRowContext(ctx, query, id).Scan(
 		&p.ID,
 		&p.CustomerID,
+		&p.CustomerName,
 		&p.PropertyCode,
 		&p.Street,
 		&p.City,

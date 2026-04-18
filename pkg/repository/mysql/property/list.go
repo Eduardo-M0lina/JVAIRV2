@@ -11,10 +11,11 @@ import (
 func (r *Repository) List(ctx context.Context, filters map[string]interface{}, page, pageSize int) ([]*property.Property, int, error) {
 	baseQuery := `
 		SELECT
-			id, customer_id, property_code, street, city, state, zip, notes,
-			created_at, updated_at, deleted_at
-		FROM properties
-		WHERE deleted_at IS NULL
+			p.id, p.customer_id, c.name as customer_name, p.property_code, p.street, p.city, p.state, p.zip, p.notes,
+			p.created_at, p.updated_at, p.deleted_at
+		FROM properties p
+		INNER JOIN customers c ON p.customer_id = c.id
+		WHERE p.deleted_at IS NULL
 	`
 
 	countQuery := "SELECT COUNT(*) FROM properties WHERE deleted_at IS NULL"
@@ -23,17 +24,17 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 	var conditions []string
 
 	if customerID, ok := filters["customer_id"].(int64); ok && customerID > 0 {
-		conditions = append(conditions, "customer_id = ?")
+		conditions = append(conditions, "p.customer_id = ?")
 		args = append(args, customerID)
 	}
 
 	if search, ok := filters["search"].(string); ok && search != "" {
 		searchCondition := `(
-			property_code LIKE ? OR
-			street LIKE ? OR
-			city LIKE ? OR
-			state LIKE ? OR
-			zip LIKE ?
+			p.property_code LIKE ? OR
+			p.street LIKE ? OR
+			p.city LIKE ? OR
+			p.state LIKE ? OR
+			p.zip LIKE ?
 		)`
 		conditions = append(conditions, searchCondition)
 		searchPattern := "%" + search + "%"
@@ -78,6 +79,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		err := rows.Scan(
 			&p.ID,
 			&p.CustomerID,
+			&p.CustomerName,
 			&p.PropertyCode,
 			&p.Street,
 			&p.City,

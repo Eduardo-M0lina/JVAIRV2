@@ -60,26 +60,44 @@ type UpdateWarrantyRequest struct {
 	Notes            *string `json:"notes,omitempty" example:"Warranty notes"`
 }
 
+// CustomerResponse representa la información del cliente en la respuesta
+type CustomerResponse struct {
+	Name string `json:"name" example:"John Doe"`
+}
+
+// PropertyResponse representa la información de la propiedad en la respuesta
+type PropertyResponse struct {
+	ID       int64            `json:"id" example:"1"`
+	Address  string           `json:"address" example:"123 Main St, Atlanta, GA 30301"`
+	Customer CustomerResponse `json:"customer"`
+}
+
+// JobResponse representa la información del trabajo en la respuesta
+type JobResponse struct {
+	ID             int64            `json:"id" example:"1"`
+	CompletionDate *string          `json:"completionDate,omitempty" example:"2024-01-15T10:30:00Z"`
+	Property       PropertyResponse `json:"property"`
+}
+
 // WarrantyResponse representa la respuesta de una garantía
 type WarrantyResponse struct {
-	ID               int64   `json:"id" example:"1"`
-	WarrantyNumber   string  `json:"warrantyNumber" example:"WRN-2024-001"`
-	JobID            int64   `json:"jobId" example:"1"`
-	WarrantyTypeID   int64   `json:"warrantyTypeId" example:"1"`
-	WarrantyStatusID int64   `json:"warrantyStatusId" example:"1"`
-	DateSubmitted    *string `json:"dateSubmitted,omitempty" example:"01-15-2024"`
-	AgreementNumber  *string `json:"agreementNumber,omitempty" example:"AGR-001"`
-	AuditDone        bool    `json:"auditDone" example:"false"`
-	Notes            *string `json:"notes,omitempty" example:"Warranty notes"`
-	CreatedAt        string  `json:"createdAt,omitempty" example:"2024-01-15T10:30:00Z"`
-	UpdatedAt        string  `json:"updatedAt,omitempty" example:"2024-01-15T10:30:00Z"`
+	ID               int64        `json:"id" example:"1"`
+	WarrantyNumber   string       `json:"warrantyNumber" example:"WRN-2024-001"`
+	Job              *JobResponse `json:"job,omitempty"`
+	WarrantyTypeID   int64        `json:"warrantyTypeId" example:"1"`
+	WarrantyStatusID int64        `json:"warrantyStatusId" example:"1"`
+	DateSubmitted    *string      `json:"dateSubmitted,omitempty" example:"01-15-2024"`
+	AgreementNumber  *string      `json:"agreementNumber,omitempty" example:"AGR-001"`
+	AuditDone        bool         `json:"auditDone" example:"false"`
+	Notes            *string      `json:"notes,omitempty" example:"Warranty notes"`
+	CreatedAt        string       `json:"createdAt,omitempty" example:"2024-01-15T10:30:00Z"`
+	UpdatedAt        string       `json:"updatedAt,omitempty" example:"2024-01-15T10:30:00Z"`
 }
 
 func toWarrantyResponse(w *domainWarranty.Warranty) WarrantyResponse {
 	resp := WarrantyResponse{
 		ID:               w.ID,
 		WarrantyNumber:   w.WarrantyNumber,
-		JobID:            w.JobID,
 		WarrantyTypeID:   w.WarrantyTypeID,
 		WarrantyStatusID: w.WarrantyStatusID,
 		AuditDone:        w.AuditDone,
@@ -96,6 +114,24 @@ func toWarrantyResponse(w *domainWarranty.Warranty) WarrantyResponse {
 	}
 	if w.UpdatedAt != nil {
 		resp.UpdatedAt = w.UpdatedAt.Format(timeFormat)
+	}
+
+	if w.Job != nil {
+		jobResp := &JobResponse{
+			ID: w.Job.ID,
+			Property: PropertyResponse{
+				ID:      w.Job.Property.ID,
+				Address: w.Job.Property.Address,
+				Customer: CustomerResponse{
+					Name: w.Job.Property.Customer.Name,
+				},
+			},
+		}
+		if w.Job.CompletionDate != nil {
+			completionDateStr := w.Job.CompletionDate.Format(timeFormat)
+			jobResp.CompletionDate = &completionDateStr
+		}
+		resp.Job = jobResp
 	}
 
 	return resp

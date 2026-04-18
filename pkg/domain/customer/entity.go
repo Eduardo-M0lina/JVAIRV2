@@ -24,6 +24,7 @@ type Customer struct {
 	BillingAddressZip    *string    `json:"billingAddressZip,omitempty"`
 	WorkflowID           int64      `json:"workflowId"`
 	Notes                *string    `json:"notes,omitempty"`
+	TotalProperties      int        `json:"totalProperties"`
 	CreatedAt            *time.Time `json:"createdAt,omitempty"`
 	UpdatedAt            *time.Time `json:"updatedAt,omitempty"`
 	DeletedAt            *time.Time `json:"deletedAt,omitempty"`
