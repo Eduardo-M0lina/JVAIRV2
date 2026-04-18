@@ -530,16 +530,19 @@ func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 // @Router /api/v1/users/{id}/abilities [get]
 // @Security BearerAuth
 func (h *Handler) GetAbilities(w http.ResponseWriter, r *http.Request) {
-	// Verificar permisos
-	if !middleware.HasAbility(r.Context(), "users_manage") {
-		response.Error(w, http.StatusForbidden, "No tiene permisos para ver habilidades de usuarios")
-		return
-	}
-
 	// Obtener el ID del usuario de la URL
 	id := chi.URLParam(r, "id")
 	if id == "" {
 		response.Error(w, http.StatusBadRequest, "ID de usuario inválido")
+		return
+	}
+
+	// Permitir que un usuario consulte sus propias abilities sin restricción.
+	// Para consultar abilities de otro usuario, se requiere users_manage.
+	currentUser, ok := r.Context().Value(middleware.UserContextKey).(*user.User)
+	isSelf := ok && strconv.FormatInt(currentUser.ID, 10) == id
+	if !isSelf && !middleware.HasAbility(r.Context(), "users_manage") {
+		response.Error(w, http.StatusForbidden, "No tiene permisos para ver habilidades de otros usuarios")
 		return
 	}
 
