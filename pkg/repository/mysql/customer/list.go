@@ -21,7 +21,7 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		WHERE c.deleted_at IS NULL
 	`
 
-	countQuery := "SELECT COUNT(*) FROM customers WHERE deleted_at IS NULL"
+	countQuery := "SELECT COUNT(*) FROM customers c WHERE c.deleted_at IS NULL"
 
 	var args []interface{}
 	var conditions []string
