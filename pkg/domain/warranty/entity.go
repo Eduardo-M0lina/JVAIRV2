@@ -20,6 +20,7 @@ type Property struct {
 // Job representa la información del trabajo
 type Job struct {
 	ID             int64      `json:"id"`
+	WeekNumber     *int       `json:"week,omitempty"`
 	CompletionDate *time.Time `json:"completionDate,omitempty"`
 	Property       Property   `json:"property"`
 }

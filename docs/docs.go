@@ -15966,6 +15966,10 @@ const docTemplate = `{
                 },
                 "property": {
                     "$ref": "#/definitions/warranty.PropertyResponse"
+                },
+                "week": {
+                    "type": "integer",
+                    "example": 42
                 }
             }
         },
@@ -16181,6 +16185,10 @@ const docTemplate = `{
                 },
                 "property": {
                     "$ref": "#/definitions/warranty_claim.PropertyResponse"
+                },
+                "week": {
+                    "type": "integer",
+                    "example": 42
                 }
             }
         },
