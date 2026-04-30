@@ -18,6 +18,9 @@ import (
 // @Param pageSize query int false "Page size" default(10)
 // @Param search query string false "Search term"
 // @Param customerId query int false "Filter by customer ID"
+// @Param city query string false "Filter by city"
+// @Param state query string false "Filter by state"
+// @Param zip query string false "Filter by zip code"
 // @Success 200 {object} response.PaginatedResponse{items=[]PropertyResponse}
 // @Failure 400 {object} response.ErrorResponse
 // @Failure 500 {object} response.ErrorResponse

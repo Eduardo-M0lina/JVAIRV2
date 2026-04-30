@@ -4030,6 +4030,18 @@ paths:
         in: query
         name: workflowId
         type: integer
+      - description: Filter by billing address city
+        in: query
+        name: billingAddressCity
+        type: string
+      - description: Filter by billing address state
+        in: query
+        name: billingAddressState
+        type: string
+      - description: Filter by billing address zip
+        in: query
+        name: billingAddressZip
+        type: string
       produces:
       - application/json
       responses:
@@ -6976,6 +6988,18 @@ paths:
         in: query
         name: customerId
         type: integer
+      - description: Filter by city
+        in: query
+        name: city
+        type: string
+      - description: Filter by state
+        in: query
+        name: state
+        type: string
+      - description: Filter by zip code
+        in: query
+        name: zip
+        type: string
       produces:
       - application/json
       responses:

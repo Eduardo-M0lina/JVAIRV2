@@ -18,6 +18,9 @@ import (
 // @Param pageSize query int false "Page size" default(10)
 // @Param search query string false "Search term"
 // @Param workflowId query int false "Filter by workflow ID"
+// @Param billingAddressCity query string false "Filter by billing address city"
+// @Param billingAddressState query string false "Filter by billing address state"
+// @Param billingAddressZip query string false "Filter by billing address zip"
 // @Success 200 {object} response.PaginatedResponse{items=[]CustomerResponse}
 // @Failure 500 {object} response.ErrorResponse
 // @Router /api/v1/customers [get]

@@ -152,5 +152,17 @@ func parseFilters(r *http.Request) map[string]interface{} {
 		}
 	}
 
+	if billingAddressCity := r.URL.Query().Get("billingAddressCity"); billingAddressCity != "" {
+		filters["billing_address_city"] = billingAddressCity
+	}
+
+	if billingAddressState := r.URL.Query().Get("billingAddressState"); billingAddressState != "" {
+		filters["billing_address_state"] = billingAddressState
+	}
+
+	if billingAddressZip := r.URL.Query().Get("billingAddressZip"); billingAddressZip != "" {
+		filters["billing_address_zip"] = billingAddressZip
+	}
+
 	return filters
 }

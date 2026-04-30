@@ -1030,6 +1030,24 @@ const docTemplate = `{
                         "description": "Filter by workflow ID",
                         "name": "workflowId",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by billing address city",
+                        "name": "billingAddressCity",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by billing address state",
+                        "name": "billingAddressState",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by billing address zip",
+                        "name": "billingAddressZip",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -5565,6 +5583,24 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Filter by customer ID",
                         "name": "customerId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by city",
+                        "name": "city",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by state",
+                        "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filter by zip code",
+                        "name": "zip",
                         "in": "query"
                     }
                 ],
