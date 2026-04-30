@@ -31,6 +31,21 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		args = append(args, workflowID)
 	}
 
+	if billingAddressCity, ok := filters["billing_address_city"].(string); ok && billingAddressCity != "" {
+		conditions = append(conditions, "c.billing_address_city = ?")
+		args = append(args, billingAddressCity)
+	}
+
+	if billingAddressState, ok := filters["billing_address_state"].(string); ok && billingAddressState != "" {
+		conditions = append(conditions, "c.billing_address_state = ?")
+		args = append(args, billingAddressState)
+	}
+
+	if billingAddressZip, ok := filters["billing_address_zip"].(string); ok && billingAddressZip != "" {
+		conditions = append(conditions, "c.billing_address_zip = ?")
+		args = append(args, billingAddressZip)
+	}
+
 	if search, ok := filters["search"].(string); ok && search != "" {
 		searchCondition := `(
 			c.name LIKE ? OR

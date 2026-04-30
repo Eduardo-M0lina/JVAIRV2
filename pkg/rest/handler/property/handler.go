@@ -108,5 +108,17 @@ func parseFilters(r *http.Request) map[string]interface{} {
 		}
 	}
 
+	if city := r.URL.Query().Get("city"); city != "" {
+		filters["city"] = city
+	}
+
+	if state := r.URL.Query().Get("state"); state != "" {
+		filters["state"] = state
+	}
+
+	if zip := r.URL.Query().Get("zip"); zip != "" {
+		filters["zip"] = zip
+	}
+
 	return filters
 }

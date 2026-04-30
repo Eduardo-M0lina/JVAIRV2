@@ -28,6 +28,21 @@ func (r *Repository) List(ctx context.Context, filters map[string]interface{}, p
 		args = append(args, customerID)
 	}
 
+	if city, ok := filters["city"].(string); ok && city != "" {
+		conditions = append(conditions, "p.city = ?")
+		args = append(args, city)
+	}
+
+	if state, ok := filters["state"].(string); ok && state != "" {
+		conditions = append(conditions, "p.state = ?")
+		args = append(args, state)
+	}
+
+	if zip, ok := filters["zip"].(string); ok && zip != "" {
+		conditions = append(conditions, "p.zip = ?")
+		args = append(args, zip)
+	}
+
 	if search, ok := filters["search"].(string); ok && search != "" {
 		searchCondition := `(
 			p.property_code LIKE ? OR
