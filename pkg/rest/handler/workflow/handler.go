@@ -92,10 +92,12 @@ func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
 		Search: r.URL.Query().Get("search"),
 	}
 
+	// Por defecto, solo traer workflows activos
+	isActive := true
 	if isActiveStr := r.URL.Query().Get("is_active"); isActiveStr != "" {
-		isActive, _ := strconv.ParseBool(isActiveStr)
-		filters.IsActive = &isActive
+		isActive, _ = strconv.ParseBool(isActiveStr)
 	}
+	filters.IsActive = &isActive
 
 	// Obtener workflows
 	workflows, total, err := h.workflowUseCase.List(r.Context(), filters, page, pageSize)
